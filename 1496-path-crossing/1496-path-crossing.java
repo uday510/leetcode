@@ -1,8 +1,8 @@
 public class Solution {
     public boolean isPathCrossing(String path) {
-        Set<String> vis = new HashSet<>();
+        Set<Integer> vis = new HashSet<>();
         int x = 0, y = 0;
-        vis.add("0-0");
+        vis.add(0);
 
         for (char direction : path.toCharArray()) {
             if (direction == 'N') x--;
@@ -10,12 +10,12 @@ public class Solution {
             else if (direction == 'S') x++;
             else if (direction == 'W') y--;
 
-            String pos = x + "-" + y;
+            int pos = x *1000 +  y;
 
             if (vis.contains(pos)) return true;
             vis.add(pos);
         }
-
+        
         return false;
     }
 }

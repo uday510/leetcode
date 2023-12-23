@@ -5,9 +5,9 @@ class Solution {
         vis.add(0);
         for (char dir : path.toCharArray()) {
             if (dir == 'N') --x;
-            else if (dir == 'E') ++y;
-            else if (dir == 'S') ++x;
-            else if (dir == 'W') --y;
+            if (dir == 'E') ++y;
+            if (dir == 'S') ++x;
+            if (dir == 'W') --y;
             
             int pos = (x*1000) + y;
             if (vis.contains(pos)) return true;

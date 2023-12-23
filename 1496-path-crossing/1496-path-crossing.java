@@ -10,7 +10,7 @@ public class Solution {
             else if (direction == 'S') x++;
             else if (direction == 'W') y--;
 
-            int pos = x *1000 +  y;
+            int pos = x*1000 +  y;
 
             if (vis.contains(pos)) return true;
             vis.add(pos);

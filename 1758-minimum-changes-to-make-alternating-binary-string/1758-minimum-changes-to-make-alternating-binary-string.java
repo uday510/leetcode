@@ -5,7 +5,7 @@ class Solution {
     public int minOps(String s, char start) {
         int ops = 0;
         for (char c : s.toCharArray()) {
-            ops += (c == start) ? 0 : 1;
+            ops += (c == start) ? 1 : 0;
             start = (char) (start ^ 1);
         }
         return ops;

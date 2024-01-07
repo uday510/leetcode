@@ -1,17 +1,17 @@
 class Solution {
-    public int numberOfArithmeticSlices(int[] A) {
-        int count = 0;
-        for (int s = 0; s < A.length - 2; s++) {
-            int d = A[s + 1] - A[s];
-            for (int e = s + 2; e < A.length; e++) {
-                int i = 0;
-                for (i = s + 1; i <= e; i++)
-                    if (A[i] - A[i - 1] != d)
-                        break;
-                if (i > e)
-                    count++;
+    public int numberOfArithmeticSlices(int[] nums) {
+        int cnt = 0;
+        int n = nums.length;
+        for (int st = 0; st < n-2; ++st) {
+            int diff = nums[st+1] - nums[st];
+            for (int end = st+2; end < n; ++end) {
+                int i;
+                for (i = st+1; i <= end; ++i) {
+                    if (nums[i] - nums[i-1] != diff) break;
+                }
+                if (i > end) cnt++;
             }
         }
-        return count;
+        return cnt;
     }
 }

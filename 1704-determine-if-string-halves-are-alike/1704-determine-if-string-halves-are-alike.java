@@ -10,7 +10,6 @@ class Solution {
                 ++cnt;
             if (set.contains(s.charAt(i+n/2)))
                 --cnt;
-            
         }
         return cnt == -1;
     }

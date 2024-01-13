@@ -13,7 +13,6 @@ class Solution {
                     map.remove(c);
             }
         }
-        System.out.println(map + " " + cnt);
         return cnt;
     }
 }

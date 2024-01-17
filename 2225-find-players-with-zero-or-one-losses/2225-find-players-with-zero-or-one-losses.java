@@ -31,11 +31,9 @@ class Solution {
 
     List<List<Integer>> res = new ArrayList<>();
     
-    // winners.sort((o1, o2) -> o1-o2);
-    // losers.sort((o1, o2) -> o1-o2);
-    Collections.sort(winners);
-    Collections.sort(losers);
-
+    winners.sort((o1, o2) -> o1-o2);
+    losers.sort((o1, o2) -> o1-o2);
+ 
     res.add(winners);
     res.add(losers);
     return res;

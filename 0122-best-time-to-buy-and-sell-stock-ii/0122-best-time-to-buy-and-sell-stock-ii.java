@@ -9,12 +9,8 @@ class Solution {
             if (i + 1 < prices.length && prices[i+1] < prices[i]) {
                 maxProfit += prices[i] - minPrice;
                 minPrice = Integer.MAX_VALUE;
-            } else {
-                if (i == prices.length - 1) {
-                    maxProfit += prices[i] - minPrice;
-                }
-            }
+            } 
         }
-        return maxProfit;
+        return maxProfit += prices[prices.length-1] - minPrice;
     }
 }

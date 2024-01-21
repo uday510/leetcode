@@ -1,15 +1,14 @@
 class Solution {
     public int rob(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, -1);
-        return dfs(0, nums, dp);
-    }
-    public int dfs(int i, int[] nums, int[] dp) {
-        if (i >= nums.length) return 0;
+        int currHouse = 0;
+        int prevHouse = 0;
 
-        if (dp[i] != -1) return dp[i];
-        dp[i] = Math.max(nums[i] + dfs(i+2, nums, dp), dfs(i+1, nums, dp));
+        for (int i = 0; i < nums.length; ++i) {
+            int currRobbed = Math.max(currHouse, prevHouse + nums[i]);
 
-        return dp[i];
+            prevHouse = currHouse;
+            currHouse = currRobbed;
+        }
+        return Math.max(currHouse, prevHouse);
     }
 }

@@ -7,7 +7,7 @@ class Solution:
         i = 0
         while (i < n):
             currTemp = temperatures[i]
-            while(stack and currTemp > temperatures[stack[-1]]):
+            while(stack and temperatures[stack[-1]] < currTemp):
                 tmp = stack.pop()
                 res[tmp] = i-tmp
                 

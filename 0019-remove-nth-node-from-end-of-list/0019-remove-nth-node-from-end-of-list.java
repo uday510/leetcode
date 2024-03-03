@@ -12,7 +12,6 @@ class Solution {
         if (fastNode == null) 
             return head.next;
         
-        System.out.println(fastNode.val);
         
         ListNode slowNode = head;
         

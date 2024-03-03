@@ -1,23 +1,24 @@
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        
-        ListNode fast = dummy;
-        ListNode slow = dummy;
-        
+        int[] count = { 0 };
+        return removeNthFromEndRecursive(head, n, count);
+    }
 
-        for (int i = 0; i <= n; i++) {
-            fast = fast.next;
+    private ListNode removeNthFromEndRecursive(ListNode head, int n, int[] count) {
+        if (head == null) {
+            count[0] = 0;
+            return null;
         }
-        
-        while (fast != null) {
-            fast = fast.next;
-            slow = slow.next;
+
+        ListNode next = removeNthFromEndRecursive(head.next, n, count);
+        count[0]++;
+
+        if (count[0] == n ) {
+            // Remove the nth node
+            return next;
         }
-        
-        slow.next = slow.next.next;
-        
-        return dummy.next;
+
+        head.next = next;
+        return head;
     }
 }

@@ -1,17 +1,31 @@
 class Solution {
     public int numSubarraysWithSum(int[] nums, int goal) {
-        int subarrays = 0;
-        int n = nums.length;
-        
-        for (int i = 0; i < n; ++i) {
-            int currSum = 0;
-            for (int j = i; j < n; ++j) {
-                currSum += nums[j];
-                if (currSum == goal) {
-                    subarrays++;
-                }
+        int i = 0;
+        int j = 0;
+        int sum = 0;
+        int count = 0;
+        int len = nums.length;
+
+        while (j < len) {
+            sum += nums[j];
+
+            while (i < j && sum > goal) {
+                sum -= nums[i];
+                i++;
             }
+
+            if (sum == goal) {
+                int left = i;
+                int zeros = 1;
+                while (left < j && nums[left] == 0) {
+                    left++;
+                    zeros++;
+                }
+                count += zeros;
+                System.out.println(i + " " + j + " " + count);
+            }
+            j++;
         }
-        return subarrays;
+        return count;
     }
 }

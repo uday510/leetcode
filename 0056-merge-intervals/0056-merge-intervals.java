@@ -14,6 +14,7 @@ class Solution {
             
             if (currentIntervalEnd >= nextIntervalStart) {
                 currentInterval[1] = Math.max(currentInterval[1], nextIntervalEnd);
+                currentIntervalEnd = nextIntervalStart;
             } else {
                 currentInterval = nextInterval;
                 mergedIntervals.add(currentInterval);

@@ -25,14 +25,13 @@ class Solution {
             
             if (val == b + 1) {
                 prev2 = currNode;
+                break;
             }
             
             ++val;
             currNode = currNode.next;
         }
-        
-        System.out.println(prev1.val + " " + prev2.val);
-        
+                
         prev1.next = list2;
         
         currNode = list2;

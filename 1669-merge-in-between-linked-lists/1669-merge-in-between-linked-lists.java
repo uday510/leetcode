@@ -17,7 +17,7 @@ class Solution {
         
         ListNode currNode = head1;
         
-        while (currNode != null) {
+        while (currNode != null && val != b + 2) {
             
             if (val == a) {
                 prev1 = currNode;
@@ -25,7 +25,6 @@ class Solution {
             
             if (val == b + 1) {
                 prev2 = currNode;
-                break;
             }
             
             ++val;

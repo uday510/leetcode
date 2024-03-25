@@ -3,12 +3,12 @@ class Solution {
         List<Integer> duplicates = new ArrayList<>();
         
         for (int num : nums) {
-            int val = Math.abs(num);
+            int val = Math.abs(num) - 1;
             
-            if (nums[val-1] < 0) {
+            if (nums[val] < 0) {
                 duplicates.add(Math.abs(num));
             }
-            nums[val-1] *= -1;
+            nums[val] *= -1;
         }
         
         return duplicates;

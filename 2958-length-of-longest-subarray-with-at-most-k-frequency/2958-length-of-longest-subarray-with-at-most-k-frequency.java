@@ -2,12 +2,10 @@ class Solution {
     public int maxSubarrayLength(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
 
-        int leftIdx = 0;
-        int rightIdx = 0;
-        int len = nums.length;
-        int maxLength = 1;
+        int leftIdx = 0, rightIdx = 0,
+        len = nums.length, maxLength = 1;
 
-        for (; rightIdx < len;) {
+        for (; rightIdx < len; ) {
 
             map.put(nums[rightIdx], map.getOrDefault(nums[rightIdx], 0) + 1);
             for (; leftIdx < len && map.get(nums[rightIdx]) > k; ++leftIdx) {
@@ -15,7 +13,7 @@ class Solution {
             }
 
             maxLength = Math.max(maxLength, (rightIdx - leftIdx + 1));
-            rightIdx++;
+            ++rightIdx;
         }
 
         return maxLength;

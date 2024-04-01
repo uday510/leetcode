@@ -1,14 +1,14 @@
 class Solution {
     public int lengthOfLastWord(String s) {
-        int pointer = s.length() - 1;
+        int index = s.length() - 1;
         
-        while (pointer > -1 && s.charAt(pointer) == ' ') 
-                --pointer;
+        while (index > -1 && s.charAt(index) == ' ') 
+                --index;
         
         int lastWordLength = 0;
         
-        while (pointer > -1 && s.charAt(pointer--) != ' ')
-               ++lastWordLength;
+        while (index > -1 && s.charAt(index--) != ' ') 
+              ++lastWordLength;
         
         return lastWordLength;
     }

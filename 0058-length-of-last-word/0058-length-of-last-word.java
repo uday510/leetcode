@@ -1,7 +1,15 @@
 class Solution {
     public int lengthOfLastWord(String s) {
-        String[] strs = s.split(" ");
+        int pointer = s.length() - 1;
         
-        return strs[strs.length - 1].length();
+        while (pointer > -1 && s.charAt(pointer) == ' ') 
+                --pointer;
+        
+        int lastWordLength = 0;
+        
+        while (pointer > -1 && s.charAt(pointer--) != ' ')
+               ++lastWordLength;
+        
+        return lastWordLength;
     }
 }

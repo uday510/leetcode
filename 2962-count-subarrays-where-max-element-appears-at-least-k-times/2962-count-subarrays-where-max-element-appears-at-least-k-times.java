@@ -14,7 +14,6 @@ class Solution {
 
             while (maxElementsInWindow == k) {
                 if (arr[left] == maxElement) {
-                    // totalSubarrays += right - left + 1;
                     maxElementsInWindow--;
                 }
                 left++;

@@ -1,42 +1,16 @@
 class Solution {
-    String smallestString = "";
-
     public String smallestFromLeaf(TreeNode root) {
-        dfs(root, "");
-        return smallestString;
+        return dfs(root, "");
     }
-
-    // Helper function to find the lexicographically smallest string
-    void dfs(TreeNode root, String currentString) {
-
-        // If the current node is NULL, return
-        if (root == null) {
-            return;
-        }
-
-        // Construct the current string by appending 
-        // the character corresponding to the node's value
-        currentString = (char) (root.val + 'a') + currentString;
-
-        // If the current node is a leaf node
-        if (root.left == null && root.right == null) {
-
-            // If the current string is smaller than the result 
-            // or if the result is empty
-            if (smallestString.isEmpty() || smallestString.compareTo(currentString) > 0) {
-                smallestString = currentString;
-            }
-        }
-
-        // Recursively traverse the left subtree
-        if (root.left != null) {
-            dfs(root.left, currentString);
-        } 
-
-        // Recursively traverse the right subtree
-        if (root.right != null) {
-            dfs(root.right, currentString);
-        }
-
+     public String dfs(TreeNode root, String suffix) {
+        if (root == null) return suffix;
+        suffix = (char)('a' + root.val) + suffix;
+        if (root.left == null && root.right == null) return suffix;
+        if (root.left == null) return dfs(root.right, suffix);
+        if (root.right == null) return dfs(root.left, suffix);
+        String left = dfs(root.left, suffix);
+        String right = dfs(root.right, suffix);
+        return left.compareTo(right) <= 0 ? left : right;
     }
+    
 }

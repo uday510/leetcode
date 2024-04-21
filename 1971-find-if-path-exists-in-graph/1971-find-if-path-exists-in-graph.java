@@ -33,15 +33,17 @@ class Solution {
         public void union(int x, int y) {
             int px = find(x);
             int py = find(y);
-            if (px != py) {
-                if (rank[px] > rank[py]) {
-                    parent[py] = px;
-                } else if (rank[py] > rank[px]) {
-                    parent[px] = py;
-                } else {
-                    parent[px] = py;
-                    ++rank[py];
-                }
+            if (px == py) {
+                return;
+            }
+            
+            if (rank[px] > rank[py]) {
+                parent[py] = px;
+            } else if(rank[px] < rank[px]) {
+                parent[px] = py;
+            } else {
+                parent[px] = py;
+                ++rank[py];
             }
         }
 

@@ -23,7 +23,7 @@ class Solution {
         }
 
         public int find(int x) {
-            while (x != parent[x]) {
+            for (; x != parent[x];) {
                 parent[x] = parent[parent[x]];
                 x = parent[x];
             }

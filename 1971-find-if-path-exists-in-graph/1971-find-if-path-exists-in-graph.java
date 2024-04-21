@@ -13,9 +13,12 @@ class Solution {
         public DSU(int n) {
             parent = new int[n];
             rank = new int[n];
-            for(int i = 0; i < n; i++) {
+            int i = 0;
+            
+            for(; i < n;) {
                 parent[i] = i;
                 rank[i] = 1;
+                ++i;
             }
         }
 

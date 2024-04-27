@@ -1,8 +1,8 @@
 class Solution {
     public int findRotateSteps(String ring, String key) {
         return dfs(ring, key, 0, 0, new Integer[ring.length()][key.length()]);
-
     }
+    
      public int dfs(String ring, String key, int ringIndex, int keyIndex, Integer[][] dp) {
 
         if (keyIndex == key.length()) {

@@ -21,7 +21,8 @@ class Solution {
                 int clockWise = Math.abs(ringIndex - i);
                 int antiClockWise = ring.length() - clockWise;
 
-                int steps = 1 + Math.min(clockWise, antiClockWise) + dfs(ring, key, i, keyIndex + 1, dp);
+                int steps = 1 + Math.min(clockWise, antiClockWise) 
+                    + dfs(ring, key, i, keyIndex + 1, dp);
 
                 minSteps = Math.min(minSteps, steps);
             }

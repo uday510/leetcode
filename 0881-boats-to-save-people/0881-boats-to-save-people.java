@@ -8,14 +8,14 @@ class Solution {
         
         while (leftIdx <= rightIdx) {
             if (people[leftIdx] + people[rightIdx] <= limit) {
-                leftIdx++;
-                rightIdx--;
+                ++leftIdx;
+                --rightIdx;
             } else if (people[rightIdx] <= limit) {
-                rightIdx--;
+                --rightIdx;
             } else {
                 ++totalRescueBoats;
-                leftIdx++;
-                rightIdx--;
+                ++leftIdx;
+                --rightIdx;
             }
             ++totalRescueBoats;
         }

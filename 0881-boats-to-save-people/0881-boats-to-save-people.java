@@ -10,13 +10,9 @@ class Solution {
             if (people[leftIdx] + people[rightIdx] <= limit) {
                 ++leftIdx;
                 --rightIdx;
-            } else if (people[rightIdx] <= limit) {
-                --rightIdx;
             } else {
-                ++totalRescueBoats;
-                ++leftIdx;
                 --rightIdx;
-            }
+            } 
             ++totalRescueBoats;
         }
        

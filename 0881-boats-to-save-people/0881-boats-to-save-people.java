@@ -7,15 +7,16 @@ class Solution {
         int totalRescueBoats = 0;
         
         while (leftIdx <= rightIdx) {
-            if (people[leftIdx] + people[rightIdx] <= limit) {
+           int weight = people[leftIdx] + people[rightIdx];
+            
+            if (weight <= limit) {
                 ++leftIdx;
-                --rightIdx;
-            } else {
-                --rightIdx;
-            } 
+            }
+            
             ++totalRescueBoats;
+            --rightIdx;
         }
-       
+        
         return totalRescueBoats;
     }
 }

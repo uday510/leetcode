@@ -12,15 +12,12 @@ class Solution {
                 rightIdx--;
             } else if (people[rightIdx] <= limit) {
                 rightIdx--;
-            } else if (people[leftIdx] <= limit) {
-                leftIdx++;
             } else {
                 ++totalRescueBoats;
                 leftIdx++;
                 rightIdx--;
             }
             ++totalRescueBoats;
-
         }
        
         return totalRescueBoats;

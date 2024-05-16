@@ -1,16 +1,13 @@
 class Solution {
     public boolean evaluateTree(TreeNode root) {
-        return dfs(root);
-    }
-    public boolean dfs(TreeNode node) {
-        if (node == null) return true;
+        if (root == null) return true;
     
-        if (node.val == 2) {
-            return dfs(node.left) || dfs(node.right);
-        } else if (node.val == 3) {
-            return dfs(node.left) && dfs(node.right);
+        if (root.val == 2) {
+            return evaluateTree(root.left) || evaluateTree(root.right);
+        } else if (root.val == 3) {
+            return evaluateTree(root.left) && evaluateTree(root.right);
         }
         
-        return node.val == 1;
+        return root.val == 1;
     }
 }

@@ -17,7 +17,7 @@ class Solution {
             String substr = s.substring(i, j+1);
             if (words.contains(substr)) {
                 if (curr.length() == 0) {
-                    dfs(j+1, curr + substr, s);
+                    dfs(j+1, substr, s);
                 } else {
                     dfs(j+1, curr+ " " + substr, s);
                 }

@@ -1,16 +1,27 @@
+import java.util.Arrays;
+
 class Solution {
     public int specialArray(int[] nums) {
         Arrays.sort(nums);
         
-      for (int i = 0; i <= nums.length; ++i) {
-          int cnt = 0;
-          for (int j = 0; j < nums.length; ++j) {
-    
-              if (nums[j] >= i)
-                  cnt++;
-          }
-          if (cnt == i) return i;
-      }
+        for (int i = 0; i <= nums.length; ++i) {
+            if (nums.length - bisectLeft(i, nums) == i) 
+                return i;
+        }
         return -1;
+    }
+
+    public int bisectLeft(int target, int[] nums) {
+        int left = 0;
+        int right = nums.length;
+        
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (nums[mid] < target)
+                left = mid + 1;
+            else 
+                right = mid;
+        }
+        return left;
     }
 }

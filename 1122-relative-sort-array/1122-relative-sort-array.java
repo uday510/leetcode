@@ -11,8 +11,7 @@ class Solution {
             
             while (count[currentNum]-- > 0) {
                 arr1[index++] = currentNum;
-            }
-                
+            }       
         }
         
         for (int i = 0; i < count.length; ++i) {

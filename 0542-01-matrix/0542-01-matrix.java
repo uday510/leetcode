@@ -12,7 +12,7 @@ class Solution {
         int[][] res = new int[n][m];
         boolean[][] vis = new boolean[n][m];
         
-        Queue<int[]> queue = new LinkedList<>();
+        Deque<int[]> queue = new ArrayDeque<>();
         
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {

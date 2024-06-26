@@ -10,6 +10,10 @@ class Solution {
         int m = mat[0].length;
     
         int[][] res = new int[n][m];
+        
+        for (int[] arr : res)
+            Arrays.fill(arr, Integer.MAX_VALUE);
+        
         boolean[][] vis = new boolean[n][m];
         
         Deque<int[]> queue = new ArrayDeque<>();
@@ -20,27 +24,30 @@ class Solution {
                 if (mat[i][j] == 1) continue;
                 
                 queue.add(new int[] {i, j, 0});
-                vis[i][j] = true;
+                res[i][j] = 0;
             }
         }
         
         while (!queue.isEmpty()) {
-            int[] node = queue.poll();
+            int[] node = queue.pollLast();
             
-            res[node[0]][node[1]] = node[2];
+            // res[node[0]][node[1]] = node[2];
             
-            
+        
             for (int[] dir : directions) {
                 
                 int newX = dir[0] + node[0];
                 int newY = dir[1] + node[1];
                 int newDist = node[2] + 1;
                 
-                if (newX < 0 || newY < 0 || newX >= n || newY >= m || vis[newX][newY])
+                if (newX < 0 || newY < 0 || newX >= n || newY >= m)
                     continue;
-                
-                vis[newX][newY] = true;
-                queue.offer(new int[]{newX, newY, newDist});
+                                
+                if (newDist < res[newX][newY]) {
+                    res[newX][newY] = newDist;
+                    queue.offer(new int[]{newX, newY, newDist});
+                }
+                    
             }
         }
         

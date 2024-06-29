@@ -8,16 +8,18 @@ class Solution:
         for u, v in edges:
             rgraph[v].add(u)
         
-        def dfs(node, seen):
+        memo = {}
+        
+        def dfs(node):
+            if node in memo:
+                return memo[node]
+            
+            ancestors = set()
             for nei in rgraph[node]:
-                if nei not in seen:
-                    seen.add(nei)
-                    dfs(nei, seen)
+                ancestors.add(nei)
+                ancestors.update(dfs(nei))
+            
+            memo[node] = sorted(ancestors)
+            return memo[node]
         
-        def get_ancestors_for_node(node):
-            seen = set()
-            dfs(node, seen)
-            return sorted(seen)
-        
-        return list(map(get_ancestors_for_node, range(n)))
-
+        return list(map(dfs, range(n)))

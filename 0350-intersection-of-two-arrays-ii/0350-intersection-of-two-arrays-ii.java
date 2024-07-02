@@ -3,8 +3,7 @@ class Solution {
         int[] cnt = new int[1001];
         
         for (int num : nums1)
-            ++cnt[num];
-        
+               ++cnt[num];
         
         List<Integer> list = new ArrayList<>();
         for (int num : nums2) {
@@ -14,7 +13,6 @@ class Solution {
             }
         }
         
-        
-        return list.stream().mapToInt(Integer::intValue).toArray();
+        return list.stream().mapToInt(i -> i).toArray();
     }
 }

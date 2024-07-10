@@ -3,7 +3,7 @@ class Solution {
         int ops = 0;
         
         for (String log : logs) {
-            
+
             if (log.equals("./")) {
                 continue;
             }

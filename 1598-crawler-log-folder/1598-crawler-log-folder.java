@@ -3,13 +3,10 @@ class Solution {
         int ops = 0;
         
         for (String log : logs) {
-            if (log.equals("./")) {
-                continue;
-            }
-            if (!log.equals("../")) {
+            if (log.equals("../")) {
+                if (ops > 0) ops--;
+            } else if (!log.equals("./")) {
                 ops++;
-            } else {
-               ops = Math.max(0, ops-1);
             }
         }
         return ops;

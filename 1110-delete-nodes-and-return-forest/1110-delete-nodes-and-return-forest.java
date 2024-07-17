@@ -21,14 +21,16 @@ class Solution {
         node.left = dfs(node.left);
         node.right = dfs(node.right);
         
-        if (set.contains(node.val)) {
-            if (node.left != null)
-                ans.add(node.left);
-            if (node.right != null)
-                ans.add(node.right);
-            return null;
-        }
         
-        return node;
+        if (!set.contains(node.val))
+            return node;
+        
+        if (node.left != null )
+             ans.add(node.left);
+        
+         if (node.right != null)
+                ans.add(node.right);
+        
+        return null;
     }
 }

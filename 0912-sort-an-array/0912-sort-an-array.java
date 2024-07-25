@@ -18,9 +18,7 @@ class Solution {
         int pivot = nums[low];
             
         for (int i = low+1; i <= high; ++i) {
-            if (nums[i] == pivot) continue;
-            if (nums[i] > pivot)
-                continue;
+            if (nums[i] >= pivot) continue;
             
             ++idx;
             swap(nums, i, idx);

@@ -2,8 +2,6 @@ class Solution {
     public int findInMountainArray(int target, MountainArray mountainArr) {
         int peak = findPeak(mountainArr);
 
-        System.out.println("peak "  + peak);
-
         int s = bs(mountainArr, 0, peak, target, 1);
         if (mountainArr.get(s) == target) {
             return s;
@@ -37,10 +35,10 @@ class Solution {
         while (left < right) {
             int mid = (left + right) >> 1;
 
-            if (mArr.get(mid) > mArr.get(mid + 1)) {
-                right = mid;
+            if (mArr.get(mid) < mArr.get(mid + 1)) {
+                left = mid+1;
             } else {
-                left = mid + 1;
+                right = mid;
             }
         }
         return left;

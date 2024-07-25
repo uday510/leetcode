@@ -1,40 +1,46 @@
 class Solution {
-    public int[] sortArray(int[] array) {
-       buildMaxHeap(array);
-       for (int endIdx = array.length - 1; endIdx > 0; --endIdx) {
-           swap(0, endIdx, array);
-           siftDown(0, endIdx - 1, array);
-       }
-        return array;
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length-1);
+        return nums;
     }
-    public void buildMaxHeap(int[] array) {
-        int firstParentIdx = (array.length - 2) / 2;
-        for (int currentIdx = firstParentIdx; currentIdx > -1; --currentIdx) {
-            siftDown(currentIdx, array.length - 1, array);
-        }
+    public void mergeSort(int[] nums, int low, int high) {
+        if (high <= low)
+            return;
+        
+        int mid = (high + low) >> 1;
+        mergeSort(nums, low, mid);
+        mergeSort(nums, mid+1, high);
+        merge(nums, low, mid, mid+1, high);
     }
-    public void siftDown(int currentIdx, int endIdx, int[] heap) {
-        int childOneIdx = currentIdx * 2 + 1;
-        while (childOneIdx <= endIdx) {
-            int childTwoIdx = currentIdx * 2 + 2 <= endIdx ? currentIdx * 2 + 2 : -1;
-            int idxToSwap;
-            if (childTwoIdx != -1 && heap[childTwoIdx] > heap[childOneIdx]) {
-                idxToSwap = childTwoIdx;
-            } else {
-                idxToSwap = childOneIdx;
-            }
-            if (heap[idxToSwap] > heap[currentIdx]) {
-                swap(idxToSwap, currentIdx, heap);
-                currentIdx = idxToSwap;
-                childOneIdx = currentIdx * 2 + 1;
-            } else {
-                return;
-            }
-        }
-    }
-    public void swap(int i, int j, int[] array) {
-        int temp = array[j];
-        array[j] = array[i];
-        array[i] = temp;
+    public void merge(int[] nums, int lStart, int lEnd, int rStart, int rEnd) {
+       int len1 = lEnd-lStart+1;
+       int len2 = rEnd-rStart+1;
+       int[] tmp1 = new int[len1];
+       int[] tmp2 = new int[len2];
+      
+      int i = 0;
+      int j = 0;
+      for (; i < len1; ++i)
+          tmp1[i] = nums[i+lStart];
+      
+      for (; j < len2; ++j)
+          tmp2[j] = nums[j+rStart];
+        
+     i=0;
+     j=0;
+     int k = lStart;
+        
+     while (i < len1 && j < len2)
+         if (tmp1[i] <= tmp2[j])
+             nums[k++] = tmp1[i++];
+         else 
+             nums[k++] = tmp2[j++];
+        
+    
+    while (i < len1)
+        nums[k++] = tmp1[i++];
+        
+    while (j < len2)
+        nums[k++] = tmp2[j++];
     }
 }

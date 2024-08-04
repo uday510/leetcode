@@ -1,22 +1,24 @@
+import java.util.*;
+
 class Solution {
     public int rangeSum(int[] nums, int n, int left, int right) {
-        List<Integer> list = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
         
-        for (int i = 0; i < n; ++i) {
-            int curr = 0;
-            for (int j = i; j < n; ++j) {
-                curr += nums[j];
-                list.add(curr);
-            }
+        for (int i = 0; i < n; i++) {
+            pq.offer(new int[]{nums[i], i, i + 1});
         }
-        Collections.sort(list);
         
-        int MOD = (int) 1e9+7;
+        int MOD = (int) 1e9 + 7;
         int sum = 0;
-        
-        for (; left <= right; ++left) {
-            sum += list.get(left-1);
-            sum %= MOD;
+
+        for (int i = 1; i <= right; i++) {
+            int[] current = pq.poll();
+            if (i >= left) {
+                sum = (sum + current[0]) % MOD;
+            }
+            if (current[2] < n) {
+                pq.offer(new int[]{current[0] + nums[current[2]], current[1], current[2] + 1});
+            }
         }
         
         return sum;

@@ -1,24 +1,35 @@
 class Solution {
+    private static final int INF = (int) 1e9;
+    private Integer[][] dp;
+    private int n;
+
     public int minFallingPathSum(int[][] matrix) {
-        int[][] dp = new int[matrix.length+1][matrix.length+1];
-        for (int row = matrix.length -1; row > -1; --row) {
-            for (int col = 0; col < matrix.length; ++col) {
-                if (col == 0) {
-                    dp[row][col] =
-                    Math.min(dp[row+1][col], dp[row+1][col+1]) + matrix[row][col];
-                } else if (col == matrix.length - 1) {
-                    dp[row][col] = 
-                    Math.min(dp[row+1][col], dp[row+1][col-1]) + matrix[row][col];
-                } else {
-                    dp[row][col] = Math.min(dp[row+1][col], 
-                    Math.min(dp[row+1][col-1], dp[row+1][col+1])) + matrix[row][col];
-                }
-            }
+        int min = INF;
+        n = matrix.length;
+        dp = new Integer[n][n];
+
+        for (int col = 0; col < matrix[0].length; ++col) {
+            min = Math.min(min, dfs(0, col, matrix));
         }
-        int minFallingSum = Integer.MAX_VALUE;
-        for (int startCol = 0; startCol < matrix.length; ++startCol) {
-            minFallingSum = Math.min(minFallingSum, dp[0][startCol]);
-        }
-        return minFallingSum;
+        return min;
+    }
+    private int dfs(int row, int col, int[][] matrix) {
+        if (col < 0 || col >= n) 
+            return INF;
+
+        if (row == n)
+            return 0;
+
+        if (dp[row][col] != null)
+            return dp[row][col];
+
+        int t = matrix[row][col];
+        int down = dfs(row + 1, col, matrix);
+        int downLeft = dfs(row + 1, col - 1, matrix);
+        int downRight = dfs(row + 1, col + 1, matrix);
+
+        t += Math.min(down, Math.min(downLeft, downRight));
+
+        return dp[row][col] = t;
     }
 }

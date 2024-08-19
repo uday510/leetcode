@@ -1,32 +1,17 @@
 class Solution {
     public int minSteps(int n) {
-        return dfs(1, 0, n, 0);
+        return dfs(1, 0, n);
     }
-    
-    private int dfs(int curr, int clipboard, int target, int steps) {
-        // If the current number of 'A's equals the target, return the number of steps
-        if (curr == target) {
-            return steps;
+    public int dfs(int curr, int clip, int n) {
+        if (curr > n) return n + 1;
+        if (curr == n) return 0;
+
+       int pasteOnly = n + 1;
+        if (clip != 0) {
+            pasteOnly = 1 + dfs(curr + clip, clip, n);
         }
-        
-        // If the current number of 'A's exceeds the target, return a large number (invalid path)
-        if (curr > target) {
-            return Integer.MAX_VALUE;
-        }
-        
-        // Option 1: Copy All and Paste
-        int copyPaste = Integer.MAX_VALUE;
-        if (clipboard != curr) { // Avoid redundant operations
-            copyPaste = dfs(curr + curr, curr, target, steps + 2); // 2 steps: Copy and Paste
-        }
-        
-        // Option 2: Paste Only
-        int pasteOnly = Integer.MAX_VALUE;
-        if (clipboard > 0) {
-            pasteOnly = dfs(curr + clipboard, clipboard, target, steps + 1); // 1 step: Paste
-        }
-        
-        // Return the minimum steps required
-        return Math.min(copyPaste, pasteOnly);
+
+        int copyPaste = 2 + dfs(curr + curr, curr, n);
+        return Math.min(pasteOnly, copyPaste);
     }
 }

@@ -1,17 +1,22 @@
 class Solution {
+    int n;
+    int[][] dp;
     public int minSteps(int n) {
-        return dfs(1, 0, n);
+        this.n = n;
+        this.dp = new int[n+1][n+1];
+        if(n == 1) return 0;
+        for(int i=0; i<dp.length; i++) Arrays.fill(dp[i], -1);
+        return 1+dfs(1,1);
     }
-    public int dfs(int curr, int clip, int n) {
-        if (curr > n) return n + 1;
-        if (curr == n) return 0;
-        
-        int pasteOnly = n + 1;
-        if (clip != 0)
-            pasteOnly = 1 + dfs(curr + clip, clip, n);
-        
-        int copyPaste = 2 + dfs(curr + curr, curr, n);
-        
-        return Math.min(pasteOnly, copyPaste);
+
+    private int dfs(int paste, int copy ){
+        if(paste == n) return 0;
+        if(paste>n) return 1000;
+        if(dp[paste][copy] != -1) return dp[paste][copy];
+
+        int cstep = dfs(paste * 2, paste)+2;
+        int pstep = dfs(paste+copy, copy)+1;
+        dp[paste][copy] = Math.min(cstep,pstep);
+        return dp[paste][copy];
     }
 }

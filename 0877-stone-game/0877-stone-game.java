@@ -1,8 +1,8 @@
 class Solution {
     Boolean[][] dp;
     public boolean stoneGame(int[] piles) {
-    //    dp = new Boolean[piles.length][piles.length];
-    //    return dfs(piles, 0, 0, 0, piles.length-1); 
+       dp = new Boolean[piles.length][piles.length];
+       // return dfs(piles, 0, 0, 0, piles.length-1); 
         return true;
     }
     public boolean dfs(int[] piles, int alice, int bob, int i, int j) {

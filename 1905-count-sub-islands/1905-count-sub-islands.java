@@ -1,31 +1,39 @@
 class Solution {
-    private static int m;
-    private static int n;
-    public int countSubIslands(int[][] g1, int[][] g2) {
-        int islands = 0;
-        m = g1.length;
-        n = g1[0].length;
+    private int rows;
+    private int cols;
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (g2[i][j] == 1 && dfs(g1, g2, i, j)) {
-                    islands++;
+    public int countSubIslands(int[][] grid1, int[][] grid2) {
+        rows = grid1.length;
+        cols = grid1[0].length;
+        int subIslands = 0;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid2[row][col] == 1 && isSubIsland(grid1, grid2, row, col)) {
+                    subIslands++;
                 }
             }
         }
-        return islands;
+        return subIslands;
     }
-    private boolean dfs(int[][] g1, int[][] g2, int i, int j) {
-        if (i < 0 || i >= m || j < 0 || j >= n || g2[i][j] == 0) {
+
+    private boolean isSubIsland(int[][] grid1, int[][] grid2, int row, int col) {
+        if (isOutOfBounds(row, col) || grid2[row][col] == 0) {
             return true;
         }
-        g2[i][j] = 0;
-        boolean res = g1[i][j] != 0;
-        
-        res &= dfs(g1, g2, i + 1, j);
-        res &= dfs(g1, g2, i - 1, j);
-        res &= dfs(g1, g2, i, j + 1);
-        res &= dfs(g1, g2, i, j - 1);
-        return res;
+
+        grid2[row][col] = 0;
+        boolean isSubIsland = grid1[row][col] != 0;
+
+        isSubIsland &= isSubIsland(grid1, grid2, row + 1, col);
+        isSubIsland &= isSubIsland(grid1, grid2, row - 1, col);
+        isSubIsland &= isSubIsland(grid1, grid2, row, col + 1);
+        isSubIsland &= isSubIsland(grid1, grid2, row, col - 1);
+
+        return isSubIsland;
+    }
+
+    private boolean isOutOfBounds(int row, int col) {
+        return row < 0 || row >= rows || col < 0 || col >= cols;
     }
 }

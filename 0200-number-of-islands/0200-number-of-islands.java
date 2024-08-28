@@ -22,9 +22,8 @@ class Solution {
     }
     
     private void dfs(int i, int j, int m, int n, char[][] grid) {
-        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0' || seen[i][j]) {
+        if (!valid(i,j,m,n,grid)) 
             return;
-        }
         
         seen[i][j] = true;
         for (int[] dir: directions) {
@@ -34,5 +33,7 @@ class Solution {
             dfs(newI, newJ, m, n, grid);
         }
     }
-
+    private boolean valid(int i, int j, int m, int n, char[][] grid) {
+        return !(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0' || seen[i][j]);
+    }
 }

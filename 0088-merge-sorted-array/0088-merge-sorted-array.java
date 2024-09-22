@@ -12,8 +12,8 @@ class Solution {
             }
         }
         
-        while (N2 > -1) 
+        while (N2 > -1) {
             nums1[idx--] = nums2[N2--];
-        
+        }
     }
 }

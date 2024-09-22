@@ -4,9 +4,9 @@ class Solution {
         int cnt = 0;
         
         for (int num : nums) {
-            if (num == major) {
-                ++cnt;
-            } else {
+             if (num == major) {
+                 ++cnt;
+             } else {
                 --cnt;
                 if (cnt == 0) {
                     major = num;

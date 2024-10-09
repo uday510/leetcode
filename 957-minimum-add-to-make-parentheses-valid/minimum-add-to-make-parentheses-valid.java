@@ -6,13 +6,9 @@ class Solution {
         for (char c : s.toCharArray()) {
             if (c == '(') {
                 ++stack;
-            } else {
-                if (stack == 0) {
-                    ++mismatch;
-                } else {
-                    --stack;
-                }
+                continue;
             }
+            int tmp = stack == 0 ? ++mismatch : --stack;
         }
         return mismatch + stack;
     }

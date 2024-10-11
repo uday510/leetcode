@@ -1,37 +1,37 @@
 class Solution {
-    public int[][] spiralMatrixIII(int R, int C, int r0, int c0) {
-        List<int[]> result = new ArrayList<>();
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-        // Add the starting point
-        result.add(new int[]{r0, c0});
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        // Store all possible directions in an array.
+        int[][] dir = new int[][] { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+        int[][] traversed = new int[rows * cols][2];
+        int idx = 0;
 
-        if (R * C == 1) {
-            return result.toArray(new int[1][2]);
-        }
-
-        int step = 1;
-        int dirIndex = 0;
-
-        while (result.size() < R * C) {
-            // Two directions per cycle (right, down, left, up)
+        // Initial step size is 1, value of d represents the current direction.
+        for (int step = 1, direction = 0; idx < rows * cols;) {
+            // direction = 0 -> East, direction = 1 -> South
+            // direction = 2 -> West, direction = 3 -> North
             for (int i = 0; i < 2; ++i) {
-                // Number of steps in this direction
-                for (int s = 0; s < step; ++s) {
-                    r0 += directions[dirIndex][0];
-                    c0 += directions[dirIndex][1];
-
-                    // Check if the new point is inside the grid
-                    if (r0 >= 0 && r0 < R && c0 >= 0 && c0 < C) {
-                        result.add(new int[]{r0, c0});
+                for (int j = 0; j < step; ++j) {
+                    // Validate the current position
+                    if (
+                        rStart >= 0 &&
+                        rStart < rows &&
+                        cStart >= 0 &&
+                        cStart < cols
+                    ) {
+                        traversed[idx][0] = rStart;
+                        traversed[idx][1] = cStart;
+                        ++idx;
                     }
+                    // Make changes to the current position.
+                    rStart += dir[direction][0];
+                    cStart += dir[direction][1];
                 }
-                // Move to the next direction (right -> down -> left -> up)
-                dirIndex = (dirIndex + 1) % 4;
+
+                direction = (direction + 1) % 4;
             }
-            // After two directions, the number of steps increase
             ++step;
         }
-        return result.toArray(new int[R * C][2]);
+        return traversed;
     }
 }

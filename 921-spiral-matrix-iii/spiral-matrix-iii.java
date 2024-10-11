@@ -1,37 +1,31 @@
 class Solution {
-    public int[][] spiralMatrixIII(int R, int C, int r0, int c0) {
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
         List<int[]> result = new ArrayList<>();
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        
+        result.add(new int[]{rStart, cStart});
 
-        // Add the starting point
-        result.add(new int[]{r0, c0});
-
-        if (R * C == 1) {
+        if (rows * cols == 1) {
             return result.toArray(new int[1][2]);
-        }
-
+        } 
         int step = 1;
         int dirIndex = 0;
 
-        while (result.size() < R * C) {
-            // Two directions per cycle (right, down, left, up)
-            for (int i = 0; i < 2; ++i) {
-                // Number of steps in this direction
-                for (int s = 0; s < step; ++s) {
-                    r0 += directions[dirIndex][0];
-                    c0 += directions[dirIndex][1];
+        while (result.size() < rows * cols) {
 
-                    // Check if the new point is inside the grid
-                    if (r0 >= 0 && r0 < R && c0 >= 0 && c0 < C) {
-                        result.add(new int[]{r0, c0});
+            for (int i = 0; i < 2; ++i) {
+                for (int s = 0; s < step; ++s) {
+                    rStart += directions[dirIndex][0];
+                    cStart += directions[dirIndex][1];
+
+                    if (rStart >= 0 && cStart >= 0 && rStart < rows && cStart < cols) {
+                        result.add(new int[]{rStart, cStart});
                     }
                 }
-                // Move to the next direction (right -> down -> left -> up)
                 dirIndex = (dirIndex + 1) % 4;
             }
-            // After two directions, the number of steps increase
             ++step;
         }
-        return result.toArray(new int[R * C][2]);
+        return result.toArray(new int[rows * cols][2]);
     }
 }

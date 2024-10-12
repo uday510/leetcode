@@ -31,6 +31,6 @@ class Solution {
             pq.offer(new int[]{leaves, assignedChair});
         }
 
-        return -1;  // This should not be reached
+        return -1;  
     }
 }

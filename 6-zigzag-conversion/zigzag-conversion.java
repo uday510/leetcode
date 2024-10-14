@@ -4,10 +4,10 @@ class Solution {
             return s;
         }
         var rows = new ArrayList<StringBuilder>();
+
         for (int i = 0; i < numRows; ++i) {
             rows.add(new StringBuilder());
         }
-
         int currRow = 0;
         int step = 1;
 
@@ -17,14 +17,15 @@ class Solution {
             currRow += step;
 
             if (currRow == 0 || currRow == numRows - 1) {
-                step *= -1;
+                step = -step;
             }
         }
 
-        var result = new StringBuilder();
+        StringBuilder res = new StringBuilder();
+
         for (var row : rows) {
-            result.append(row);
+            res.append(row);
         }
-        return result.toString();
+        return res.toString();
     }
 }

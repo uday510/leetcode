@@ -1,15 +1,15 @@
 class Solution {
     public long maxKelements(int[] nums, int k) {
-        var pq = new PriorityQueue<Long>((prev, curr) -> Long.compare(curr, prev));
+        var pq = new PriorityQueue<Integer>((prev, curr) -> Integer.compare(curr, prev));
         long max = 0;
 
         for (int num : nums)
-            pq.offer((long) num);
+            pq.offer( num);
 
         while (k-- > 0) {
-            long topVal = pq.poll();
-            max += topVal;
-            long reduced = (topVal + 2) / 3;
+            int topVal = pq.poll();
+            max += (long) topVal;
+            int reduced = (topVal + 2) / 3;
             pq.offer(reduced);
         }
         return max;

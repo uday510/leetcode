@@ -9,8 +9,7 @@ class Solution {
         while (k-- > 0) {
             int topVal = pq.poll();
             max += topVal*1L;
-            int reduced = (topVal + 2) / 3;
-            pq.offer(reduced);
+            pq.offer((topVal + 2) / 3);
         }
         return max;
     }

@@ -8,7 +8,7 @@ class Solution {
 
         while (k-- > 0) {
             int topVal = pq.poll();
-            max += (long) topVal;
+            max += topVal*1L;
             int reduced = (topVal + 2) / 3;
             pq.offer(reduced);
         }

@@ -1,25 +1,17 @@
 class Solution {
     public long minimumSteps(String s) {
-        String[] arr = s.split("");
-        int leftIdx = 0;
-        int rightIdx = arr.length - 1;
-
         long swaps = 0;
+        int len = s.length();
+        int white_pos = 0;
+        char WHITE = '0';
 
-        while (leftIdx < rightIdx) {
-            while (rightIdx > -1 && arr[rightIdx].equals("1")) {
-                    --rightIdx;
+        for (int idx = 0; idx < len; ++idx) {
+            char c = s.charAt(idx);
+            if (c != WHITE) {
+               continue;
             }
-            while (leftIdx < arr.length && arr[leftIdx].equals("0")) {
-                    ++leftIdx;
-            }
-            if (leftIdx < rightIdx && arr[leftIdx].equals("1")) {
-                swaps += (rightIdx - leftIdx);
-                String tmp = arr[leftIdx];
-                arr[leftIdx] = arr[rightIdx];
-                arr[rightIdx] = tmp;
-                ++leftIdx;
-            }
+            swaps += (idx - white_pos);
+            ++white_pos;
         }
         return swaps;
     }

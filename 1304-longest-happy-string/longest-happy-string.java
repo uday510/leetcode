@@ -1,62 +1,39 @@
 class Solution {
-
     public String longestDiverseString(int a, int b, int c) {
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) ->
-            (y.count - x.count)
-        );
-        // Add the counts of a, b and c in priority queue.
-        if (a > 0) {
-            pq.add(new Pair(a, 'a'));
-        }
+      var sb = new StringBuilder();
+        var pq = new PriorityQueue<int[]>((x, y) -> y[1] - x[1]);
+        addKeys(pq, a, b, c);
 
-        if (b > 0) {
-            pq.add(new Pair(b, 'b'));
-        }
-
-        if (c > 0) {
-            pq.add(new Pair(c, 'c'));
-        }
-
-        StringBuilder ans = new StringBuilder();
         while (!pq.isEmpty()) {
-            Pair p = pq.poll();
-            int count = p.count;
-            char character = p.character;
-            // If three consecutive characters exists, pick the second most
-            // frequent character.
-            if (
-                ans.length() >= 2 &&
-                ans.charAt(ans.length() - 1) == p.character &&
-                ans.charAt(ans.length() - 2) == p.character
-            ) {
-                if (pq.isEmpty()) break;
-
-                Pair temp = pq.poll();
-                ans.append(temp.character);
-                if (temp.count - 1 > 0) {
-                    pq.add(new Pair(temp.count - 1, temp.character));
+            var peek = pq.poll();
+            if (sb.length() >= 2 && sb.charAt(sb.length() - 1) == peek[0] && sb.charAt(sb.length() - 2) == peek[0]) {
+                if (pq.isEmpty()) {
+                    break;
                 }
+                var next = pq.poll();
+                sb.append((char) next[0]);
+                next[1]--;
+                if (next[1] > 0) {
+                    pq.offer(next);
+                }
+                pq.offer(peek);
             } else {
-                count--;
-                ans.append(character);
-            }
-
-            // If count is greater than zero, add it to priority queue.
-            if (count > 0) {
-                pq.add(new Pair(count, character));
+                sb.append((char) peek[0]);
+                peek[1]--;
+                if (peek[1] > 0) {
+                    pq.offer(peek);
+                }
             }
         }
-        return ans.toString();
+        return sb.toString();
     }
+    private void addKeys(PriorityQueue<int[]> pq, int a, int b, int c) {
+      if (a > 0)
+          pq.offer(new int[]{'a', a});
+      if (b > 0)
+          pq.offer(new int[]{'b', b});
+      if (c > 0)
+          pq.offer(new int[]{'c', c});
 
-    class Pair {
-
-        int count;
-        char character;
-
-        Pair(int count, char character) {
-            this.count = count;
-            this.character = character;
-        }
     }
 }

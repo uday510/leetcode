@@ -1,34 +1,29 @@
+import java.util.*;
+
 class Solution {
     public int countMaxOrSubsets(int[] nums) {
         var subsets = new ArrayList<List<Integer>>();
-        subsets.add(new ArrayList<>());
+        subsets.add(new ArrayList<>()); 
+        var map = new HashMap<Integer, Integer>(); 
         int maxOR = 0;
 
         for (int num : nums) {
-            int len = subsets.size();
-            int curr = 0;
+            int len = subsets.size(); 
             for (int idx = 0; idx < len; ++idx) {
-                List<Integer> tmp = new ArrayList<>(subsets.get(idx));
-                tmp.add(num);
-                for (Integer val : tmp) {
-                    curr |= val;
-                }
-                maxOR = Math.max(maxOR, curr);
-                subsets.add(tmp);
-            }
-        }
-        int cnt = 0;
-        for (var list : subsets) {
+                List<Integer> newSubset = new ArrayList<>(subsets.get(idx));
+                newSubset.add(num);
+                subsets.add(newSubset);
 
-            int curr = 0;
-            for (var val : list) {
-                curr |= val;
+                int currOR = 0;
+                for (Integer val : newSubset) {
+                    currOR |= val;
+                }
+
+                map.put(currOR, map.getOrDefault(currOR, 0) + 1);
+                maxOR = Math.max(maxOR, currOR); 
             }
-            if (curr == maxOR) {
-                ++cnt;
-            }
-            curr = 0;
         }
-        return cnt;
+
+        return map.get(maxOR);
     }
 }

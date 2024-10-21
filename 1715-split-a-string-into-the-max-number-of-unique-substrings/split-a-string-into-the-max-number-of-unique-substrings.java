@@ -11,12 +11,12 @@ class Solution {
 
         int max = 0;
 
-        for (int end = start + 1; end <= s.length(); ++end) {
-            String substring = s.substring(start, end);
+        for (int end = start; end < s.length(); ++end) {
+            String substring = s.substring(start, end+1);
 
             if (!set.contains(substring)) {
                 set.add(substring);
-                max = Math.max(max, 1 + backtrack(s, end));
+                max = Math.max(max, 1 + backtrack(s, end+1));
                 set.remove(substring);
             }
         }

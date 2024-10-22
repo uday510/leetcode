@@ -2,11 +2,11 @@ class Solution {
     List<Long> list;
     Queue<TreeNode> queue;
     public long kthLargestLevelSum(TreeNode root, int k) {
-        list = new ArrayList<Long>();
-        bfs(root, list);
+        bfs(root);
         return ans(k);
-    } private void bfs(TreeNode root, List<Long> list) {
+    } private void bfs(TreeNode root) {
         queue = new LinkedList<TreeNode>();
+        list = new ArrayList<Long>(); 
         queue.offer(root);
 
         while (!queue.isEmpty()) {

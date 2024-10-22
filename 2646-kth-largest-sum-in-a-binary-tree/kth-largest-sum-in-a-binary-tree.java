@@ -1,27 +1,12 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
+    List<Long> list;
+    Queue<TreeNode> queue;
     public long kthLargestLevelSum(TreeNode root, int k) {
-        List<Long> list = new ArrayList<>();
+        list = new ArrayList<Long>();
         bfs(root, list);
-        System.out.println(list);
-        Collections.sort(list);
-        return k <= list.size() ? list.get(list.size() - k) : -1;
+        return ans(k);
     } private void bfs(TreeNode root, List<Long> list) {
-        var queue = new LinkedList<TreeNode>();
+        queue = new LinkedList<TreeNode>();
         queue.offer(root);
 
         while (!queue.isEmpty()) {
@@ -31,14 +16,20 @@ class Solution {
            for (; len > 0; --len) {
                 TreeNode currNode = queue.poll();
                 currSum += (long) currNode.val;
-
-                for (var node : new TreeNode[] {currNode.left, currNode.right}) {
-                    if (node != null) {
-                        queue.offer(node);
-                    }
-                }
+                addNodes(currNode);
            }
             list.add(currSum);
         }
+    }
+    private void addNodes(TreeNode currNode) {
+        for (var node : new TreeNode[] {currNode.left, currNode.right}) {
+            if (node != null) {
+                queue.offer(node);
+            }
+        }
+    }
+    private long ans(int k) {
+        Collections.sort(list);
+        return k > list.size() ? -1 : list.get(list.size() - k);
     }
 }

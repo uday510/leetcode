@@ -1,41 +1,46 @@
 class Solution {
     public boolean isCousins(TreeNode root, int x, int y) {
-        var map = new HashMap<Integer, int[]>();
+        if (root == null) {
+            return false;
+        }
+        
         var queue = new LinkedList<TreeNode>();
-        int currLevel = 1;
-
-        map.put(root.val, new int[]{-1, 0});
+        var parentMap = new HashMap<Integer, Integer>();  // Maps node to parent value
+        var levelMap = new HashMap<Integer, Integer>();   // Maps node to its level
+        
         queue.offer(root);
-
+        parentMap.put(root.val, -1);  // Root has no parent, use -1
+        levelMap.put(root.val, 0);    // Root is at level 0
+        
         while (!queue.isEmpty()) {
             int size = queue.size();
-
-            for (; size > 0; --size) {
-                TreeNode currNode = queue.poll();
-
-                if (currNode == null) {
-                    continue;
+            for (int i = 0; i < size; ++i) {
+                TreeNode node = queue.poll();
+                
+                if (node.left != null) {
+                    queue.offer(node.left);
+                    parentMap.put(node.left.val, node.val);   // Track parent
+                    levelMap.put(node.left.val, levelMap.get(node.val) + 1);  // Track level
+                    if (parentMap.containsKey(x) && parentMap.containsKey(y)) {
+                        return ans(parentMap, levelMap, x, y);
+                    }
                 }
-                if (currNode.left != null) {
-                    queue.offer(currNode.left);
-                    map.put(currNode.left.val, new int[]{currNode.val, currLevel});
-                }
-                if (currNode.right != null) {
-                    queue.offer(currNode.right);
-                    map.put(currNode.right.val, new int[]{currNode.val, currLevel});
+                
+                if (node.right != null) {
+                    queue.offer(node.right);
+                    parentMap.put(node.right.val, node.val);  // Track parent
+                    levelMap.put(node.right.val, levelMap.get(node.val) + 1); // Track level
+                    if (parentMap.containsKey(x) && parentMap.containsKey(y)) {
+                        return ans(parentMap, levelMap, x, y);
+                    }
                 }
             }
-            if (map.containsKey(x) && map.containsKey(y)) {
-                return ans(map, x, y);
-            }
-            ++currLevel;
-         }
-        return ans(map, x, y);
+        }
+        return ans(parentMap, levelMap, x, y);  // Final check outside loop
     }
-    private boolean ans(Map<Integer, int[]> map, int x, int y) {
-        return (
-            map.get(x)[0] != map.get(y)[0] &&
-            map.get(x)[1] == map.get(y)[1]
-         );
+    
+    private boolean ans(Map<Integer, Integer> parentMap, Map<Integer, Integer> levelMap, int x, int y) {
+        // Check if parents are different and levels are the same
+        return parentMap.get(x) != parentMap.get(y) && levelMap.get(x) == levelMap.get(y);
     }
 }

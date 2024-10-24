@@ -25,12 +25,15 @@ class Solution {
                     map.put(currNode.right.val, new int[]{currNode.val, currLevel});
                 }
             }
+            if (map.containsKey(x) && map.containsKey(y)) {
+                return ans(map, x, y);
+            }
             ++currLevel;
          }
-
-        System.out.println(map.get(x)[0] +" " + map.get(x)[1]);
-        System.out.println(map.get(y)[0] + " " + map.get(y)[1]);
-         return (
+        return ans(map, x, y);
+    }
+    private boolean ans(Map<Integer, int[]> map, int x, int y) {
+        return (
             map.get(x)[0] != map.get(y)[0] &&
             map.get(x)[1] == map.get(y)[1]
          );

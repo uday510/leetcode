@@ -1,28 +1,11 @@
 class Solution {
     public int maxDepth(TreeNode root) {
-        if (root == null)
-            return 0;
-            
-        int maxDepth = 0;
-        var queue = new LinkedList<TreeNode>();
+        return dfs(root, 0);
+    }
+    private int dfs(TreeNode node, int height) {
+        if (node == null)   
+            return height;
 
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-
-            while (size-- > 0) {
-                TreeNode currNode = queue.poll();
-
-                if (currNode.left != null) {
-                    queue.offer(currNode.left);
-                }
-
-                if (currNode.right != null) {
-                    queue.offer(currNode.right);
-                }
-            }
-            ++maxDepth;
-        }
-        return maxDepth;
+        return Math.max(dfs(node.left, height+1), dfs(node.right, height+1));
     }
 }

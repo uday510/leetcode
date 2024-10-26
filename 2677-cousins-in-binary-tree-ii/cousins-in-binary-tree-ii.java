@@ -1,54 +1,46 @@
 class Solution {
-
     public TreeNode replaceValueInTree(TreeNode root) {
-        if (root == null) return root;
+        var queue = new LinkedList<TreeNode>();
+        var list = new ArrayList<Integer>();
 
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.offer(root);
-        List<Integer> levelSums = new ArrayList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int currSum = 0;
+            while (size-- > 0) {
+                TreeNode currNode = queue.poll();
+                currSum += currNode.val;
 
-        // First BFS: Calculate sum of nodes at each level
-        while (!nodeQueue.isEmpty()) {
-            int levelSum = 0;
-            int levelSize = nodeQueue.size();
-            for (int i = 0; i < levelSize; ++i) {
-                TreeNode currentNode = nodeQueue.poll();
-                levelSum += currentNode.val;
-                if (currentNode.left != null) nodeQueue.offer(currentNode.left);
-                if (currentNode.right != null) nodeQueue.offer(
-                    currentNode.right
-                );
+                if (currNode.left != null) queue.offer(currNode.left);
+                if (currNode.right != null) queue.offer(currNode.right);
             }
-            levelSums.add(levelSum);
+            list.add(currSum);
         }
+        
+        int currLevel = 1;
+        queue.offer(root);
+        root.val = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
 
-        // Second BFS: Update each node's value to sum of its cousins
-        nodeQueue.offer(root);
-        int levelIndex = 1;
-        root.val = 0; // Root has no cousins
-        while (!nodeQueue.isEmpty()) {
-            int levelSize = nodeQueue.size();
-            for (int i = 0; i < levelSize; ++i) {
-                TreeNode currentNode = nodeQueue.poll();
+            while (size-- > 0) {
+                TreeNode currNode = queue.poll();
 
-                int siblingSum =
-                    (currentNode.left != null ? currentNode.left.val : 0) +
-                    (currentNode.right != null ? currentNode.right.val : 0);
+                int sum = (currNode.left != null ? currNode.left.val : 0) + 
+                          (currNode.right != null ? currNode.right.val : 0);
 
-                if (currentNode.left != null) {
-                    currentNode.left.val = levelSums.get(levelIndex) -
-                    siblingSum;
-                    nodeQueue.offer(currentNode.left);
+                if (currNode.left != null) {
+                    currNode.left.val = list.get(currLevel) - sum;
+                    queue.offer(currNode.left);
                 }
-                if (currentNode.right != null) {
-                    currentNode.right.val = levelSums.get(levelIndex) -
-                    siblingSum;
-                    nodeQueue.offer(currentNode.right);
+                    
+                if (currNode.right != null) {
+                    currNode.right.val = list.get(currLevel) - sum;
+                    queue.offer(currNode.right);
                 }
             }
-            ++levelIndex;
+            ++currLevel;
         }
-
         return root;
     }
 }

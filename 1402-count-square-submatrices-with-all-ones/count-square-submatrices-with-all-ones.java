@@ -7,20 +7,21 @@ class Solution {
 
         for (int i = 1; i < rows; ++i) {
             for (int j = 1; j < cols; ++j) {
-                if (matrix[i][j] == 0)
-                    continue;
+                if (matrix[i][j] == 0) continue;
                 dp[i][j] = 1 + Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
                 cnt += dp[i][j];
             }
         }
         return cnt;
     }
-    private int fill(int[][] dp, int[][] matrix) {
-        int cnt = 0;
 
-        for (int i = 0; i < dp.length; ++i)
+    private int fill(int[][] dp, int[][] matrix) {
+        int cnt = matrix[0][0];
+        dp[0][0] = matrix[0][0];
+
+        for (int i = 1; i < dp.length; ++i)
             cnt += dp[i][0] = matrix[i][0];
-            
+
         for (int j = 1; j < dp[0].length; ++j)
             cnt += dp[0][j] = matrix[0][j];
 

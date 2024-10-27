@@ -6,7 +6,6 @@ class Solution {
         if (num != val) 
             nums[k++] = num;
 
-        System.out.println(k);
         return k; 
     }
 }

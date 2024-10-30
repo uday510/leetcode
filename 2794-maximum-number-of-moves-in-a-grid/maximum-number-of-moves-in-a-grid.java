@@ -31,12 +31,9 @@ class Solution {
            if (R < 0 || R >= N || C < 0 || C >= M || grid[R][C] <= grid[row][col]) 
                 continue;
 
-
             moves = Math.max(moves, moves(R,C,grid));
             moved = 1;
         }
-
-
         return dp[row][col] = moves + moved;
     }
 }

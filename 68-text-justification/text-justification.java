@@ -1,27 +1,26 @@
 class Solution {
     public List<String> fullJustify(String[] words, int maxWidth) {
-        List<String> ans = new ArrayList<>();
-        List<String> currWords = new ArrayList<>();
-        int currLenWithoutSpaces = 0;
+        var ans = new ArrayList<String>();
+        var currWords = new ArrayList<String>();
+        int currLen = 0;
 
         for (String word : words) {
-            // If the current line is full, justify the current line
-            if (currLenWithoutSpaces + word.length() + currWords.size() > maxWidth) {
-                int totalSpaces = maxWidth - currLenWithoutSpaces;
+            if (currWords.size() + currLen + word.length() > maxWidth) {
+                int totalSpace = maxWidth - currLen;
                 int gaps = currWords.size() - 1;
                 if (gaps == 0) {
-                    ans.add(currWords.getFirst() + " ".repeat(totalSpaces));
+                    ans.add(currWords.getFirst() + " ".repeat(totalSpace));
                 } else {
-                    int spacesBetweenWords = totalSpaces / gaps;
-                    int extraSpaces = totalSpaces % gaps;
+                    int spaceBtw = totalSpace / gaps;
+                    int extraSpace = totalSpace % gaps;
 
                     StringBuilder line = new StringBuilder();
                     for (int i = 0; i < currWords.size(); ++i) {
-                        line.append(currWords.get(i));
+                        String curr = currWords.get(i);
+                        line.append(curr);
                         if (i < gaps) {
-                            line.append(" ".repeat(spacesBetweenWords));
-                            // Add extra space to the leftmost gaps
-                            if (i < extraSpaces) {
+                            line.append(" ".repeat(spaceBtw));
+                            if (i < extraSpace) {
                                 line.append(" ");
                             }
                         }
@@ -29,11 +28,11 @@ class Solution {
                     ans.add(line.toString());
                 }
                 currWords.clear();
-                currLenWithoutSpaces = 0;
-            }
-            // If the current line is not full, add the word to the current line
+                currLen = 0;
+                    
+            } 
             currWords.add(word);
-            currLenWithoutSpaces += word.length();
+            currLen += word.length();
         }
 
         StringBuilder lastLine = new StringBuilder(String.join(" ", currWords));

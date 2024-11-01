@@ -1,16 +1,21 @@
 class Solution {
     public String makeFancyString(String s) {
-        
         var ans = new StringBuilder();
+        char prev = '$';
+        int cnt = 0;
 
-        for (int i = 0; i < s.length();) {
-            int j = i;
-            while (j < s.length() && s.charAt(j) == s.charAt(i)) {
-                if(j-i+1 < 3) 
-                    ans.append(s.charAt(j));
-                ++j;
+        for (char curr : s.toCharArray()) {
+            if (curr == prev) {
+                ++cnt;
+            } else {
+                cnt = 1;
             }
-            i = j;
+
+            if (cnt < 3) {
+                ans.append(curr);
+            }
+
+            prev = curr;
         }
         return ans.toString();
     }

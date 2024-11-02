@@ -10,7 +10,6 @@ class Solution {
             char st = s[idx].charAt(0);
 
             if (st != en) {
-                System.out.println(st + " " + en);
                 return false;
             }
 

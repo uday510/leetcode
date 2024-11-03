@@ -8,15 +8,18 @@ class Solution {
         for (int i = 0; i < N;) {
             list.add(intervals[i]);
 
-            int idx = i+1;
-
-            while (idx < N && list.get(list.size()-1)[1] >= intervals[idx][0]) {
-                list.get(list.size()-1)[1] = Math.max(list.get(list.size()-1)[1], intervals[idx][1]);
-                ++idx;
-            }
-            i = idx;
+            i = findNext(list, intervals, i+1, N);
         }
 
         return list.toArray(new int[list.size()][]);
+    }
+    int findNext(ArrayList<int[]> list, int[][] intervals, int idx, int N) {
+
+        while (idx < N && list.get(list.size()-1)[1] >= intervals[idx][0]) {
+                list.get(list.size()-1)[1] = Math.max(list.get(list.size()-1)[1], 
+                                                        intervals[idx][1]);
+                ++idx;
+        }
+        return idx;
     }
 }

@@ -1,7 +1,7 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, (o1, o2) -> Integer.compare(o1[0], o2[0]));
-        
+
         int N = intervals.length;
         var list = new ArrayList<int[]>(); 
 
@@ -17,12 +17,6 @@ class Solution {
             i = idx;
         }
 
-        int[][] ans = new int[list.size()][2];
-
-        for (int i = 0; i < list.size(); ++i) {
-            ans[i] = list.get(i);
-        }
-        return ans;
-
+        return list.toArray(new int[list.size()][]);
     }
 }

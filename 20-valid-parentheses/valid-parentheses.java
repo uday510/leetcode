@@ -20,6 +20,6 @@ class Solution {
         return st.isEmpty();
     }
     boolean open(char c) {
-        return map.containsValue(c);
+        return !map.containsKey(c);
     }
 }

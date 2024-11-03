@@ -3,34 +3,27 @@ class Solution {
         int n = s.length();
         var st = new Stack<String>();
         var nums = new Stack<Integer>();
-        var tmp = new StringBuilder();
+        var res = new StringBuilder();
         int num = 0;
-        
-        for (int i = 0; i < n; ++i) {
-            char c = s.charAt(i);
-            
+
+        for (char c : s.toCharArray()) {
             if (Character.isDigit(c)) {
-                num = num * 10 + (c - '0');
+                num = num*10 + (c - '0');
             } else if (c == '[') {
                 nums.push(num);
                 num = 0;
-                
-                st.push(tmp.toString());
-                tmp.setLength(0);
+
+                st.push(res.toString());
+                res.setLength(0);
             } else if (c == ']') {
-                int repeat = nums.pop();
-                StringBuilder str = new StringBuilder(st.pop());
+                var str = new StringBuilder(st.pop());
+                int times = nums.pop();
                 
-                for (int j = 0; j < repeat; ++j) {
-                    str.append(tmp);
-                }
-                
-                tmp = str;
+                res = str.append(res.toString().repeat(times));
             } else {
-                tmp.append(c);
+                res.append(c);
             }
         }
-        
-        return tmp.toString();
+        return res.toString();
     }
 }

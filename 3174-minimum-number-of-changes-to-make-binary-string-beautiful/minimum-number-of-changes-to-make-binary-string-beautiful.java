@@ -1,17 +1,16 @@
 class Solution {
-
     public int minChanges(String s) {
-        int minChangesRequired = 0;
+        int curr, next, res, n;
+        curr = 0; next = 1; res = 0; n = s.length();
 
-        // Check pairs of characters (i, i+1) with step size 2
-        for (int i = 0; i < s.length(); i += 2) {
-            // If characters in current pair don't match,
-            // we need one change to make them equal
-            if (s.charAt(i) != s.charAt(i + 1)) {
-                minChangesRequired++;
-            }
+        while (next < n) {
+
+            if (s.charAt(curr) != s.charAt(next))
+                ++res;
+
+            curr = next + 1;
+            next =  curr + 1;
         }
-
-        return minChangesRequired;
+        return res;
     }
 }

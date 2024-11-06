@@ -5,21 +5,25 @@ class Solution {
 
         for (int j = 1; j < n; ++j) {
             for (int i = 0; i < j; ++i) {
-                if (arr[i] <= arr[j])
+                if (arr[i] <= arr[j]) {
                     continue;
-                if (cnt(arr[i]) != cnt(arr[j]))
+                }
+                if (countBits(arr[i]) != countBits(arr[j])) {
                     return false;
-                swap(i, j, arr);
+                }
+                swapElements(i, j, arr);
             }
         }
         return true;
     }
-    private int cnt(int num) {
+
+    private int countBits(int num) {
         return Integer.bitCount(num);
     }
-    private void swap(int i, int j, int[] arr) {
-        int tmp = arr[j];
-        arr[i] = arr[i];
+
+    private void swapElements(int i, int j, int[] arr) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
         arr[j] = tmp;
     }
 }

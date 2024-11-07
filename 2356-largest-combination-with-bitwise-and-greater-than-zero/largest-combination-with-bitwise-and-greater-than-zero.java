@@ -5,8 +5,7 @@ class Solution {
 
        for (int i = 0; i < 24; ++i) {
             for (int c : candidates) {
-                int cnt = c & (1 << i);
-                arr[i] += cnt != 0 ? 1 : 0;
+                arr[i] += (c & (1 << i)) != 0 ? 1 : 0;
                 max = Math.max(max, arr[i]);
             }
        }

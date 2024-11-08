@@ -10,6 +10,6 @@ class Solution {
                 return h;
             }
         }
-        return citations[0];
+        return 0;
     }
 }

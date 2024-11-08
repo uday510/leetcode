@@ -5,7 +5,7 @@ class Solution {
         int len = 0;
 
         for (String word : words) {
-            if (curr.size() + len + word.length() > maxWidth) {
+            if (word.length() + curr.size() + len > maxWidth) {
                 int totalSpace = maxWidth - len;
                 int gaps = curr.size() - 1;
                 if (gaps == 0) {
@@ -13,11 +13,10 @@ class Solution {
                 } else {
                     int spaceBtw = totalSpace / gaps;
                     int extraSpace = totalSpace % gaps;
-                    var line = new StringBuilder();
 
+                    var line = new StringBuilder();
                     for (int i = 0; i < curr.size(); ++i) {
-                        String str = curr.get(i);
-                        line.append(str);
+                        line.append(curr.get(i));
 
                         if (i < gaps) {
                             line.append(" ".repeat(spaceBtw));
@@ -34,16 +33,14 @@ class Solution {
             curr.add(word);
             len += word.length();
         }
-        
-        var lastLine = new StringBuilder(String.join(" ", curr));
 
-        System.out.println(lastLine);
+        var last = new StringBuilder(String.join(" ", curr));
 
-        while (lastLine.length() < maxWidth) {
-            lastLine.append(" ");
+        while (last.length() < maxWidth) {
+            last.append(" ");
         }
-        ans.add(lastLine.toString());
 
+        ans.add(last.toString());
         return ans;
     }
 }

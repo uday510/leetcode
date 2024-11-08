@@ -17,10 +17,10 @@ class Solution {
         currNode = head;
         while (currNode != null) {
             Node newNode = currNode.next;
-            Node oldNode = currNode.random;
+            Node oldRandom = currNode.random;
 
-            if (oldNode != null) {
-                newNode.random = oldNode.next;
+            if (oldRandom != null) {
+                newNode.random = oldRandom.next;
             }
 
             currNode = newNode.next;

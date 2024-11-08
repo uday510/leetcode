@@ -8,6 +8,7 @@ class Solution {
                 ++cnt;
             else 
                 --cnt;
+                
             if (cnt == 0) {
                 major = num;
                 cnt+=1;

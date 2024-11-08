@@ -15,7 +15,7 @@ class Solution {
         }
 
         currNode = head;
-        while (currNode != null) {
+        while (currNode != null && currNode.next != null) {
             Node newNode = currNode.next;
             Node oldRandom = currNode.random;
 
@@ -30,10 +30,11 @@ class Solution {
         Node newNode = newHead;
         Node oldNode = head;
 
+
         while (newNode != null && newNode.next != null) {
             oldNode.next = oldNode.next.next;
             newNode.next = newNode.next.next;
-
+            
             oldNode = oldNode.next;
             newNode = newNode.next;
         }

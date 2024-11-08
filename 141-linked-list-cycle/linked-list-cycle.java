@@ -1,13 +1,16 @@
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        var seen = new HashSet<ListNode>();
-        ListNode currNode = head;
+        if (head == null) {
+            return false;
+        }
+        ListNode p1 = head;
+        ListNode p2 = head.next;
 
-        while (currNode != null && !seen.contains(currNode)) {
-            seen.add(currNode);
-            currNode = currNode.next;
+        while (p2 != null && p2.next != null && p1 != p2) {
+            p1 = p1.next;
+            p2 = p2.next.next;
         }
 
-        return currNode != null;
+        return p1 == p2;
     }
 }

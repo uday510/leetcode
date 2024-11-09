@@ -3,8 +3,9 @@ class Solution {
         if (head == null || k == 0) {
             return head;
         }
+
         ListNode oldHead = head;
-        ListNode oldTail = oldHead;
+        ListNode oldTail = head;
         int len = 1;
 
         while (oldTail.next != null) {
@@ -12,11 +13,15 @@ class Solution {
             ++len;
         }
 
-        if (Math.abs(k) % len == 0) return head;
+        if (Math.abs(k) % len == 0) {
+            return head;
+        }
+
+
         int pos = k > 0 ? len - Math.abs(k) % len : k;
         ListNode newTail = head;
 
-        for (int i = 1; i < pos; ++i) {
+        for (int i = 1; i < pos && newTail != null; ++i) {
             newTail = newTail.next;
         }
 

@@ -8,14 +8,11 @@ class Solution {
             if (curr == null) {
                 return node;
             }
-            
             curr = curr.next;
         }
-        System.out.println(node.val);
 
         ListNode prev = null;
         curr = node;
-        
         for (int i = 0; i < k; ++i) {
             ListNode next = curr.next;
 

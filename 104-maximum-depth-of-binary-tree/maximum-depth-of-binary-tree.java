@@ -1,11 +1,9 @@
 class Solution {
     public int maxDepth(TreeNode root) {
-        return dfs(root);
-    }
-    private int dfs(TreeNode node) {
-        if (node == null)   
+        if (root == null) {
             return 0;
+        }
 
-        return 1 + Math.max(dfs(node.left), dfs(node.right));
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
     }
 }

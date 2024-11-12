@@ -1,33 +1,27 @@
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        if (root == null) return new ArrayList<>();
-        var q = new LinkedList<TreeNode>();
-        var res = new ArrayList<Integer>();
+        var queue = new LinkedList<TreeNode>();
+        var list = new ArrayList<Integer>();
 
-        q.offer(root);
-        res.add(root.val);
-        while (!q.isEmpty()) {
-            int n = q.size();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Integer val = null;
 
-            var list = new ArrayList<Integer>();
-            for (int i = 0; i < n; ++i) {
-                TreeNode node = q.poll();
-
-                if (node == null)
+            for (int i = 0; i < size; ++i) {
+                TreeNode node = queue.poll();
+                if (node == null) {
                     continue;
-                if (node.left != null) {
-                    list.add(node.left.val);
-                    q.offer(node.left);
                 }
-                if (node.right != null) {
-                    list.add(node.right.val);
-                    q.offer(node.right);
-                }
+
+                val = node.val;
+                queue.offer(node.left);
+                queue.offer(node.right);
             }
-            System.out.println(list);
-            if (list.size() > 0)
-                res.add(list.get(list.size()-1));
+            if (val != null) {
+                list.add(val);
+            }
         }
-        return res;
+        return list;
     }
 }

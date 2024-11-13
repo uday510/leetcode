@@ -1,61 +1,52 @@
 class Solution {
-    private static final int[][] directions = new int[][]
-            {
-                    {0, 1},  // right
-                    {0, -1}, // left
-                    {1, 0}, // down
-                    {-1, 0} // up
-            };
+    int[][] dirs = {{0,1}, {1,0}, {-1,0}, {0,-1}};
+    int n;
+    int m;
     public void solve(char[][] board) {
-        int numRows = board.length;
-        int numCols = board[0].length;
+        n = board.length;
+        m = board[0].length;
 
-        int[][] visited = new int[numRows][numCols];
-
-        // check for boundary rows
-        for (int col = 0; col < numCols; col++) {
-            if (board[0][col] == 'O') {
-                dfs(board, 0, col, visited);
+        for (int j = 0; j < m; ++j) {
+            if (board[0][j] == 'O') {
+                dfs(0, j, board);
             }
-            if (board[numRows - 1][col] == 'O') {
-                dfs(board, numRows - 1, col, visited);
+
+            if (board[n-1][j] == 'O') {
+                dfs(n-1, j, board);
+            }
+        }
+        
+        for (int i = 0; i < n; ++i) {
+            if (board[i][0] == 'O') {
+                dfs(i, 0, board);
+            }
+
+            if (board[i][m-1] == 'O') {
+                dfs(i, m-1, board);
             }
         }
 
-        // check for boundary cols
-        for (int row = 0; row < numRows; row++) {
-            if (board[row][0] == 'O') {
-                dfs(board, row, 0, visited);
-            }
-            if (board[row][numCols - 1] == 'O') {
-                dfs(board, row, numCols - 1, visited);
-            }
-        }
-
-        // flip the remaining 'O' to 'X' and '1' to 'O'
-        for (int i = 0; i < numRows; ++i) {
-            for (int j = 0; j < numCols; j++) {
-                if (board[i][j] == 'O' && visited[i][j] == 0) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (board[i][j] == 'O') {
                     board[i][j] = 'X';
+                } else if (board[i][j] == '#') {
+                    board[i][j] = 'O';
                 }
-                // if (visited[i][j] == 1) {
-                //     board[i][j] = 'O';
-                // }
             }
         }
     }
-    public void dfs(char[][] board, int row, int col, int[][] visited) {
-        visited[row][col] = 1;
+    private void dfs(int i, int j, char[][] board) {
+        if (i < 0 || i >= n || j < 0 || j >= m || board[i][j] == 'X' || board[i][j] == '#') {
+            return;
+        }
 
+        board[i][j] = '#';
+        for (int[] dir : dirs) {
+            int R = dir[0] + i;
+            int C = dir[1] + j;
 
-        for (int[] direction : directions) {
-            int newRow = row + direction[0];
-            int newCol = col + direction[1];
-
-           if (newRow >= 0 && newCol >= 0 && newRow < board.length && newCol < board[0].length &&
-                   board[newRow][newCol] == 'O' && visited[newRow][newCol] == 0) {
-                dfs(board, newRow, newCol, visited);
-           }
+            dfs(R, C, board);
         }
     }
 }

@@ -43,17 +43,11 @@ class Solution {
             String b = eq.get(1);
             double v = vs[i];
 
-            if (!graph.containsKey(a)) {
-                graph.put(a, new ArrayList<>());
-            }
-            graph.get(a).add(b);
-            graph.get(a).add(String.valueOf(v));
-
-            if (!graph.containsKey(b)) {
-                graph.put(b, new ArrayList<>());
-            }
-            graph.get(b).add(a);
-            graph.get(b).add(String.valueOf(1/v));
+           graph.computeIfAbsent(a, k -> new ArrayList<>()).add(b);
+           graph.get(a).add(String.valueOf(v));
+           
+           graph.computeIfAbsent(b, k -> new ArrayList<>()).add(a);
+           graph.get(b).add(String.valueOf(1 / v));
         }
     }
 }

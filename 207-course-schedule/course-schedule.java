@@ -22,7 +22,7 @@ class Solution {
 
         int vis = 0;
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && vis != numCourses) {
             int ele = queue.poll();
             ++vis;
 

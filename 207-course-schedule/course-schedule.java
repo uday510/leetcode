@@ -1,53 +1,59 @@
-class Solution {
-    Map<Integer, List<Integer>> graph;
-    Queue<Integer> queue;
-    int[] indegree;
+import java.util.*;
+
+public class Solution {
+    private Map<Integer, List<Integer>> graph;
+    private Queue<Integer> queue;
+    private int[] indegree;
+
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        graph = new HashMap<Integer, List<Integer>>();
-        indegree = new int[numCourses];
-        queue = new LinkedList<Integer>();
-        int vis = 0;
-
+        initialize(numCourses);
         buildGraph(prerequisites);
-
-        addNodes(numCourses);
+        addNodesWithNoPrerequisites();
 
         while (!queue.isEmpty()) {
             int node = queue.poll();
-            ++vis;
-
-            addNodesToQueue(node);
+            removeNodeFromGraph(node);
         }
 
-        return canAllCoursesFinished();
+        return allCoursesFinished();
     }
+
+    private void initialize(int numCourses) {
+        graph = new HashMap<>();
+        indegree = new int[numCourses];
+        queue = new LinkedList<>();
+    }
+
     private void buildGraph(int[][] prerequisites) {
-         for (int[] pre : prerequisites) {
-            graph.computeIfAbsent(pre[1], k -> new ArrayList<>()).add(pre[0]);
-            ++indegree[pre[0]];
+        for (int[] prerequisite : prerequisites) {
+            graph.computeIfAbsent(prerequisite[1], k -> new ArrayList<>()).add(prerequisite[0]);
+            indegree[prerequisite[0]]++;
         }
     }
-    private void addNodes(int numCourses) {
-        for (int i = 0; i < numCourses; ++i) {
+
+    private void addNodesWithNoPrerequisites() {
+        for (int i = 0; i < indegree.length; i++) {
             if (indegree[i] == 0) {
                 queue.offer(i);
             }
         }
     }
-    private boolean canAllCoursesFinished() {
-        for (int i = 0; i < indegree.length; ++i) {
-            if (indegree[i] != 0) {
+
+    private void removeNodeFromGraph(int node) {
+        for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
+            indegree[neighbor]--;
+            if (indegree[neighbor] == 0) {
+                queue.offer(neighbor);
+            }
+        }
+    }
+
+    private boolean allCoursesFinished() {
+        for (int degree : indegree) {
+            if (degree != 0) {
                 return false;
             }
         }
         return true;
-    }
-    private void addNodesToQueue(int node) {
-        for (int nei : graph.getOrDefault(node, new ArrayList<>())) {
-            --indegree[nei];
-            if (indegree[nei] == 0) {
-                queue.offer(nei);
-            }
-        }
     }
 }

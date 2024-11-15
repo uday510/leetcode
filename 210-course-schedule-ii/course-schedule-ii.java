@@ -1,46 +1,62 @@
-class Solution {
+import java.util.*;
+
+public class Solution {
+    private Map<Integer, List<Integer>> graph;
+    private Queue<Integer> queue;
+    private int[] indegree;
+    private int visited;
+    private int[] order;
+    private int index;
+
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        var graph = new HashMap<Integer, List<Integer>>();
-        var indegree = new int[numCourses];
-        var queue = new LinkedList<Integer>();
-        var res = new int[numCourses];
+        initialize(numCourses);
+        buildGraph(prerequisites);
+        addNodesWithNoPrerequisites();
 
-        for (int i = 0; i < numCourses; ++i) {
-            graph.put(i, new ArrayList<>());
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            removeNodeFromGraph(node);
         }
 
-        for (int[] pre : prerequisites) {
-            
-            graph.get(pre[1]).add(pre[0]);
-            ++indegree[pre[0]];
-        }
+        return allCoursesFinished(numCourses);
+    }
 
-        for (int i = 0; i < indegree.length; ++i) {
+    private void initialize(int numCourses) {
+        graph = new HashMap<>();
+        indegree = new int[numCourses];
+        queue = new LinkedList<>();
+        order = new int[numCourses];
+        index = 0;
+        visited = 0;
+    }
+
+    private void buildGraph(int[][] prerequisites) {
+        for (int[] prerequisite : prerequisites) {
+            graph.computeIfAbsent(prerequisite[1], k -> new ArrayList<>()).add(prerequisite[0]);
+            indegree[prerequisite[0]]++;
+        }
+    }
+
+    private void addNodesWithNoPrerequisites() {
+        for (int i = 0; i < indegree.length; i++) {
             if (indegree[i] == 0) {
                 queue.offer(i);
             }
         }
+    }
 
-        int vis = 0;
-        int index = 0;
-
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            ++vis;
-            res[index++] = node;
-
-            List<Integer> neighbors = graph.get(node);
-
-            for (int nei : neighbors) {
-
-                --indegree[nei];
-
-                if (indegree[nei] == 0) {
-                    queue.offer(nei);
-                }
+    private void removeNodeFromGraph(int node) {
+        order[index++] = node;
+        visited++;
+        for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
+            indegree[neighbor]--;
+            if (indegree[neighbor] == 0) {
+                queue.offer(neighbor);
             }
         }
+    }
 
-       return vis == numCourses ? res : new int[]{};
+    private int[] allCoursesFinished(int numCourses) {
+       return visited == numCourses ? order : new int[]{};
     }
 }

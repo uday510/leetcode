@@ -4,6 +4,7 @@ public class Solution {
     private Map<Integer, List<Integer>> graph;
     private Queue<Integer> queue;
     private int[] indegree;
+    private int visited;
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         initialize(numCourses);
@@ -15,13 +16,14 @@ public class Solution {
             removeNodeFromGraph(node);
         }
 
-        return allCoursesFinished();
+        return visited == numCourses;
     }
 
     private void initialize(int numCourses) {
         graph = new HashMap<>();
         indegree = new int[numCourses];
         queue = new LinkedList<>();
+        visited = 0;
     }
 
     private void buildGraph(int[][] prerequisites) {
@@ -40,20 +42,12 @@ public class Solution {
     }
 
     private void removeNodeFromGraph(int node) {
+        visited++;
         for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
             indegree[neighbor]--;
             if (indegree[neighbor] == 0) {
                 queue.offer(neighbor);
             }
         }
-    }
-
-    private boolean allCoursesFinished() {
-        for (int degree : indegree) {
-            if (degree != 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }

@@ -8,23 +8,21 @@ class Solution {
             return res;
         }
 
-        dfs(digits, 0, new StringBuilder());
+        dfs(0, digits, new StringBuilder());
 
         return res;
     }
-    private void dfs(String digits, int index, StringBuilder sb) {
-        if (index == digits.length()) {
+    private void dfs(int index, String digits, StringBuilder sb) {
+        if (index >= digits.length()) {
             res.add(sb.toString());
             return;
         }
 
-            char c = digits.charAt(index);
-
-            for (String s : map.get(c)) {
-                sb.append(s);
-                dfs(digits, index + 1, sb);
-                sb.deleteCharAt(sb.length() - 1);
-            }
+        for (String s : map.get(digits.charAt(index))) {
+            sb.append(s);
+            dfs(index + 1, digits, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
 
     }
     private void intialize() {

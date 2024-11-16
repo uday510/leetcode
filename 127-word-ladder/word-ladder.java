@@ -2,10 +2,8 @@ class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Queue<String> queue = new LinkedList<>();
         Set<String> set = new HashSet<>(wordList);
-        Set<String> vis = new HashSet<>();
-        // set.remove(beginWord);
+        set.remove(beginWord);
         queue.add(beginWord);
-        vis.add(beginWord);
         int level = 0;
 
         while (!queue.isEmpty()) {
@@ -16,12 +14,8 @@ class Solution {
                 if (s.equals(endWord)) return level;
                 List<String> neighbors = getNeighbors(s);
                 for (String nei : neighbors) {
-                    if (vis.contains(nei)) {
-                        continue;
-                    }
-                    vis.add(nei);
                     if (set.contains(nei)) {
-                        // set.remove(nei);
+                        set.remove(nei);
                         queue.offer(nei);
                     }
                 }

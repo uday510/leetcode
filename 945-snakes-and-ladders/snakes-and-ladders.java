@@ -23,7 +23,7 @@ class Solution {
                     int nextPosition = currentPosition + nextMove;
                     
                     if (nextPosition > n * n) {
-                        continue;
+                        break;
                     }
                     
                     if (visited.contains(nextPosition)) {

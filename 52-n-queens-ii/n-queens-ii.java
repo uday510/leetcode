@@ -24,7 +24,7 @@ class Solution {
         }
 
         for (int col = 0; col < n; ++col) {
-            if (isQueenSafe(matrix, row, col, n)) {
+            if (isQueenSafe(row, col, n)) {
                 matrix[row][col] = "Q";
                 cols[col] = true;
                 antiDiagonal[row + col] = true;
@@ -37,9 +37,9 @@ class Solution {
             }
         }
     }
-    // public boolean isQueenSafe(int row, int col, int n) {
-    //     return (!cols[col] && !diagonal[row - col + n - 1] && !antiDiagonal[row + col]);
-    // }
+    public boolean isQueenSafe(int row, int col, int n) {
+        return (!cols[col] && !diagonal[row - col + n - 1] && !antiDiagonal[row + col]);
+    }
     public static boolean isQueenSafe(String[][] matrix, int row, int col, int n) {
         // check for every row above on same col;
         for (int i = 0; i < row; ++i) {

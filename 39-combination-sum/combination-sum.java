@@ -1,7 +1,6 @@
 class Solution {
     List<List<Integer>> ans;
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Arrays.sort(candidates);
         ans = new ArrayList<>();
 
         dfs(0, 0, candidates.length, new ArrayDeque(), candidates, target);

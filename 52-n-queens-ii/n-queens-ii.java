@@ -1,67 +1,54 @@
 class Solution {
     boolean[] cols;
-    boolean[] diagonal;
-    boolean[] antiDiagonal;
-    int res;
+    boolean[] dia45;
+    boolean[] dia135;
+    String[][] matrix;
+    int ans;
     public int totalNQueens(int n) {
-        String[][] matrix = new String[n][n];
+        intialize(n);
 
-        for (String[] row : matrix) Arrays.fill(row, ".");
+        dfs(0, n);
 
-        cols = new boolean[n];
-        diagonal = new boolean[2 * n-1];
-        antiDiagonal = new boolean[2 * n-1];
-        res = 0;
-
-        solveNQueens(matrix, 0, n);
-
-        return res;
+        return ans;
     }
-    public void solveNQueens(String[][] matrix, int row, int n) {
-        if (row == n) {
-            res++;
+    private void dfs(int row, int n) {
+        if (row >= n) {
+            ++ans;
             return;
         }
 
         for (int col = 0; col < n; ++col) {
-            if (isQueenSafe(row, col, n)) {
-                matrix[row][col] = "Q";
-                cols[col] = true;
-                antiDiagonal[row + col] = true;
-                diagonal[row - col + n - 1] = true;
-                solveNQueens(matrix, row + 1, n);
-                matrix[row][col] = ".";
-                cols[col] = false;
-                antiDiagonal[row + col] = false;
-                diagonal[row - col + n - 1] = false;
+            if (!valid(row, col, n)) {
+                continue;
             }
+
+            matrix[row][col] = "Q";
+
+            cols[col] = true;
+            dia45[row + col] = true;
+            dia135[row - col + n - 1] = true;
+
+            dfs(row + 1, n);
+
+           matrix[row][col] = ".";
+
+            cols[col] = false;
+            dia45[row + col] = false;
+            dia135[row - col + n - 1] = false;
         }
     }
-    public boolean isQueenSafe(int row, int col, int n) {
-        return (!cols[col] && !diagonal[row - col + n - 1] && !antiDiagonal[row + col]);
+    private boolean valid(int row, int col, int n) {
+        return (!cols[col] && !dia45[row + col] && !dia135[row - col + n - 1]);
     }
-    public static boolean isQueenSafe(String[][] matrix, int row, int col, int n) {
-        // check for every row above on same col;
-        for (int i = 0; i < row; ++i) {
-            if (Objects.equals(matrix[i][col], "Q")) return false;
+    private void intialize(int n) {
+        cols = new boolean[n];
+        dia45 = new boolean[2 * n - 1];
+        dia135 = new boolean[2 * n - 1];
+        matrix = new String[n][n];
+        ans = 0;
+
+        for (String[] row : matrix) {
+            Arrays.fill(row, ".");
         }
-        // check for left diagonal
-        for (int i = row - 1, j = col - 1; i > -1 && j > -1; --i, --j) {
-            if (Objects.equals(matrix[i][j], "Q")) return false;
-        }
-        // check for right diagonal
-        for (int i = row - 1, j = col + 1; i > -1 && j < n; --i, ++j) {
-            if (Objects.equals(matrix[i][j], "Q")) return false;
-        }
-        return true;
-    }
-    
-     public static List<String> addPath(String[][] matrix) {
-        List<String> path = new ArrayList<>();
-        for (String[] m : matrix) {
-            String temp = String.join("", m);
-            path.add(temp);
-        }
-        return path;
     }
 }

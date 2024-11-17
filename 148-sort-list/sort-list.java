@@ -1,20 +1,38 @@
 class Solution {
     public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) return head;
+        
+        ListNode sortedList = sort(head);
 
-        ListNode middleNode = getMiddleNode(head);
-        ListNode head2 = middleNode.next;
+        return sortedList;
+    }
+    private ListNode sort(ListNode node) {
+        if (node == null || node.next == null) return node;
+
+        ListNode middleNode = getMiddleNode(node);
+        ListNode nextNode = middleNode.next;
         middleNode.next = null;
 
-        ListNode list1 = sortList(head);
-        ListNode list2 = sortList(head2);
+        ListNode p1 = sort(node);
+        ListNode p2 = sort(nextNode);
 
-        ListNode ans = doMerge(list1, list2);
+        ListNode p = merge(p1, p2);
 
-        return ans;
+        return p;
     }
-    private ListNode doMerge(ListNode p1, ListNode p2) {
-        
+    private ListNode getMiddleNode(ListNode node) {
+        ListNode slow = node;
+        ListNode fast = node.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+    private ListNode merge(ListNode node1, ListNode node2) {
+        ListNode p1 = node1;
+        ListNode p2 = node2;
         ListNode head = new ListNode(-1);
         ListNode tail = head;
 
@@ -28,20 +46,9 @@ class Solution {
             }
             tail = tail.next;
         }
-        tail.next = (p1!= null) ? p1 : p2;
+
+        tail.next = (p1 == null) ? p2 : p1;
 
         return head.next;
-    }
-    private ListNode getMiddleNode(ListNode node) {
-
-        ListNode slow = node;
-        ListNode fast = node.next;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        return slow;
     }
 }

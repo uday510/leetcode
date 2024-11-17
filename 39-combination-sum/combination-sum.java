@@ -12,14 +12,10 @@ class Solution {
             ans.add(new ArrayList<>(list));
             return;
         }
-        if (index >= n) {
-            return;
-        }
-
         for (int i = index; i < n; ++i) {
             
             if (sum + candidates[i] > target) {
-                 continue;
+                continue;
             }
 
             sum += candidates[i];

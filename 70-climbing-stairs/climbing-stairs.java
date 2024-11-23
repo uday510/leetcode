@@ -1,23 +1,15 @@
 class Solution {
-    int[][] dp;
     public int climbStairs(int n) {
-        dp = new int[n+1][n+1];
+        int prevStep = 0;
+        int currStep = 1;
 
-        for (int[] arr : dp) {
-            Arrays.fill(arr, -1);
+        for (int i = 1; i <= n; ++i) {
+            int nextStep = prevStep + currStep;
+
+            prevStep = currStep;
+            currStep = nextStep;
         }
 
-        return dfs(1, n);
-    }
-    private int dfs(int i, int n) {
-        if (i >= n) {
-            return 1;
-        }
-
-        if (dp[i][n] != -1) {
-            return dp[i][n];
-        }
-
-        return dp[i][n] = dfs(i + 1, n) + dfs(i + 2, n);
+        return currStep;
     }
 }

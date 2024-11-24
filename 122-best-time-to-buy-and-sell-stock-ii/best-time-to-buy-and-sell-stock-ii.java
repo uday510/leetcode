@@ -1,12 +1,30 @@
 class Solution {
+    int[] memo;
     public int maxProfit(int[] prices) {
-        int len = prices.length;
-        int[] dp = new int[len];
+        memo = new int[prices.length];
 
-        for (int idx = 1; idx < len; ++idx) {
-            dp[idx] = Math.max(dp[idx-1], dp[idx-1] + prices[idx] - prices[idx-1]);
+        Arrays.fill(memo, -1);
+
+        return dfs(0, prices);
+    }
+    private int dfs(int i, int[] prices) {
+        if (i >= prices.length) {
+            return 0;
         }
-        
-        return dp[len-1];
+
+        if (memo[i] != -1) {
+            return memo[i];
+        }
+
+        int maxProfit = 0;
+        for (int j = i + 1; j < prices.length; ++j) {
+            if(prices[j] > prices[i]) {
+                maxProfit = Math.max(maxProfit, prices[j] - prices[i] + dfs(j, prices));
+            }
+        }
+
+        maxProfit = Math.max(maxProfit, dfs(i + 1, prices));
+
+        return memo[i] = maxProfit;
     }
 }

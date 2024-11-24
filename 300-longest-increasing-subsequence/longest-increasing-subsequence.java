@@ -1,20 +1,20 @@
 class Solution {
-    int[] memo;
     int len;
-
+    int[] memo;
+    
     public int lengthOfLIS(int[] nums) {
         len = nums.length;
         memo = new int[len];
 
         Arrays.fill(memo, -1);
 
-        int max = 0;
+        int maxLen = 0;
 
-        for (int idx = 0; idx < nums.length; ++idx) {
-            max = Math.max(max, dfs(idx, nums));
+        for (int index = 0; index < len; ++index) {
+            maxLen = Math.max(maxLen, dfs(index, nums));
         }
-
-        return max;
+        
+        return maxLen;
     }
 
     private int dfs(int prevIdx, int[] nums) {
@@ -22,14 +22,15 @@ class Solution {
             return memo[prevIdx];
         }
 
-        int maxLen = 1;
+        int currLen = 1;
 
-        for (int currIdx = prevIdx + 1; currIdx < len; ++currIdx) {
-            if (nums[currIdx] > nums[prevIdx]) {
-                maxLen = Math.max(maxLen, dfs(currIdx, nums) + 1);
+        for (int currIdx = prevIdx; currIdx < len; ++currIdx) {
+
+            if (nums[prevIdx] < nums[currIdx]) {
+                currLen = Math.max(currLen, dfs(currIdx, nums) + 1);
             }
         }
 
-        return memo[prevIdx] = maxLen;
+        return memo[prevIdx] = currLen;
     }
 }

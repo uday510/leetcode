@@ -16,14 +16,16 @@ class Solution {
                     return currentCoins;
                 }
 
-                if (currentAmount > amount || seen.contains(currentAmount)) {
+                if (seen.contains(currentAmount)) {
                     continue;
                 }
 
                 seen.add(currentAmount);
 
                 for (int coin : coins) {
-                    queue.offer(currentAmount + coin);
+                    if (currentAmount + coin <= amount) {
+                        queue.offer(currentAmount + coin);
+                    }
                 }
             }
 

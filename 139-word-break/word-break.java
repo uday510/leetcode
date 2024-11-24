@@ -1,6 +1,6 @@
 class Solution {
     static Set<String> set;
-    static Map<String, Boolean> seen;
+    static Map<Integer, Boolean> seen;
     public boolean wordBreak(String s, List<String> wordDict) {
         set = new HashSet<>();
         seen = new HashMap<>();
@@ -10,24 +10,23 @@ class Solution {
         
         return dfs(0, s);
     }
-    public boolean dfs(int i, String str) {
-        if (i == str.length()) 
+    public boolean dfs(int index, String str) {
+        if (index == str.length()) 
             return true;
         
-        String key = i + "";
-        if (seen.containsKey(key))
-            return seen.get(key);
+        if (seen.containsKey(index))
+            return seen.get(index);
         
-        for (int j = i; j < str.length(); ++j) {
-            String substr = str.substring(i, j + 1);
+        for (int j = index; j < str.length(); ++j) {
+            String substr = str.substring(index, j + 1);
         
             if (set.contains(substr) && dfs(j+1, str)) {
-                seen.put(key, true);
+                seen.put(index, true);
                 return true;
             } 
         }
         
-        seen.put(key, false);
+        seen.put(index, false);
         return false;
     }
 }

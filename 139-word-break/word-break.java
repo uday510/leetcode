@@ -8,9 +8,9 @@ class Solution {
         for (String str : wordDict) 
             set.add(str);
         
-        return dfs(0, "", s);
+        return dfs(0, s);
     }
-    public boolean dfs(int i, String curr, String str) {
+    public boolean dfs(int i, String str) {
         if (i == str.length()) 
             return true;
         
@@ -21,7 +21,7 @@ class Solution {
         for (int j = i; j < str.length(); ++j) {
             String substr = str.substring(i, j + 1);
         
-            if (set.contains(substr) && dfs(j+1, curr + substr, str)) {
+            if (set.contains(substr) && dfs(j+1, str)) {
                 seen.put(key, true);
                 return true;
             } 

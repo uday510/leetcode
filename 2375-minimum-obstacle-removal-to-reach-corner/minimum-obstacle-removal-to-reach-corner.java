@@ -7,7 +7,7 @@ class Solution {
     };
 
     public int minimumObstacles(int[][] grid) {
-        PriorityQueue<Node> queue = new PriorityQueue<>((o1, o2) -> o1.obstacles - o2.obstacles);
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>((o1, o2) -> o1.obstacles - o2.obstacles);
         Set<String> vis = new HashSet<>();
 
         int endRow = grid.length - 1;
@@ -19,12 +19,12 @@ class Solution {
             startNode.obstacles = 1;
         }
         
-        queue.offer(new Node(0, 0, grid[0][0]));
+        priorityQueue.offer(new Node(0, 0, 0));
 
         vis.add(0 + ":" + 0);
 
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
+        while (!priorityQueue.isEmpty()) {
+            Node node = priorityQueue.poll();
             int currentRow = node.row;
             int currentCol = node.col;
             int currentObstacles = node.obstacles;
@@ -50,7 +50,7 @@ class Solution {
                }
                 
                 vis.add(key);
-                queue.offer(new Node(nextRow, nextCol, obstacles));
+                priorityQueue.offer(new Node(nextRow, nextCol, obstacles));
             }
         }
 

@@ -10,7 +10,7 @@ class Solution {
                 return true;
             }
 
-            set.add(num * 1.0);
+            set.add((double) num);
         }
 
         return false;

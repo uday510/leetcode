@@ -1,16 +1,20 @@
 class Solution {
     public int strStr(String haystack, String needle) {
-        int N = haystack.length();
-        int M = needle.length();
-        for (int start = 0; start < N-M+1; ++start) {
+        int m = needle.length();
+        int n = haystack.length();
+
+        for (int windowStart = 0; windowStart <  n - m + 1; ++windowStart) {
+            
             int idx = 0;
-            for (; idx < M; ++idx) {
-                if (needle.charAt(idx) != haystack.charAt(start+idx)) 
-                    break;
+            while (idx < m && haystack.charAt(windowStart + idx) == needle.charAt(idx)) {
+                ++idx;
             }
-            if (idx == M)
-                return start;
+
+            if (idx == m) {
+                return windowStart;
+            }
         }
+
         return -1;
     }
 }

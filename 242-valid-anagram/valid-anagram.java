@@ -4,11 +4,11 @@ class Solution {
             return false;
         }
 
-        int[] counter = new int[26];
+        int[] counter = new int[128];
 
         for (int i = 0; i < s.length(); ++i) {
-            ++counter[s.charAt(i) - 'a'];
-            --counter[t.charAt(i) - 'a'];
+            ++counter[s.charAt(i)];
+            --counter[t.charAt(i)];
         }
 
         for (int count : counter) {

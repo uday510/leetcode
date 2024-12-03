@@ -1,30 +1,22 @@
 class Solution {
     public String addSpaces(String s, int[] spaces) {
-        StringBuilder sb = new StringBuilder();
-        StringBuilder curr = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         int index = 0;
-        int idx = 0;
 
-        while (index < spaces.length) {
+        for (int i = 0; i < s.length(); ++i) {
 
-            if (idx == spaces[index]) {
-                sb.append(curr.toString());
-                sb.append(" ");
-                curr = new StringBuilder();
+            if (index < spaces.length) {
+                if (spaces[index] == i) {
+                    stringBuilder.append(" ");
 
-                index++;    
-            } 
+                    index++;
+                }
+            }
 
-            curr.append(s.charAt(idx));
-            
-            idx++;
+            stringBuilder.append(s.charAt(i));
         }
 
-        curr.append(s.substring(idx, s.length()));
-
-        sb.append(curr.toString());
-
-        return sb.toString();
+        return stringBuilder.toString();
     }
 }

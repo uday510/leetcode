@@ -9,18 +9,14 @@ class Solution {
         while (idx1 < len1 && idx2 < len2) {
 
             char c1 = str1.charAt(idx1);
-            char nextC1 = (char) (c1 + 1);
-            if (c1 == 'z') {
-                nextC1 = 'a';
-            }
+            char nextC1 = (char) ((c1 - 'a' + 1) % 26 + 'a');
             char c2 = str2.charAt(idx2);
 
             if (c1 == c2 || nextC1 == c2) {
-                ++idx1;
                 ++idx2;
-            } else {
-                ++idx1;
-            }
+            } 
+            
+            ++idx1;
         }
 
         return idx2 == len2;

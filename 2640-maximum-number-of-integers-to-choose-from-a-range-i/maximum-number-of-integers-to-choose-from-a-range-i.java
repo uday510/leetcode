@@ -14,8 +14,6 @@ class Solution {
             }
         }
 
-        System.out.println(priorityQueue);
-
         int cnt = 0;
         int curr = 0;
 

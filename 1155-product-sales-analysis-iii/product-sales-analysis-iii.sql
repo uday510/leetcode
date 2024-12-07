@@ -7,10 +7,11 @@ FROM
     Sales s
 WHERE (s.product_id, s.year) IN (
     SELECT 
-        product_id,
-        MIN(year) AS year
+        product_id, 
+        MIN(year)
     FROM 
-        Sales
+        Sales        
     GROUP BY 
         product_id
-) ;
+    
+);

@@ -1,10 +1,15 @@
 SELECT 
-    DISTINCT A.player_id,
-    FIRST_VALUE(A.device_id) OVER (
-        PARTITION BY 
-            A.player_id
-        ORDER BY
-            A.event_date
-    ) device_id
+    A1.player_id,
+    A1.device_id
 FROM
-    Activity A;
+    Activity A1
+WHERE 
+    (A1.player_id, A1.event_date) IN (
+        SELECT 
+            A2.player_id,
+            MIN(A2.event_date)
+        FROM
+            Activity A2
+        GROUP BY 
+            A2.player_id
+    );

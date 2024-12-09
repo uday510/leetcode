@@ -1,27 +1,42 @@
 class Solution {
 
+    private int len;
+    private int[] prefixSum;
+    private boolean[] result;
+
     public boolean[] isArraySpecial(int[] nums, int[][] queries) {
-        boolean[] ans = new boolean[queries.length];
-        int[] prefix = new int[nums.length];
-        prefix[0] = 0;
 
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] % 2 == nums[i - 1] % 2) {
-                // new violative index found
-                prefix[i] = prefix[i - 1] + 1;
-            } else {
-                prefix[i] = prefix[i - 1];
-            }
-        }
+        intialize(nums.length, queries.length);
+        findPrefixSum(nums);
+        findResult(queries);
 
-        for (int i = 0; i < queries.length; i++) {
-            int[] query = queries[i];
-            int start = query[0];
-            int end = query[1];
-
-            ans[i] = prefix[end] - prefix[start] == 0;
-        }
-
-        return ans;
+        return result;
     }
+
+    private void findResult(int[][] queries) {
+
+        for (int idx = 0; idx < queries.length; ++idx) {
+            int[] query = queries[idx];
+
+            result[idx] = prefixSum[query[1]] - prefixSum[query[0]] == 0;
+
+        }
+    }
+
+    private void findPrefixSum(int[] nums) {
+        for (int idx = 1; idx < len; ++idx) {
+            prefixSum[idx] = prefixSum[idx - 1];
+
+            if (nums[idx] % 2 == nums[idx - 1] % 2) {
+                ++prefixSum[idx];
+            } 
+        }
+    }
+
+    private void intialize(int len1, int len2) {
+        this.len = len1;
+        this.prefixSum = new int[len];
+        this.result = new boolean[len2];
+    }
+
 }

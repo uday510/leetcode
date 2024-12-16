@@ -1,4 +1,5 @@
 class Solution {
+
     private PriorityQueue<int[]> priorityQueue;
     private int len;
     private int current;
@@ -11,14 +12,8 @@ class Solution {
 
         priorityQueue.offer(polled);
        }
-
-       int[] result = new int[len];
        
-       while (!priorityQueue.isEmpty()) {
-        int[] polled = priorityQueue.poll();
-
-        result[polled[1]] = polled[0];
-       }
+       int[] result = getFinalState();
 
        return result;
     }
@@ -37,5 +32,17 @@ class Solution {
         for (int idx = 0; idx < len; ++idx) {
             priorityQueue.offer(new int[]{nums[idx], idx});
         }
+    }
+    
+    private int[] getFinalState() {
+        int[] result = new int[len];
+
+        while (!priorityQueue.isEmpty()) {
+            
+            int[] polled = priorityQueue.poll();
+            result[polled[1]] = polled[0];
+       }
+
+       return result;
     }
 }

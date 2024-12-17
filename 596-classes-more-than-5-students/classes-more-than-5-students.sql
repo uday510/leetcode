@@ -1,8 +1,9 @@
 SELECT 
-    c.class
+    class 
 FROM 
-    Courses c
-GROUP BY c.class
-HAVING 
-    COUNT(c.student) >= 5 
+    Courses
+GROUP BY 
+    class
+HAVING
+    COUNT(student) >= 5
 ;

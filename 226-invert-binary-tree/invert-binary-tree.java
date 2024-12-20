@@ -1,16 +1,20 @@
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
+        return dfs(root);
+    }
+
+    private TreeNode dfs(TreeNode node) {
+        if (node == null) {
             return null;
         }
 
-        TreeNode tmp = root.left;
-        root.left = root.right;
-        root.right = tmp;
+        TreeNode tmp = node.left;
+        node.left = node.right;
+        node.right = tmp;
 
-        invertTree(root.left);
-        invertTree(root.right);
+        dfs(node.left);
+        dfs(node.right);
 
-        return root;
+        return node;
     }
 }

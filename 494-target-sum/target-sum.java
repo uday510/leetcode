@@ -1,5 +1,4 @@
 class Solution {
-
     int result = 0;
     public int findTargetSumWays(int[] nums, int target) {
         
@@ -9,9 +8,7 @@ class Solution {
 
     private void dfs(int index, int currSum, int[] nums, int target) {
         if (index >= nums.length) {
-            if (currSum == target) {
-                ++result;
-            }
+            result += currSum == target ? 1 : 0;
             return;
         }
 

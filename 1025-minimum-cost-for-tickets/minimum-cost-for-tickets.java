@@ -1,8 +1,13 @@
 class Solution {
     int[] arr = new int[] {1, 7, 30};
-    Map<String, Integer> dp = new HashMap<>();
+    int[][] dp;
 
     public int mincostTickets(int[] days, int[] costs) {
+        dp = new int[366][1000];
+
+        for (int[] arr : dp) {
+            Arrays.fill(arr, -1);
+        }
         return dfs(0, 0, days, costs);
     }
 
@@ -11,15 +16,14 @@ class Solution {
            return 0;
         }
 
-        String key = index + "_" + pass;
 
-        if (dp.containsKey(key)) {
-            return dp.get(key);
+        if (dp[index][pass] != -1) {
+            return dp[index][pass];
         }
 
         if (pass >= days[index]) {
             int result = dfs(index + 1, pass, days, costs);
-            dp.put(key, result);
+            dp[index][pass] = result;
             return result;
         }
         
@@ -29,7 +33,7 @@ class Solution {
             min = Math.min(min, dfs(index + 1, newPass, days, costs) + costs[i]);
         }
 
-        dp.put(key, min);
+        dp[index][pass] = min;
 
         return min;
     }

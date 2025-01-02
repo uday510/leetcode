@@ -1,9 +1,11 @@
 class Solution {
     int[] pf;
     int[] result;
+    Set<Character> vowels;
+
     public int[] vowelStrings(String[] words, int[][] queries) {
         intialize(words, queries);
-        System.out.println(Arrays.toString(pf));
+        
         for (int idx = 0; idx < queries.length; ++idx) {
             int[] query = queries[idx];
 
@@ -19,6 +21,7 @@ class Solution {
     private void intialize(String[] words, int[][] queries) {
         pf = new int[words.length];
         result = new int[queries.length];
+        vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
 
         pf[0] = isWordVowel(words[0]) ? 1 : 0;
 
@@ -36,10 +39,6 @@ class Solution {
         char first = word.charAt(0);
         char second = word.charAt(word.length() - 1);
 
-        return isVowel(first) && isVowel(second);
-    }
-    private boolean isVowel(char ch) {
-        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'; 
-    }
-   
+        return vowels.contains(first) && vowels.contains(second);
+    }   
 }

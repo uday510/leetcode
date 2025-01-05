@@ -1,36 +1,34 @@
 class Solution {
-    int len;
-    int[] memo;
-    
+    int[] nums;
+    int[] dp;
     public int lengthOfLIS(int[] nums) {
-        len = nums.length;
-        memo = new int[len];
+        this.nums = nums;
+        dp = new int[nums.length];
 
-        Arrays.fill(memo, -1);
+        Arrays.fill(dp, -1);
 
-        int maxLen = 0;
-
-        for (int index = 0; index < len; ++index) {
-            maxLen = Math.max(maxLen, dfs(index, nums));
+        int current = 0;
+        for (int index = 0; index < nums.length; ++index) {
+            current = Math.max(current, dfs(index));
         }
-        
-        return maxLen;
+
+        return current;
     }
 
-    private int dfs(int prevIdx, int[] nums) {
-        if (memo[prevIdx] != -1) {
-            return memo[prevIdx];
+    private int dfs(int index) {
+        if (dp[index] != -1) {
+            return dp[index];
         }
 
-        int currLen = 1;
+        int currentLength = 1;
 
-        for (int currIdx = prevIdx; currIdx < len; ++currIdx) {
+        for (int idx = index + 1; idx < nums.length; ++idx) {
 
-            if (nums[prevIdx] < nums[currIdx]) {
-                currLen = Math.max(currLen, dfs(currIdx, nums) + 1);
+            if (nums[index] < nums[idx]) {
+                currentLength = Math.max(dfs(idx) + 1, currentLength);
             }
         }
 
-        return memo[prevIdx] = currLen;
+        return dp[index] = currentLength;
     }
 }

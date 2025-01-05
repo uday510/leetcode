@@ -1,8 +1,5 @@
 class Solution {
 
-    // 0 -> [ [1,2], [2, 3] ]
-    // 1 -> []
-
     Map<Integer, List<int[]>> graph;
     int threshold;
     int result;
@@ -38,9 +35,9 @@ class Solution {
         int currNode = edge[0];
         int dist = edge[1];
         
-        if (distances[currNode] < dist) {
-            continue;
-        }
+        // if (distances[currNode] < dist) {
+        //     continue;
+        // }
 
         for (var next : graph.getOrDefault(currNode, new ArrayList<int[]>())) {
             int nextNode = next[0];
@@ -51,7 +48,7 @@ class Solution {
             }
 
             queue.offer(new int[]{nextNode, nextDist});
-            distances[nextNode] = nextDist;
+            distances[nextNode] = Math.min(nextDist, distances[nextNode]);
         }
     }
 
@@ -86,10 +83,6 @@ class Solution {
    }
 
 }
-
-
-
-
 
 /***
 

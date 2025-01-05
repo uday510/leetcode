@@ -1,23 +1,24 @@
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int gasSum = Arrays.stream(gas).sum();
-        int costSum = Arrays.stream(cost).sum();
+        int totalGas = Arrays.stream(gas).sum();
+        int totalCost = Arrays.stream(cost).sum();
 
-        if (gasSum < costSum) 
+        if (totalGas < totalCost) {
             return -1;
-        
-        int n = gas.length;
-        int tank = 0;
-        int start = 0;
+        }
 
-        for (int i = 0; i < n; ++i) {
-            tank += gas[i] - cost[i];
+        int currentGas = 0;
+        int startingStation = 0;
 
-            if (tank < 0) {
-                start = i + 1;
-                tank = 0;
+        for (int idx = 0; idx < gas.length; ++idx) {
+            currentGas += gas[idx] - cost[idx];
+
+            if (currentGas < 0) {
+                currentGas = 0;
+                startingStation = idx + 1;
             }
         }
-        return start;
+
+        return currentGas < 0 ? -1: startingStation;
     }
 }

@@ -26,12 +26,6 @@ class Solution {
     }
 
     private boolean isBall(String str, int index) {
-
-        try {
-            return str.charAt(index) == '1';
-        } catch(Exception e) {
-            throw e;
-        }
-
+        return str.charAt(index) == '1';
     }
 }

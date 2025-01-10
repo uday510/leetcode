@@ -1,27 +1,14 @@
 class Solution {
     Trie trie;
+    int result;
     public int prefixCount(String[] words, String pref) {
-        trie = new Trie();
         intialize(words, pref);
 
-        int result = findPrefixCount(pref);
         return result;
-    }
-    private int findPrefixCount(String prefix) {
-        int count = 0;
-        Trie curr = trie;
-        for (char ch : prefix.toCharArray()) {
-            int index = ch - 'a';
-            if (curr.nodes[index] == null) {
-                return 0;
-            }
-
-            curr = curr.nodes[index];
-        }
-        return curr.count;
     }
 
     private void intialize(String[] words, String pref) {
+        trie = new Trie();
         for (String word : words) {
             insertIntoTrie(word, pref);
         }
@@ -41,7 +28,9 @@ class Solution {
             }
 
             curr = curr.nodes[index];
-            curr.count++;
+            if (idx == pref.length() - 1) {
+                result += 1;
+            }
         }
     }
 

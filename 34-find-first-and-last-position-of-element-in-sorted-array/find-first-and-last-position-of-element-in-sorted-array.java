@@ -1,28 +1,31 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        int left = bisectLeft(nums, target);
-        if (left == nums.length || nums[left] != target) {
-            return new int[] {-1, -1};
+        int leftIdx = bs(nums, target);
+
+        if (leftIdx >= nums.length || nums[leftIdx] != target) {
+            return new int[]{-1, -1};
         }
 
-        int right = bisectLeft(nums, target+1)-1;
+        int rightIdx = bs(nums, target + 1) - 1;
 
-        return new int[] {left, right};
-        
+        return new int[] {leftIdx, rightIdx};
     }
-    private int bisectLeft(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length;
 
-        while (left < right) {
-            int mid = (left + right) >> 1;
+    private int bs(int[] nums, int target) {
+        int leftIdx = 0;
+        int rightIdx = nums.length;
 
-            if (nums[mid] < target) {
-                left = mid + 1;
+        while (leftIdx < rightIdx) {
+            int midIdx = (leftIdx + rightIdx) >> 1;
+
+            if (nums[midIdx] < target) {
+                leftIdx = midIdx + 1;
             } else {
-                right = mid;
+                rightIdx = midIdx;
             }
         }
-        return left;
+
+        return leftIdx;
     }
+
 }

@@ -11,13 +11,7 @@ class Solution {
         for (int idx = 0; idx < 26; ++idx) {
             int curr = cnt[idx];
 
-            if (curr == 0) continue;
-            
-                if (curr % 2 == 0) {
-                    result += 2;
-                } else {
-                    result += 1;
-                }
+            result += curr > 0 ? (curr % 2 == 0 ? 2 : 1) : 0;
 
             System.out.println(curr + " : " + result);
         }

@@ -1,11 +1,13 @@
 class Solution {
     public int removeElement(int[] nums, int val) {
-       int k = 0;
+        int index = 0;
 
-       for (int num : nums)
-        if (num != val) 
-            nums[k++] = num;
+        for (int idx = 0; idx < nums.length; ++idx) {
+            if (nums[idx] != val) {
+                nums[index++] = nums[idx];
+            }
+        }
 
-        return k; 
+        return index;
     }
 }

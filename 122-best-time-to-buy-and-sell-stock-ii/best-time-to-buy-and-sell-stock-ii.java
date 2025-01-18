@@ -5,7 +5,7 @@ class Solution {
 
         Arrays.fill(memo, -1);
 
-        return dfs(0, prices);
+        return dfs (0, prices);
     }
     private int dfs(int i, int[] prices) {
         if (i >= prices.length) {
@@ -16,10 +16,11 @@ class Solution {
             return memo[i];
         }
 
-        int maxProfit = 0;
-        for (int j = i + 1; j < prices.length; ++j) {
-            if(prices[j] > prices[i]) {
-                maxProfit = Math.max(maxProfit, prices[j] - prices[i] + dfs(j, prices));
+        int maxProfit = -1;
+
+        for (int j = i; j < prices.length; ++j) {
+            if (prices[j] > prices[i]) {
+                maxProfit = Math.max(maxProfit, prices[j] - prices[i] + dfs(j + 1, prices));
             }
         }
 

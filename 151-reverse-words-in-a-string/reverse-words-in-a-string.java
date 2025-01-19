@@ -13,8 +13,8 @@ class Solution {
         int rightIdx = str.length() - 1;
         StringBuilder stringBuilder = new StringBuilder();
 
-        while (leftIdx <= rightIdx && str.charAt(leftIdx) == ' ') ++leftIdx;
-        while (leftIdx <= rightIdx && str.charAt(rightIdx) == ' ') --rightIdx;
+        while (leftIdx < rightIdx && str.charAt(leftIdx) == ' ') ++leftIdx;
+        while (leftIdx < rightIdx && str.charAt(rightIdx) == ' ') --rightIdx;
 
         while (leftIdx <= rightIdx) {
             char ch = str.charAt(leftIdx);

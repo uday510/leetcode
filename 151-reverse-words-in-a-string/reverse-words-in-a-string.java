@@ -1,52 +1,64 @@
 class Solution {
     public String reverseWords(String s) {
-        StringBuilder sb = trim(s);
+        StringBuilder stringBuilder = trim(s);
 
-        reverse(sb, 0, sb.length() - 1);
+        reverse(0, stringBuilder.length() - 1, stringBuilder);
+        reverseEachWord(stringBuilder);
 
-        reverseEachWord(sb);
-
-        return sb.toString();
+        return stringBuilder.toString();
     }
-    private StringBuilder trim(String s) {
+
+    private StringBuilder trim(String str) {
         int leftIdx = 0;
-        int rightIdx = s.length() - 1;
+        int rightIdx = str.length() - 1;
+        StringBuilder stringBuilder = new StringBuilder();
 
-        while (leftIdx <= rightIdx && s.charAt(leftIdx) == ' ') ++leftIdx;
-
-        while (leftIdx <= rightIdx && s.charAt(rightIdx) == ' ') --rightIdx;
-
-        StringBuilder sb = new StringBuilder();
+        while (leftIdx <= rightIdx && str.charAt(leftIdx) == ' ') ++leftIdx;
+        while (leftIdx <= rightIdx && str.charAt(rightIdx) == ' ') --rightIdx;
 
         while (leftIdx <= rightIdx) {
-            char curr = s.charAt(leftIdx);
+            char ch = str.charAt(leftIdx);
 
-           if (curr != ' ') sb.append(curr);
-           else if (sb.charAt(sb.length()-1)!= ' ')
-                sb.append(curr);
-            ++leftIdx;
+            if (ch != ' ') {
+                stringBuilder.append(ch);
+            } else if (stringBuilder.charAt(stringBuilder.length() - 1) != ' ') {
+                stringBuilder.append(ch);
+            }
+
+            leftIdx++;
         }
-        return sb;
+
+        return stringBuilder;
     }
-    private void reverse(StringBuilder sb, int leftIdx, int rightIdx) {
+
+    private void reverse(int leftIdx, int rightIdx, StringBuilder stringBuilder) {
+
         while (leftIdx < rightIdx) {
-            char tmp = sb.charAt(leftIdx);
-            sb.setCharAt(leftIdx++, sb.charAt(rightIdx));
-            sb.setCharAt(rightIdx--, tmp);
+            char temp = stringBuilder.charAt(leftIdx);
+            stringBuilder.setCharAt(leftIdx++, stringBuilder.charAt(rightIdx));
+            stringBuilder.setCharAt(rightIdx--, temp);
         }
+
     }
-    private void reverseEachWord(StringBuilder sb) {
-        int N = sb.length();
+
+    private void reverseEachWord(StringBuilder stringBuilder) {
+
         int leftIdx = 0;
         int rightIdx = 0;
+        int length = stringBuilder.length();
 
-        while (rightIdx < N) {
-            while (rightIdx < N && sb.charAt(rightIdx) != ' ') 
-                ++rightIdx;
+        while (leftIdx < length) {
 
-            reverse(sb, leftIdx, rightIdx-1);
+            while (rightIdx < length && stringBuilder.charAt(rightIdx) != ' ') {  
+                rightIdx++;
+            }
+
+            reverse(leftIdx, rightIdx - 1, stringBuilder);
+
             leftIdx = rightIdx + 1;
-            ++rightIdx;
+            rightIdx += 1;
         }
     }
+
+
 }

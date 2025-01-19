@@ -1,11 +1,39 @@
-class Solution {
-    public boolean canJump(int[] nums) {
-        int farthestPos = nums.length-1;
+enum Index {
+    GOOD,
+    BAD,
+    UNKNOWN
+}
 
-        for (int pos = nums.length-1; pos > -1; --pos) {
-            if (pos + nums[pos] >= farthestPos) 
-                farthestPos = pos;
+class Solution {
+
+    Index[] memo;
+
+    public boolean canJump(int[] nums) {
+        memo = new Index[nums.length];
+
+        Arrays.fill(memo, Index.UNKNOWN);
+        memo[nums.length - 1] = Index.GOOD;
+
+        return dfs(0, nums);
+    }
+
+    private boolean dfs(int pos, int[] nums) {
+        if (memo[pos] != Index.UNKNOWN) {
+            return memo[pos] == Index.GOOD;
         }
-        return farthestPos == 0;
+
+        int furthest = Math.min(pos + nums[pos], nums.length - 1);
+
+        for (int nextPos = pos + 1; nextPos <= furthest; ++nextPos) {
+
+            if (dfs(nextPos, nums)) {
+                memo[pos] = Index.GOOD;
+                return true;
+            }
+
+        }
+
+        memo[pos] = Index.BAD;
+        return false;
     }
 }

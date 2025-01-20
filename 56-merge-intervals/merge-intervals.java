@@ -2,24 +2,27 @@ class Solution {
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, (o1, o2) -> Integer.compare(o1[0], o2[0]));
 
-        int N = intervals.length;
-        var list = new ArrayList<int[]>(); 
+        int len = intervals.length;
+        var list = new ArrayList<int[]>();
 
-        for (int i = 0; i < N;) {
-            list.add(intervals[i]);
+        for (int idx = 0; idx < len;) {
+            list.add(intervals[idx]);
 
-            i = findNext(list, intervals, i+1, N);
+            idx = findNextIndex(list.get(list.size() - 1), idx, intervals);
         }
 
         return list.toArray(new int[list.size()][]);
     }
-    int findNext(ArrayList<int[]> list, int[][] intervals, int idx, int N) {
+    private int findNextIndex(int[] interval, int index, int[][] intervals) {
 
-        while (idx < N && list.get(list.size()-1)[1] >= intervals[idx][0]) {
-                list.get(list.size()-1)[1] = Math.max(list.get(list.size()-1)[1], 
-                                                        intervals[idx][1]);
-                ++idx;
+        while (index < intervals.length && interval[1] >= intervals[index][0]) {
+            interval[1] = Math.max(interval[1], intervals[index][1]);
+
+            index++;
         }
-        return idx;
+
+        return index;
     }
 }
+
+

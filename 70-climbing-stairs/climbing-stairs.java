@@ -1,15 +1,19 @@
 class Solution {
+    int[] memo;
     public int climbStairs(int n) {
-        int prevStep = 0;
-        int currStep = 1;
+        memo = new int[n+1];
+        Arrays.fill(memo, -1);
 
-        for (int i = 1; i <= n; ++i) {
-            int nextStep = prevStep + currStep;
+        return dfs(n);
+    }
 
-            prevStep = currStep;
-            currStep = nextStep;
-        }
+    private int dfs(int n) {
+        if (n < 3) 
+            return n;
 
-        return currStep;
+        if (memo[n] != -1)
+            return memo[n];
+
+        return memo[n] = dfs(n - 1) + dfs(n - 2);
     }
 }

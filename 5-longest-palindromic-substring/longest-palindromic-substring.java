@@ -1,21 +1,15 @@
 class Solution {
     public String longestPalindrome(String s) {
-        int[] current = new int[]{0, 1};
+        int[] curr = new int[]{0, 1};
         int[] longest = new int[]{0, 1};
 
         for (int idx = 0; idx < s.length(); ++idx) {
             int[] odd = getLength(idx - 1, idx + 1, s);
             int[] even = getLength(idx, idx + 1, s);
 
-            if (odd[1] - odd[0] > even[1] - even[0]) {
-                current = odd;
-            } else {
-                current = even;
-            }
+            curr = odd[1] - odd[0] > even[1] - even[0] ? odd : even;
             
-            if (current[1] - current[0] > longest[1] - longest[0]) {
-                longest = new int[]{current[0], current[1]};
-            }
+            longest = curr[1] - curr[0] > longest[1] - longest[0] ? curr : longest;
         }
 
         return s.substring(longest[0], longest[1]);

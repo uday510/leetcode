@@ -11,10 +11,16 @@ class Solution {
         }
 
         dp = new int[max + 1];
-        Arrays.fill(dp, -1);
         dp[1] = points.getOrDefault(1, 0);
 
-        return dfs(max);
+        for (int idx = 2; idx <= max; ++idx) {
+            int pick = points.getOrDefault(idx, 0) + dp[idx - 2];
+            int dont = dp[idx - 1];
+
+            dp[idx] = Math.max(pick, dont);
+        }
+
+        return dp[max];
     }
 
     private int dfs(int num) {

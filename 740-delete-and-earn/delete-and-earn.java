@@ -1,23 +1,38 @@
 class Solution {
+    Map<Integer, Integer> points;
+    int[] dp;
     public int deleteAndEarn(int[] nums) {
-        int maxVal = 0;
+        int max = 0;
+        points = new HashMap<>();
 
         for (int num : nums) {
-            maxVal = Math.max(maxVal, num);
+            max = Math.max(num, max);
+            points.put(num, points.getOrDefault(num, 0) + num);
         }
 
-        int[] freq = new int[maxVal + 1];
-        for (int num : nums) {
-            freq[num] += num;
-        }
-        
-        int[] dp = new int[maxVal + 1];
-        dp[1] = freq[1];
+        dp = new int[max + 1];
+        Arrays.fill(dp, -1);
+        dp[1] = points.getOrDefault(1, 0);
 
-        for (int num = 2; num <= maxVal; ++num) {
-            dp[num] = Math.max(dp[num - 1], freq[num] + dp[num - 2]);
+        return dfs(max);
+    }
+
+    private int dfs(int num) {
+        if (num < 0) {
+            return 0;
         }
 
-        return dp[maxVal];
+        if (num == 1) {
+            return points.getOrDefault(1, 0);
+        }
+
+        if (dp[num] != -1) {
+            return dp[num];
+        }
+
+        int take = points.getOrDefault(num, 0) + dfs(num - 2);
+        int dont = dfs(num - 1);
+
+        return dp[num] = Math.max(take, dont);
     }
 }

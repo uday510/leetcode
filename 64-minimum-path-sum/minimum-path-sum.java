@@ -1,38 +1,32 @@
 class Solution {
-    int M;
-    int N;
-    int[][] memo;
+
+    int[][] dp;
+    int rows;
+    int cols;
 
     public int minPathSum(int[][] grid) {
-        M = grid.length;
-        N = grid[0].length;
-
-        memo = new int[M][N];
-
-        for(int[] arr : memo) {
-            Arrays.fill(arr, -1);
-        }
+        rows = grid.length;
+        cols = grid[0].length;
+        dp = new int[rows][cols];
+        for (var row : dp)
+            Arrays.fill(row, -1);
 
         return dfs(0, 0, grid);
     }
-    private int dfs(int rowIdx, int colIdx, int[][] grid) {
-        if (rowIdx >= M || colIdx >= N) {
-            return (int) 1e9 / 2;
-        }
+    private int dfs(int row, int col, int[][] grid) {
+         if (row >= rows || col >= cols)
+            return (int) 1e9;
 
-        if (rowIdx == M - 1 && colIdx == N - 1) {
-            return grid[rowIdx][colIdx];
-        }
 
-        if (memo[rowIdx][colIdx] != -1) {
-            return memo[rowIdx][colIdx];
-        }
+        if (row == rows - 1 && col == cols - 1)
+            return grid[row][col];
 
-        int curr = grid[rowIdx][colIdx];
+        if (dp[row][col] != -1) 
+            return dp[row][col];
 
-        int right = dfs(rowIdx, colIdx + 1, grid);
-        int down = dfs(rowIdx + 1, colIdx, grid);
-        
-        return memo[rowIdx][colIdx] = Math.min(right, down) + curr;
+        int down = dfs(row + 1, col, grid);
+        int right = dfs(row, col + 1, grid);
+
+        return dp[row][col] = grid[row][col] + Math.min(down, right);
     }
 }

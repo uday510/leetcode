@@ -11,13 +11,13 @@ class Solution {
 
         for (int row = 0; row < rows; ++row) {
             for (int col = 0; col < cols; ++col) {
-                dp[row][col] = grid[row][col] + getMin(row, col, grid);
+                dp[row][col] = grid[row][col] + getMin(row, col);
             }
         }
         return dp[rows - 1][cols - 1];
     }
 
-    private int getMin(int row, int col, int[][] grid) {
+    private int getMin(int row, int col) {
         int curr = 0;
         if (row > 0 && col > 0) {
             curr = Math.min(dp[row - 1][col], dp[row][col - 1]);

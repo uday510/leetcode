@@ -1,32 +1,33 @@
 class Solution {
-
-    int[][] dp;
-    int rows;
-    int cols;
-
     public int minPathSum(int[][] grid) {
-        rows = grid.length;
-        cols = grid[0].length;
-        dp = new int[rows][cols];
-        for (var row : dp)
-            Arrays.fill(row, -1);
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] dp = new int[rows][cols];
 
-        return dfs(0, 0, grid);
-    }
-    private int dfs(int row, int col, int[][] grid) {
-         if (row >= rows || col >= cols)
-            return (int) 1e9;
+        for (int row = 0; row < rows; ++row) {
+            for (int col = 0; col < cols; ++col) {
+                dp[row][col] += grid[row][col];
 
+                if (row > 0 && col > 0) {
+                    dp[row][col] += Math.min(dp[row - 1][col], dp[row][col - 1]);
+                } else if (row > 0) {
+                    dp[row][col] += dp[row - 1][col];
+                } else if (col > 0) {
+                    dp[row][col] += dp[row][col - 1];
+                }
+            }
+        }
 
-        if (row == rows - 1 && col == cols - 1)
-            return grid[row][col];
-
-        if (dp[row][col] != -1) 
-            return dp[row][col];
-
-        int down = dfs(row + 1, col, grid);
-        int right = dfs(row, col + 1, grid);
-
-        return dp[row][col] = grid[row][col] + Math.min(down, right);
+        return dp[rows - 1][cols - 1];
     }
 }
+
+/**
+
+[1, 2, 3]
+[4, 5, 6]
+
+[1, 3]
+[1, 1]
+
+*/

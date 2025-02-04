@@ -1,50 +1,29 @@
 class Solution {
-
-    int rows;
-    int cols;
-    Integer[][] memo;
-    int minimum;
-
     public int minFallingPathSum(int[][] matrix) {
-        intialize(matrix);
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] dp = new int[rows][cols];
 
+        for (int row = 0; row < rows; ++row) {
+            for (int col = 0; col < cols; ++col) {
+                if (row == 0) {
+                    dp[row][col] = matrix[row][col];
+                } else if (col == 0) {
+                    dp[row][col] = Math.min(dp[row - 1][col], dp[row - 1][col + 1]) + matrix[row][col];
+                } else if (col == cols - 1) {
+                    dp[row][col] = Math.min(dp[row - 1][col], dp[row - 1][col - 1]) + matrix[row][col];
+                } else {
+                    dp[row][col] = Math.min(dp[row - 1][col], Math.min(dp[row - 1][col - 1], dp[row - 1][col + 1])) + matrix[row][col];
+                }
+
+            }
+        }
+
+        int minFallingSum = Integer.MAX_VALUE;
         for (int col = 0; col < cols; ++col) {
-            minimum = Math.min(minimum, dfs(0, col, matrix));
+            minFallingSum = Math.min(minFallingSum, dp[rows - 1][col]);
         }
 
-        return minimum;
-    }
-
-    private int dfs(int row, int col, int[][] matrix) {
-        if (!valid(col)) {
-            return Integer.MAX_VALUE;
-        }
-
-        if (row == rows - 1) {
-            return matrix[row][col];
-        }
-
-        if (memo[row][col] != null) {
-            return memo[row][col];
-        }
-            
-        int left = dfs(row + 1, col - 1, matrix);
-        int middle = dfs(row + 1, col, matrix);
-        int right = dfs(row + 1, col + 1, matrix);
-
-        memo[row][col] = Math.min(left, Math.min(middle, right)) + matrix[row][col];
-
-        return memo[row][col];
-    }
-
-    private boolean valid(int col) {
-        return !(col < 0 || col >= cols);
-    }
-
-    private void intialize(int[][] matrix) {
-        rows = matrix.length;
-        cols = matrix[0].length;
-        minimum = Integer.MAX_VALUE;
-        memo = new Integer[rows][cols];
+        return minFallingSum;
     }
 }

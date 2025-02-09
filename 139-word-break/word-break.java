@@ -2,7 +2,7 @@ class Solution {
 
     private int length;
     private Boolean[] memo;
-    private Set<String> dictonary;
+    private Set<String> dictionary;
     
     public boolean wordBreak(String s, List<String> wordDict) {
         initialize(s, wordDict);
@@ -18,7 +18,7 @@ class Solution {
         for (int currentIndex = index; currentIndex < length; ++currentIndex) {
             String substring = string.substring(index, currentIndex + 1);
 
-            if (dictonary.contains(substring) && dfs(currentIndex + 1, string)) {
+            if (dictionary.contains(substring) && dfs(currentIndex + 1, string)) {
                 return memo[index] = true;
             }
         }
@@ -28,7 +28,7 @@ class Solution {
 
     private void initialize(String s, List<String> wordDict) {
         length = s.length();
-        memo = new Boolean[length + 1];
-        dictonary = new HashSet<>(wordDict);
+        memo = new Boolean[length];
+        dictionary = new HashSet<>(wordDict);
     }
 }

@@ -1,38 +1,34 @@
 class Solution {
-    Set<String> dictonary;
-    Map<Integer, Boolean> seen;
+
+    private int length;
+    private Boolean[] memo;
+    private Set<String> dictonary;
+    
     public boolean wordBreak(String s, List<String> wordDict) {
-        intialize(wordDict);
+        initialize(s, wordDict);
 
         return dfs(0, s);
     }
-    private boolean dfs(int startIdx, String string) {
-        if (startIdx >= string.length()) {
-            return true;
-        }
 
-        if (seen.containsKey(startIdx)) {
-            return seen.get(startIdx);
-        }
+    private boolean dfs(int index, String string) {
+        if (index >= length) return true;
 
-        for (int endIdx = startIdx; endIdx < string.length(); ++endIdx) {
-            String substr = string.substring(startIdx, endIdx + 1);
+        if (memo[index] != null) return memo[index];
 
-            if (dictonary.contains(substr)) {
-                boolean segmented = dfs(endIdx + 1, string);
-                if (segmented) {
-                    return true;
-                }
+        for (int currentIndex = index; currentIndex < length; ++currentIndex) {
+            String substring = string.substring(index, currentIndex + 1);
 
-                seen.put(startIdx, false);
+            if (dictonary.contains(substring) && dfs(currentIndex + 1, string)) {
+                return memo[index] = true;
             }
         }
 
-        seen.put(startIdx, false);
-        return false;
+        return memo[index] = false;
     }
-    private void intialize(List<String> wordDict) {
+
+    private void initialize(String s, List<String> wordDict) {
+        length = s.length();
+        memo = new Boolean[length + 1];
         dictonary = new HashSet<>(wordDict);
-        seen = new HashMap<>();
     }
 }

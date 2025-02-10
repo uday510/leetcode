@@ -5,9 +5,9 @@ class Solution {
 
         for (char ch : s.toCharArray()) {
             
-            if (ch <= '9' && ch >= '0') {
+            if (Character.isDigit(ch)) {
                 if (sb.length() != 0) 
-                    sb.deleteCharAt(sb.length() - 1);
+                    sb.setLength(sb.length() - 1);
             } else {
                 sb.append(ch);
             }

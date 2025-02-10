@@ -17,7 +17,7 @@ class Solution {
         }
 
         if (idx1 >= len1) {
-            return idx2 >= len2 ? 1 : 0;
+            return 0;
         }
 
         if (dp[idx1][idx2] != -1) return dp[idx1][idx2];
@@ -36,7 +36,7 @@ class Solution {
         this.t = t;
         len1 = s.length();
         len2 = t.length();
-        
+
         dp = new int[len1][len2];
 
         for (var arr : dp) 

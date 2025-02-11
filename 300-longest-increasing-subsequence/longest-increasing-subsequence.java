@@ -1,19 +1,22 @@
 class Solution {
+    Integer[][] dp;
     public int lengthOfLIS(int[] nums) {
-        int longest = 1;
-        int[] dp = new int[nums.length];
+        dp = new Integer[nums.length + 1][nums.length];
+        return dfs(-1, 0, nums);
+    }
 
-        for (int idx2 = 0; idx2 < nums.length; ++idx2) {
-            dp[idx2] = 1;
-            for (int idx1 = 0; idx1 < idx2; ++idx1) {
-                if (nums[idx1] < nums[idx2]) {
-                    dp[idx2] = Math.max(dp[idx2], dp[idx1] + 1);
-                }
-            }
+    private int dfs(int prevIdx, int currIdx, int[] nums) {
+        if (currIdx >= nums.length) return 0;
 
-            longest = Math.max(dp[idx2], longest);
+        if (dp[prevIdx + 1][currIdx] != null) return dp[prevIdx + 1][currIdx];
+
+        int skip = dfs(prevIdx, currIdx + 1, nums);
+
+        int take = 0;
+        if (prevIdx == -1 || nums[prevIdx] < nums[currIdx]) {
+            take = 1 + dfs(currIdx, currIdx + 1, nums);
         }
 
-        return longest;
+        return dp[prevIdx + 1][currIdx] = Math.max(skip, take);
     }
 }

@@ -6,7 +6,7 @@ class Solution {
         for (char ch : s.toCharArray()) {
             st.push(ch);
 
-            while (!st.isEmpty() && valid(st, part)) {
+            if (valid(st, part)) {
                 for (char ch2 : part.toCharArray()) {
                     st.pop();
                 }

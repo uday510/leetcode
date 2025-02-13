@@ -1,23 +1,22 @@
 class Solution {
     List<Integer> lis;
-    int len;
     public int lengthOfLIS(int[] nums) {
-        lis = new ArrayList<Integer>();
-        len = nums.length;
+        lis = new ArrayList<>();
         lis.add(nums[0]);
-
-        for (int idx = 1; idx < len; ++idx) {
+        
+        for (int idx = 0; idx < nums.length; ++idx) {
             int num = nums[idx];
-            if (num > lis.getLast()) {
+            if (lis.getLast() < num) {
                 lis.add(num);
             } else {
-                int j = bs(num);
-                lis.set(j, num);
+                int index = bs(num);
+                lis.set(index, num);
             }
         }
 
         return lis.size();
     }
+
     private int bs(int num) {
         int left = 0;
         int right = lis.size();
@@ -31,6 +30,7 @@ class Solution {
                 right = mid;
             }
         }
+
         return left;
     }
 }

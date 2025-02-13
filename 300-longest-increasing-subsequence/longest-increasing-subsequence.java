@@ -6,24 +6,21 @@ class Solution {
         
         for (int idx = 0; idx < nums.length; ++idx) {
             int num = nums[idx];
-            if (lis.getLast() < num) {
+            int index = bs(num);
+            if (index == lis.size()) 
                 lis.add(num);
-            } else {
-                int index = bs(num);
-                lis.set(index, num);
-            }
+            lis.set(index, num);
+           
         }
 
         return lis.size();
     }
-
     private int bs(int num) {
         int left = 0;
         int right = lis.size();
 
         while (left < right) {
             int mid = (left + right) >> 1;
-
             if (lis.get(mid) < num) {
                 left = mid + 1;
             } else {

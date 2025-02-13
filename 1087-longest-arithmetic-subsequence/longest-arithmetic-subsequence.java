@@ -9,7 +9,6 @@ class Solution {
            dp[right] = new HashMap<>();
            for (int left = 0; left < right; ++left) {
               int diff = nums[right] - nums[left];
-            //    int diff = nums[left] - nums[right];
                dp[right].put(diff,dp[left].getOrDefault(diff, 1) + 1);
 
                maxLength = Math.max(maxLength, dp[right].get(diff));

@@ -1,6 +1,5 @@
 class Solution {
     public int searchInsert(int[] nums, int target) {
-        
         return bs(nums, target);
     }
 
@@ -9,7 +8,7 @@ class Solution {
         int rightIdx = nums.length;
 
         while (leftIdx < rightIdx) {
-            int midIdx = (leftIdx + rightIdx) >>> 1;
+            int midIdx = (leftIdx + rightIdx) >> 1;
 
             if (nums[midIdx] < target) {
                 leftIdx = midIdx + 1;

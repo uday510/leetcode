@@ -1,14 +1,10 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
         int leftIdx = bs(nums, target);
-
-        if (leftIdx >= nums.length || nums[leftIdx] != target) {
-            return new int[]{-1, -1};
-        }
-
+        if (leftIdx == nums.length || nums[leftIdx] != target) return new int[] {-1, -1};
         int rightIdx = bs(nums, target + 1) - 1;
 
-        return new int[] {leftIdx, rightIdx};
+        return new int[]{leftIdx, rightIdx};
     }
 
     private int bs(int[] nums, int target) {
@@ -24,8 +20,6 @@ class Solution {
                 rightIdx = midIdx;
             }
         }
-
         return leftIdx;
     }
-
 }

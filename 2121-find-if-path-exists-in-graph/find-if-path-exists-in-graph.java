@@ -30,7 +30,7 @@ class DFS {
             if (node == targetNode) return true;
 
             List<int[]> neighbors = graph.getOrDefault(node, Collections.emptyList());
-            neighbors.sort((a, b) -> Integer.compare(b[0], a[0]));
+            // neighbors.sort((a, b) -> Integer.compare(b[0], a[0]));
 
             for (int[] neighbor : neighbors) {
                 if (visited.contains(neighbor[0])) {

@@ -11,18 +11,26 @@ class Solution {
        for (int idx = 0; idx < n; ++idx) {
             if (!visited[idx]) {
                 numProvinces += 1;
-                dfs(idx);
+                bfs(idx);
             }
        }
     
     return numProvinces;
     }
-
-    private void dfs(int node) {
+    
+    private void bfs(int node) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(node);
         visited[node] = true;
-        for (int idx = 0; idx < n; ++idx) {
-            if (graph[node][idx] == 1 && !visited[idx]) {
-                dfs(idx);
+
+        while (!queue.isEmpty()) {
+            node = queue.poll();
+
+            for (int idx = 0; idx < n; ++idx) {
+                if (graph[node][idx] == 1 && !visited[idx]) {
+                    queue.offer(idx);
+                    visited[idx] = true;
+                }
             }
         }
     }

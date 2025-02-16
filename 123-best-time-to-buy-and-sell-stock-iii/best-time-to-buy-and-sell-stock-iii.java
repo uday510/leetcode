@@ -1,19 +1,28 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        int buyOne = Integer.MAX_VALUE;
-        int profitOne = 0;
-        int buyTwo = Integer.MAX_VALUE;
-        int profitTwo = 0;
+        int len = prices.length;
+        int minLeft = prices[0];
+        int maxRight = prices[len - 1];
+        int[] left = new int[len];
+        int[] right = new int[len + 1];
 
-        for (int price : prices) {
-            buyOne = Math.min(buyOne, price);
-            profitOne = Math.max(profitOne, price - buyOne);
-            buyTwo = Math.min(buyTwo, price - profitOne);
-            profitTwo = Math.max(profitTwo, price - buyTwo);
+        for (int idx = 1; idx < len; ++idx) {
+            left[idx] = Math.max(prices[idx] - minLeft, left[idx - 1]);
+            minLeft = Math.min(prices[idx], minLeft);
+
+            int r = len - idx - 1;
+            right[r] = Math.max(right[r + 1], maxRight - prices[r]);
+            maxRight = Math.max(prices[r], maxRight);
         }
 
-        return profitTwo;
+        System.out.println(Arrays.toString(left));
+        System.out.println(Arrays.toString(right));
+
+        int maxProfit = 0;
+        for (int idx = 0; idx < len; ++idx) {
+            maxProfit = Math.max(maxProfit, left[idx] + right[idx + 1]);
+        }
+
+        return maxProfit;
     }
 }
-
-// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solutions/39611/is-it-best-solution-with-o-n-o-1/?envType=study-plan-v2&envId=top-interview-150

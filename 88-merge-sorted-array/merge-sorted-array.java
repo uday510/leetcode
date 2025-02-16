@@ -1,21 +1,44 @@
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int idx = nums1.length - 1;
-        int idx1 = m - 1;
-        int idx2 = n - 1;
+        if (nums2.length == 0) return;
 
-        while (idx1 > -1 && idx2 > -1) {
-            if (nums2[idx2] >= nums1[idx1]) {
-                nums1[idx--] = nums2[idx2--];
+        List<Integer> res = new ArrayList<>();
+        int i = 0;
+        int j = 0;
+        
+        while (i < m && j < n) {
+            if (nums1[i] < nums2[j]) {
+                res.add(nums1[i]);
+                i++;
             } else {
-                nums1[idx--] = nums1[idx1--];
+                res.add(nums2[j]);
+                j++;
             }
         }
 
-        while (idx2 > -1) {
-            nums1[idx--] = nums2[idx2--];
+        while (i < m) {
+            res.add(nums1[i]);
+            i++;
         }
 
-        return;
+        while (j < n) {
+            res.add(nums2[j]);
+            j++;
+        }
+
+        for (int idx = 0; idx < res.size(); ++idx) {
+            nums1[idx] = res.get(idx);
+        }
     }
 }
+
+/***
+
+1 2 3 0 0 0  ||  2 5 6 || [1 2 2 3]
+
+i = 3 < 3
+j = 1 < 3
+
+
+
+ */

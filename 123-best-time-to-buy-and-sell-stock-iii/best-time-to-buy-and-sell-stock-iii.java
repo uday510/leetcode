@@ -1,22 +1,19 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        // buy transaction1
-        int t1Cost = Integer.MAX_VALUE;
-        // sell transaction1  
-        int t1Profit = 0;
-        // buy transaction2
-        int t2Cost = Integer.MAX_VALUE;
-        // sell transaction2
-        int t2Profit = 0;
+       int k = 2; 
+       int profit[] = new int[k];
+       int cost[] = new int[k];
+       Arrays.fill(cost, Integer.MAX_VALUE);
+       
+       for(int currPrice : prices){
+            cost[0] = Math.min(cost[0], currPrice);
+            profit[0] = Math.max(profit[0], currPrice-cost[0]);
+			for(int j = 1;  j < k; j++){
+                cost[j] = Math.min(cost[j], currPrice - profit[j-1]);
+                profit[j] = Math.max(profit[j], currPrice - cost[j]);
+            }
+       }
 
-        for (int price : prices) {
-            t1Cost = Math.min(t1Cost, price);
-            t1Profit = Math.max(t1Profit, price - t1Cost);
-
-            t2Cost = Math.min(t2Cost, price - t1Profit);
-            t2Profit = Math.max(t2Profit, price - t2Cost);
-        }
-
-        return t2Profit;
+       return profit[k-1];
     }
 }

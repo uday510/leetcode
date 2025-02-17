@@ -1,38 +1,32 @@
-import java.util.*;
-
 class Solution {
-    
-    private static final Map<Character, List<Character>> DIGIT_TO_LETTERS = initializeMapping();
-
+    private static final Map<Character, List<Character>> DIGIT_LETTERS = initialize();
     public List<String> letterCombinations(String digits) {
         if (digits == null || digits.isEmpty()) {
             return new ArrayList<>();
         }
 
         List<String> result = new ArrayList<>();
-        backtrack(0, digits, new StringBuilder(), result);
+        dfs(0, new StringBuilder(), result, digits);
         return result;
     }
 
-    private void backtrack(int index, String digits, StringBuilder sb, List<String> result) {
-        if (index == digits.length()) {
+    private void dfs(int index, StringBuilder sb, List<String> result, String digits) {
+        if (sb.length() == digits.length()) {
             result.add(sb.toString());
             return;
         }
 
-        char digit = digits.charAt(index);
-        List<Character> letters = DIGIT_TO_LETTERS.get(digit);
+        List<Character> letters = DIGIT_LETTERS.get(digits.charAt(index));
+        if (letters == null) return;
 
-        if (letters == null) return; 
-
-        for (char letter : letters) {
-            sb.append(letter);
-            backtrack(index + 1, digits, sb, result);
+        for (char ch : letters) {
+            sb.append(ch);
+            dfs(index + 1, sb, result, digits);
             sb.deleteCharAt(sb.length() - 1);
         }
     }
 
-    private static Map<Character, List<Character>> initializeMapping() {
+    private static Map<Character, List<Character>> initialize() {
         Map<Character, List<Character>> map = new HashMap<>();
         map.put('2', Arrays.asList('a', 'b', 'c'));
         map.put('3', Arrays.asList('d', 'e', 'f'));

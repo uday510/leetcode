@@ -6,8 +6,20 @@ class Solution {
 
         initialize(edges);
 
-        if (!dfs(0, -1)) return false;
-
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0, -1});
+        visited.add(0);
+        while (!queue.isEmpty()) {
+            int[] arr = queue.poll();
+            int node = arr[0];
+            int parent = arr[1];
+            List<Integer> neighbors = graph.getOrDefault(arr[0], new ArrayList<>());
+            for (int neighbor : neighbors) {
+                if (neighbor == parent) continue;
+                if (!visited.add(neighbor)) return false;
+                queue.offer(new int[]{neighbor, node});
+            }
+        }
         return visited.size() == n;
     } 
 

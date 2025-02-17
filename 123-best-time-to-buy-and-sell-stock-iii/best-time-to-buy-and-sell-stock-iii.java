@@ -1,28 +1,22 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        int len = prices.length;
-        int minLeft = prices[0];
-        int maxRight = prices[len - 1];
-        int[] left = new int[len];
-        int[] right = new int[len + 1];
+        // buy transaction1
+        int t1Cost = Integer.MAX_VALUE;
+        // sell transaction1  
+        int t1Profit = 0;
+        // buy transaction2
+        int t2Cost = Integer.MAX_VALUE;
+        // sell transaction2
+        int t2Profit = 0;
 
-        for (int idx = 1; idx < len; ++idx) {
-            left[idx] = Math.max(prices[idx] - minLeft, left[idx - 1]);
-            minLeft = Math.min(prices[idx], minLeft);
+        for (int price : prices) {
+            t1Cost = Math.min(t1Cost, price);
+            t1Profit = Math.max(t1Profit, price - t1Cost);
 
-            int r = len - idx - 1;
-            right[r] = Math.max(right[r + 1], maxRight - prices[r]);
-            maxRight = Math.max(prices[r], maxRight);
+            t2Cost = Math.min(t2Cost, price - t1Profit);
+            t2Profit = Math.max(t2Profit, price - t2Cost);
         }
 
-        System.out.println(Arrays.toString(left));
-        System.out.println(Arrays.toString(right));
-
-        int maxProfit = 0;
-        for (int idx = 0; idx < len; ++idx) {
-            maxProfit = Math.max(maxProfit, left[idx] + right[idx + 1]);
-        }
-
-        return maxProfit;
+        return t2Profit;
     }
 }

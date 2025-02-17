@@ -1,17 +1,14 @@
 class Solution {
     public int numTrees(int n) {
-        return dfs(n);
-    }
-     private int dfs(int i) {
-        if (i <= 1) return 1;
-
-        int curr = 0;
-        for (int j = 1; j <= i; ++j) {
-            int left = dfs(j - 1);
-            int right = dfs(i - j);
-            curr += (left * right);
+        
+        int[] dp = new int[n + 1];
+        dp[0] = dp[1] = 1;
+        for (int numNodes = 2; numNodes <= n; ++numNodes) {
+            for (int root = 1; root <= numNodes; ++root) {
+                dp[numNodes] += dp[root - 1] * dp[numNodes - root];
+            }
         }
 
-        return curr;
+        return dp[n];
     }
 }

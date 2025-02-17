@@ -1,5 +1,5 @@
 class Solution {
-    private Map<Integer, List<int[]>> graph;
+    private Map<Integer, List<Integer>> graph;
     private Set<Integer> visited;
     public boolean validTree(int n, int[][] edges) {
         if (edges.length != n - 1) return false;
@@ -14,11 +14,11 @@ class Solution {
     private boolean dfs(int node, int parent) {
         if (!visited.add(node)) return false;
 
-        List<int[]> edges = graph.getOrDefault(node, new ArrayList<>());
-        for (int[] edge : edges) {
-            if (edge[0] == parent) continue;
+        List<Integer> edges = graph.getOrDefault(node, new ArrayList<>());
+        for (int edge : edges) {
+            if (edge == parent) continue;
 
-            if (!dfs(edge[0], node));
+            if (!dfs(edge, node));
         }
 
         return true;
@@ -30,8 +30,8 @@ class Solution {
 
         for (int[] edge : edges) {
             int u = edge[0], v = edge[1];
-            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(new int[]{v});
-            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(new int[]{u});
+            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
         }
     }
 }

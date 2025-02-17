@@ -1,49 +1,53 @@
 class Solution {
-    private Map<Integer, List<Integer>> graph;
-    private Set<Integer> visited;
     public boolean validTree(int n, int[][] edges) {
         if (edges.length != n - 1) return false;
 
-        initialize(edges);
-
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{0, -1});
-        visited.add(0);
-        while (!queue.isEmpty()) {
-            int[] arr = queue.poll();
-            int node = arr[0];
-            int parent = arr[1];
-            List<Integer> neighbors = graph.getOrDefault(arr[0], new ArrayList<>());
-            for (int neighbor : neighbors) {
-                if (neighbor == parent) continue;
-                if (!visited.add(neighbor)) return false;
-                queue.offer(new int[]{neighbor, node});
+        UnionFind uf = new UnionFind(n);
+        for (int[] edge : edges) {
+            if (!uf.union(edge[0], edge[1])) {
+                return false;
             }
         }
-        return visited.size() == n;
-    } 
-
-    private boolean dfs(int node, int parent) {
-        if (!visited.add(node)) return false;
-
-        List<Integer> edges = graph.getOrDefault(node, new ArrayList<>());
-        for (int edge : edges) {
-            if (edge == parent) continue;
-
-            if (!dfs(edge, node));
-        }
-
         return true;
     }
 
-    private void initialize(int[][] edges) {
-        graph = new HashMap<>();
-        visited = new HashSet<>();
+    class UnionFind {
+        int[] root;
+        int[] rank;
 
-        for (int[] edge : edges) {
-            int u = edge[0], v = edge[1];
-            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
-            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
+        UnionFind(int n) {
+            root = new int[n];
+            rank = new int[n];
+            for (int idx = 0; idx < n; ++idx) {
+                root[idx] = idx;
+                rank[idx] = 1;
+            }
+        }
+
+        boolean union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+
+            if (rootX == rootY) {
+                return false;
+            }
+
+            if (rank[rootX] > rank[rootY]) {
+                root[rootY] = rootX;
+            } else if (rank[rootY] > rank[rootX]) {
+                root[rootX] = rootY;
+            } else {
+                root[rootY] = rootX;
+                rank[rootX] += 1;
+            }
+            return true;
+        }
+
+        int find(int x) {
+            if (x == root[x]) {
+                return x;
+            }
+            return root[x] = find(root[x]);
         }
     }
 }

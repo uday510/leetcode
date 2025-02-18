@@ -3,6 +3,7 @@ class Solution {
     boolean[] visited;
     int numComponents;
     public int countComponents(int n, int[][] edges) {
+        if (n == 0) return 0;
         initialize(n, edges);
 
         for (int idx = 0; idx < n; ++idx) {
@@ -18,7 +19,7 @@ class Solution {
     private void dfs(int node) {
         visited[node] = true;
 
-        for (int neighbor : adjList[node]) {
+        for (Integer neighbor : adjList[node]) {
             if (!visited[neighbor]) {
                 dfs(neighbor);
             }

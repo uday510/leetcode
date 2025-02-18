@@ -2,28 +2,16 @@ class Solution {
     public String smallestNumber(String pattern) {
         Stack<Integer> stack = new Stack<>();
         StringBuilder result = new StringBuilder();
-        int idx;
 
-        for (idx = 0; idx < pattern.length(); ++idx) {
+        for (int idx = 0; idx <= pattern.length(); ++idx) {
             stack.push(idx + 1);
 
-            if (pattern.charAt(idx) == 'D') {
-                continue;
+            if (idx == pattern.length() || pattern.charAt(idx) == 'I') {
+                 while (!stack.isEmpty()) {
+                    result.append(stack.pop());
+                }
             }
-
-            removeAndAddToResult(stack, result);
         }
-
-        stack.push(idx + 1);
-
-        removeAndAddToResult(stack, result);
-
         return result.toString();
-    }
-
-    private void removeAndAddToResult(Stack<Integer> stack, StringBuilder sb) {
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
     }
 }

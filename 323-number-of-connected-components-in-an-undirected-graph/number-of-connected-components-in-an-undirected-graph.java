@@ -1,18 +1,18 @@
 class Solution {
     List<Integer>[] adjList;
     boolean[] visited;
-    int numComponets;
+    int numComponents;
     public int countComponents(int n, int[][] edges) {
         initialize(n, edges);
 
         for (int idx = 0; idx < n; ++idx) {
             if (!visited[idx]) {
-                numComponets++;
+                numComponents++;
                 dfs(idx);
             }
         }
 
-        return numComponets;
+        return numComponents;
     }
 
     private void dfs(int node) {
@@ -28,7 +28,7 @@ class Solution {
     private void initialize(int n, int[][] edges) {
         adjList = new ArrayList[n];
         visited = new boolean[n];
-        numComponets = 0;
+        numComponents = 0;
 
         for (int idx = 0; idx < n; ++idx) {
             adjList[idx] = new ArrayList<>();

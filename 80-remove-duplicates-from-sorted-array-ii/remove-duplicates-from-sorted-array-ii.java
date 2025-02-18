@@ -10,13 +10,14 @@ class Solution {
                 count++;
             } else {
                 count = 1;
-                prev = curr;
             }
-
+            
             if (count <= 2) {
                 nums[index] = curr;
                 index++;
             } 
+
+            prev = curr;
         }
 
         return index;

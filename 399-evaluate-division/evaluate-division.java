@@ -1,62 +1,58 @@
 class Solution {
-    Map<String, List<String>> graph;
+    Map<String, List<String[]>> graph;
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        graph = new HashMap<>();
+        buildGraph(equations, values, queries);
+        double[] result = new double[queries.size()];
 
-        buildGraph(equations, values);
-
-        int n = queries.size();
-        var res = new double[n];
-        
-        for (int i = 0; i < n; ++i) {
-            List<String> query = queries.get(i);
+        for (int idx = 0; idx < queries.size(); ++idx) {
+            List<String> query = queries.get(idx);
             String src = query.get(0);
             String dest = query.get(1);
 
-            res[i] = dfs(src, dest, new HashSet<>());
+            double distance = dfs(src, dest, new HashSet<String>());
+            result[idx] = distance;
         }
-        return res;
+
+        return result;
     }
 
-    private double dfs(String src, String dest, Set<String> vis) {
-        if (!graph.containsKey(src) || !graph.containsKey(dest) || vis.contains(src)) {
-            return -1;
+    private double dfs(String src, String dest, Set<String> visited) {
+        if (!graph.containsKey(src) || !graph.containsKey(dest)) {
+            return -1.0;
         }
 
         if (src.equals(dest)) {
-            return 1;
+            return 1.0;
         }
 
-        vis.add(src);
-        List<String> neighbors = graph.get(src);
-        for (int i = 0; i < neighbors.size(); i += 2) {
-            String nei = neighbors.get(i);
-            double val = Double.parseDouble(neighbors.get(i + 1));
+        for (String[] neighbor : graph.get(src)) {
+            String next = neighbor[0];
+            double dist = Double.parseDouble(neighbor[1]);
+            if (!visited.add(next)) {
+                continue;
+            }
 
-            double res = dfs(nei, dest, vis);
+            double value = dfs(next, dest, visited);
 
-            if (res != -1) {
-                return val * res;
+            if (value != -1.0) {
+                return dist * value;
             }
         }
-        return -1;
+
+        return -1.0;
     }
 
-    private void buildGraph(List<List<String>> equations, double[] values) {
-        int n = equations.size();
+    private void buildGraph(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        graph = new HashMap<>();
 
-        for(int i = 0; i < n; ++i) {
-            List<String> equation = equations.get(i);
-            
+        for (int idx = 0; idx < equations.size(); ++idx) {
+            List<String> equation = equations.get(idx);
             String src = equation.get(0);
             String dest = equation.get(1);
-            Double dist =  values[i];
+            double dist = values[idx];
 
-            graph.computeIfAbsent(src, k -> new ArrayList<>()).add(dest);
-            graph.get(src).add(String.valueOf(dist));
-
-            graph.computeIfAbsent(dest, k -> new ArrayList<>()).add(src);
-            graph.get(dest).add(String.valueOf(1/dist));
+            graph.computeIfAbsent(src, k -> new ArrayList<>()).add(new String[]{dest, String.valueOf(dist)});
+            graph.computeIfAbsent(dest, k -> new ArrayList<>()).add(new String[]{src, String.valueOf(1.0/dist)});
         }
     }
 }

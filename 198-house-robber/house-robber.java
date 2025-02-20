@@ -1,25 +1,19 @@
 class Solution {
-    int[]dp;
+
+    int[] nums;
+    int[] dp;
+    int len;
+
     public int rob(int[] nums) {
+        int t1 = 0;
+        int t2 = nums[0];
 
-        dp = new int[nums.length];
-
-        Arrays.fill(dp, -1);
-
-       return dfs(0, nums); 
-    }
-    private int dfs(int i, int[] nums) {
-        if (i >= nums.length) {
-            return 0;
+        for (int idx = 1; idx < nums.length; ++idx) {
+            int next = Math.max(t1 + nums[idx], t2);
+            t1 = t2;
+            t2 = next;
         }
 
-        if (dp[i] != -1) {
-            return dp[i];
-        }
-
-
-        int take = nums[i] + dfs(i + 2, nums);
-        int dont = dfs(i + 1, nums);
-        return dp[i] = Math.max(take, dont);
+        return Math.max(t1, t2);
     }
 }

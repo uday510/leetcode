@@ -1,21 +1,31 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        int maxCount = 0;
-        int maxKey = 0;
+        int majorityElement = -1;
+        int count = 0;
 
-        for (int num : nums) {
-           // put(key, value)
-           int key = num;
-           int value = map.getOrDefault(key, 0);
-           map.put(key, value + 1);
+        for (int idx = 0; idx < nums.length; ++idx) {
+            if (count == 0) {
+                majorityElement = nums[idx];
+            }
 
-           if (map.get(key) > maxCount) {
-                maxKey = key;
-                maxCount = map.get(key);
-           }
+            if (majorityElement == nums[idx]) {
+                count++;
+            } else {
+                count--;
+            }
         }
 
-        return maxKey;
+        return majorityElement;
     }
 }
+
+/***
+
+majorityElement = 2
+count = 1
+
+[2,2,1,1,1,2,2]
+
+
+
+ */

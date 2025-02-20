@@ -1,47 +1,35 @@
 class Solution {
+    List<int[]>[] adjList;
+    Set<Integer> visited;
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        Graph g = new Graph(edges, false);
-        return GraphSearch.bfs(g, source, destination);
-    }
-}
-
-class Graph {
-    private final Map<Integer, List<Integer>> graph;
-
-    public Graph(int[][] edges, boolean isDirected) {
-        graph = new HashMap<>();
-        for (int[] edge : edges) {
-            int u = edge[0], v = edge[1];
-            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
-            if (!isDirected) {
-                graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
-            }
+        adjList = new ArrayList[n];
+        visited = new HashSet<>();
+        for (int idx = 0; idx < n; ++idx) {
+            adjList[idx] = new ArrayList<>();
         }
+
+        for (int[] edge : edges) {
+            int src = edge[0];
+            int dest = edge[1];
+            adjList[src].add(new int[]{dest});
+            adjList[dest].add(new int[]{src});
+        }
+
+        return dfs(source, destination);
     }
 
-    public Map<Integer, List<Integer>> getGraph() {
-        return graph;
-    }
-}
+    private boolean dfs(int node, int destination) {
+        if (!visited.add(node)) {
+            return false;
+        }
 
-class GraphSearch {
-    public static boolean bfs(Graph g, int start, int target) {
-        if (start == target) return true;
+        if (node == destination) {
+            return true;
+        }
 
-        Map<Integer, List<Integer>> graph = g.getGraph();
-        Set<Integer> visited = new HashSet<>();
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(start);
-        visited.add(start);
-
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            if (node == target) return true;
-
-            for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
-                if (visited.add(neighbor)) {
-                    queue.offer(neighbor);
-                }
+        for (int[] neighbor : adjList[node]) {
+            if (dfs(neighbor[0], destination)) {
+                return true;
             }
         }
 

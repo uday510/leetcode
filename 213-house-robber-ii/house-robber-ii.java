@@ -9,7 +9,6 @@ class Solution {
         int start0 = dfs(1, 0);
         int start1 = dfs(0, 1);
 
-        System.out.println(Arrays.toString(dp));
         return Math.max(Math.max(start0, nums[nums.length - 1]), start1);
     }
 

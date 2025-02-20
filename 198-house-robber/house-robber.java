@@ -1,9 +1,4 @@
 class Solution {
-
-    int[] nums;
-    int[] dp;
-    int len;
-
     public int rob(int[] nums) {
         int t1 = 0;
         int t2 = nums[0];

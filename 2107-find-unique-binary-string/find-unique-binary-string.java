@@ -1,13 +1,33 @@
 class Solution {
+    Set<String> strings;
+    String result;
     public String findDifferentBinaryString(String[] nums) {
-        int len = nums.length;
-        char[] arr = new char[len];
+        strings = new HashSet<>();
 
-        for (int idx = 0; idx < len; ++idx) {
-            char ch = nums[idx].charAt(idx);
-            arr[idx] = ch == '0' ? '1' : '0';
+        for (String str : nums) {
+            strings.add(str);
         }
 
-        return new String(arr);
+        int n = nums[0].length();
+
+        dfs(0, n, new StringBuilder());
+        
+        return result;
+    }
+
+    private void dfs(int idx, int n, StringBuilder sb) {
+        if (idx == n) {
+            if (!strings.contains(sb.toString())) {
+                result = sb.toString();
+            }
+            return;
+        }
+        
+        sb.append("0");
+        dfs(idx + 1, n, sb);
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("1");
+        dfs(idx + 1, n, sb);
+        sb.deleteCharAt(sb.length() - 1);
     }
 }

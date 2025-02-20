@@ -1,41 +1,38 @@
 class Solution {
-    Map<String, List<TreeNode>> dp;
+    private List<TreeNode>[][] dp;
     public List<TreeNode> generateTrees(int n) {
-        dp = new HashMap<>();
-       return dfs(1, n);
-    }
+        dp = new ArrayList[n + 1][n + 1];
 
+        return dfs(1, n);
+    }
     private List<TreeNode> dfs(int left, int right) {
         if (left > right) {
             return Collections.singletonList(null);
         }
 
         if (left == right) {
-            return Collections.singletonList(new TreeNode(left));
+            return Collections.singletonList(new TreeNode(right));
         }
 
-        String key = left + "-" + right;
-        if (dp.containsKey(key)) {
-            return dp.get(key);
+        if (dp[left][right] != null) {
+            return dp[left][right];
         }
 
-        var list = new ArrayList<TreeNode>();
+        var trees = new ArrayList<TreeNode>();
 
         for (int idx = left; idx <= right; ++idx) {
-            List<TreeNode> leftSubTree = dfs(left, idx - 1);
-            List<TreeNode> rightSubTree = dfs(idx + 1, right);
 
-            for (var leftNode : leftSubTree) {
-                for (var rightNode : rightSubTree) {
-                    TreeNode rootNode = new TreeNode(idx, leftNode, rightNode);
+            var leftSubTrees = dfs(left, idx - 1);
+            var rightSubTrees = dfs(idx + 1, right);
 
-                    list.add(rootNode);
+            for (var leftSubTree : leftSubTrees) {
+                for (var rightSubTree : rightSubTrees) {
+                    var tree =  new TreeNode(idx, leftSubTree, rightSubTree);
+                    trees.add(tree);
                 }
             }
         }
-        
-        dp.put(key, list);
-        
-        return list;
+
+        return trees;
     }
 }

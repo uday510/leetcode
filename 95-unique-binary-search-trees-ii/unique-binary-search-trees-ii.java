@@ -1,5 +1,7 @@
 class Solution {
+    Map<String, List<TreeNode>> dp;
     public List<TreeNode> generateTrees(int n) {
+        dp = new HashMap<>();
        return dfs(1, n);
     }
 
@@ -10,6 +12,11 @@ class Solution {
 
         if (left == right) {
             return Collections.singletonList(new TreeNode(left));
+        }
+
+        String key = left + "-" + right;
+        if (dp.containsKey(key)) {
+            return dp.get(key);
         }
 
         var list = new ArrayList<TreeNode>();
@@ -26,6 +33,9 @@ class Solution {
                 }
             }
         }
+        
+        dp.put(key, list);
+        
         return list;
     }
 }

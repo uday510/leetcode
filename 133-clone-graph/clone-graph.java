@@ -1,48 +1,26 @@
-/*
-// Definition for a Node.
-class Node {
-    public int val;
-    public List<Node> neighbors;
-    public Node() {
-        val = 0;
-        neighbors = new ArrayList<Node>();
-    }
-    public Node(int _val) {
-        val = _val;
-        neighbors = new ArrayList<Node>();
-    }
-    public Node(int _val, ArrayList<Node> _neighbors) {
-        val = _val;
-        neighbors = _neighbors;
-    }
-}
-*/
-
 class Solution {
-    // oldNode, newNode
-    Map<Node, Node> map;
+    Map<Node, Node> visited;
     public Node cloneGraph(Node node) {
-        map = new HashMap<>();
-        return dfs(node);
+        visited = new HashMap<>();
+
+        return dfs(node);        
     }
-    private Node dfs(Node oldNode) {
-        if (oldNode == null) {
-            return oldNode;
+
+    private Node dfs(Node node) {
+        if (node == null) {
+            return null;
         }
 
-        if (map.containsKey(oldNode)) {
-            return map.get(oldNode);
-            // return newNode corresponding to oldNode
+        if (visited.containsKey(node)) {
+            return visited.get(node);
         }
 
-        Node cloned = new Node(oldNode.val);
-        map.put(oldNode, cloned);
-        for (var oldNeighbor: oldNode.neighbors) {
-            Node newNeighbor = dfs(oldNeighbor);
-
-            cloned.neighbors.add(newNeighbor);
+        Node clonedNode = new Node(node.val, new ArrayList<>());
+        visited.put(node, clonedNode);
+        for (Node neighbor : node.neighbors) {
+            clonedNode.neighbors.add(dfs(neighbor));
         }
 
-        return cloned;
+        return clonedNode;
     }
 }

@@ -1,6 +1,6 @@
 class Solution {
     List<List<Integer>> paths;
-    List<int[]>[] adjList;
+    List<Integer>[] adjList;
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
         paths = new ArrayList<>();
 
@@ -13,7 +13,7 @@ class Solution {
         for (int idx = 0; idx < graph.length; ++idx) {
             adjList[idx] = new ArrayList<>();
             for (int node : graph[idx]) {
-                adjList[idx].add(new int[]{node});
+                adjList[idx].add(node);
             }
         }
 
@@ -27,8 +27,8 @@ class Solution {
             return;
         }
 
-        for (int[] neighbor : adjList[node]) {
-            dfs(neighbor[0], dest, path);
+        for (int neighbor : adjList[node]) {
+            dfs(neighbor, dest, path);
             path.removeLast();
         }
     }

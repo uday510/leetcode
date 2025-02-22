@@ -1,22 +1,25 @@
 class Solution {
     public Node connect(Node root) {
-        if (root == null) return root;
-        var queue = new LinkedList<Node>();
-        queue.offer(root);
+        Node dummyNode = new Node(0);
+        Node tempNode = dummyNode;
+        Node currNode = root;
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int idx = 0; idx < size; ++idx) {
-                Node currNode = queue.poll();
-                if (currNode == null) continue;
-
-                if (idx < size - 1) currNode.next = queue.peek();
-
-                queue.offer(currNode.left);
-                queue.offer(currNode.right);
+        while (currNode != null) {
+            if (currNode.left != null) {
+                tempNode.next = currNode.left;
+                tempNode = tempNode.next;
+            }
+            if (currNode.right != null) {
+                tempNode.next = currNode.right;
+                tempNode = tempNode.next;
+            }
+            currNode = currNode.next;
+            if (currNode == null) {
+                currNode = dummyNode.next;
+                dummyNode.next = null;
+                tempNode = dummyNode;
             }
         }
-
         return root;
     }
 }

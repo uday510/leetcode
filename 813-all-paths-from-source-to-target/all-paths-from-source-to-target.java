@@ -1,35 +1,32 @@
 class Solution {
-    List<List<Integer>> paths;
-    List<Integer>[] adjList;
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        paths = new ArrayList<>();
+        List<List<Integer>> paths = new ArrayList<>();
+        int n = graph.length;
 
         if (graph == null || graph.length == 0) {
             return paths;
         }
 
-        adjList = new ArrayList[graph.length];
+        Queue<List<Integer>> queue = new LinkedList<>();
 
-        for (int idx = 0; idx < graph.length; ++idx) {
-            adjList[idx] = new ArrayList<>();
-            for (int node : graph[idx]) {
-                adjList[idx].add(node);
+        List<Integer> path = new ArrayList(Arrays.asList(0));
+
+        queue.offer(path);
+
+        while (!queue.isEmpty()) {
+            path = queue.poll();
+
+            if (path.getLast() == n - 1) {
+                paths.add(new ArrayList<>(path));
+            }
+
+            for (int neighbor : graph[path.getLast()]) {
+                List<Integer> newPath = new ArrayList<>(path);
+                newPath.add(neighbor);
+                queue.offer(new ArrayList<>(newPath));
             }
         }
 
-        dfs(0, graph.length - 1, new ArrayList<>());
         return paths;
-    }
-    private void dfs(int node, int dest, ArrayList<Integer> path) {
-        path.add(node);
-        if (node == dest) {
-            paths.add(new ArrayList<>(path));
-            return;
-        }
-
-        for (int neighbor : adjList[node]) {
-            dfs(neighbor, dest, path);
-            path.removeLast();
-        }
     }
 }

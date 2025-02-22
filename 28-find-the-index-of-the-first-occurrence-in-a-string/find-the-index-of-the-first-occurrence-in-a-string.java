@@ -1,18 +1,23 @@
 class Solution {
     public int strStr(String haystack, String needle) {
-        int m = needle.length();
-        int n = haystack.length();
+        
+        for (int idx = 0; idx < haystack.length(); ++idx) {
+            int prev = idx;
+            int index = 0;
 
-        for (int windowStart = 0; windowStart <  n - m + 1; ++windowStart) {
-            
-            int idx = 0;
-            while (idx < m && haystack.charAt(windowStart + idx) == needle.charAt(idx)) {
-                ++idx;
+            while (idx < haystack.length() && index < needle.length()) {
+                if (haystack.charAt(idx) == needle.charAt(index)) {
+                    System.out.println(idx + " " + index);
+                    idx++;
+                    index++;
+                } else {
+                    System.out.println("-------");
+                    break;
+                }
             }
 
-            if (idx == m) {
-                return windowStart;
-            }
+            if (index == needle.length()) return prev;
+            idx = prev;
         }
 
         return -1;

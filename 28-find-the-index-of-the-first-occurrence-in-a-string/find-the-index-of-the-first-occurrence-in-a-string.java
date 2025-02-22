@@ -1,25 +1,22 @@
 class Solution {
     public int strStr(String haystack, String needle) {
-        
-        for (int idx = 0; idx < haystack.length(); ++idx) {
-            int prev = idx;
+        int idx = 0;
+
+        while (idx < haystack.length()) {
+
             int index = 0;
 
-            while (idx < haystack.length() && index < needle.length()) {
-                if (haystack.charAt(idx) == needle.charAt(index)) {
-                    System.out.println(idx + " " + index);
-                    idx++;
+            while ((index + idx) < haystack.length() && index < needle.length()) {
+                if (haystack.charAt(index + idx) == needle.charAt(index)) {
                     index++;
                 } else {
-                    System.out.println("-------");
                     break;
                 }
             }
+            if (index == needle.length()) return idx;
 
-            if (index == needle.length()) return prev;
-            idx = prev;
+            ++idx;
         }
-
         return -1;
     }
 }

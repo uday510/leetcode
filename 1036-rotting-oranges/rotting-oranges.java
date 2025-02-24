@@ -1,75 +1,58 @@
 class Solution {
 
-    int[][] Dirs = {{0,1},{1,0},{0,-1},{-1,0}};
-    Queue<int[]> queue;
-    int rows;
-    int cols;
-    int freshOranges;
-    int minutes;
+    private final int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    private boolean[][] visited;
+    private int m;
+    private int n;
 
     public int orangesRotting(int[][] grid) {
-        intialize(grid);
-
-        if (freshOranges == 0) {
-            return 0;
+        m = grid.length;
+        n = grid[0].length;
+        int freshOranges = 0;
+        int minutes = -1;
+        Queue<int[]> queue = new ArrayDeque<>();
+        visited = new boolean[m][n];
+        
+        for (int row = 0; row < m; ++row) {
+            for (int col = 0; col < n; ++col) {
+                int curr = grid[row][col];
+                if (curr == 2) {
+                    queue.offer(new int[]{row, col});
+                    visited[row][col] = true;
+                } else if (curr == 1) {
+                    ++freshOranges;
+                }
+            }
         }
-
+        
+        if (freshOranges == 0) return 0;
+        queue.offer(new int[]{-1, -1});
+        
         while (!queue.isEmpty()) {
-            int[] current = queue.poll();
+            int[] arr = queue.poll();
 
-            if (current[0] == -1 && current[1] == -1) {
-                minutes++;
+            if (arr[0] == -1 && arr[1] == -1) {
+                ++minutes;
                 if (!queue.isEmpty()) {
                     queue.offer(new int[]{-1, -1});
                 }
-                continue;
             }
-            
 
-            for (int[] dir : Dirs) {
-                int newX = dir[0] + current[0];
-                int newY = dir[1] + current[1];
+            for (int[] dir : dirs) {
+                int R = dir[0] + arr[0];
+                int C = dir[1] + arr[1];
 
-                if (!valid(newX, newY, grid)) {
-                    continue;
-                }
+                if (!isValid(R, C, grid)) continue;
 
-                grid[newX][newY] = 2;
-
-                System.out.println(newX + " " + newY);
-                freshOranges--;
-                queue.offer(new int[]{newX, newY});
-            }           
+                queue.offer(new int[]{R, C});
+                visited[R][C] = true;
+                --freshOranges;
+            }
         }
-
+        
         return freshOranges == 0 ? minutes : -1;
     }
-
-    private void intialize(int[][] grid) {
-        queue = new LinkedList<>();
-        freshOranges = 0;
-        rows = grid.length;
-        cols = grid[0].length;
-        minutes = -1;
-
-        for (int rowIdx = 0; rowIdx < rows; ++rowIdx) {
-            for (int colIdx = 0; colIdx < cols; ++colIdx) {
-                int current = grid[rowIdx][colIdx];
-
-                if (current == 1) {
-                    freshOranges++;
-                }
-
-                if (current == 2) {
-                    queue.offer(new int[]{rowIdx, colIdx});
-                }
-            }
-        }
-
-        queue.offer(new int[]{-1, -1});
-    }
-
-    private boolean valid(int x,  int y, int[][] grid) {
-        return !(x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] == 2 || grid[x][y] == 0);
+    private  boolean isValid(int R, int C, int[][] grid) {
+        return !(R < 0 || R >= m || C < 0 || C >= n || grid[R][C] == 0 || visited[R][C]);
     }
 }

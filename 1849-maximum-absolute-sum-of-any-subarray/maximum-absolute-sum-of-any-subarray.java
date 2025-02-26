@@ -1,21 +1,17 @@
 class Solution {
-    public int maxAbsoluteSum(int[] nums) {
-        int currSum = nums[0];
-        int maxSum = currSum;
+    int kadane(int[] nums, int sign) {
+        int maxSum = 0;
+        int currSum = 0;
 
-        for (int idx = 1; idx < nums.length; ++idx) {
-            currSum = Math.max(nums[idx], currSum + nums[idx]);
+        for (int num : nums) {
+            currSum += num * sign;
             maxSum = Math.max(maxSum, currSum);
+            currSum = Math.max(currSum, 0);
         }
 
-        currSum = nums[0];
-        int minSum = currSum;
-
-        for (int idx = 1; idx < nums.length; ++idx) {
-            currSum = Math.min(nums[idx], currSum + nums[idx]);
-            minSum = Math.min(currSum, minSum);
-        }
-        
-        return Math.max(maxSum, Math.abs(minSum));
+        return maxSum;
+    }
+    public int maxAbsoluteSum(int[] nums) {
+        return Math.max(kadane(nums, 1), kadane(nums, -1));
     }
 }

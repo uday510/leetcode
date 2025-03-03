@@ -1,31 +1,33 @@
 class Solution {
+    Map<Integer, Integer> map;
+    int maxId;
     public int[][] mergeArrays(int[][] nums1, int[][] nums2) {
-       Map<Integer, Integer> map = new HashMap<>();
-       int maxId = 0;
+        map = new HashMap<>();
+        maxId = 0;
 
-       for (int[] arr : nums1) {
-        map.merge(arr[0], arr[1], Integer::sum);
-        maxId = Math.max(arr[0], maxId);
-       }
-
-       for (int[] arr : nums2) {
-        map.merge(arr[0], arr[1], Integer::sum);
-        maxId = Math.max(arr[0], maxId);
-       }
+        merge(nums1);
+        merge(nums2);
 
         var result = new ArrayList<int[]>();
 
         for (int idx = 0; idx < maxId; ++idx) {
-            if (map.containsKey(idx + 1))
+            if (map.containsKey(idx + 1)) {
                 result.add(new int[]{idx + 1, map.get(idx + 1)});
+            }
         }
 
-        int[][] arr = new int[result.size()][2];
-
+        var arr = new int[result.size()][2];
         for (int idx = 0; idx < result.size(); ++idx) {
             arr[idx] = result.get(idx);
         }
 
         return arr;
+    }
+
+    private void merge(int[][] nums) {
+        for (int[] arr : nums) {
+            map.merge(arr[0], arr[1], Integer::sum);
+            maxId = Math.max(arr[0], maxId);
+        }
     }
 }

@@ -1,9 +1,5 @@
 class Solution {
     public boolean checkPowersOfThree(int n) {
-        int num = n;
-
-        while (num > 0 && num % 3 != 2) num /= 3;
-        
-        return num % 3 != 2;
+        return (n == 0 || ( n % 3 != 2 && checkPowersOfThree(n / 3)));
     }
 }

@@ -1,27 +1,18 @@
 class Solution {
-    char WHITE = 'W';
+    private final char WHITE = 'W';
     public int minimumRecolors(String s, int k) {
         int min = 0;
         int cnt = 0;
 
         for (int idx = 0; idx < k; ++idx) {
-            if (s.charAt(idx) == WHITE) {
-                cnt++;
-            }
+            cnt += s.charAt(idx) == WHITE ? 1 : 0;
         }
 
-        if (cnt == 0) return 0;
         min = cnt;
 
         for (int idx = k; idx < s.length(); ++idx) {
-            if (s.charAt(idx-k) == WHITE) {
-                cnt--;
-            }
-
-            if (s.charAt(idx) == WHITE) {
-                cnt++;
-            }
-
+            cnt += s.charAt(idx-k) == WHITE ? -1 : 0;
+            cnt += s.charAt(idx) == WHITE ? 1 : 0;
             min = Math.min(min, cnt);
         }
 
@@ -29,14 +20,3 @@ class Solution {
     }
 }
 
-
-/**
-
-min = 
-cnt = 
-
-idx = 2
-
-W B W B B B W
-
- */

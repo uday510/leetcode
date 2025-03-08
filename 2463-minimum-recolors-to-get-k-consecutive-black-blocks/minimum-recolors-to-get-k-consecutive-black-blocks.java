@@ -8,6 +8,7 @@ class Solution {
             cnt += s.charAt(idx) == WHITE ? 1 : 0;
         }
 
+        if (cnt == 0) return 0;
         min = cnt;
 
         for (int idx = k; idx < s.length(); ++idx) {

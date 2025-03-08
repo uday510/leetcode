@@ -15,6 +15,8 @@ class Solution {
             cnt += s.charAt(idx-k) == WHITE ? -1 : 0;
             cnt += s.charAt(idx) == WHITE ? 1 : 0;
             min = Math.min(min, cnt);
+
+            if (min == 0) return 0;
         }
 
         return min;

@@ -10,7 +10,6 @@ class Solution {
             map.merge(s.charAt(right), 1, Integer::sum);
             System.out.println(map);
             while (left < right && map.size() == 3) {
-                
                 char ch = s.charAt(left);
                 map.put(ch, map.get(ch) - 1);
 

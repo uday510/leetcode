@@ -1,12 +1,6 @@
 class Solution {
     public int maximumCount(int[] nums) {
-        int c1 = bs(0, nums) - 1;
-        int c2 = bs(1, nums);
-        
-        int negativeCount = c1 + 1;
-        int positiveCount = nums.length - c2; 
-        System.out.println(c1 + " " + c2 + " " + negativeCount + " " + positiveCount);
-        return Math.max(negativeCount, positiveCount);
+        return Math.max(bs(0, nums), nums.length - bs(1, nums));
     }
 
     private int bs(int target, int[] nums) {

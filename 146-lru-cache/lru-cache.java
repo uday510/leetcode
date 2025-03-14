@@ -1,71 +1,67 @@
-class LRUCache {
-
-    Node head;
-    Node tail;
+class Node {
+    int key;
+    int value;
+    Node prev;
+    Node next;
+    public Node(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+public class LRUCache {
     Map<Integer, Node> cache;
     int capacity;
+    Node head;
+    Node tail;
 
     public LRUCache(int capacity) {
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        cache = new HashMap<>();
+        this.cache = new HashMap<>(capacity);
         this.capacity = capacity;
-
-        head.next = tail;
-        tail.prev = head;
+        this.head = new Node(-1, -1);
+        this.tail = new Node(-1, -1);
+        this.head.next = this.tail;
+        this.tail.prev = this.head;
     }
-    
-    public int get(int key) {   
-        int value = -1;
 
-        if (cache.containsKey(key)) {
-            Node node = cache.get(key);
-            remove(node);
-            add(node);
-            value = node.value;
+    public int get(int key) {
+
+        if (!cache.containsKey(key)) {
+            return -1;
         }
 
-        return value;
+        Node node = cache.get(key);
+        remove(node);
+        addToTail(node);
+        return node.value;
     }
-    
+
     public void put(int key, int value) {
         if (cache.containsKey(key)) {
             Node node = cache.get(key);
+            node.value = value;
             remove(node);
-        } else if (cache.size() == capacity) {
-            remove(tail.prev);
+            addToTail(node);
+        } else {
+            if (cache.size() == capacity) {
+                Node lru = head.next;
+                this.cache.remove(lru.key);
+                remove(lru);
+            }
+            Node node = new Node(key, value);
+            cache.put(key, node);
+            addToTail(node);
         }
-
-        add(new Node(key, value));
     }
 
-    private void add(Node node) {
-        cache.put(node.key, node);
-
-        Node headNext = head.next;
-        node.next = headNext;
-        node.prev = head;
-        headNext.prev = node;
-        head.next = node;
+    private void addToTail(Node node) {
+        this.tail.prev.next = node;
+        node.prev = this.tail.prev;
+        node.next = tail;
+        tail.prev = node;
     }
 
     private void remove(Node node) {
-        cache.remove(node.key);
-
         node.prev.next = node.next;
         node.next.prev = node.prev;
-    }
-
-    private class Node {
-
-        Node prev;
-        int key;
-        int value;
-        Node next;
-
-        Node (int key, int value) {
-            this.key = key;
-            this.value = value;
-        }
     }
 }

@@ -8,7 +8,7 @@ class Solution {
             if (ch == 'L') L++;
             else R++;
 
-            if (L == R && L > 0) cnt++;
+            if (L == R) cnt++;
         }
 
         return cnt;

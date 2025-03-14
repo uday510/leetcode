@@ -3,7 +3,9 @@ class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         words = new HashSet<>(wordList);
         Queue<String> queue = new ArrayDeque<>();
-        int level = 1;
+        int level = 0;
+
+        if (!words.contains(endWord)) return 0;
 
         words.remove(beginWord);
         queue.offer(beginWord);
@@ -14,13 +16,10 @@ class Solution {
 
             for (int idx = 0; idx < size; ++idx) {
                 String str = queue.poll();
+                if (str.equals(endWord)) return level;
                 List<String> neighbors = getNeighbors(str);
-                System.out.println(str + " " + neighbors);
 
                 for (String neighbor : neighbors) {
-                    if (neighbor.equals(endWord)) {
-                        return level;
-                    }
                     queue.offer(neighbor);
                 }
             }

@@ -1,41 +1,57 @@
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Queue<String> queue = new LinkedList<>();
-        Set<String> set = new HashSet<>(wordList);
-        set.remove(beginWord);
-        queue.add(beginWord);
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> words = new HashSet<>(wordList);
+
+        if (!words.contains(endWord)) return 0;
+
+        queue.offer(beginWord);
+        words.remove(beginWord);
         int level = 0;
 
         while (!queue.isEmpty()) {
             int size = queue.size();
-            ++level;
-            for (int i = 0; i < size; ++i) {
-                String s = queue.poll();
-                if (s.equals(endWord)) return level;
-                List<String> neighbors = getNeighbors(s);
-                for (String nei : neighbors) {
-                    if (set.contains(nei)) {
-                        set.remove(nei);
-                        queue.offer(nei);
+            level++;
+
+            for (int idx = 0; idx < size; ++idx) {
+                String word = queue.poll();
+                if (word.equals(endWord)) {
+                    return level;
+                }
+
+                List<String> neighbors = getNeighbors(word, words);
+                for (String neighbor : neighbors) {
+
+                    if (words.contains(neighbor)) {
+                        queue.offer(neighbor);
+                        words.remove(neighbor);
                     }
                 }
             }
         }
+
         return 0;
     }
-    public List<String> getNeighbors(String s) {
-        char[] chars = s.toCharArray();
-        List<String> list = new ArrayList<>();
 
-        for (int i = 0; i < chars.length; ++i) {
-            char tmp = chars[i];
-            for (char c = 'a'; c <= 'z'; ++c) {
-                chars[i] = c;
-                String nei = new String(chars);
-                list.add(nei);
-            }
-            chars[i] = tmp;
+    private List<String> getNeighbors(String word, Set<String> words) {
+        List<String> neighbors = new ArrayList<>();
+
+        char[] chars = word.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            char original = chars[i];
+
+           for (char j = 'a'; j <= 'z'; j++) {
+               if (original == j) continue;
+               chars[i] = j;
+               String newWord = new String(chars);
+               if (words.contains(newWord))
+                   neighbors.add(newWord);
+           }
+
+           chars[i] = original;
         }
-        return list;
+
+        return neighbors;
     }
 }

@@ -3,18 +3,21 @@ class Solution {
         Map<String, List<String>> map = new HashMap<>();
 
         for (String str : strs) {
-            char[] chars = str.toCharArray();
-            Arrays.sort(chars);
-            String key = new String(chars);
+            int[] count = new int[26];
 
-            map.computeIfAbsent(key, k -> new ArrayList<>()).add(str);
+            for (char ch : str.toCharArray()) {
+                count[ch - 'a']++;
+            }
+
+            StringBuilder key = new StringBuilder();
+            for (int i : count) {
+                key.append(i);
+                key.append('#');
+            }
+
+            map.computeIfAbsent(key.toString(), k -> new ArrayList<>()).add(str);
         }
 
-        List<List<String>> result = new ArrayList<>();
-        for (String key : map.keySet()) {
-            result.add(map.get(key));
-        }
-
-        return result;
+        return new ArrayList<>(map.values());
     }
 }

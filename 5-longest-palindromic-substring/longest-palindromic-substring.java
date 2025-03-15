@@ -1,23 +1,29 @@
 class Solution {
     public String longestPalindrome(String s) {
-        int len = s.length();
-        var dp = new boolean[len][len];
+        int[] longest = {0, 1};
 
-        int startIdx = 0;
-        int endIdx = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            int[] odd = getLength(i - 1, i + 1, s);
+            int[] even = getLength(i, i + 1, s);
 
-        for (int idx1 = len - 1; idx1 > -1; --idx1) {
-            for (int idx2 = idx1 + 1; idx2 < len; ++idx2) {
-                dp[idx1][idx2] = s.charAt(idx1) == s.charAt(idx2) && 
-                                (idx2 - idx1 <= 2 || dp[idx1 + 1][idx2 - 1]);
-
-                if (dp[idx1][idx2] && idx2 - idx1 > endIdx - startIdx) {
-                    startIdx = idx1;
-                    endIdx = idx2;
-                }
-            }
+            int[] current = odd[1] - odd[0] > even[1] - even[0] ? odd : even;
+            longest = current[1] - current[0] > longest[1] - longest[0] ? current : longest;
         }
 
-        return s.substring(startIdx, endIdx + 1);
+        return s.substring(longest[0], longest[1]);
+    }
+
+    private int[] getLength(int left, int right, String s) {
+
+        while (left > -1 && right < s.length()) {
+            if (s.charAt(left) != s.charAt(right)) {
+                break;
+            }
+
+            left--;
+            right++;
+        }
+
+        return new int[]{left + 1, right};
     }
 }

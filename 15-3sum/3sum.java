@@ -1,31 +1,43 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> list = new ArrayList<>();
         Arrays.sort(nums);
-
-        for (int i = 0; i < nums.length - 2; ++i) {
-            // Skip duplicate 'i' values to avoid duplicate triplets
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
-            twoSum(i, nums, list);
-        }
-
-        return list;
+        return dfs(nums, (long) 0, 3, 0);
     }
 
-    private void twoSum(int i, int[] nums, List<List<Integer>> list) {
-        int j = i + 1, k = nums.length - 1;
+    private List<List<Integer>> dfs(int[] nums, long target, int k, int i) {
+        List<List<Integer>> res = new ArrayList<>();
 
-        while (j < k) {
-            int sum = nums[i] + nums[j] + nums[k];
-            if (sum < 0) j++;
-            else if (sum > 0) k--;
-            else {
-                list.add(Arrays.asList(nums[i], nums[j], nums[k]));
-                j++; k--;
+        if (k == 2) {
+            int left = i, right = nums.length - 1;
+            while (left < right) {
+                long sum = (long) nums[left] + (long) nums[right];
 
-                while (j < k && nums[j] == nums[j - 1]) j++;
-                while (j < k && nums[k] == nums[k + 1]) k--;
+                if (sum < target) left++;
+                else if (sum > target) right--;
+                else {
+                    res.add(Arrays.asList(nums[left], nums[right]));
+                    left++;
+                    right--;
+
+                    while (left < right && nums[left] == nums[left - 1]) left++;
+
+                    while (left < right && nums[right] == nums[right + 1]) right--;
+                }
+            }
+            return res;
+        }
+
+        for (int idx = i; idx < nums.length - (k - 1); ++idx) {
+            if (idx > i && nums[idx] == nums[idx - 1]) continue;
+
+            List<List<Integer>> subResults = dfs(nums, target - nums[idx], k - 1, idx + 1);
+            for (List<Integer> sub : subResults) {
+                List<Integer> temp = new ArrayList<>(sub);
+                temp.add(0, nums[idx]);
+                res.add(temp);
             }
         }
+
+        return res;
     }
 }

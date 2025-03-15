@@ -1,39 +1,37 @@
 class Solution {
-    boolean[][] vis;
-    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
-    int m;
-    int n;
+
+    int numRows;
+    int numCols;
+
     public int numIslands(char[][] grid) {
-        m = grid.length;
-        n = grid[0].length;
-        vis = new boolean[m][n];
-        
-        int islands = 0;
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (!valid(i, j, grid)) {
-                    continue;
-                }
-                ++islands;
-                dfs(i, j, grid);
+        numRows = grid.length;
+        numCols = grid[0].length;
+        int numIslands = 0;
+
+
+        for (int row = 0; row < numRows; ++row) {
+            for (int col = 0; col < numCols; ++col) {
+
+                if (grid[row][col] == '#' || grid[row][col] == '0') continue;
+
+                dfs(row, col, grid);
+                numIslands++;
             }
         }
-        return islands;
-    }
-    private void dfs(int i, int j, char[][] grid) {
-        if (!valid(i, j, grid)) {
-            return;
-        }
-        
-        vis[i][j] = true;
-        for (int[] dir : dirs) {
-            int R = dir[0] + i;
-            int C = dir[1] + j;
 
-            dfs(R, C, grid);
-        }
+        return numIslands;
     }
-    private boolean valid(int i, int j, char[][] grid) {
-        return !(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == '0' || vis[i][j]);
+
+    private void dfs(int row, int col, char[][] grid) {
+
+        if (row < 0 || row >= numRows || col < 0 || col >= numCols 
+            || grid[row][col] == '#' || grid[row][col] == '0') return;
+
+        
+        grid[row][col] = '#';
+        dfs(row + 1, col, grid);
+        dfs(row - 1, col, grid);
+        dfs(row, col + 1, grid);
+        dfs(row, col - 1, grid);
     }
 }

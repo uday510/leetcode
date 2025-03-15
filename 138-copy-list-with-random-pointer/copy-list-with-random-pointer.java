@@ -26,15 +26,13 @@ class Solution {
         Node newNode = newHead;
         Node oldNode = head;
 
-        while (newNode != null && newNode.next != null) {
-            oldNode.next = oldNode.next.next;
-            newNode.next = newNode.next.next;
-            
+         while (newNode != null) {
+            oldNode.next = (oldNode.next != null) ? oldNode.next.next : null;
+            newNode.next = (newNode.next != null) ? newNode.next.next : null;
+
             oldNode = oldNode.next;
             newNode = newNode.next;
         }
-
-        oldNode.next = null;
 
         return newHead;
     }

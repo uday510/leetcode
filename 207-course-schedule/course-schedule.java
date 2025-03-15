@@ -1,51 +1,35 @@
 class Solution {
-    private List<Integer>[] adjList;
-    private Queue<Integer> queue;
-    private int[] indegree;
-    int visited = 0;
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // O(V+E) time complexity | O(V+E) space complexity
-
-        initialize(numCourses);
-        buildGraph(prerequisites);
-        addNodesWithNoPreRequisites();
-
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            removeNodeFromGraph(node);
+        List<Integer>[] adjList = new ArrayList[numCourses];
+        Queue<Integer> queue = new ArrayDeque<>();
+        int[] indegree = new int[numCourses];
+        for (int i = 0; i < numCourses; ++i) {
+            adjList[i] = new ArrayList<>();
         }
 
-        return visited == numCourses;
-    }
-    private void removeNodeFromGraph(int node) {
-        visited++;
-        for (int neighbour : adjList[node]) {
-           indegree[neighbour]--;
-           if (indegree[neighbour] == 0) {
-               queue.offer(neighbour);
-           }
+        for (int[] prerequisite : prerequisites) {
+            adjList[prerequisite[1]].add(prerequisite[0]);
+            ++indegree[prerequisite[0]];
         }
-    }
-    private void addNodesWithNoPreRequisites() {
-        for (int i = 0; i < indegree.length; i++) {
+
+        for (int i = 0; i < numCourses; ++i) {
             if (indegree[i] == 0) {
                 queue.offer(i);
             }
         }
-    }
-    private void buildGraph(int[][] prerequisites) {
-        for (int[] prerequisite : prerequisites) {
-            adjList[prerequisite[1]].add(prerequisite[0]);
-            indegree[prerequisite[0]]++;
-        }
-    }
-    private void initialize(int numCourses) {
-        queue = new LinkedList<>();
-        indegree = new int[numCourses];
-        adjList = new ArrayList[numCourses];
 
-        for (int i = 0; i < numCourses; ++i) {
-            adjList[i] = new ArrayList<>();
+        int visited = numCourses;
+
+        while (!queue.isEmpty()) {
+            int vertex = queue.poll();
+            System.out.println(vertex);
+            --visited;
+            for (int neighbor : adjList[vertex]) {
+                --indegree[neighbor];
+                if (indegree[neighbor] == 0) 
+                    queue.offer(neighbor);
+            }
         }
+        return visited == 0;
     }
 }

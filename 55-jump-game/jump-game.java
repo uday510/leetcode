@@ -1,14 +1,26 @@
 class Solution {
+    int[] dp;
     public boolean canJump(int[] nums) {
-        int len = nums.length;
-        int pos = nums.length - 1;
+        dp = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return dfs(0, nums);
+    }
+    private boolean dfs(int pos, int[] nums) {
+        if (pos > nums.length) return false;
+        if (pos == nums.length - 1) return true;
 
-        for (int idx = len - 1; idx > -1; --idx) {
-            if (idx + nums[idx] >= pos) {
-                pos = idx;
+        if (dp[pos] != -1) return dp[pos] == 1;
+
+        int maxJump = pos + nums[pos];
+
+        for (int nextPos = pos + 1; nextPos <= maxJump; ++nextPos) {
+            if (dfs(nextPos, nums)) {
+                dp[pos] = 1;
+                return true;
             }
         }
 
-        return pos == 0;
+        dp[pos] = 0;
+        return false;
     }
 }

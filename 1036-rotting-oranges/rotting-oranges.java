@@ -20,26 +20,30 @@ class Solution {
         }
 
         if (freshOranges == 0) return 0;
-        queue.offer(new int[] {-1, -1});
+        // queue.offer(new int[] {-1, -1});
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            if (curr[0] == -1 && curr[1] == -1) {
-                ++minutes;
-                if (!queue.isEmpty()) queue.offer(curr);
-                continue;
-            }
-
-            for (int[] dir : dirs) {
-                int R = dir[0] + curr[0];
-                int C = dir[1] + curr[1];
-                if (R < 0 || R >= numRows || C < 0 || C >= numCols || vis[R][C] || grid[R][C] != 1) 
-                    continue;
+            // int[] curr = queue.poll();
+            // if (curr[0] == -1 && curr[1] == -1) {
+            //     ++minutes;
+            //     if (!queue.isEmpty()) queue.offer(curr);
+            //     continue;
+            // }
+            int size = queue.size();
+            for (int i = 0; i < size; ++i) {
+                int[] curr = queue.poll();
+                for (int[] dir : dirs) {
+                    int R = dir[0] + curr[0];
+                    int C = dir[1] + curr[1];
+                    if (R < 0 || R >= numRows || C < 0 || C >= numCols || vis[R][C] || grid[R][C] != 1) 
+                        continue;
                 
-                --freshOranges;
-                queue.offer(new int[] {R, C});
-                vis[R][C] = true;
+                    --freshOranges;
+                    queue.offer(new int[] {R, C});
+                    vis[R][C] = true;
+                }
             }
+            ++minutes;
         }
         return freshOranges == 0 ? minutes : -1;
     }

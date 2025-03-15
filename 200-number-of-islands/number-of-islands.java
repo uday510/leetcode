@@ -1,5 +1,6 @@
 class Solution {
 
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
     int numRows;
     int numCols;
 
@@ -27,11 +28,12 @@ class Solution {
         if (row < 0 || row >= numRows || col < 0 || col >= numCols 
             || grid[row][col] == '#' || grid[row][col] == '0') return;
 
-        
         grid[row][col] = '#';
-        dfs(row + 1, col, grid);
-        dfs(row - 1, col, grid);
-        dfs(row, col + 1, grid);
-        dfs(row, col - 1, grid);
+        
+        for (int[] dir : dirs) {
+            int R = dir[0] + row;
+            int C = dir[1] + col;
+            dfs(R, C, grid);
+        }
     }
 }

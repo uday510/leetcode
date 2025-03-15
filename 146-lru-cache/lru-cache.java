@@ -1,65 +1,65 @@
 class Node {
-    int key;
-    int value;
     Node prev;
+    int key;
+    int val;
     Node next;
-    public Node(int key, int value) {
+
+    Node(int key, int val) {
         this.key = key;
-        this.value = value;
+        this.val = val;
     }
 }
-public class LRUCache {
+class LRUCache {
     Map<Integer, Node> cache;
     int capacity;
     Node head;
     Node tail;
-
     public LRUCache(int capacity) {
-        this.cache = new HashMap<>(capacity);
+        cache = new HashMap<>();
         this.capacity = capacity;
-        this.head = new Node(-1, -1);
-        this.tail = new Node(-1, -1);
-        this.head.next = this.tail;
-        this.tail.prev = this.head;
-    }
 
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+    }
     public int get(int key) {
-
-        if (!cache.containsKey(key)) {
+        if (!cache.containsKey(key)) 
             return -1;
-        }
 
-        Node node = cache.get(key);
-        remove(node);
-        addToTail(node);
-        return node.value;
+        Node existing = cache.get(key);
+        remove(existing);
+        addToTail(existing);
+
+        return existing.val;
     }
-
     public void put(int key, int value) {
         if (cache.containsKey(key)) {
-            Node node = cache.get(key);
-            node.value = value;
-            remove(node);
-            addToTail(node);
-        } else {
-            if (cache.size() == capacity) {
-                Node lru = head.next;
-                this.cache.remove(lru.key);
-                remove(lru);
-            }
-            Node node = new Node(key, value);
-            cache.put(key, node);
-            addToTail(node);
+            Node existing = cache.get(key);
+            existing.val = value;
+            remove(existing);
+            addToTail(existing);
+            return;
         }
-    }
 
+        if (cache.size() == capacity) {
+            Node lru = head.next;
+            cache.remove(lru.key);
+            remove(lru);
+        } 
+
+        Node newNode = new Node(key, value);
+        addToTail(newNode);
+    }
     private void addToTail(Node node) {
-        this.tail.prev.next = node;
-        node.prev = this.tail.prev;
+        cache.put(node.key, node);
+
+        Node tailPrev = tail.prev;
+        tailPrev.next = node;
+        node.prev = tailPrev;
         node.next = tail;
         tail.prev = node;
     }
-
     private void remove(Node node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;

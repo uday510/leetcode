@@ -1,66 +1,53 @@
 class Pair {
-    String u;
-    int t;
-    String w;
+    int time;
+    String website;
 
-    Pair(String _u, int _t, String _w) {
-        this.u = _u;
-        this.t = _t;
-        this.w = _w;
+    Pair (int time, String website) {
+        this.time = time;
+        this.website = website;
     }
 }
-
 class Solution {
-    public List<String> mostVisitedPattern(String[] username, int[] timestamp, String[] website) {
-        Map<String, List<Pair>> pairs = new HashMap<>();
-        int len = username.length;
+    public List<String> mostVisitedPattern(String[] usernames, int[] timestamp, String[] website) {
+        Map<String, List<Pair>> users = new HashMap<>();
 
-        for (int idx = 0; idx < len; ++idx) {
-            String u = username[idx];
-            int t = timestamp[idx];
-            String w = website[idx];
-
-            pairs.computeIfAbsent(u, k -> new ArrayList<>()).add(new Pair(u, t, w));
+        for (int i = 0; i < usernames.length; ++i) {
+            Pair p = new Pair(timestamp[i], website[i]);
+            users.computeIfAbsent(usernames[i], k -> new ArrayList<>()).add(p);
         }
 
-        Map<String, Integer> map = new HashMap<>();
-
-        for (var user : pairs.keySet()) {
-            List<Pair> list = pairs.get(user);
-            list.sort(Comparator.comparingInt(p -> p.t));
-
+        Map<String, Integer> visitCount = new HashMap<>();
+        for (var user : users.entrySet()) {
+            String username = user.getKey();
+            List<Pair> pairs = users.get(username);
+            pairs.sort((o1, o2) -> o1.time - o2.time);
             Set<String> set = new HashSet<>();
+            for (int i = 0; i < pairs.size() - 2; ++i) {
+                for (int j = i + 1; j < pairs.size() - 1; ++j) {
+                    for (int k = j + 1; k < pairs.size(); ++k) {
+                        Pair p1 = pairs.get(i);
+                        Pair p2 = pairs.get(j);
+                        Pair p3 = pairs.get(k);
 
-            for (int i = 0; i < list.size() - 2; ++i) {
-                Pair p1 = list.get(i);
-                for (int j = i + 1; j < list.size() - 1; ++j) {
-                    Pair p2 = list.get(j);
-                    for (int k = j + 1; k < list.size(); ++k) {
-                        Pair p3 = list.get(k);
+                        String key = p1.website + "_" + p2.website + "_" + p3.website;
 
-                        String key = p1.w + " " + p2.w + " " + p3.w;
-
-                        if (set.add(key)) {
-                            map.merge(key, 1, Integer::sum);
-                        }
+                        if (set.add(key))
+                            visitCount.merge(key, 1, Integer::sum);
                     }
                 }
-            }
+             }
         }
+             int cnt = 0;
+             String res = "";
 
-        String res = "";
-        int cnt = 0;
+             for (String key : visitCount.keySet()) {
+                int count = visitCount.get(key);
+                if (cnt < count || (cnt == count && key.compareTo(res) < 0)) {
+                    res = key;
+                    cnt = count;
+                }
+             }
 
-        for (String key : map.keySet()) {
-            int val = map.get(key);
-
-            if (val > cnt || (val == cnt && key.compareTo(res) < 0)) {
-                res = key;
-                cnt = val;
-            }
-        }
-
-
-        return Arrays.asList(res.split(" "));
+             return Arrays.asList(res.split("_"));
     }
 }

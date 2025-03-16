@@ -1,41 +1,37 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> list = new ArrayList<>();
-        int startRow = 0;
-        int endRow = matrix.length - 1;
-        int startCol = 0;
-        int endCol = matrix[0].length - 1;
+        List<Integer> order = new ArrayList<>();
+        int stRow = 0, enRow = matrix.length - 1, stCol = 0, enCol = matrix[0].length - 1;
 
-        while (startRow <= endRow && startCol <= endCol) {
 
-            // go right
-            for (int currCol = startCol; currCol <= endCol; ++currCol) {
-                list.add(matrix[startRow][currCol]);
+        while (stRow <= enRow && stCol <= enCol) {
+
+            for (int col = stCol; col <= enCol; ++col) {
+                order.add(matrix[stRow][col]);
             }
 
-            // go down
-            for (int currRow = startRow + 1; currRow <= endRow; ++currRow) {
-                list.add(matrix[currRow][endCol]);
+            for (int row = stRow + 1; row <= enRow; ++row) {
+                order.add(matrix[row][enCol]);
             }
 
-            // go left
-            if (startRow == endRow) {
-                break;
-            }
-            for (int currCol = endCol - 1;  currCol >= startCol; --currCol) {
-                list.add(matrix[endRow][currCol]);
+            if (stRow == enRow) break;
+            for (int col = enCol - 1; col >= stCol; --col) {
+                order.add(matrix[enRow][col]);
             }
 
-            // go up
-            if (startCol == endCol) {
-                break;
-            }
-            for (int currRow = endRow - 1; currRow > startRow; --currRow) {
-                list.add(matrix[currRow][startCol]);
+            if (stCol == enCol) break;
+            for (int row = enRow - 1; row > stRow; --row) {
+                order.add(matrix[row][stCol]);
             }
 
-            ++startRow; --endRow; ++startCol; --endCol;
+            ++stRow;
+            ++stCol;
+            --enRow;
+            --enCol;
         }
-        return list;
+
+
+
+        return order;
     }
 }

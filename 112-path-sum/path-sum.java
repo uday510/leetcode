@@ -1,16 +1,10 @@
 
 class Solution {
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        return dfs(targetSum, root);
-    }
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) return false;
 
-    private boolean dfs(int currSum, TreeNode node) {
-        if (node == null) return false;
-        
-        currSum -= node.val;
-        if (node.left == null && node.right == null) 
-            return currSum == 0;
-
-        return dfs(currSum, node.left) || dfs(currSum, node.right);
+        sum -= root.val;
+        if (root.left == null && root.right == null) return sum == 0;
+        return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
     }
 }

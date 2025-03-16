@@ -1,26 +1,24 @@
 class Solution {
-    List<String> ans = new ArrayList<>();
-
+    List<String> list;
     public List<String> generateParenthesis(int n) {
-        dfs(new StringBuilder(), 0, 0, n);
-        return ans;
+        list = new ArrayList<>();
+        dfs(0, 0, n, new StringBuilder());
+        return list;
     }
-
-    private void dfs(StringBuilder sb, int open, int close, int n) {
-        if (sb.length() >= 2 * n) {
-            ans.add(sb.toString());
+    private void dfs(int open, int close, int n, StringBuilder sb) {
+        if (sb.length() == 2 * n) {
+            list.add(sb.toString());
             return;
         }
 
         if (open < n) {
-            sb.append("(");
-            dfs(sb, open + 1, close, n);
+            dfs(open + 1, close, n, sb.append("("));
             sb.deleteCharAt(sb.length() - 1);
         }
-
+            
+        
         if (close < open) {
-            sb.append(")");
-            dfs(sb, open, close + 1, n);
+            dfs(open, close + 1, n, sb.append(")"));
             sb.deleteCharAt(sb.length() - 1);
         }
     }

@@ -1,33 +1,26 @@
 class Solution {
-    List<Integer> lis;
     public int lengthOfLIS(int[] nums) {
-        lis = new ArrayList<>();
+        List<Integer> lis = new ArrayList<>();
         lis.add(nums[0]);
-        
-        for (int idx = 0; idx < nums.length; ++idx) {
-            int num = nums[idx];
-            int index = bs(num);
-            if (index == lis.size()) 
+        for (int i = 0; i < nums.length; ++i) {
+            int num = nums[i];
+            int index = bisectLeft(lis, num);
+            if (index == lis.size())
                 lis.add(num);
             lis.set(index, num);
-           
         }
-
         return lis.size();
     }
-    private int bs(int num) {
+    private int bisectLeft(List<Integer> lis, int num) {
         int left = 0;
         int right = lis.size();
 
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (lis.get(mid) < num) {
-                left = mid + 1;
-            } else {
+            if (lis.get(mid) >= num) 
                 right = mid;
-            }
+            else left = mid + 1;
         }
-
         return left;
     }
 }

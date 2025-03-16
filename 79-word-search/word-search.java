@@ -1,51 +1,46 @@
 class Solution {
-    private int m;
-    private int n;
-    private boolean[][] visited;
+    private int rows;
+    private int cols;
+    private boolean[][] vis;
     public boolean exist(char[][] board, String word) {
-        intialize(board);
-
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (search(0, i, j, board, word)) {
+        initialize(board);
+        for (int row = 0; row < rows; ++row) {
+            for (int col = 0; col < cols; ++col) {
+                if (dfs(0, row, col, board, word)) {
                     return true;
                 }
             }
         }
         return false;
     }
-    private boolean search(int index, int i, int j, char[][] board, String word) {
-        if (index == word.length()) {
-            return true;
-        }
 
-        if (!valid(index, i, j, board, word)) {
+    private boolean dfs(int index, int row, int col, char[][] board, String word) {
+        if (index >= word.length()) return true;
+
+        if (!valid(index, row, col, board, word)) {
             return false;
-        }
+        } 
 
-
-        visited[i][j] = true;
+        vis[row][col] = true;
 
         if (
-            search(index + 1, i + 1, j, board, word) || 
-            search(index + 1, i - 1, j, board, word) || 
-            search(index + 1, i, j + 1, board, word) ||
-            search(index + 1, i, j - 1, board, word)
-            )
-             {
-                return true;
-            }
+            dfs(index + 1, row + 1, col, board, word) ||
+            dfs(index + 1, row - 1, col, board, word) || 
+            dfs(index + 1, row, col + 1, board, word) ||
+            dfs(index + 1, row, col - 1, board, word) 
+            ) return true;
 
-        return visited[i][j] = false;
+        vis[row][col] = false;
+        return false;
     }
-    private boolean valid(int index, int i, int j, char[][] board, String word) {
-        return !(i < 0 || i >= m || j < 0 || j >= n ||
-                 board[i][j] != word.charAt(index) ||  
-                 visited[i][j]);
+    private boolean valid(int i, int r, int c, char[][] board, String word) {
+        return !(r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] != word.charAt(i) ||
+            vis[r][c]);
     }
-    private void intialize(char[][] board) {
-        m = board.length;
-        n = board[0].length;
-        visited = new boolean[m][n];
+
+    private void initialize(char[][] board) {
+        this.rows = board.length;
+        this.cols = board[0].length;
+        vis = new boolean[rows][cols];
     }
 }

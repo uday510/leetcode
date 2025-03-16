@@ -1,25 +1,24 @@
 class Solution {
-    Map<Character, Character> map = new HashMap<>();
-    {
-        map.put(')', '(');
-        map.put(']', '[');
-        map.put('}', '{');
-    }
     public boolean isValid(String s) {
-        var st = new Stack<Character>();
+        Deque<Character> stack = new ArrayDeque<>();
+        Set<Character> open = new HashSet<>();
+        Map<Character, Character> mappings = new HashMap<>();
+        open.add('(');
+        open.add('[');
+        open.add('{');
+        mappings.put(')', '(');
+        mappings.put(']', '[');
+        mappings.put('}', '{');
 
-        for (char c : s.toCharArray()) {
-            if (open(c))
-                st.push(c);
-            else {
-                if (st.isEmpty() || st.peek() != map.get(c)) 
+        for (char ch : s.toCharArray()) {
+            if (open.contains(ch)) {
+                stack.push(ch);
+            } else {
+                if (stack.isEmpty() || stack.peek() != mappings.get(ch)) 
                     return false;
-                st.pop();
+                stack.pop();
             }
         }
-        return st.isEmpty();
-    }
-    boolean open(char c) {
-        return !map.containsKey(c);
+        return stack.isEmpty();
     }
 }

@@ -1,34 +1,27 @@
 class Solution {
-
-    private int length;
-    private Boolean[] memo;
-    private Set<String> dictionary;
-    
+    Set<String> words;
+    Map<Integer, Boolean> dp;
     public boolean wordBreak(String s, List<String> wordDict) {
-        initialize(s, wordDict);
-
+        words = new HashSet<>(wordDict);
+        dp = new HashMap<>();
         return dfs(0, s);
     }
+    private boolean dfs(int index, String s) {
+        if (index >= s.length()) return true;
 
-    private boolean dfs(int index, String string) {
-        if (index >= length) return true;
+        if (dp.containsKey(index)) return dp.get(index);
 
-        if (memo[index] != null) return memo[index];
-
-        for (int currentIndex = index; currentIndex < length; ++currentIndex) {
-            String substring = string.substring(index, currentIndex + 1);
-
-            if (dictionary.contains(substring) && dfs(currentIndex + 1, string)) {
-                return memo[index] = true;
+        for (int i = index; i < s.length(); ++i) {
+            String substr = s.substring(index, i+1);
+            if (words.contains(substr)) {
+                if (dfs(i + 1, s)) {
+                    dp.put(index, true);
+                    return true;
+                }
             }
         }
 
-        return memo[index] = false;
-    }
-
-    private void initialize(String s, List<String> wordDict) {
-        length = s.length();
-        memo = new Boolean[length];
-        dictionary = new HashSet<>(wordDict);
+        dp.put(index, false);
+        return false;
     }
 }

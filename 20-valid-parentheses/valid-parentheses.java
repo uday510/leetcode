@@ -1,17 +1,14 @@
 class Solution {
+    Map<Character, Character> mappings;
     public boolean isValid(String s) {
         Deque<Character> stack = new ArrayDeque<>();
-        Set<Character> open = new HashSet<>();
-        Map<Character, Character> mappings = new HashMap<>();
-        open.add('(');
-        open.add('[');
-        open.add('{');
+        mappings = new HashMap<>();
         mappings.put(')', '(');
         mappings.put(']', '[');
         mappings.put('}', '{');
 
         for (char ch : s.toCharArray()) {
-            if (open.contains(ch)) {
+            if (isOpen(ch)) {
                 stack.push(ch);
             } else {
                 if (stack.isEmpty() || stack.peek() != mappings.get(ch)) 
@@ -20,5 +17,8 @@ class Solution {
             }
         }
         return stack.isEmpty();
+    }
+    private boolean isOpen(char ch) {
+        return !mappings.containsKey(ch);
     }
 }

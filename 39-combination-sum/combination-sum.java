@@ -9,7 +9,7 @@ class Solution {
         dfs(0, 0, new ArrayDeque<>());
         return list;
     }
-    private void dfs(int index, int currSum, ArrayDeque<Integer> queue) {
+    private void dfs(int index, int currSum, Deque<Integer> queue) {
         if (currSum == target) {
             list.add(new ArrayList<>(queue));
             return;

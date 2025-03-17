@@ -1,29 +1,29 @@
 class Solution {
-    List<List<Integer>> ans;
+    List<List<Integer>> list;
+    int[] candidates;
+    int target;
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        ans = new ArrayList<>();
-
-        dfs(0, 0, candidates.length, new ArrayDeque(), candidates, target);
-
-        return ans;
+        list = new ArrayList<>();
+        this.candidates = candidates;
+        this.target = target;
+        dfs(0, 0, new ArrayDeque<>());
+        return list;
     }
-    private void dfs(int index, int sum, int n, Deque<Integer> queue, int[] candidates, int target) {
-        if (sum == target) {
-            ans.add(new ArrayList<>(queue));
+    private void dfs(int index, int currSum, ArrayDeque<Integer> queue) {
+        if (currSum == target) {
+            list.add(new ArrayList<>(queue));
             return;
         }
 
-        for (int i = index; i < n; ++i) {
-            
-            if (sum + candidates[i] > target) {
+        for (int idx = index; idx < candidates.length; ++idx) {
+            int candidate = candidates[idx];
+            if (candidate + currSum > target) 
                 continue;
-            }
 
-            sum += candidates[i];
-            queue.offer(candidates[i]);
-            dfs(i, sum, n, queue, candidates, target);
-
-            sum -= candidates[i];
+            currSum += candidate;
+            queue.offer(candidate);
+            dfs(idx, currSum, queue);
+            currSum -= candidate;
             queue.pollLast();
         }
     }

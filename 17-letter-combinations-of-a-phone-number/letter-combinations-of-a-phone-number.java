@@ -1,41 +1,37 @@
 class Solution {
-    private static final Map<Character, List<Character>> DIGIT_LETTERS = initialize();
+    List<String> list;
+    Map<Character, char[]> map;
     public List<String> letterCombinations(String digits) {
-        if (digits == null || digits.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<String> result = new ArrayList<>();
-        dfs(0, new StringBuilder(), result, digits);
-        return result;
+       intialize(digits);
+       dfs(0, digits, new StringBuilder());
+       return list;
     }
-
-    private void dfs(int index, StringBuilder sb, List<String> result, String digits) {
-        if (sb.length() == digits.length()) {
-            result.add(sb.toString());
+    private void dfs(int idx, String digits, StringBuilder sb) {
+        if (idx >= digits.length()) {
+            if (sb.length() > 0 ) 
+                list.add(sb.toString());
             return;
-        }
+        }   
 
-        List<Character> letters = DIGIT_LETTERS.get(digits.charAt(index));
-        if (letters == null) return;
-
-        for (char ch : letters) {
+        for (char ch : map.get(digits.charAt(idx))) {
             sb.append(ch);
-            dfs(index + 1, sb, result, digits);
+            dfs(idx + 1, digits, sb);
             sb.deleteCharAt(sb.length() - 1);
         }
-    }
 
-    private static Map<Character, List<Character>> initialize() {
-        Map<Character, List<Character>> map = new HashMap<>();
-        map.put('2', Arrays.asList('a', 'b', 'c'));
-        map.put('3', Arrays.asList('d', 'e', 'f'));
-        map.put('4', Arrays.asList('g', 'h', 'i'));
-        map.put('5', Arrays.asList('j', 'k', 'l'));
-        map.put('6', Arrays.asList('m', 'n', 'o'));
-        map.put('7', Arrays.asList('p', 'q', 'r', 's'));
-        map.put('8', Arrays.asList('t', 'u', 'v'));
-        map.put('9', Arrays.asList('w', 'x', 'y', 'z'));
-        return map;
+    }
+    private void intialize(String digits) {
+        list = new ArrayList<>();
+        map = new HashMap<>();
+
+        map.put('2', new char[]{'a', 'b', 'c'});
+        map.put('3', new char[]{'d', 'e', 'f'});
+        map.put('4', new char[]{'g', 'h', 'i'});
+        map.put('5', new char[]{'j', 'k', 'l'});
+        map.put('6', new char[]{'m', 'n', 'o'});
+        map.put('7', new char[]{'p', 'q', 'r', 's'});
+        map.put('8', new char[]{'t', 'u', 'v'});
+        map.put('9', new char[]{'w', 'x', 'y', 'z'});
     }
 }
+

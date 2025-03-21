@@ -15,9 +15,6 @@ class Solution {
             }
         }
 
-        System.out.println(adjList);
-        System.out.println(indegree);
-
         Deque<String> queue = new ArrayDeque<>();
         List<String> result = new ArrayList<>();
         

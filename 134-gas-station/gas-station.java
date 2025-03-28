@@ -3,22 +3,21 @@ class Solution {
         int totalGas = Arrays.stream(gas).sum();
         int totalCost = Arrays.stream(cost).sum();
 
-        if (totalGas < totalCost) {
-            return -1;
-        }
+        if (totalGas < totalCost) return -1;
 
         int currentGas = 0;
-        int startingStation = 0;
+        int gasStation = 0;
 
         for (int idx = 0; idx < gas.length; ++idx) {
-            currentGas += gas[idx] - cost[idx];
+            currentGas += (gas[idx] - cost[idx]);
 
             if (currentGas < 0) {
+                gasStation = idx + 1;
                 currentGas = 0;
-                startingStation = idx + 1;
             }
         }
 
-        return currentGas < 0 ? -1: startingStation;
+
+        return currentGas > -1 ? gasStation : -1;
     }
 }

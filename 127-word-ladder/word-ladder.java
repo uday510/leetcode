@@ -1,54 +1,51 @@
 class Solution {
-    Set<String> words;
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        words = new HashSet<>(wordList);
-        Queue<String> queue = new ArrayDeque<>();
         int level = 0;
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> seen = new HashSet<>(wordList);
 
-        if (!words.contains(endWord)) return 0;
+        if (!seen.contains(endWord)) return 0;
 
-        words.remove(beginWord);
+        seen.remove(beginWord);
         queue.offer(beginWord);
 
         while (!queue.isEmpty()) {
-            int size = queue.size();
             level++;
+            int size = queue.size();
 
             for (int idx = 0; idx < size; ++idx) {
                 String str = queue.poll();
                 if (str.equals(endWord)) return level;
-                List<String> neighbors = getNeighbors(str);
-
-                for (String neighbor : neighbors) {
-                    queue.offer(neighbor);
+                List<String> neighbors = getNeighbors(str, seen);
+                for (String nei : neighbors) {
+                    queue.offer(nei);
                 }
             }
+
         }
         return 0;
     }
 
-    private List<String> getNeighbors(String str) {
-        List<String> neighbors = new ArrayList<>();
+    private List<String> getNeighbors(String str, Set<String> seen) {
+        List<String> list = new ArrayList<>();
         char[] chars = str.toCharArray();
 
         for (int idx = 0; idx < chars.length; ++idx) {
-
-            char originalChar = chars[idx];
+            char tmp = chars[idx];
 
             for (char ch = 'a'; ch <= 'z'; ++ch) {
-                if (ch == originalChar) continue;
-
+                if (ch == tmp) continue;
                 chars[idx] = ch;
-                String neighbor = new String(chars);
-                if (words.contains(neighbor)) {
-                    neighbors.add(neighbor);
-                    words.remove(neighbor);
+                String curr = String.valueOf(chars);
+
+                if (seen.contains(curr)) {
+                    list.add(curr);
+                    seen.remove(curr);
                 }
             }
-
-            chars[idx] = originalChar;
+            chars[idx] = tmp;
         }
 
-        return neighbors;
+        return list;
     }
 }

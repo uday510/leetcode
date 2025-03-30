@@ -1,50 +1,45 @@
 class Solution {
+    private final int[][] dirs = {{0, 1},{1, 0}, {-1, 0}, {0, -1}};
     public int orangesRotting(int[][] grid) {
+        Deque<int[]> queue = new ArrayDeque<>();
+        int freshOranges = 0;
         int minutes = -1;
         int numRows = grid.length;
         int numCols = grid[0].length;
-        boolean[][] vis = new boolean[numRows][numCols];
-        Queue<int[]> queue = new ArrayDeque<>();
-        int freshOranges = 0;
-        int[][] dirs = {{0, 1},{1, 0},{-1, 0}, {0, -1}};
 
         for (int row = 0; row < numRows; ++row) {
             for (int col = 0; col < numCols; ++col) {
-                if (grid[row][col] == 2) {
-                    queue.offer(new int[]{row, col});
-                    vis[row][col] = true;
-                } else if (grid[row][col] == 1) {
-                    ++freshOranges;
-                }
+                int curr = grid[row][col];
+                if (curr == 0) continue;
+                if (curr == 1) freshOranges++;
+                else queue.offer(new int[]{row, col});
             }
         }
-
+        
         if (freshOranges == 0) return 0;
-        // queue.offer(new int[] {-1, -1});
 
         while (!queue.isEmpty()) {
-            // int[] curr = queue.poll();
-            // if (curr[0] == -1 && curr[1] == -1) {
-            //     ++minutes;
-            //     if (!queue.isEmpty()) queue.offer(curr);
-            //     continue;
-            // }
             int size = queue.size();
-            for (int i = 0; i < size; ++i) {
+
+            for (int idx = 0; idx < size; ++idx) {
+
                 int[] curr = queue.poll();
+
                 for (int[] dir : dirs) {
-                    int R = dir[0] + curr[0];
-                    int C = dir[1] + curr[1];
-                    if (R < 0 || R >= numRows || C < 0 || C >= numCols || vis[R][C] || grid[R][C] != 1) 
-                        continue;
-                
-                    --freshOranges;
-                    queue.offer(new int[] {R, C});
-                    vis[R][C] = true;
+                    int x = dir[0] + curr[0];
+                    int y = dir[1] + curr[1];
+
+                    if (x < 0 || x >= numRows || y < 0 || y >= numCols || grid[x][y] != 1) continue;
+
+                    queue.offer(new int[]{x, y});
+                    grid[x][y] = 2;
+                    freshOranges--;
                 }
             }
+
             ++minutes;
         }
+
         return freshOranges == 0 ? minutes : -1;
     }
 }

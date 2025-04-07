@@ -1,38 +1,36 @@
 class Solution {
     List<Integer>[] adjList;
-    boolean[] visited;
-    int numComponents;
+    Set<Integer> seen;
+    int n;
     public int countComponents(int n, int[][] edges) {
-        if (n == 0) return 0;
         initialize(n, edges);
+        int numComponents = 0;
 
-        for (int idx = 0; idx < n; ++idx) {
-            if (!visited[idx]) {
+        for (int i = 0; i < n; ++i) {
+            if (!seen.contains(i)) {
                 numComponents++;
-                dfs(idx);
+                dfs(i);
             }
         }
-
         return numComponents;
     }
 
     private void dfs(int node) {
-        visited[node] = true;
 
-        for (Integer neighbor : adjList[node]) {
-            if (!visited[neighbor]) {
-                dfs(neighbor);
+        for (Integer vertex : adjList[node]) {
+            if (seen.add(vertex)) {
+                dfs(vertex);
             }
         }
     }
 
     private void initialize(int n, int[][] edges) {
+        this.n = n;
         adjList = new ArrayList[n];
-        visited = new boolean[n];
-        numComponents = 0;
+        seen = new HashSet<>();
 
-        for (int idx = 0; idx < n; ++idx) {
-            adjList[idx] = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            adjList[i] = new ArrayList<Integer>();
         }
 
         for (int[] edge : edges) {

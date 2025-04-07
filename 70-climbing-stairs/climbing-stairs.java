@@ -1,13 +1,14 @@
 class Solution {
     public int climbStairs(int n) {
-        int[] dp = new int[n + 1];
-        dp[0] = 1;
-        dp[1] = 1;
+        int s1 = 0;
+        int s2 = 1;
 
-        for (int idx = 2; idx < n + 1; ++idx) {
-            dp[idx] = dp[idx - 1] + dp[idx - 2];
+        for (int i = 1; i <= n; ++i) {
+            int s3 = s1 + s2;
+            s1 = s2;
+            s2 = s3;
         }
-
-        return dp[n];
+        
+        return s2;
     }
 }

@@ -1,6 +1,6 @@
 class Solution {
     public int tribonacci(int n) {
-        if (n == 0 || n == 1) return n;
+        if (n == 0) return n;
         int s1 = 0, s2 = 1, s3 = 1;
 
         for (int idx = 3; idx <= n; ++idx) {

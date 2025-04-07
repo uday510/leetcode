@@ -1,18 +1,16 @@
 class Solution {
-    int[] nums;
-    int[] dp;
     public int rob(int[] nums) {
-        this.nums = nums;
-        this.dp = new int[nums.length];
-        Arrays.fill(dp, -1);
-        return dfs(0);
-    }
-    private int dfs(int idx) {
-        if (idx >= nums.length) return 0;
-        if (dp[idx] != -1) return dp[idx];
+        if (nums.length == 1) return nums[0];
+        int rob1 = nums[0];
+        int rob2 = Math.max(nums[0], nums[1]);
 
-        int rob1 = dfs(idx + 1);
-        int rob2 = nums[idx] + dfs(idx + 2);
-        return dp[idx] = Math.max(rob1, rob2);
+        for (int idx = 2; idx < nums.length; ++idx) {
+            int curr = Math.max(rob1 + nums[idx], rob2);
+            rob1 = rob2;
+            rob2 = curr;
+        }
+
+        return Math.max(rob1, rob2);
     }
+
 }

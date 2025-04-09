@@ -1,32 +1,43 @@
 class Solution {
+
+    int n;
+    List<Integer>[] adjList;
+    Set<Integer> vis;
+    List<List<Integer>> paths;
+
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        List<List<Integer>> paths = new ArrayList<>();
-        int n = graph.length;
-
-        if (graph == null || graph.length == 0) {
-            return paths;
-        }
-
-        Queue<List<Integer>> queue = new LinkedList<>();
-
-        List<Integer> path = new ArrayList(Arrays.asList(0));
-
-        queue.offer(path);
-
-        while (!queue.isEmpty()) {
-            path = queue.poll();
-
-            if (path.getLast() == n - 1) {
-                paths.add(new ArrayList<>(path));
-            }
-
-            for (int neighbor : graph[path.getLast()]) {
-                List<Integer> newPath = new ArrayList<>(path);
-                newPath.add(neighbor);
-                queue.offer(new ArrayList<>(newPath));
-            }
-        }
-
+        intialize(graph);
+        dfs(0, new ArrayList<>());
         return paths;
+    }
+    private void dfs(Integer node, List<Integer> path) {
+        path.add(node);
+        if (node == n - 1) {
+            paths.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (Integer v : adjList[node]) {
+            dfs(v, path);
+            path.removeLast();
+        }
+    }
+    
+    private void intialize(int[][] graph) {
+        this.n = graph.length;
+        adjList = new ArrayList[n];
+        vis = new HashSet<>();
+        paths = new ArrayList<>();
+
+        for (int i = 0; i < n; ++i) {
+            adjList[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < n; ++i) {
+            for (int v : graph[i]) {
+                adjList[i].add(v);
+            }
+        }
+
     }
 }

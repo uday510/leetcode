@@ -1,43 +1,45 @@
 class Solution {
+    static final int RED = 0;
+    static final int BLUE = 1;
     public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
+        List<int[]>[] adjList = buildGraph(n, redEdges, blueEdges);
+        return bfs(n, adjList);
+    }
+
+    private int[] bfs(int n, List<int[]>[] adjList) {
         int[][] visited = new int[n][2];
-        Queue<int[]> queue = new ArrayDeque<>();
-        List<int[]>[] adjList = new ArrayList[n];
         int[] distance = new int[n];
-        
+        Queue<int[]> queue = new ArrayDeque<>();
         Arrays.fill(distance, -1);
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
-        
-        for (int[] edge : redEdges) {
-            adjList[edge[0]].add(new int[]{edge[1], 0});
-        }
-
-        for (int[] edge : blueEdges) {
-            adjList[edge[0]].add(new int[]{edge[1], 1});
-        }
-
         queue.offer(new int[]{0, 0, -1});
-        visited[0][0] = 1;
+        visited[0][RED] = visited[0][BLUE] = 1;
         distance[0] = 0;
 
         while (!queue.isEmpty()) {
-            int[] arr = queue.poll();
-            int node = arr[0], steps = arr[1], prevColor = arr[2];
+            int[] curr = queue.poll();
+            int node = curr[0], steps = curr[1], prevColor = curr[2];
 
-            for (int[] neiNode : adjList[node]) {
-                int nei = neiNode[0];
-                int currColor = neiNode[1];
+            for (int[] next : adjList[node]) {
+                int neighbor = next[0], currColor = next[1];
 
-                if (visited[nei][currColor] == 1 || currColor == prevColor) continue;
+                if (visited[neighbor][currColor] == 1 || prevColor == currColor) continue;
 
-                queue.offer(new int[]{ nei, 1 + steps, currColor });
+                queue.offer(new int[] {neighbor, 1 + steps, currColor});
 
-                visited[nei][currColor] = 1;
-                
-                if (distance[nei] == -1) distance[nei] = 1 + steps;
+                if (distance[neighbor] == -1) distance[neighbor] = 1 + steps;
+                visited[neighbor][currColor] = 1;
             }
         }
 
         return distance;
+    }
+    
+    private List<int[]>[] buildGraph(int n, int[][] red, int[][] blue) {
+        List<int[]>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; ++i) graph[i] = new ArrayList<>();
+
+        for (int[] e : red) graph[e[0]].add(new int[]{e[1], RED});
+        for (int[] e : blue) graph[e[0]].add(new int[]{e[1], BLUE});
+        return graph;
     }
 }

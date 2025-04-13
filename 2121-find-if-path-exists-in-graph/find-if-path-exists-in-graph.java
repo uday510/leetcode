@@ -20,19 +20,15 @@ class Solution {
         visited.add(source);
 
         while (!queue.isEmpty()) {
-            int size = queue.size();
+            int node = queue.poll();
 
-            for (int i = 0; i < size; ++i) {
-                int node = queue.poll();
-                System.out.println(node);
-                if (node == destination) return true;
+           if (node == destination) return true;
 
-                for (int neighbor : adjList[node]) {
+            for (int neighbor : adjList[node]) {
                     if (visited.add(neighbor)) {
                         queue.add(neighbor);
                     }
                 }
-            }
         }
 
         return false;

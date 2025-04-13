@@ -2,7 +2,6 @@ class Solution {
 
     int n;
     List<Integer>[] adjList;
-    Set<Integer> vis;
     List<List<Integer>> paths;
 
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
@@ -10,6 +9,7 @@ class Solution {
         dfs(0, new ArrayList<>());
         return paths;
     }
+    
     private void dfs(Integer node, List<Integer> path) {
         path.add(node);
         if (node == n - 1) {
@@ -26,7 +26,6 @@ class Solution {
     private void intialize(int[][] graph) {
         this.n = graph.length;
         adjList = new ArrayList[n];
-        vis = new HashSet<>();
         paths = new ArrayList<>();
 
         for (int i = 0; i < n; ++i) {

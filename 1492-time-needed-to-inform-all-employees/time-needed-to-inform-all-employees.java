@@ -5,20 +5,25 @@ class Solution {
         adjList = new ArrayList[n];
         this.informTime = informTime;
 
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            adjList[i] = new ArrayList<>();
+        }
 
-        for (int i = 0; i < n; ++i)
-            if (manager[i] != -1) adjList[manager[i]].add(i);
+        for (int i = 0; i < n; ++i) {
+            if (manager[i] != -1) {
+                adjList[manager[i]].add(i);
+            }
+        }
 
         return dfs(headID);
     }
     private int dfs(int node) {
-        int time = 0;
+        int maxTime = 0;
 
         for (int nei : adjList[node]) {
-            time = Math.max(time, dfs(nei));
+            maxTime = Math.max(maxTime, dfs(nei));
         }
 
-        return time + informTime[node];
+        return maxTime + informTime[node];
     }
 }

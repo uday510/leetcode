@@ -1,33 +1,12 @@
 class Solution {
-
-    int n;
-    List<Integer>[] adjList;
-    Set<Integer> vis;
-    int dest;
-
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        initialize(n, edges, destination);
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        List<Integer>[] adjList = new ArrayList[n];
 
-        return dfs(source);
-    }
-    private boolean dfs(int node) {
-        if (node == dest) return true;
-        if (!vis.add(node)) return false;
-
-        for (Integer vertex : adjList[node]) {
-            if (dfs(vertex)) return true;
+        for (int i = 0; i < n; ++i) {
+            adjList[i] = new ArrayList<>();
         }
-
-        return false;
-     }
-
-    private void initialize(int n, int[][] edges, int destination) {
-        this.n = n;
-        adjList = new ArrayList[n];
-        vis = new HashSet<>();
-        dest = destination;
-
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
 
         for (int[] edge : edges) {
             int u = edge[0];
@@ -36,5 +15,26 @@ class Solution {
             adjList[u].add(v);
             adjList[v].add(u);
         }
+
+        queue.offer(source);
+        visited.add(source);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; ++i) {
+                int node = queue.poll();
+                System.out.println(node);
+                if (node == destination) return true;
+
+                for (int neighbor : adjList[node]) {
+                    if (visited.add(neighbor)) {
+                        queue.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

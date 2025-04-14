@@ -1,10 +1,10 @@
 class Solution {
     List<int[]>[] adjList;
-    Set<Integer> vis;
+    boolean[] vis;
     int cnt;
     public int minReorder(int n, int[][] connections) {
         adjList = new ArrayList[n];
-        vis = new HashSet<>();
+        vis = new boolean[n];
         cnt = 0;
 
         for (int i = 0; i < n; ++i) {
@@ -20,9 +20,11 @@ class Solution {
         return cnt;
     }
     private void dfs(int node) {
-        if (!vis.add(node)) return;
+        if (vis[node]) return;
+        
+        vis[node] = true;
         for (int[] curr : adjList[node]) {
-            if (vis.contains(curr[0])) continue;
+            if (vis[curr[0]]) continue;
             cnt += curr[1];
             dfs(curr[0]);
         }

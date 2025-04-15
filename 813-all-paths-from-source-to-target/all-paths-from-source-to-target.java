@@ -21,13 +21,13 @@ class Solution {
 
         return paths;
     }
-    private void dfs(int node, List<Integer> path) {
+    private void dfs(Integer node, List<Integer> path) {
         if (node == destination) {
             paths.add(new ArrayList<>(path));
             return;
         }
 
-        for (int nei : adjList[node]) {
+        for (Integer nei : adjList[node]) {
             path.add(nei);
             dfs(nei, path);
             path.removeLast();

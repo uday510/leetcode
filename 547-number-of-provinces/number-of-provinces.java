@@ -1,28 +1,43 @@
 class Solution {
-    int[][] edges;
-    Set<Integer> vis;
-    int n;
-    public int findCircleNum(int[][] isConnected) {
-        edges = isConnected;
-        vis = new HashSet<>();
+
+    int n;  
+    List<Integer>[] adjList;
+    Set<Integer> visited;
+    
+    public int findCircleNum(int[][] edges) {
         n = edges.length;
-        int numProvinces = 0;
+        adjList = new ArrayList[n];
+        visited = new HashSet<>();
+        int numComponents = 0;
+        
+        for (int i = 0; i < n; ++i) {
+            adjList[i] = new ArrayList<>();
+        }
 
         for (int i = 0; i < n; ++i) {
-            if (!vis.contains(i)) {
-                numProvinces++;
-                dfs(i, edges[i]);
+            for (int j = 0; j < edges[i].length; ++j) {
+                if (edges[i][j] == 1) {
+                    adjList[i].add(j);
+                }
             }
         }
 
-        return numProvinces;
+        for (int v = 0; v < n; ++v) {
+            if (!visited.contains(v)) {
+                numComponents++;
+                System.out.println(v);
+                dfs(v);
+            }
+        }
+
+        return numComponents;
     }
-    private void dfs(int node, int[] nei) {
+
+    private void dfs(Integer vertex) {
         
-        for (int i = 0; i < n; ++i) {
-            if (nei[i] == 1 && !vis.contains(i)) {
-                vis.add(i);
-                dfs(i, edges[i]);
+        for (Integer node : adjList[vertex]) {
+            if (visited.add(node)) {
+                dfs(node);
             }
         }
     }

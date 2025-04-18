@@ -8,9 +8,7 @@ class Solution {
 
         dfs(0);
 
-        for (int i : vis) {
-            if (i == 0) return false;
-        }
+        for (int v : vis) if (v == 0) return false;
 
         return true;
     }
@@ -19,8 +17,7 @@ class Solution {
         if (vis[node] == 1) return;
 
         vis[node] = 1;
-        for (int nei : adjList.get(node)) {
-            dfs(nei);
-        }
+        
+        for (int nei : adjList.get(node))  dfs(nei);
     }
 }

@@ -1,43 +1,30 @@
 class Solution {
 
     int n;  
-    List<Integer>[] adjList;
     Set<Integer> visited;
+    int[][] edges;
     
     public int findCircleNum(int[][] edges) {
         n = edges.length;
-        adjList = new ArrayList[n];
-        visited = new HashSet<>();
         int numComponents = 0;
-        
-        for (int i = 0; i < n; ++i) {
-            adjList[i] = new ArrayList<>();
-        }
+        this.edges = edges;
+        visited = new HashSet<>();
 
         for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < edges[i].length; ++j) {
-                if (edges[i][j] == 1) {
-                    adjList[i].add(j);
-                }
-            }
-        }
-
-        for (int v = 0; v < n; ++v) {
-            if (!visited.contains(v)) {
+            if (!visited.contains(i)) {
                 numComponents++;
-                System.out.println(v);
-                dfs(v);
+                dfs(edges[i]);
             }
         }
 
         return numComponents;
     }
 
-    private void dfs(Integer vertex) {
-        
-        for (Integer node : adjList[vertex]) {
-            if (visited.add(node)) {
-                dfs(node);
+    private void dfs(int[] nodes) {
+        for (int i = 0; i < nodes.length; ++i) {
+            if (nodes[i] == 1 && !visited.contains(i)) {
+                visited.add(i);
+                dfs(edges[i]);
             }
         }
     }

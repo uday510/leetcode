@@ -10,8 +10,8 @@ class Solution {
             int u = pre[0];
             int v = pre[1];
 
-            adjList[u].add(v);
-            indegree[v]++;
+            adjList[v].add(u);
+            indegree[u]++;
         }
 
         Queue<Integer> queue = new ArrayDeque<>();

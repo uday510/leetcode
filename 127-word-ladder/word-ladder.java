@@ -1,49 +1,53 @@
 class Solution {
+    Set<String> words;
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        int level = 1;
+        words = new HashSet<>(wordList);
         Queue<String> queue = new ArrayDeque<>();
-        Set<String> seen = new HashSet<>(wordList);
+        int level = 1;
 
-        if (!seen.contains(endWord)) return 0;
+        if (!words.contains(endWord)) return 0;
 
-        seen.remove(beginWord);
         queue.offer(beginWord);
+        words.remove(beginWord);
 
         while (!queue.isEmpty()) {
             int size = queue.size();
-            for (int idx = 0; idx < size; ++idx) {
-                String str = queue.poll();
-                if (str.equals(endWord)) return level;
-                List<String> neighbors = getNeighbors(str, seen);
-                for (String nei : neighbors) {
-                    queue.offer(nei);
+            
+            for (int i = 0; i < size; ++i) {
+                String word = queue.poll();
+                if (word.equals(endWord)) return level;
+                var neighbors = getNeighbors(word);
+                for (var neighbor : neighbors) {
+                    queue.offer(neighbor);
                 }
             }
+
             level++;
         }
+
         return 0;
     }
 
-    private List<String> getNeighbors(String str, Set<String> seen) {
+    private List<String> getNeighbors(String word) {
+        char[] chars = word.toCharArray();
         List<String> list = new ArrayList<>();
-        char[] chars = str.toCharArray();
 
         for (int idx = 0; idx < chars.length; ++idx) {
-            char tmp = chars[idx];
-
+            char temp = chars[idx];
             for (char ch = 'a'; ch <= 'z'; ++ch) {
-                if (ch == tmp) continue;
+                if (ch == temp) continue;
+
                 chars[idx] = ch;
-                String curr = String.valueOf(chars);
+                String str = new String(chars);
 
-                if (seen.contains(curr)) {
-                    list.add(curr);
-                    seen.remove(curr);
-                }
+                if (!words.contains(str)) continue;
+
+                list.add(str);
+                words.remove(str);
             }
-            chars[idx] = tmp;
-        }
 
+            chars[idx] = temp;
+        }
         return list;
     }
 }

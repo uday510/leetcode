@@ -1,62 +1,42 @@
-import java.util.*;
+class Solution {
+    public int[] findOrder(int n, int[][] edges) {
+        List<Integer>[] adjList = new ArrayList[n];
+        int[] indegree = new int[n];
 
-public class Solution {
-    private Map<Integer, List<Integer>> graph;
-    private Queue<Integer> queue;
-    private int[] indegree;
-    private int visited;
-    private int[] order;
-    private int index;
+        int[] res = new int[n];
+        int idx = 0;
+        int completed = 0;
 
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        initialize(numCourses);
-        buildGraph(prerequisites);
-        addNodesWithNoPrerequisites();
+        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
 
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            removeNodeFromGraph(node);
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+
+            adjList[v].add(u);
+            indegree[u]++;
         }
 
-        return allCoursesFinished(numCourses);
-    }
+        Queue<Integer> queue = new ArrayDeque<>();
 
-    private void initialize(int numCourses) {
-        graph = new HashMap<>();
-        indegree = new int[numCourses];
-        queue = new LinkedList<>();
-        order = new int[numCourses];
-        index = 0;
-        visited = 0;
-    }
-
-    private void buildGraph(int[][] prerequisites) {
-        for (int[] prerequisite : prerequisites) {
-            graph.computeIfAbsent(prerequisite[1], k -> new ArrayList<>()).add(prerequisite[0]);
-            indegree[prerequisite[0]]++;
-        }
-    }
-
-    private void addNodesWithNoPrerequisites() {
-        for (int i = 0; i < indegree.length; i++) {
+        for (int i = 0; i < n; ++i) {
             if (indegree[i] == 0) {
                 queue.offer(i);
             }
         }
-    }
 
-    private void removeNodeFromGraph(int node) {
-        order[index++] = node;
-        visited++;
-        for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
-            indegree[neighbor]--;
-            if (indegree[neighbor] == 0) {
-                queue.offer(neighbor);
+        while (!queue.isEmpty()) {
+            int v = queue.poll();
+            res[idx++] = v;
+            completed++;
+
+            for (int nei : adjList[v]) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    queue.offer(nei);
+                }
             }
         }
-    }
 
-    private int[] allCoursesFinished(int numCourses) {
-       return visited == numCourses ? order : new int[]{};
+        return completed == n ? res : new int[]{};
     }
 }

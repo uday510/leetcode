@@ -1,35 +1,41 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adjList = new ArrayList[numCourses];
+        int n = numCourses;
+        List<Integer>[] adjList = new ArrayList[n];
+
+        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+        int[] indegree = new int[n];
+
+        for (int[] pre : prerequisites) {
+            int u = pre[0];
+            int v = pre[1];
+
+            adjList[u].add(v);
+            indegree[v]++;
+        }
+
         Queue<Integer> queue = new ArrayDeque<>();
-        int[] indegree = new int[numCourses];
-        for (int i = 0; i < numCourses; ++i) {
-            adjList[i] = new ArrayList<>();
-        }
-
-        for (int[] prerequisite : prerequisites) {
-            adjList[prerequisite[1]].add(prerequisite[0]);
-            ++indegree[prerequisite[0]];
-        }
-
-        for (int i = 0; i < numCourses; ++i) {
+        int total = n;
+        for (int i = 0; i < n; ++i) {
             if (indegree[i] == 0) {
                 queue.offer(i);
+                total--;
             }
         }
 
-        int visited = numCourses;
+        
 
         while (!queue.isEmpty()) {
-            int vertex = queue.poll();
-            System.out.println(vertex);
-            --visited;
-            for (int neighbor : adjList[vertex]) {
-                --indegree[neighbor];
-                if (indegree[neighbor] == 0) 
-                    queue.offer(neighbor);
+            int v = queue.poll();
+            for (int nei : adjList[v]) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    total--;
+                    queue.offer(nei);
+                }
             }
         }
-        return visited == 0;
+
+        return total == 0;
     }
 }

@@ -25,7 +25,7 @@ class Solution {
             return res;
         }
 
-        for (int idx = i; idx < (nums.length); ++idx) {
+        for (int idx = i; idx < (nums.length - k + 1); ++idx) {
             if (idx > i && (nums[idx] == nums[idx - 1])) continue;
             System.out.println(idx);
             List<List<Integer>> list = dfs(nums, target - nums[idx], idx + 1, k - 1);

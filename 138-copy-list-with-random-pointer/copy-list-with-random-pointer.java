@@ -1,39 +1,15 @@
-
 class Solution {
+
+    Map<Node, Node> map = new HashMap<>();
+    
     public Node copyRandomList(Node head) {
-        if (head == null) return null;
+        if(head == null) return null;
+        if(map.get(head) != null) return map.get(head);
 
-        Node currNode = head;
-
-        while (currNode != null) {
-            Node newNode = new Node(currNode.val);
-            newNode.next = currNode.next;
-            currNode.next = newNode;
-            currNode = newNode.next;
-        }
-
-        currNode = head;
-        while (currNode != null) {
-            Node oldRandom = currNode.random;
-            Node newNode = currNode.next;
-            if (oldRandom != null)
-                newNode.random = oldRandom.next;
-            
-            currNode = newNode.next;
-        }
-
-        Node newHead = head.next;
-        Node newNode = newHead;
-        Node oldNode = head;
-
-         while (newNode != null) {
-            oldNode.next = (oldNode.next != null) ? oldNode.next.next : null;
-            newNode.next = (newNode.next != null) ? newNode.next.next : null;
-
-            oldNode = oldNode.next;
-            newNode = newNode.next;
-        }
-
-        return newHead;
+        Node node = new Node(head.val);
+        map.put(head, node);
+        node.next = copyRandomList(head.next);
+        node.random = copyRandomList(head.random);
+        return node;
     }
 }

@@ -7,7 +7,7 @@ class Solution {
         while (rightIdx < n) {
             freq[s.charAt(rightIdx)]++;
 
-            while (leftIdx < rightIdx && freq[s.charAt(rightIdx)] > 1) {
+            while (freq[s.charAt(rightIdx)] > 1) {
                 freq[s.charAt(leftIdx)]--;
                 leftIdx++;
             }

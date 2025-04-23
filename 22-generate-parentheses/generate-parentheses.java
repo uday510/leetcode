@@ -16,14 +16,15 @@ class Solution {
             return;
         }
 
-        if (open < n) {
-            curr.append("(");
-            dfs(open + 1, close, curr);
-            curr.deleteCharAt(curr.length() - 1);
-        }  if(close < open) {
+    if(close < open) {
             curr.append(")");
             dfs(open, close + 1, curr);
             curr.deleteCharAt(curr.length() - 1);
         }
+        if (open < n) {
+            curr.append("(");
+            dfs(open + 1, close, curr);
+            curr.deleteCharAt(curr.length() - 1);
+        }  
     }
 }

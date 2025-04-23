@@ -1,19 +1,19 @@
 class Solution {
-    int max = Integer.MIN_VALUE;
+    int max;
     public int maxPathSum(TreeNode root) {
+        max = -(int) 1e9;
         dfs(root);
         return max;
     }
-    int dfs(TreeNode node) {
-        if (node == null)
-            return 0;
+    private int dfs(TreeNode node) {
+        if (node == null) return 0;
 
         int left = Math.max(0, dfs(node.left));
         int right = Math.max(0, dfs(node.right));
 
-        int curr = left+right+node.val;
-        max = Math.max(max, curr);
+        int curr = node.val + left + right;
+        max = Math.max(curr, max);
 
-        return Math.max(left, right) + node.val;
+        return node.val + Math.max(left, right);
     }
 }

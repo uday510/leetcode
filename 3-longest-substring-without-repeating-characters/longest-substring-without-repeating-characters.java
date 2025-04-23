@@ -1,9 +1,10 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
+        
         int[] freq = new int[128];
-        int leftIdx = 0, rightIdx = 0, longest = 0, len = s.length();
+        int leftIdx = 0, rightIdx = 0, longest = 0, n = s.length();
 
-        while (rightIdx < len) {
+        while (rightIdx < n) {
             freq[s.charAt(rightIdx)]++;
 
             while (leftIdx < rightIdx && freq[s.charAt(rightIdx)] > 1) {

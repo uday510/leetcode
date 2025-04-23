@@ -2,70 +2,63 @@ class Solution {
 
     int[][] dirs = {{0,1},{1,0},{-1,0},{0,-1}};
     Queue<int[]> queue;
+    int n;
     boolean[][] visited;
     int[][] grid;
-    int n;
-    int m;
-
     public int shortestBridge(int[][] grid) {
         n = grid.length;
-        m = grid[0].length;
-        visited = new boolean[n][m];
+        visited = new boolean[n][n];
         queue = new ArrayDeque<>();
         this.grid = grid;
-        boolean found = false;
 
+        boolean found = false;
         for (int i = 0; i < n && !found; ++i) {
-             for (int j = 0; j < m && !found; ++j) {
+            for (int j = 0; j < n && !found; ++j) {
                 if (grid[i][j] == 1) {
                     dfs(i, j);
                     found = true;
                 }
-             }
+            }
         }
 
         while (!queue.isEmpty()) {
             int[] curr = queue.poll();
 
             for (int[] dir : dirs) {
-                int R = dir[0] + curr[0];
-                int C = dir[1] + curr[1];
+                int i = curr[0] + dir[0];
+                int j = curr[1] + dir[1];
+                int d = curr[2];
 
-                if (!isValid(R, C)) continue;
+                if (isOutOfBounds(i, j) || isVisited(i, j)) continue;
 
-                if (grid[R][C] == 1) return curr[2];
+                if (grid[i][j] == 1) return d;
 
-                visited[R][C] = true;
-
-                queue.offer(new int[]{R, C, curr[2] + 1});
+                visited[i][j] = true;
+                queue.offer(new int[]{i, j, d + 1});
             }
         }
+
         return -1;
     }
+    
+    private void dfs(int i, int j) {
+        if (isOutOfBounds(i, j) || grid[i][j] == 0 || isVisited(i, j)) return;
 
-    private void dfs(int row, int col) {
-        if (!isValid(row, col) || grid[row][col] == 0) return;
-
-        visited[row][col] = true;
-        queue.offer(new int[] {row, col, 0});
+        queue.offer(new int[]{i, j, 0});
+        visited[i][j] = true;
         for (int[] dir : dirs) {
-            int R = dir[0] + row;
-            int C = dir[1] + col;
+            int nextI = dir[0] + i;
+            int nextJ = dir[1] + j;
 
-            dfs(R, C);
+            dfs(nextI, nextJ);
         }
     }
+    
+    private boolean isOutOfBounds(int i, int j) {
+        return (i < 0 || i >= n || j < 0 || j >= n);
+    }
 
-    private boolean isValid(int row, int col) {
-        return row >= 0 && row < n && col >= 0 && col < m && !visited[row][col];
+    private boolean isVisited(int i, int j) {
+        return visited[i][j];
     }
 }
-
-
-/**
-
- [0,1,1]
- [0,0,0]
- [0,0,1]
-
- */

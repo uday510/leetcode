@@ -1,43 +1,30 @@
 class Solution {
+    List<List<Integer>> list;
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
-        return dfs(nums, 0, 0, 3);
-    }
-    private List<List<Integer>> dfs(int[] nums, long target, int i, int k) {
-        // System.out.println(target + " " + k);
-        List<List<Integer>> res = new ArrayList<>();
+        list = new ArrayList<>();
+        int target = 0;
+       
+        for (int idx = 0; idx < nums.length; ++idx) {
+            if (idx > 0 && nums[idx] == nums[idx - 1]) continue;
+            int leftIdx = idx + 1;
+            int rightIdx = nums.length - 1;
 
-        if (k == 2) {
-            int left = i;
-            int right = nums.length - 1;
+            while (leftIdx < rightIdx) {
+                int sum = nums[idx] + nums[leftIdx] + nums[rightIdx];
 
-            while (left < right) {
-                long sum = (long) nums[left] + (long) nums[right];
-                if (sum < target) left++;
-                else if (sum > target) right--;
+                if (sum < target) leftIdx++;
+                else if (sum > target) rightIdx--;
                 else {
-                    res.add(new ArrayList<>(Arrays.asList(nums[left], nums[right])));
-                    left++;
-                    right--;
-                    while (left < right && nums[left] == nums[left - 1]) left++;
-                    while (left < right && nums[right] == nums[right + 1]) right--;
+                    list.add(new ArrayList<>(Arrays.asList(nums[idx], nums[leftIdx], nums[rightIdx])));
+                    leftIdx++;
+                    rightIdx--;
+                    while (leftIdx < rightIdx && nums[leftIdx] == nums[leftIdx - 1]) leftIdx++;
+                    while (leftIdx < rightIdx && nums[rightIdx] == nums[rightIdx + 1]) rightIdx--;
                 }
             }
-            return res;
         }
 
-        for (int idx = i; idx < (nums.length - k + 1); ++idx) {
-            if (idx > i && (nums[idx] == nums[idx - 1])) continue;
-            System.out.println(idx);
-            List<List<Integer>> list = dfs(nums, target - nums[idx], idx + 1, k - 1);
-            System.out.println(list);
-            for (List<Integer> subList : list) {
-                List<Integer> temp = new ArrayList<>();
-                temp.add(nums[idx]);
-                temp.addAll(subList);
-                res.add(temp);
-            }
-        }
-        return res;
+        return list;
     }
 }

@@ -19,18 +19,16 @@ class Solution {
         for (int i = 0; i < n; ++i) {
             if (indegree[i] == 0) {
                 queue.offer(i);
-                total--;
+                
             }
         }
 
-        
-
         while (!queue.isEmpty()) {
             int v = queue.poll();
+            total--;
             for (int nei : adjList[v]) {
                 indegree[nei]--;
                 if (indegree[nei] == 0) {
-                    total--;
                     queue.offer(nei);
                 }
             }

@@ -25,9 +25,6 @@ class Solution {
                 weight = weights[idx];
             }
         }
-
-        System.out.println(req + " " + curr + " " + weight);
-
         return curr <= days;
     }
 }

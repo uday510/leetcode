@@ -1,37 +1,28 @@
 class Solution {
+    int[] dp;
+    int[] coins;
     public int coinChange(int[] coins, int amount) {
-        Queue<Integer> queue = new LinkedList<>();
-        int currentCoins = 0;
-        Set<Integer> seen = new HashSet<>();
+        dp = new int[amount + 1];
+        this.coins = coins;
+        Arrays.fill(dp, -2);
 
-        queue.offer(0);
+        return dfs(amount);
+    }
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
+    private int dfs(int rem) {
+        if (rem == 0) return 0;
+        if (rem < 0) return -1;
 
-            while (size-- > 0) {
-                int currentAmount = queue.poll();
+        if (dp[rem] != -2) return dp[rem];
 
-                if (currentAmount == amount) {
-                    return currentCoins;
-                }
-
-                if (seen.contains(currentAmount)) {
-                    continue;
-                }
-
-                seen.add(currentAmount);
-
-                for (int coin : coins) {
-                    if (currentAmount + coin <= amount) {
-                        queue.offer(currentAmount + coin);
-                    }
-                }
+        int min = (int) 1e9;
+        for (int coin : coins) {
+            int res = dfs(rem - coin);
+            if (res >= 0) {
+                min = Math.min(min, res + 1);
             }
-
-            ++currentCoins;
         }
 
-        return -1;
+        return dp[rem] = (min == (int) 1e9 ? -1 : min);
     }
 }

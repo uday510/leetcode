@@ -17,7 +17,7 @@ class Solution {
         int currHrs = 0;
 
         for (int pile : piles) {
-            currHrs +=  Math.ceil((double) pile / numPerHr);
+            currHrs += Math.ceil((double) pile / numPerHr);
         }
 
         return currHrs <= requiredHrs;

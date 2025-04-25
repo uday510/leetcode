@@ -20,7 +20,7 @@ class Solution {
 
         List<List<Integer>> result = new ArrayList<>();
 
-        for (int i = idx; i < (n - k + 1); ++i) {
+        for (int i = idx; i < n; ++i) {
             if (i > idx && nums[i] == nums[i - 1]) continue;
 
             List<List<Integer>> list = dfs(i + 1, k - 1, target - nums[i]);

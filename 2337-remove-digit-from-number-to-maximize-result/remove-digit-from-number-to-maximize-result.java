@@ -6,11 +6,17 @@ class Solution {
         for (int idx = 0; idx < len; ++idx) {
             if (number.charAt(idx) != digit) continue;
 
-            String curr = number.substring(0, idx) + number.substring(idx + 1, len);
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(number, 0, idx);
+            sb.append(number, idx + 1, len);
+
+            String curr = sb.toString();
 
             if (curr.compareTo(str) > 0) {
                 str = curr;
             }
+
         }
 
         return str;

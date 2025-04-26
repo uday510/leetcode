@@ -1,19 +1,28 @@
 class Solution {
     public int maxProfit(int[] prices) {
-       int k = 2; 
-       int profit[] = new int[k];
-       int cost[] = new int[k];
-       Arrays.fill(cost, Integer.MAX_VALUE);
-       
-       for(int currPrice : prices){
-            cost[0] = Math.min(cost[0], currPrice);
-            profit[0] = Math.max(profit[0], currPrice-cost[0]);
-			for(int j = 1;  j < k; j++){
-                cost[j] = Math.min(cost[j], currPrice - profit[j-1]);
-                profit[j] = Math.max(profit[j], currPrice - cost[j]);
-            }
+       int len = prices.length;
+       int[] left = new int[len];
+       int[] right = new int[len + 1];
+       int leftMin = prices[0];
+       int rightMax = prices[len - 1];
+
+       for (int idx = 1; idx < len; ++idx) {
+        leftMin = Math.min(leftMin, prices[idx]);
+        left[idx] = Math.max(left[idx - 1], prices[idx] - leftMin);
+
+        int r = len - idx;
+        right[r] = Math.max(right[r + 1], rightMax - prices[r]);
+        rightMax = Math.max(rightMax, prices[r]);
        }
 
-       return profit[k-1];
+
+       int maxProfit = 0;
+
+       for (int idx = 0; idx < len; ++idx) {
+            int currProfit = left[idx] + right[idx + 1];
+            maxProfit = Math.max(maxProfit, currProfit);
+       }
+
+       return maxProfit; 
     }
 }

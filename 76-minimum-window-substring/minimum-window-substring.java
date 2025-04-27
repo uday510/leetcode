@@ -1,37 +1,38 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int[] map = new int[128];
-        int N = s.length();
-        int M = t.length();
-        int startIdx = 0;
-        int endIdx = 0;
-        int minStart = 0;
-        int minLen = Integer.MAX_VALUE;
-        int cnt = 0;
-
-        for (char c : t.toCharArray()) 
-            map[c]++;
+        Map<Character, Integer> cnt = new HashMap<>();
+        int n = s.length(), m = t.length();
+        int len = Integer.MAX_VALUE;
+        int st = 0, l = 0, r = 0;
+        int count = 0;
         
-        while (endIdx < N) {
-            char endChar = s.charAt(endIdx);
-            if (map[endChar] > 0)   
-                ++cnt;
-            map[endChar]--;
-            ++endIdx;
-            while (cnt == M) {
-                if (endIdx - startIdx < minLen) {
-                    minStart = startIdx;
-                    minLen = endIdx - startIdx;
-                }
-                char startChar = s.charAt(startIdx);
-
-                map[startChar]++;
-
-                if (map[startChar] > 0) --cnt;
-
-                ++startIdx;
+        for (char ch : t.toCharArray()) cnt.merge(ch, 1, Integer::sum);
+        
+        while (r < n) {
+            char ch = s.charAt(r);
+            if (cnt.containsKey(ch)) {
+                if (cnt.get(ch) > 0) count++;
+                cnt.merge(ch, -1, Integer::sum);
             }
+            
+            while (count == m) {
+                if (len > r - l + 1) {
+                    len = r - l + 1;
+                    st = l;
+                }
+                
+                char ch2 = s.charAt(l);
+                
+                if (cnt.containsKey(ch2)) {
+                    cnt.merge(ch2, 1, Integer::sum);
+                    if (cnt.get(ch2) > 0) count--;
+                }
+                l++;
+            }
+            
+            r++;
         }
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+        
+        return len == Integer.MAX_VALUE ? "" : s.substring(st, st + len);
     }
 }

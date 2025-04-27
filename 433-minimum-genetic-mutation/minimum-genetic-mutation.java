@@ -1,65 +1,37 @@
 class Solution {
     public int minMutation(String startGene, String endGene, String[] bank) {
-        if (startGene.equals(endGene)) {
-            return 0;
-        }
-
-        if (bank.length == 0) {
-            return -1;
-        }
-
-        Set<String> bankSet = createBankSet(bank);
-        Set<String> visited = new HashSet<>();
-
-        Queue<String> queue = new LinkedList<>();
+        
+        Set<String> set = new HashSet<>(Arrays.asList(bank));
+        Queue<String> queue = new ArrayDeque<>();
+        int level = 0;
         queue.offer(startGene);
-        visited.add(startGene);
 
-        int minMutation = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+            for (int idx = 0; idx < size; ++idx) {
+                String curr = queue.poll();
+                StringBuilder sb = new StringBuilder(curr);
 
-        while(!queue.isEmpty()) {
-            int levelSize = queue.size();
-            ++minMutation;
+                for (int i = 0; i < curr.length(); ++i) {
+                    char prev = sb.charAt(i);
 
-            for (int i = 0; i < levelSize; ++i) {
-                String gene = queue.poll();
-                
-                for (int j = 0; j < gene.length(); ++j) {
+                    for (char ch : new char[]{'A', 'C', 'G', 'T'}) {
+                        sb.setCharAt(i, ch);
 
-                    for (char c : new char[]{'A', 'C', 'G', 'T'}) {
+                        String gene = sb.toString();
 
-                        StringBuilder sb = new StringBuilder(gene);
-
-                        sb.setCharAt(j, c);
-
-                        String currentGene = sb.toString();
-
-                        if (currentGene.equals(endGene) && bankSet.contains(currentGene)) {
-                            return minMutation;
-                        }
-
-                        if (visited.contains(currentGene)) {
-                            continue;
-                        }
-
-                        visited.add(currentGene);
-
-                        if (bankSet.contains(currentGene)) {
-                            queue.offer(currentGene);
-                        }
+                        if (!set.contains(gene)) continue;
+                        
+                        if (gene.equals(endGene)) return level;
+                    
+                        set.remove(gene);
+                        queue.offer(gene);
                     }
+                    sb.setCharAt(i, prev);
                 }
             }
         }
         return -1;
-    }
-    private Set<String> createBankSet(String[] bank) {
-        Set<String> bankSet = new HashSet<>();
-
-        for (String gene : bank) {
-            bankSet.add(gene);
-        }
-
-        return bankSet;
     }
 }

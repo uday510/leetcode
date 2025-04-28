@@ -1,50 +1,54 @@
 class Solution {
-    Set<String> words;
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        words = new HashSet<>(wordList);
-        wordList.remove(beginWord);
+    private Set<String> wordSet;
 
-        if (!words.contains(endWord)) return 0;
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) return 0;
 
         Queue<String> queue = new ArrayDeque<>();
-        int level = 1;
+        Set<String> visited = new HashSet<>();
         queue.offer(beginWord);
+        visited.add(beginWord);
+
+        int level = 1;
 
         while (!queue.isEmpty()) {
-            int size = queue.size();
-            level++;
+            int currentLevelSize = queue.size();
 
-            for (int pos = 0; pos < size; ++pos) {
-                String currentString = queue.poll();
+            for (int i = 0; i < currentLevelSize; i++) {
+                String currentWord = queue.poll();
+                if (currentWord.equals(endWord)) return level;
 
-                List<String> neighbors = getNeighbors(currentString);
-
-                for (String neighbor : neighbors) {
-                    if (neighbor.equals(endWord)) return level;
-                    queue.offer(neighbor);
+                for (String neighbor : generateNeighbors(currentWord)) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        queue.offer(neighbor);
+                    }
                 }
             }
+            level++;
         }
 
         return 0;
     }
 
-    private List<String> getNeighbors(String string) {
-        StringBuilder stringBuilder = new StringBuilder(string);
+    private List<String> generateNeighbors(String word) {
         List<String> neighbors = new ArrayList<>();
+        char[] chars = word.toCharArray();
 
-        for (int idx = 0; idx < stringBuilder.length(); ++idx) {
-            char originalCharacter = stringBuilder.charAt(idx);
+        for (int i = 0; i < chars.length; i++) {
+            char originalChar = chars[i];
 
-            for (char ch = 'a'; ch <= 'z'; ++ch) {
-                stringBuilder.setCharAt(idx, ch);
-                String formedString = stringBuilder.toString();
-                if (!words.contains(formedString)) continue;
-                words.remove(formedString);
-                neighbors.add(formedString);
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (c == originalChar) continue;
+                chars[i] = c;
+                String newWord = new String(chars);
+                if (wordSet.contains(newWord)) {
+                    neighbors.add(newWord);
+                }
             }
 
-            stringBuilder.setCharAt(idx, originalCharacter);
+            chars[i] = originalChar;
         }
 
         return neighbors;

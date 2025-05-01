@@ -1,61 +1,65 @@
 class Solution {
-    List<List<Integer>> res;
-    int[] nums;
-    int n;
-    public List<List<Integer>> fourSum(int[] nums, long target) {
+    private int[] nums;
+    private int n;
 
-        Arrays.sort(nums);
-        res = new ArrayList<>();
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (nums == null || nums.length < 3) return result;
+
         this.nums = nums;
-        n = nums.length;
+        this.n = nums.length;
+        Arrays.sort(nums);
 
-        return dfs(0, 4, target);
+        return dfs(0, 4, target*1l);
     }
-
-    private List<List<Integer>> dfs(int idx, int k, long target) {
-
+    private List<List<Integer>> dfs(int i, int k, long target) {
         if (k == 2) {
-            return twoSum(idx, target);
+            return twoSum(i, target);
         }
 
         List<List<Integer>> result = new ArrayList<>();
 
-        for (int i = idx; i < n; ++i) {
-            if (i > idx && nums[i] == nums[i - 1]) continue;
 
-            List<List<Integer>> list = dfs(i + 1, k - 1, target - nums[i]);
+        for (int idx = i; idx < n; ++idx) {
+            if (idx > i && nums[idx] == nums[idx - 1]) continue;
 
-            for (var subList : list) {
-                var temp = new ArrayList<Integer>();
-                temp.add(nums[i]);
-                temp.addAll(subList);
-                result.add(temp);
+            List<List<Integer>> subLists = dfs(idx + 1, k - 1, target - nums[idx]);
+
+            for (var sub : subLists) {
+                List<Integer> combination = new ArrayList<>();
+                combination.add(nums[idx]);
+                combination.addAll(sub);
+                result.add(combination);
             }
         }
+
+
 
         return result;
     }
 
     private List<List<Integer>> twoSum(int idx, long target) {
-        List<List<Integer>> list = new ArrayList<>();
-        int leftIdx = idx;
-        int rightIdx = nums.length - 1;
+        List<List<Integer>> result = new ArrayList<>();
+        int left = idx, right = n - 1;
 
-        while (leftIdx < rightIdx) {
-            long curr = (long) nums[leftIdx] + nums[rightIdx];
+        while (left < right) {
+            int curr = nums[left] + nums[right];
 
-            if (curr < target) leftIdx++;
-            else if (curr > target) rightIdx--;
+            if (curr < target) left++;
+            else if (curr > target) right--;
             else {
-                list.add(new ArrayList<>(Arrays.asList(nums[leftIdx], nums[rightIdx])));
-                leftIdx++;
-                rightIdx--;
+                result.add(Arrays.asList(nums[left], nums[right]));
 
-                while (leftIdx < rightIdx && nums[leftIdx] == nums[leftIdx - 1]) leftIdx++;
-                while (leftIdx < rightIdx && nums[rightIdx] == nums[rightIdx + 1]) rightIdx--;
+                left++;
+                right--;
+
+                while (left < n && nums[left] == nums[left - 1]) left++;
+
+                while (right > -1 && nums[right] == nums[right + 1]) right--;
             }
         }
 
-        return list;
+        return result;
     }
 }

@@ -1,26 +1,29 @@
 class Solution {
-    List<List<Integer>> list;
     public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        int n = nums.length;
+        
         Arrays.sort(nums);
-        list = new ArrayList<>();
-        int target = 0;
-       
-        for (int idx = 0; idx < nums.length; ++idx) {
-            if (idx > 0 && nums[idx] == nums[idx - 1]) continue;
-            int leftIdx = idx + 1;
-            int rightIdx = nums.length - 1;
 
-            while (leftIdx < rightIdx) {
-                int sum = nums[idx] + nums[leftIdx] + nums[rightIdx];
+        for (int i = 0; i < n; ++i) {
+            if (i > 0 && nums[i] == nums[i-1]) continue;
 
-                if (sum < target) leftIdx++;
-                else if (sum > target) rightIdx--;
+            int left = i + 1, right = n - 1;
+
+            while (left < right) {
+                int currSum = nums[i] + nums[left] + nums[right];
+
+                if (currSum < 0) left++;
+                else if (currSum > 0) right--;
                 else {
-                    list.add(new ArrayList<>(Arrays.asList(nums[idx], nums[leftIdx], nums[rightIdx])));
-                    leftIdx++;
-                    rightIdx--;
-                    while (leftIdx < rightIdx && nums[leftIdx] == nums[leftIdx - 1]) leftIdx++;
-                    while (leftIdx < rightIdx && nums[rightIdx] == nums[rightIdx + 1]) rightIdx--;
+
+                    list.add(List.of(nums[i], nums[left], nums[right]));
+                    left++;
+                    right--;
+
+                    while (left < n && nums[left] == nums[left-1]) left++;
+
+                    while (right > -1 && nums[right] == nums[right + 1]) right--;
                 }
             }
         }

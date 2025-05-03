@@ -1,26 +1,23 @@
 class Solution {
     public String longestPalindrome(String s) {
-        int[] longest = new int[] {0, 1};
+        int n = s.length();
+        boolean[][] dp = new boolean[n + 1][n + 1];
+        int maxLen = 1;
+        int st = 0;
 
-        for (int idx = 0; idx < s.length(); ++idx) {
-            int[] odd = getPalindromicSubstringLength(idx - 1, idx + 1, s);
-            int[] even = getPalindromicSubstringLength(idx - 1, idx, s);
+        for (int i = n - 1; i > -1; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1]);
 
-            int[] curr = odd[1] - odd[0] > even[1] - even[0] ? odd : even;
-            longest = curr[1] - curr[0] > longest[1] - longest[0] ? curr : longest;
-        }
+                if (dp[i][j]) {
+                    if (j - i >= maxLen) {
+                        maxLen = j - i + 1;
+                        st = i;
+                    }
+                }
+            }
+        } 
 
-        return s.substring(longest[0], longest[1]);
-    }
-
-    private int[] getPalindromicSubstringLength (int i, int j, String s) {
-        
-        while (i < j && i > -1 && j < s.length()) {
-            char ch1 = s.charAt(i), ch2 = s.charAt(j);
-            if (ch1 != ch2) break;
-            i--; j++;
-        }
-
-        return new int[] {i + 1, j};
+        return s.substring(st, st + maxLen);
     }
 }

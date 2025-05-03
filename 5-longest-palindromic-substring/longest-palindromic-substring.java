@@ -8,16 +8,15 @@ class Solution {
         for (int i = n - 1; i > -1; --i) {
             for (int j = i + 1; j < n; ++j) {
                 dp[i][j] = s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1]);
+                
+                if (!dp[i][j]) continue;
 
-                if (dp[i][j]) {
-                    if (j - i + 1 > maxLen) {
-                        maxLen = j - i + 1;
-                        st = i;
-                    }
+                if (j - i + 1 > maxLen) {
+                    maxLen = j - i + 1;
+                    st = i;
                 }
             }
         } 
-
         return s.substring(st, st + maxLen);
     }
 }

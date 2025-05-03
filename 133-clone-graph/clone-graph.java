@@ -18,39 +18,27 @@ class Node {
 }
 */
 
- class Solution {
-    Map<Node, Node> dp;
+class Solution {
     public Node cloneGraph(Node node) {
-        dp = new HashMap<>();
-        return dfs(node);
-    }
-    private Node dfs(Node node) {
-        if (node == null) return null;
+        if (node == null) return node;
+        Queue<Node> queue = new ArrayDeque<>();
+        Map<Node, Node> map = new HashMap<>();
+        queue.offer(node);
+        map.put(node, new Node(node.val));
 
-        if (dp.containsKey(node)) return dp.get(node);
-
-        Node newNode = new Node(node.val);
-        dp.put(node, newNode); 
-
-        for (Node nei : node.neighbors) {
-            newNode.neighbors.add(dfs(nei));
+        while (!queue.isEmpty()) {
+            Node curr = queue.poll();
+            for (Node nei : curr.neighbors) {
+                if (map.containsKey(nei)) {
+                    map.get(curr).neighbors.add(map.get(nei));
+                    continue;
+                }
+                map.put(nei, new Node(nei.val));
+                map.get(curr).neighbors.add(map.get(nei));
+                queue.offer(nei);
+            }
         }
 
-        return newNode;
+        return map.get(node);
     }
 }
-
-/**
-
-
-1 --> [2, 4]
-2 --> [1, 3]
-3 --> [4, 2]
-
-
-1 -> []
-
-
-
-
- */

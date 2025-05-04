@@ -1,42 +1,41 @@
 class Solution {
-    public int[] findOrder(int n, int[][] edges) {
-        List<Integer>[] adjList = new ArrayList[n];
-        int[] indegree = new int[n];
+   @SuppressWarnings("unchecked")
+    // O(V+E) time complexity | O(V+E) space complexity
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+       ArrayDeque<Integer> queue = new ArrayDeque<>();
+       int[] inDegree = new int[numCourses];
+       List<Integer>[] adjList = new ArrayList[numCourses];
+       int[] order = new int[numCourses];
+       int index = 0;
+       int finishedCourses = 0;
 
-        int[] res = new int[n];
-        int idx = 0;
-        int completed = 0;
+       for (int idx = 0; idx < numCourses; idx++) {
+           adjList[idx] = new ArrayList<>();
+       }
 
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+       for (int[] prerequisite : prerequisites) {
+           adjList[prerequisite[1]].add(prerequisite[0]);
+           inDegree[prerequisite[0]]++;
+       }
 
-        for (int[] edge : edges) {
-            int u = edge[0], v = edge[1];
+       for (int idx = 0; idx < numCourses; ++idx) {
+           if (inDegree[idx] == 0) {
+               queue.offerLast(idx);
+           }
+       }
 
-            adjList[v].add(u);
-            indegree[u]++;
-        }
+       while (!queue.isEmpty()) {
+           int course = queue.pollFirst();
+           order[index++] = course;
+           finishedCourses++;
 
-        Queue<Integer> queue = new ArrayDeque<>();
-
-        for (int i = 0; i < n; ++i) {
-            if (indegree[i] == 0) {
-                queue.offer(i);
-            }
-        }
-
-        while (!queue.isEmpty()) {
-            int v = queue.poll();
-            res[idx++] = v;
-            completed++;
-
-            for (int nei : adjList[v]) {
-                indegree[nei]--;
-                if (indegree[nei] == 0) {
-                    queue.offer(nei);
+           for (int neighborCourse : adjList[course]) {
+                if (--inDegree[neighborCourse] == 0) {
+                     queue.add(neighborCourse);
                 }
-            }
-        }
+           }
+       }
 
-        return completed == n ? res : new int[]{};
+       return finishedCourses == numCourses ? order : new int[]{};
     }
 }

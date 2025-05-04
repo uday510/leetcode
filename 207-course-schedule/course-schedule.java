@@ -1,37 +1,39 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adjList = new ArrayList[numCourses];
-        int[] indegree = new int[numCourses];
 
-        for (int i = 0; i < numCourses; ++i) {
-            adjList[i] = new ArrayList<>();
-        }
+    @SuppressWarnings("unchecked")
+    // O(V+E) time complexity | O(V+E) space complexity
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+       ArrayDeque<Integer> queue = new ArrayDeque<>();
+       int[] inDegree = new int[numCourses];
+       List<Integer>[] adjList = new ArrayList[numCourses];
+       int finishedCourses = 0;
 
-        for (int[] prerequisite : prerequisites) {
-            int u = prerequisite[0], v = prerequisite[1];
-            adjList[u].add(v);
-            ++indegree[v];
-        }
+       for (int idx = 0; idx < numCourses; idx++) {
+           adjList[idx] = new ArrayList<>();
+       }
 
-        Queue<Integer> queue = new ArrayDeque<>();
-        for (int course = 0; course < indegree.length; ++course) {
-            int degree = indegree[course];
-            if (degree == 0) queue.offer(course);
-        }
+       for (int[] prerequisite : prerequisites) {
+           adjList[prerequisite[1]].add(prerequisite[0]);
+           inDegree[prerequisite[0]]++;
+       }
 
-        if (queue.isEmpty()) return false;
+       for (int idx = 0; idx < numCourses; ++idx) {
+           if (inDegree[idx] == 0) {
+               queue.offerLast(idx);
+           }
+       }
 
-        int coursesVisited = 0;
-        while (!queue.isEmpty()) {
-            Integer currCourse = queue.poll();
-            ++coursesVisited;
+       while (!queue.isEmpty()) {
+           int course = queue.pollFirst();
+           finishedCourses++;
 
-            for (int neighbor : adjList[currCourse]) {
-                if (--indegree[neighbor] == 0) {
-                    queue.offer(neighbor);
+           for (int neighborCourse : adjList[course]) {
+                if (--inDegree[neighborCourse] == 0) {
+                     queue.add(neighborCourse);
                 }
-            }
-        }
-        return coursesVisited == numCourses;
+           }
+       }
+
+       return finishedCourses == numCourses;
     }
 }

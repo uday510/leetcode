@@ -3,15 +3,13 @@ class Solution {
         int[] cnt = new int[127];
         Set<Character> vowels= new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
 
+        int vowel = 0, consonent = 0;
         for (char ch : s.toCharArray()) {
             cnt[ch]++;
+            if (vowels.contains(ch)) vowel = Math.max(vowel, cnt[ch]);
+            else consonent = Math.max(consonent, cnt[ch]);
         }
 
-        int vowel = 0, consonent = 0;
-        for (int idx = 97; idx < 127; ++idx) {
-            if (vowels.contains((char) idx)) vowel = Math.max(vowel, cnt[idx]);
-            else consonent = Math.max(consonent, cnt[idx]);
-        }
         return vowel + consonent;
     }
 }

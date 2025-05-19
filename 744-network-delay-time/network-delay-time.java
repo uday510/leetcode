@@ -24,7 +24,7 @@ class Solution {
             int[] curr = queue.poll();
             int u = curr[0], w = curr[1];
 
-            if (signalTimes[u] < w) continue;
+            // if (signalTimes[u] < w) continue;
 
             for (int[] neighbor : adjList[u]) {
                 int nextNode = neighbor[0], neighborWeight = neighbor[1];

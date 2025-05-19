@@ -1,40 +1,50 @@
 class Solution {
-    List<int[]>[] adjList;
-    int[] signals;
-    int INFINITY = (int) 1e9;
     public int networkDelayTime(int[][] times, int n, int k) {
-        adjList = new ArrayList[n + 1];
-        signals = new int[n + 1];
-        Arrays.fill(signals, INFINITY);
+        List<int[]>[] adjList = new ArrayList[n + 1];
 
-        for (int i = 1; i <= n; ++i) {
-            adjList[i] = new ArrayList<>();
+        for (int idx = 1; idx <= n; ++idx) {
+            adjList[idx] = new ArrayList<>();
         }
 
         for (int[] time : times) {
-            adjList[time[0]].add(new int[] {time[1], time[2]});
+            int u = time[0], v = time[1], w = time[2];
+            adjList[u].add(new int[] {v, w});
         }
 
-        dfs(k, 0);
+        int[] signalTimes = new int[n + 1];
+        int INF = (int) 1e9;
 
-        int max = -INFINITY;
+        Arrays.fill(signalTimes, INF);
 
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[] {k, 0});
+        signalTimes[k] = 0;
+
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int u = curr[0], w = curr[1];
+
+            if (signalTimes[u] < w) continue;
+
+            for (int[] neighbor : adjList[u]) {
+                int nextNode = neighbor[0], neighborWeight = neighbor[1];
+                int newWeight = neighborWeight + w;
+
+                if (newWeight < signalTimes[nextNode]) {
+                    signalTimes[nextNode] = newWeight;
+                    queue.offer(new int[] {nextNode, newWeight});
+                }
+            }
+        }
+        System.out.println(Arrays.toString(signalTimes));
+
+        int minDelayTime = -INF;
         for (int idx = 1; idx <= n; ++idx) {
-            if (signals[idx] == INFINITY) return -1;
-            max = Math.max(max, signals[idx]);
+            int signalTime = signalTimes[idx];
+            if (signalTime == INF) return -1;
+            minDelayTime = Math.max(minDelayTime, signalTime);
         }
 
-        return max;
-    }
-
-    private void dfs(int node, int curr) {
-        if (curr >= signals[node]) return;
-
-        signals[node] = curr;
-
-        for (int[] next : adjList[node]) {
-            dfs(next[0], curr + next[1]);
-        }
-
+        return minDelayTime;
     }
 }

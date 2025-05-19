@@ -1,5 +1,4 @@
 class Solution {
-    
     private static final int UNREACHABLE = (int) 1e9;
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
@@ -18,23 +17,27 @@ class Solution {
         Arrays.fill(dists, UNREACHABLE);
 
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[] {src, 0, 0});
+        queue.offer(new int[] {src, 0});
+        int stops = 0;
 
-       while (!queue.isEmpty()) {
-           int[] curr = queue.poll();
-           int node = curr[0], cost = curr[1], stops = curr[2];
+       while (stops <= k) {
+           int size = queue.size();
 
-           if (stops > k) continue;
+           for (int i = 0; i < size; ++i) {
+            int[] curr = queue.poll();
+            int node = curr[0], cost = curr[1];
 
-           for (int[] neighbor : adjList[node]) {
-               int nextNode = neighbor[0], price = neighbor[1];
-               int newCost = cost + price;
+                for (int[] neighbor : adjList[node]) {
+                    int nextNode = neighbor[0], price = neighbor[1];
+                    int newCost = cost + price;
 
-               if (newCost > dists[nextNode]) continue;
+                    if (newCost > dists[nextNode]) continue;
 
-               dists[nextNode] = newCost;
-               queue.offer(new int[] {nextNode, newCost, stops + 1});
+                     dists[nextNode] = newCost;
+                    queue.offer(new int[] {nextNode, newCost});
+                }
            }
+           stops++;
        }
 
         return dists[dst] == UNREACHABLE ? -1 : dists[dst];

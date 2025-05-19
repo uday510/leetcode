@@ -21,10 +21,12 @@ class Solution {
         signalTimes[k] = 0;
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int u = curr[0], w = curr[1];
+            int size = queue.size();
+            for (int i = 0; i < size; ++i) {
+                int[] curr = queue.poll();
+                int u = curr[0], w = curr[1];
 
-            // if (signalTimes[u] < w) continue;
+            if (signalTimes[u] < w) continue;
 
             for (int[] neighbor : adjList[u]) {
                 int nextNode = neighbor[0], neighborWeight = neighbor[1];
@@ -34,6 +36,7 @@ class Solution {
                     signalTimes[nextNode] = newWeight;
                     queue.offer(new int[] {nextNode, newWeight});
                 }
+            }
             }
         }
         System.out.println(Arrays.toString(signalTimes));

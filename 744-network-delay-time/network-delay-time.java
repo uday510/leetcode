@@ -1,46 +1,40 @@
 class Solution {
-    private static final int UNREACHABLE = (int) 1e9; 
+    List<int[]>[] adjList;
+    int[] signals;
+    int INFINITY = (int) 1e9;
     public int networkDelayTime(int[][] times, int n, int k) {
-        List<int[]>[] adjList = new ArrayList[n + 1];
-        for (int i = 1; i <= n; ++i) adjList[i] = new ArrayList<>();
+        adjList = new ArrayList[n + 1];
+        signals = new int[n + 1];
+        Arrays.fill(signals, INFINITY);
 
-        for (int[] time : times) adjList[time[0]].add(new int[]{time[1], time[2]});
-
-        int[] dists = new int[n + 1];
-        Arrays.fill(dists, UNREACHABLE);
-
-        Queue<int[]> queue = new PriorityQueue<>((edge1, edge2) -> edge1[1] - edge2[1]);
-        queue.offer(new int[]{k, 0});
-        dists[k] = 0;
-
-        while (!queue.isEmpty()) {
-            int[] currEdge = queue.poll();
-            int currNode = currEdge[0], currDist = currEdge[1];
-
-            if (dists[currNode] < currDist) continue;
-            dists[currNode] = currDist;
-
-            for (int[] neiNode : adjList[currNode]) {
-                if (dists[neiNode[0]] != UNREACHABLE) continue;
-                int[] newEdge = new int[]{neiNode[0], neiNode[1] + currDist};
-                queue.offer(newEdge);
-            }
+        for (int i = 1; i <= n; ++i) {
+            adjList[i] = new ArrayList<>();
         }
 
-        int max = -1;
-        for (int i = 1; i <= n; ++i) {
-            if (dists[i] == UNREACHABLE) return -1;
-            max = Math.max(dists[i], max);
+        for (int[] time : times) {
+            adjList[time[0]].add(new int[] {time[1], time[2]});
+        }
+
+        dfs(k, 0);
+
+        int max = -INFINITY;
+
+        for (int idx = 1; idx <= n; ++idx) {
+            if (signals[idx] == INFINITY) return -1;
+            max = Math.max(max, signals[idx]);
         }
 
         return max;
     }
 
-    class Edge {
-        int to, dist;
-        Edge(int to, int dist) {
-            this.to = to;
-            this.dist = dist;
+    private void dfs(int node, int curr) {
+        if (curr >= signals[node]) return;
+
+        signals[node] = curr;
+
+        for (int[] next : adjList[node]) {
+            dfs(next[0], curr + next[1]);
         }
+
     }
 }

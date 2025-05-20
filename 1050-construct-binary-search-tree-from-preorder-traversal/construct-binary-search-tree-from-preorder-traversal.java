@@ -1,32 +1,21 @@
 class Solution {
-    Map<Integer, Integer> map;
-    int[] inorder;
-    int[] preorder;
-    int idx;
+
+    int idx = 0;
+
     public TreeNode bstFromPreorder(int[] preorder) {
-        map = new HashMap<>();
-        inorder = new int[preorder.length];
-        idx = 0;
-        this.preorder = preorder;
-        for (int i = 0; i < preorder.length; ++i) {
-            inorder[i] = preorder[i];
-        }
-        Arrays.sort(inorder);
-        for (int i = 0; i < inorder.length; ++i) {
-            map.put(inorder[i], i);
-        }
-        return dfs(0, preorder.length - 1);
+        return dfs(-(int)1e9 , (int)1e9, preorder);
     }
-    private TreeNode dfs(int i, int j) {
-        if (i > j) return null;
 
-        TreeNode root = new TreeNode(preorder[idx++]);
+    private TreeNode dfs(int low, int high, int[] preorder) {
+        if (idx >= preorder.length) return null;
+        int val = preorder[idx];
+        if (val < low || val > high) return null;
 
-        root.left = dfs(i, map.get(root.val) - 1);
-        root.right = dfs(map.get(root.val) + 1, j);
+        TreeNode root = new TreeNode(val);
+        idx++;
+        root.left = dfs(low, val, preorder);
+        root.right = dfs(val, high, preorder);
 
-        return root;
+        return root; 
     }
 }
-
-// 1 5 7 8 10 12

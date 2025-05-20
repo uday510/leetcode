@@ -1,5 +1,4 @@
 class Solution {
-    
         public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
         double INTL = 1;
         List<Edge>[] adjList = new ArrayList[n];
@@ -15,7 +14,7 @@ class Solution {
 
         double[] probs = new double[n];
 
-        PriorityQueue<Edge> pq = new PriorityQueue<>((a, b) -> Double.compare(b.prob, a.prob));
+        PriorityQueue<Edge> pq = new PriorityQueue<Edge>(Comparator.comparing((Edge k) -> k.prob).reversed());
         pq.offer(new Edge(start_node, INTL));
         probs[start_node] = INTL;
 
@@ -26,7 +25,6 @@ class Solution {
 
             for (Edge next : adjList[curr.node]) {
                 double newProb = next.prob * curr.prob;
-                System.out.println(newProb);
 
                 if (newProb > probs[next.node]) {
                     probs[next.node] = newProb;
@@ -34,8 +32,6 @@ class Solution {
                 }
             }
         }
-
-        System.out.println(Arrays.toString(probs));
 
         return probs[end_node] == INTL ? 0 : probs[end_node];
     }

@@ -1,43 +1,29 @@
 class Solution {
-    private static final int UNREACHABLE = (int) 1e9;
-
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        List<int[]>[] adjList = new ArrayList[n];
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
-
-        for (int[] flight : flights) {
-            adjList[flight[0]].add(new int[] {flight[1], flight[2]});
+        if (src == dst) {
+            return 0;
         }
 
-        int[] distanceFromSource = new int[n];
-        Arrays.fill(distanceFromSource, UNREACHABLE);
+        int[] previous = new int[n];
+        int[] current = new int[n];
 
-        Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[]{src, 0});
-        distanceFromSource[src] = 0;
+        for (int i = 0; i < n; ++i) {
+            previous[i] = current[i] = Integer.MAX_VALUE;
+        }
+        previous[src] = 0;
 
-        int stops = 0;
+        for (int i = 0; i <= k; ++i) {
+            for (int[] flight : flights) {
+                int from = flight[0];
+                int to = flight[1];
+                int cost = flight[2];
 
-        while (stops <= k) {
-            int size = queue.size();
-
-            for (int i = 0; i < size; ++i) {
-                int[] curr = queue.poll();
-                int node = curr[0], dist = curr[1];
-                
-                for (int[] next : adjList[node]) {
-                    int neiNode = next[0], neiDist = next[1];
-                    int newDist = dist + neiDist;
-
-                    if (newDist < distanceFromSource[neiNode]) {
-                        queue.offer(new int[] {neiNode, newDist});
-                        distanceFromSource[neiNode] = newDist;
-                    }
+                if (previous[from] < Integer.MAX_VALUE) {
+                    current[to] = Math.min(current[to], previous[from] + cost);
                 }
             }
-            stops++;
+            previous = current.clone();
         }
-
-        return distanceFromSource[dst] ==  UNREACHABLE ? -1: distanceFromSource[dst];
+        return current[dst] == Integer.MAX_VALUE ? -1 : current[dst];
     }
 }

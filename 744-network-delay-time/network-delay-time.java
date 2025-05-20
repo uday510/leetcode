@@ -9,7 +9,9 @@ class Solution {
         int[] dists = new int[n + 1];
         Arrays.fill(dists, INF);
 
-        Queue<int[]> queue = new ArrayDeque<>();
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> {
+            return a[1] - b[1];
+        });
         queue.offer(new int[] {k, 0});
         dists[k] = 0;
 

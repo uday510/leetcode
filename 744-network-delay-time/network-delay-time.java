@@ -1,53 +1,39 @@
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
+        
         List<int[]>[] adjList = new ArrayList[n + 1];
+        for (int i = 1; i <= n; ++i) adjList[i] = new ArrayList<>();
+        for (int[] time : times) adjList[time[0]].add(new int[] {time[1], time[2]});
 
-        for (int idx = 1; idx <= n; ++idx) {
-            adjList[idx] = new ArrayList<>();
-        }
-
-        for (int[] time : times) {
-            int u = time[0], v = time[1], w = time[2];
-            adjList[u].add(new int[] {v, w});
-        }
-
-        int[] signalTimes = new int[n + 1];
         int INF = (int) 1e9;
-
-        Arrays.fill(signalTimes, INF);
+        int[] dists = new int[n + 1];
+        Arrays.fill(dists, INF);
 
         Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(new int[] {k, 0});
-        signalTimes[k] = 0;
+        dists[k] = 0;
 
         while (!queue.isEmpty()) {
-            // int size = queue.size();
-            // for (int i = 0; i < size; ++i) {
-                int[] curr = queue.poll();
-                int u = curr[0], w = curr[1];
+            int[] curr = queue.poll();
+            int node = curr[0], w = curr[1];
 
-            if (signalTimes[u] < w) continue;
+            if (dists[node] < w) continue;
 
-            for (int[] neighbor : adjList[u]) {
-                int nextNode = neighbor[0], neighborWeight = neighbor[1];
-                int newWeight = neighborWeight + w;
+            for (int[] next : adjList[node]) {
+                int nei = next[0], neiW = next[1];
 
-                if (newWeight < signalTimes[nextNode]) {
-                    signalTimes[nextNode] = newWeight;
-                    queue.offer(new int[] {nextNode, newWeight});
+                if (neiW + w < dists[nei]) {
+                    dists[nei] = neiW + w;
+                    queue.offer(new int[] {nei, neiW + w});
                 }
             }
-            // }
         }
-        System.out.println(Arrays.toString(signalTimes));
 
-        int minDelayTime = -INF;
+        int maxDelay = -INF;
         for (int idx = 1; idx <= n; ++idx) {
-            int signalTime = signalTimes[idx];
-            if (signalTime == INF) return -1;
-            minDelayTime = Math.max(minDelayTime, signalTime);
+            if (dists[idx] == INF) return -1;
+            maxDelay = Math.max(maxDelay, dists[idx]);
         }
-
-        return minDelayTime;
+        return maxDelay;
     }
 }

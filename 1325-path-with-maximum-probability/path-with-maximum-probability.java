@@ -14,7 +14,6 @@ class Solution {
         }
 
         double[] probs = new double[n];
-        // Arrays.fill(probs, INTL);
 
         PriorityQueue<Edge> pq = new PriorityQueue<>((a, b) -> Double.compare(b.prob, a.prob));
         pq.offer(new Edge(start_node, INTL));

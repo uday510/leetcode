@@ -1,21 +1,5 @@
 class Solution {
     public int minimumEffortPath(int[][] heights) {
-        int left = 0, right = (int) 1e6;
-
-        while (left < right) {
-            int mid = (left + right) >> 1;
-
-            if (!isPathExists(heights, mid)) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-
-        return left;
-    }
-
-    private boolean isPathExists(int[][] heights, int k) {
         int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
         int m = heights.length, n = heights[0].length;
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
@@ -29,7 +13,7 @@ class Solution {
             int[] curr = pq.poll();
             int r = curr[0], c = curr[1], d = curr[2];
 
-            if (r == m - 1 && c == n - 1) return true;
+            if (r == m - 1 && c == n - 1) return d;
 
             if (dists[r][c] < d) continue;
 
@@ -39,14 +23,15 @@ class Solution {
                 if (R < 0 || R >= m || C < 0 || C >= n) continue;
 
                 int D = Math.abs(heights[R][C] - heights[r][c]);
+                D = Math.max(d, D);
 
-                if (D < dists[R][C] && D <= k) {
+                if (D < dists[R][C]) {
                     dists[R][C] = D;
                     pq.offer(new int[] {R, C, D});
                 }
             }
         }
 
-        return false;
+        return dists[m - 1][n - 1];
     }
 }

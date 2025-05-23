@@ -13,8 +13,6 @@ class Solution {
             int[] curr = pq.poll();
             int r = curr[0], c = curr[1], d = curr[2];
 
-            if (r == m - 1 && c == n - 1) return d;
-
             if (dists[r][c] < d) continue;
 
             for (int[] dir : dirs) {

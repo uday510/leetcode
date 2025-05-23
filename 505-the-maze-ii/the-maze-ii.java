@@ -6,7 +6,7 @@ class Solution {
         int INF = (int) 1e9;
         for (int[] row : dists) Arrays.fill(row, INF);
 
-        Queue<int[]> queue = new ArrayDeque<>();
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[2] - b[2]);
         queue.offer(new int[] {start[0], start[1], 0});
         dists[start[0]][start[1]] = 0;
         
@@ -14,8 +14,8 @@ class Solution {
             int[] curr = queue.poll();
             int row = curr[0], col = curr[1], d = curr[2];
 
-            // if (row == destination[0] && col == destination[1]) 
-            //     return dists[destination[0]][destination[1]];
+              if (row == destination[0] && col == destination[1]) 
+                return dists[destination[0]][destination[1]];
 
             if (dists[row][col] < d) continue;
             

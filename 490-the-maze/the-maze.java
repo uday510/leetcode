@@ -11,9 +11,7 @@ class Solution {
             int[] curr = queue.poll();
             int row = curr[0], col = curr[1];
 
-            if (vis[row][col]) continue;
             if (row == destination[0] && col == destination[1]) return true;
-            vis[row][col] = true;
 
             for (int[] dir : dirs) {
                 int nextRow = row + dir[0];
@@ -31,7 +29,10 @@ class Solution {
                 nextRow -= dir[0];
                 nextCol -= dir[1];
                 
+                if (vis[nextRow][nextCol]) continue;
+
                 queue.offer(new int[] {nextRow, nextCol});
+                vis[row][col] = true;
             }
         }
 

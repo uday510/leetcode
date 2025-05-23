@@ -1,15 +1,11 @@
 class Solution {
-
-    private final int[][] directions = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
     public int minimumEffortPath(int[][] heights) {
-
         int left = 0, right = (int) 1e6;
-        
+
         while (left < right) {
             int mid = (left + right) >> 1;
-            
-            boolean pathExists = isPathExists(heights, mid);
-            if (!pathExists) {
+
+            if (!isPathExists(heights, mid)) {
                 left = mid + 1;
             } else {
                 right = mid;
@@ -20,36 +16,37 @@ class Solution {
     }
 
     private boolean isPathExists(int[][] heights, int k) {
-        int rows = heights.length, columns = heights[0].length;
-        boolean[][] vis = new boolean[rows][columns];
-        Queue<int[]> queue = new ArrayDeque<>();
+        int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+        int m = heights.length, n = heights[0].length;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        int[][] dists = new int[m][n];
+        int INF = (int) 1e9;
+        for (int[] row : dists) Arrays.fill(row, INF);
+        pq.offer(new int[]{0, 0, 0});
+        dists[0][0] = 0;
 
-        queue.offer(new int[] {0, 0});
-        vis[0][0] = true;
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int r = curr[0], c = curr[1], d = curr[2];
 
-        while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int row = curr[0], col = curr[1];
+            if (r == m - 1 && c == n - 1) return true;
 
-            if (row == rows - 1 && col == columns - 1) return true;
+            if (dists[r][c] < d) continue;
 
-            for (int[] direction : directions) {
-                int nextRow = direction[0] + row;
-                int nextCol = direction[1] + col;
+            for (int[] dir : dirs) {
+                int R = dir[0] + r, C = dir[1] + c;
 
-                if (nextRow < 0 || nextRow >= rows || 
-                nextCol < 0 || nextCol >= columns || vis[nextRow][nextCol]) continue;
+                if (R < 0 || R >= m || C < 0 || C >= n) continue;
 
+                int D = Math.abs(heights[R][C] - heights[r][c]);
 
-                int newDifference = Math.abs(heights[nextRow][nextCol] - heights[row][col]);
-
-                if (newDifference > k) continue;
-
-                vis[nextRow][nextCol] = true;
-                
-                queue.offer(new int[] {nextRow, nextCol});
+                if (D < dists[R][C] && D <= k) {
+                    dists[R][C] = D;
+                    pq.offer(new int[] {R, C, D});
+                }
             }
         }
+
         return false;
     }
 }

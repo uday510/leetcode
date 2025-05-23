@@ -11,7 +11,7 @@ class Solution {
             int[] curr = queue.poll();
             int row = curr[0], col = curr[1];
 
-            if (row < 0 || row >= m || col < 0 || col >= n || vis[row][col]) continue;
+            if (vis[row][col]) continue;
             if (row == destination[0] && col == destination[1]) return true;
             vis[row][col] = true;
 

@@ -1,94 +1,76 @@
 class Solution {
-
-    Map<Integer, List<int[]>> graph;
-    int threshold;
-    int result;
-    int n;
-
+    
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
-        intialize(edges, distanceThreshold, n);
+        final List<int[]>[] adjList = new ArrayList[n];
 
-        int city = Integer.MAX_VALUE;
-        int index = Integer.MAX_VALUE;
-        for (int node = 0; node < n; ++node) {
-            int currentCities = bfs(node);
-
-            if (currentCities <= city) {
-                index = node;
-                city = currentCities;
-            }
-
-        }
-
-        return index;
-   }
-   private int bfs(int node) {
-    int[] distances = new int[n];
-    Arrays.fill(distances, Integer.MAX_VALUE);
-    distances[node] = 0;
-
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[]{node, 0});
-
-    while (!queue.isEmpty()) {
-        int[] edge = queue.poll();
-        int currNode = edge[0];
-        int dist = edge[1];
-        
-        // if (distances[currNode] < dist) {
-        //     continue;
-        // }
-
-        for (var next : graph.getOrDefault(currNode, new ArrayList<int[]>())) {
-            int nextNode = next[0];
-            int nextDist = next[1] + dist;
-
-            if (distances[nextNode] <= nextDist) {
-                continue;
-            }
-
-            queue.offer(new int[]{nextNode, nextDist});
-            distances[nextNode] = Math.min(nextDist, distances[nextNode]);
-        }
-    }
-
-    int current = 0;
-
-    for (int idx = 0; idx < n; ++idx) {
-        if (idx != node && distances[idx] <= threshold) {
-            current += 1;
-        }
-    }
-
-    return current;
-   }
-
-   private void intialize(int[][] edges, int threshold, int n) {
-        graph = new HashMap<>();
-        this.threshold = threshold;
-        result = Integer.MAX_VALUE;
-        this.n = n;
-
+        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
         for (int[] edge : edges) {
-            int src = edge[0];
-            int dest = edge[1];
-            int dist = edge[2];
-
-            // src --> dest
-            graph.computeIfAbsent(src, x -> new ArrayList<>()).add(new int[]{dest, dist});
-
-            // dest --> src
-            graph.computeIfAbsent(dest, x -> new ArrayList<>()).add(new int[]{src, dist});
+            int u = edge[0], v = edge[1], w = edge[2];
+            adjList[u].add(new int[] {v, w});
+            adjList[v].add(new int[] {u, w});
         }
-   }
 
+        int minVisits = (int) 1e9, ans = -1;
+
+        for (int node = 0; node < n; ++node) {
+            int currVisits = getCitiesVisits(node, n, adjList, distanceThreshold);
+            if (currVisits <= minVisits) {
+                ans = node;
+                minVisits = currVisits;
+            }
+        }
+
+        return ans;
+
+    }
+
+    private int getCitiesVisits(final int node, final int n, final List<int[]>[] adjList, final int distanceThreshold) {
+        final int[] dists = new int[n];
+        final int[] cities = new int[n];
+        final int INF = (int) 1e9;
+
+        Arrays.fill(dists, INF);
+
+        final PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (a[1] != b[1]) return a[1] - b[1];
+            return b[0] - a[0];
+        });
+        
+        pq.offer(new int[]{node, 0, 1});
+        dists[node] = 0;
+        cities[node] = 1;
+        
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int u = curr[0], w = curr[1], city = curr[2];
+            
+            if (dists[u] < w) continue;
+            
+            for (int[] next : adjList[u]) {
+                int v = next[0], w1 = next[1];
+                int w2 = w + w1;
+
+                if (w2 > distanceThreshold) continue;
+                                
+                if (w2 < dists[v]) {
+                    dists[v] = w2;
+                    cities[v] = city + 1;
+                    pq.offer(new int[] {v, w2, city + 1});
+                }
+            }
+        }
+
+       int cnt = -1;
+       StringBuilder sb = new StringBuilder();
+       for (int i = 0; i < n; ++i) {
+            if (dists[i] <= distanceThreshold && node != i) {
+                cnt += 1;
+                sb.append("City").append(i).append(" ");
+            }
+       }
+
+        System.out.println(node + " ->  " + sb.toString());
+    
+        return cnt;
+    }
 }
-
-/***
-
-1. find all the reachable cities with threshold for the cities
-2. out of the cities find the smallest number of cities,
-3. if multiples are applicable then return with greatest city
-    else 
-
- */

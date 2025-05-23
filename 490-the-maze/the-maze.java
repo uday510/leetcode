@@ -32,7 +32,7 @@ class Solution {
                 if (vis[nextRow][nextCol]) continue;
 
                 queue.offer(new int[] {nextRow, nextCol});
-                vis[row][col] = true;
+                vis[nextRow][nextCol] = true;
             }
         }
 

@@ -1,38 +1,42 @@
 class Solution {
     
     boolean[][] vis;
+    int[] destination;
+    int m, n;
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        vis = new boolean[maze.length][maze[0].length];
-        return dfs(maze, start, destination);
+        if (maze == null || maze.length == 0 || maze[0].length == 0) return false;
+        m = maze.length;
+        n = maze[0].length;
+        vis = new boolean[m][n];
+        this.destination = destination;
+        return dfs(maze, start[0], start[1]);
     }
     
     final private int[][] dirs = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
 
-    private boolean dfs(int[][] maze, int[] curr, int[] dest) {
-        int r = curr[0], c = curr[1];
+    private boolean dfs(int[][] maze, int row, int col) {
+        if (row == destination[0] && col == destination[1]) return true;
         
-        if (r == dest[0] && c == dest[1]) return true;
-        
-        if (vis[r][c]) return false;
+        if (vis[row][col]) return false;
 
-        vis[r][c] = true;
+        vis[row][col] = true;
 
         for (int[] dir : dirs) {
-            int R = dir[0] + r;
-            int C = dir[1] + c;
+            int nextRow = dir[0] + row;
+            int nextCol = dir[1] + col;
             
-            while (R >= 0 && R < maze.length &&
-                    C >= 0 && C < maze[0].length && 
-                    maze[R][C] == 0
+            while (nextRow >= 0 && nextRow < m &&
+                    nextCol >= 0 && nextCol < n && 
+                    maze[nextRow][nextCol] == 0
             ) {
-                R += dir[0];
-                C += dir[1];
+                nextRow += dir[0];
+                nextCol += dir[1];
             }
             
-            R -= dir[0];
-            C -= dir[1];
+            nextRow -= dir[0];
+            nextCol -= dir[1];
             
-            if (dfs(maze, new int[]{R, C} , dest)) {
+            if (dfs(maze, nextRow, nextCol)) {
                 return true;
             }
         }

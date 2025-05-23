@@ -1,46 +1,40 @@
 class Solution {
-    
-    boolean[][] vis;
-    int[] destination;
-    int m, n;
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        if (maze == null || maze.length == 0 || maze[0].length == 0) return false;
-        m = maze.length;
-        n = maze[0].length;
-        vis = new boolean[m][n];
-        this.destination = destination;
-        return dfs(maze, start[0], start[1]);
-    }
-    
-    final private int[][] dirs = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+        int m = maze.length, n = maze[0].length;
+        int[][] dirs = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+        Queue<int[]> queue = new ArrayDeque<>();
+        boolean[][] vis = new boolean[m][n];
 
-    private boolean dfs(int[][] maze, int row, int col) {
-        if (row == destination[0] && col == destination[1]) return true;
-        
-        if (vis[row][col]) return false;
+        queue.offer(new int[] {start[0], start[1]});
 
-        vis[row][col] = true;
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int row = curr[0], col = curr[1];
 
-        for (int[] dir : dirs) {
-            int nextRow = dir[0] + row;
-            int nextCol = dir[1] + col;
-            
-            while (nextRow >= 0 && nextRow < m &&
-                    nextCol >= 0 && nextCol < n && 
-                    maze[nextRow][nextCol] == 0
-            ) {
-                nextRow += dir[0];
-                nextCol += dir[1];
-            }
-            
-            nextRow -= dir[0];
-            nextCol -= dir[1];
-            
-            if (dfs(maze, nextRow, nextCol)) {
-                return true;
+            if (row < 0 || row >= m || col < 0 || col >= n || vis[row][col]) continue;
+            if (row == destination[0] && col == destination[1]) return true;
+            vis[row][col] = true;
+
+            for (int[] dir : dirs) {
+                int nextRow = row + dir[0];
+                int nextCol = col + dir[1];
+
+                while (
+                        nextRow >= 0 && nextRow < m && 
+                        nextCol >= 0 && nextCol < n &&
+                        maze[nextRow][nextCol] == 0
+                    ) {
+                        nextRow += dir[0];
+                        nextCol += dir[1];
+                    }
+                
+                nextRow -= dir[0];
+                nextCol -= dir[1];
+                
+                queue.offer(new int[] {nextRow, nextCol});
             }
         }
-        
+
         return false;
     }
 }

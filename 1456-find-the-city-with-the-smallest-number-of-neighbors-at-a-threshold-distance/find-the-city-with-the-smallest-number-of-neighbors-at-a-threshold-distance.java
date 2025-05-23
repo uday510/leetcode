@@ -24,7 +24,12 @@ class Solution {
 
     }
 
-    private int getCitiesVisits(final int node, final int n, final List<int[]>[] adjList, final int distanceThreshold) {
+    private int getCitiesVisits(
+            final int node,
+            final int n,
+            final List<int[]>[] adjList,
+            final int distanceThreshold) {
+
         final int[] dists = new int[n];
         final int[] cities = new int[n];
         final int INF = (int) 1e9;
@@ -61,15 +66,9 @@ class Solution {
         }
 
        int cnt = -1;
-       StringBuilder sb = new StringBuilder();
        for (int i = 0; i < n; ++i) {
-            if (dists[i] <= distanceThreshold && node != i) {
-                cnt += 1;
-                sb.append("City").append(i).append(" ");
-            }
+        if (dists[i] != INF) cnt++;
        }
-
-        System.out.println(node + " ->  " + sb.toString());
     
         return cnt;
     }

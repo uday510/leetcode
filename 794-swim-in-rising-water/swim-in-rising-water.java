@@ -15,7 +15,8 @@ class Solution {
         while (!pq.isEmpty()) {
             int[] curr = pq.poll();
             int r = curr[0], c = curr[1], d = curr[2];
-
+            
+            if (r == n - 1 && c == n - 1) return d;
             if (dists[r][c] < d) continue;
 
             for (int[] dir : dirs) {
@@ -32,7 +33,7 @@ class Solution {
                 }
             }
         }
-        
+
         return dists[n - 1][n - 1];
     }
 }

@@ -25,7 +25,7 @@ class Solution {
 
                 if (R < 0 || R >= n || C < 0 || C >= m) continue;
 
-                if (!(R == r || c == C)) continue;
+                // if (!(R == r || c == C)) continue;
 
                 int w = Math.max(d, moveTime[R][C]) + 1;
 

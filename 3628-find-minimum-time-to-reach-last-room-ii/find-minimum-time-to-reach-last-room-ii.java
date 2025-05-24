@@ -25,7 +25,7 @@ class Solution {
 
                 if (R < 0 || R >= n || C < 0 || C >= m) continue;
 
-                int w = Math.max(d, moveTime[R][C]) + ((r + c) % 2 + 1);
+                int w = Math.max(d, moveTime[R][C]) + ((r + c) % 2) + 1;
 
                 if (w < dists[R][C]) {
                     dists[R][C] = w;

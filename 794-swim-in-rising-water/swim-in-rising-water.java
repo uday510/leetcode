@@ -32,9 +32,7 @@ class Solution {
                 }
             }
         }
-
-        for (int[] row : dists) System.out.println(Arrays.toString(row));
-
+        
         return dists[n - 1][n - 1];
     }
 }

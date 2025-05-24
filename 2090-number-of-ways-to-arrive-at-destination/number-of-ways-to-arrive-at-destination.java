@@ -40,7 +40,8 @@ class Solution {
                     dist[v] = newDistance;
                     ways[v] = ways[u];
                     pq.offer(new long[]{v, newDistance});
-                } else {
+                } 
+                else if (newDistance == dist[v]) {
                     ways[v] += ways[u];
                 }
 

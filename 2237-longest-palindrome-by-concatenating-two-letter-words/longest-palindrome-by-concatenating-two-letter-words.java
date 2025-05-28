@@ -10,13 +10,11 @@ class Solution {
         boolean flag = false;
 
         List<String> list = new ArrayList<>();
-        for (var k : map.keySet()) {
-            if (map.get(k) == 1 && k.charAt(0) == k.charAt(1)) list.add(k);
-        };
+        // for (var k : map.keySet()) {
+        //     if (map.get(k) == 1 && k.charAt(0) == k.charAt(1)) list.add(k);
+        // };
 
         if (list.size() == words.length) return 2;
-
-        System.out.println(map);
 
         for (int i = 0; i < list.size() - 1; ++i) {
             map.remove(list.get(i));
@@ -46,15 +44,3 @@ class Solution {
         return longest;
     }
 }
-
-/**
-
-lc - 1
-cl - 1
-gg - 1
-
-
-ty ty ty yt yt
-
-ty yt ty yt
- */

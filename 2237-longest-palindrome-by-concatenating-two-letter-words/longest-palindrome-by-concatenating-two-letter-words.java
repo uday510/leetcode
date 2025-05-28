@@ -7,20 +7,6 @@ class Solution {
         }
 
         Set<String> seen = new HashSet<>();
-        boolean flag = false;
-
-        List<String> list = new ArrayList<>();
-        // for (var k : map.keySet()) {
-        //     if (map.get(k) == 1 && k.charAt(0) == k.charAt(1)) list.add(k);
-        // };
-
-        if (list.size() == words.length) return 2;
-
-        for (int i = 0; i < list.size() - 1; ++i) {
-            map.remove(list.get(i));
-            list.remove(i);
-        }
-
         boolean hasCenter = false;
         int longest = 0;
         for (var s : words) {

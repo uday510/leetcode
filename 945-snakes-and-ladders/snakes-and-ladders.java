@@ -4,8 +4,8 @@ class Solution {
         Map<Integer, int[]> pos = new HashMap<>();
         generatePositions(pos, n);
 
-        // return bfs(pos, n, board);
-        return dijsktra(pos, n, board);
+        return bfs(pos, n, board);
+        // return dijsktra(pos, n, board);
     }
 
     private int dijsktra(Map<Integer, int[]> pos, int n, int[][] board) {

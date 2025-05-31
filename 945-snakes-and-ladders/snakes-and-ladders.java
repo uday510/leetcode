@@ -2,28 +2,39 @@ class Solution {
     public int snakesAndLadders(int[][] board) {
         int n = board.length;
         Map<Integer, int[]> pos = new HashMap<>();
-        Set<Integer> vis = new HashSet<>();
         generatePositions(pos, n);
 
-        Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[]{1, 0});
+        return dijsktra(pos, n, board);
+    }
 
-        while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
+    private int dijsktra(Map<Integer, int[]> pos, int n, int[][] board) {
+        int INF = (int) 1e9;
+        int LAST_POS = n * n;
+        int[] dists = new int[(n + 1) * (n + 1)];
+        Arrays.fill(dists, INF);
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.offer(new int[] {1, 0});
+        dists[1] = 0;
+
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
             int u = curr[0], w = curr[1];
-            if (u == (n * n)) return w;
 
-            for (int next = u + 1; next <= Math.min (u + 6, (n * n)); ++next) {
-                int[] coordinates = pos.get(next);
-                int row = coordinates[0], col = coordinates[1];
+            if (u == LAST_POS) return w;
+            if (dists[u] < w) continue;
+
+            for (int next = u + 1; next <= Math.min(u + 6, LAST_POS); ++next) {
+                int[] coord = pos.get(next);
+                int row = coord[0], col = coord[1];
                 int v = next;
 
-                if (board[row][col] != -1) {
-                    v = board[row][col];
+                if (board[row][col] != -1) v = board[row][col];
+    
+                if ((w + 1) < dists[v]) {
+                    dists[v] = w + 1;
+                    pq.offer(new int[] {v, w + 1});
                 }
-
-                if (!vis.add(v)) continue;
-                queue.offer(new int[] {v, w + 1});
             }
         }
 

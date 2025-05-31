@@ -1,72 +1,54 @@
-import java.util.*;
-
 class Solution {
     public int snakesAndLadders(int[][] board) {
         int n = board.length;
-        Map<Integer, int[]> positionMap = makeMapping(board, n);
+        Map<Integer, int[]> pos = new HashMap<>();
+        Set<Integer> vis = new HashSet<>();
+        generatePositions(pos, n);
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(1);
-        Set<Integer> visited = new HashSet<>();
-        visited.add(1);
-
-        int moves = 0;
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{1, 0});
 
         while (!queue.isEmpty()) {
-            ++moves;
-            int levelSize = queue.size();
+            int[] curr = queue.poll();
+            int u = curr[0], w = curr[1];
+            if (u == (n * n)) return w;
 
-            for (int i = 0; i < levelSize; ++i) {
-                int currentPosition = queue.poll();
+            if (vis.contains(u)) continue;
+            vis.add(u);
 
-                for (int nextMove = 1; nextMove <= 6; ++nextMove) {
-                    int nextPosition = currentPosition + nextMove;
 
-                    if (nextPosition > n * n) {
-                        break;
-                    }
+            for (int v = u + 1; v <= Math.min (u + 6, (n * n)); ++v) {
+                int[] coordinates = pos.get(v);
+                int row = coordinates[0], col = coordinates[1];
+                int next = v;
 
-                    if (visited.contains(nextPosition)) {
-                        continue;
-                    }
-
-                    visited.add(nextPosition);
-                    int[] nextCoordinates = positionMap.get(nextPosition);
-                    int row = nextCoordinates[0];
-                    int col = nextCoordinates[1];
-
-                    int finalPosition = board[row][col] == -1 ? nextPosition : board[row][col];
-
-                    if (finalPosition == n * n) {
-                        return moves;
-                    }
-
-                    queue.offer(finalPosition);
+                if (board[row][col] != -1) {
+                    next = board[row][col];
                 }
+
+                queue.offer(new int[] {next, w + 1});
             }
         }
 
         return -1;
     }
-    private Map<Integer, int[]> makeMapping(int[][] board, int n) {
-         Map<Integer, int[]> positionMap = new HashMap<>();
-         int currentPosition = 1;
-         boolean moveToRight = true;
 
-         for (int i = n - 1; i > -1; --i) {
-            if (moveToRight) {
+    private void generatePositions(Map<Integer, int[]> map, int n) {
+        boolean movingRight = true;
+        int currPos = 1;
+
+        for (int i = n - 1; i > -1; --i) {
+
+            if (movingRight) {
                 for (int j = 0; j < n; ++j) {
-                    positionMap.put(currentPosition++, new int[]{i, j});
+                    map.put(currPos++, new int[] {i, j});
                 }
             } else {
                 for (int j = n - 1; j > -1; --j) {
-                    positionMap.put(currentPosition++, new int[]{i, j});
+                    map.put(currPos++, new int[] {i, j});
                 }
             }
-
-            moveToRight = !moveToRight;
-         }
-
-        return positionMap;
+            movingRight = !movingRight;
+        }
     }
 }

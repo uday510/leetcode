@@ -4,16 +4,17 @@ class Solution {
         Map<Integer, int[]> pos = new HashMap<>();
         generatePositions(pos, n);
 
+        // return bfs(pos, n, board);
         return dijsktra(pos, n, board);
     }
 
     private int dijsktra(Map<Integer, int[]> pos, int n, int[][] board) {
         int INF = (int) 1e9;
         int LAST_POS = n * n;
-        int[] dists = new int[(n + 1) * (n + 1)];
+        var dists = new int[(n + 1) * (n + 1)];
         Arrays.fill(dists, INF);
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]);
         pq.offer(new int[] {1, 0});
         dists[1] = 0;
 
@@ -35,6 +36,33 @@ class Solution {
                     dists[v] = w + 1;
                     pq.offer(new int[] {v, w + 1});
                 }
+            }
+        }
+
+        return -1;
+    }
+
+    private int bfs(Map<Integer, int[]> pos, int n, int[][] board) {
+        var vis = new HashSet<Integer>();
+        var queue = new ArrayDeque<int[]>();
+        queue.offer(new int[]{1, 0});
+
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int u = curr[0], w = curr[1];
+            if (u == (n * n)) return w;
+
+            for (int next = u + 1; next <= Math.min (u + 6, (n * n)); ++next) {
+                int[] coordinates = pos.get(next);
+                int row = coordinates[0], col = coordinates[1];
+                int v = next;
+
+                if (board[row][col] != -1) {
+                    v = board[row][col];
+                }
+
+                if (!vis.add(v)) continue;
+                queue.offer(new int[] {v, w + 1});
             }
         }
 

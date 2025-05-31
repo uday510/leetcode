@@ -13,20 +13,17 @@ class Solution {
             int u = curr[0], w = curr[1];
             if (u == (n * n)) return w;
 
-            if (vis.contains(u)) continue;
-            vis.add(u);
-
-
-            for (int v = u + 1; v <= Math.min (u + 6, (n * n)); ++v) {
-                int[] coordinates = pos.get(v);
+            for (int next = u + 1; next <= Math.min (u + 6, (n * n)); ++next) {
+                int[] coordinates = pos.get(next);
                 int row = coordinates[0], col = coordinates[1];
-                int next = v;
+                int v = next;
 
                 if (board[row][col] != -1) {
-                    next = board[row][col];
+                    v = board[row][col];
                 }
 
-                queue.offer(new int[] {next, w + 1});
+                if (!vis.add(v)) continue;
+                queue.offer(new int[] {v, w + 1});
             }
         }
 

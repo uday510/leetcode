@@ -1,29 +1,28 @@
 class Solution {
+    Map<Integer, Integer> map;
+    int[] dp;
     public int deleteAndEarn(int[] nums) {
-        
-        Map<Integer, Integer> map = new HashMap<>();
-        int maxElement = 0;
+        int n = -1;
+        map = new HashMap<>();
 
         for (int num : nums) {
-            
             map.merge(num, num, Integer::sum);
-            maxElement = Math.max(maxElement, num);
-
+            n = Math.max(n, num);
         }
+        dp = new int[n + 1];
+        Arrays.fill(dp, -1);
 
-        int[] dp = new int[maxElement + 1];
-        dp[1] = map.getOrDefault(1, 0);
-
-        for (int idx = 2; idx <= maxElement; ++idx) {
-
-            int pick = map.getOrDefault(idx, 0) + dp[idx - 2];
-            int dont = dp[idx - 1];
-
-            dp[idx] = Math.max(pick, dont);
-        }
-
-        return dp[maxElement];
-
+        return dfs(n);
     }
-    
+
+    private int dfs(int n) {
+        if (n < 0) return 0;
+
+        if (dp[n] != -1) return dp[n];
+
+        int pick = map.getOrDefault(n, 0) + dfs(n - 2);
+        int dont = dfs(n - 1);
+
+        return dp[n] = Math.max(pick, dont);
+    }
 }

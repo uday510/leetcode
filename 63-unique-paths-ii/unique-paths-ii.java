@@ -1,35 +1,31 @@
 class Solution {
 
-    int numRows;
-    int numCols;
+    int m, n;
     int[][] dp;
-
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        intialize(obstacleGrid);
-        
+        m = obstacleGrid.length;
+        n = obstacleGrid[0].length;
+        dp = new int[m][n];
+
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+
         return dfs(0, 0, obstacleGrid);
     }
 
-    private int dfs(int row, int col, int[][] grid) {
-        if (row >= numRows || col >= numCols || grid[row][col] == 1) {
+    private int dfs(int i, int j, int[][] grid) {
+        if (i >= m || j >= n) return 0;
+
+        if (i == m - 1 && j == n - 1) {
+            if (grid[i][j] == 0) return 1;
             return 0;
         }
 
-        if (row == numRows - 1 && col == numCols - 1)
-            return 1;
+        if (grid[i][j] == 1) return 0;
 
-        if (dp[row][col] != -1) 
-            return dp[row][col];
+        if (dp[i][j] != -1) return dp[i][j];
 
-        return dp[row][col] = dfs(row + 1, col, grid) + dfs(row, col + 1, grid);
-    }
-
-    private void intialize(int[][] grid) {
-        numRows = grid.length;
-        numCols = grid[0].length;
-        dp = new int[numRows][numCols];
-
-        for (var row : dp) 
-            Arrays.fill(row, -1);
+        return dp[i][j] = dfs(i + 1, j, grid) + dfs(i, j + 1, grid);
     }
 }

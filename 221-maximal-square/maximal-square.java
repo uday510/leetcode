@@ -1,6 +1,7 @@
 class Solution {
-    public int maximalSquare(char[][] matrix) {
-        
+
+public int maximalSquare(char[][] matrix) {
+
         int m = matrix.length;
         int n = matrix[0].length;
 
@@ -11,17 +12,19 @@ class Solution {
             for (int j = 0; j < n; ++j) {
                 char ch = matrix[i][j];
                 if (ch == '0') continue;
-                int left = 0, up = 0, dia = 0;
-
-                if (i > 0 && j > 0) {
-                    dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
-                }
+                dp[i][j] = 1;
                 
-                dp[i][j] += 1;
+                if (i > 0 && j > 0) {
+                    dp[i][j] += Math.min(
+                            dp[i-1][j-1],
+                            Math.min(dp[i-1][j], dp[i][j-1]));
+                }
+
                 largest = Math.max(largest, dp[i][j]);
             }
         }
 
         return largest * largest;
     }
+
 }

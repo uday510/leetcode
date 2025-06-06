@@ -13,16 +13,13 @@ class Solution {
                 if (ch == '0') continue;
                 int left = 0, up = 0, dia = 0;
 
-                if (i > 0) up = dp[i - 1][j];
-                if (j > 0) left = dp[i][j - 1];
-                if (i > 0 && j > 0) dia = dp[i - 1][j - 1];
-
-                dp[i][j] = Math.min(left, Math.min(up, dia)) + 1;
-
+                if (i > 0 && j > 0) {
+                    dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
+                }
+                
+                dp[i][j] += 1;
                 largest = Math.max(largest, dp[i][j]);
             }
-
-            System.out.println(Arrays.toString(dp[Math.max(0, i - 1)]));
         }
 
         return largest * largest;

@@ -1,22 +1,30 @@
 class Solution {
     public int maximalSquare(char[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        int[][] dp = new int[rows][cols];
-        int maximumSquare = 0;
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-        for (int row = 0; row < rows; ++row) {
-            for (int col = 0; col < cols; ++col) {
-                if (matrix[row][col] == '0') continue;
-                int left = (col > 0) ? dp[row][col-1] : 0;
-                int up = (row > 0) ? dp[row-1][col] : 0;
-                int diag = (row > 0 && col > 0) ? dp[row-1][col-1] : 0;
-                dp[row][col] = Math.min(left, Math.min(up, diag)) + 1;
-                maximumSquare = Math.max(dp[row][col], maximumSquare);
+        int[][] dp = new int[m][n];
+        int largest = 0;
+
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                char ch = matrix[i][j];
+                if (ch == '0') continue;
+                int left = 0, up = 0, dia = 0;
+
+                if (i > 0) up = dp[i - 1][j];
+                if (j > 0) left = dp[i][j - 1];
+                if (i > 0 && j > 0) dia = dp[i - 1][j - 1];
+
+                dp[i][j] = Math.min(left, Math.min(up, dia)) + 1;
+
+                largest = Math.max(largest, dp[i][j]);
             }
-            System.out.println(Arrays.toString(dp[row]));
+
+            System.out.println(Arrays.toString(dp[Math.max(0, i - 1)]));
         }
 
-        return maximumSquare * maximumSquare;
+        return largest * largest;
     }
 }

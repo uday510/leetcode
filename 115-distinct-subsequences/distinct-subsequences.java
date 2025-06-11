@@ -1,45 +1,36 @@
 class Solution {
-
+    
     int[][] dp;
-    String s;
-    String t;
-    int len1;
-    int len2;
-
+    int m;
+    int n;
+    int max = 0;
     public int numDistinct(String s, String t) {
-        initialize(s, t);
-        return dfs(0, 0);
+        m = s.length();
+        n = t.length();
+
+        dp = new int[m][n];
+
+        for (var row : dp) Arrays.fill(row, -1);
+
+        dfs(0, 0, s, t);
+
+        return dp[0][0];
     }
 
-    private int dfs(int idx1, int idx2) {
-        if (idx2 >= len2) {
-            return 1;
-        }
+    private int dfs(int i, int j, String s, String t) {
+        if (j >= t.length()) return 1;
+        if (i >= s.length()) return 0;
 
-        if (idx1 >= len1) {
-            return 0;
-        }
+        if (dp[i][j] != -1) return dp[i][j];
 
-        if (dp[idx1][idx2] != -1) return dp[idx1][idx2];
-
-        if (s.charAt(idx1) == t.charAt(idx2)) {
-            dp[idx1][idx2] = dfs(idx1 + 1, idx2) + dfs(idx1 + 1, idx2 + 1);
+        if (s.charAt(i) == t.charAt(j)) {
+            dp[i][j] = dfs(i + 1, j + 1, s, t) + dfs(i + 1, j, s, t);
         } else {
-            dp[idx1][idx2] = dfs(idx1 + 1, idx2);
+            dp[i][j] = dfs(i + 1, j, s, t);
         }
 
-        return dp[idx1][idx2];
+        // max = Math.max(max, dp[i][j]);
+        return dp[i][j];
     }
 
-    private void initialize(String s, String t) {
-        this.s = s;
-        this.t = t;
-        len1 = s.length();
-        len2 = t.length();
-
-        dp = new int[len1][len2];
-
-        for (var arr : dp) 
-            Arrays.fill(arr, -1);
-    }
 }

@@ -3,6 +3,7 @@ class Solution {
     int[][] dp;
     int m;
     int n;
+    
     public int numDistinct(String s, String t) {
         m = s.length();
         n = t.length();

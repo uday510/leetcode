@@ -1,48 +1,34 @@
 class Solution {
 
-    String word1;
-    String word2;
-    int length1;
-    int length2;
-    Integer[][] memo;
+    int m;
+    int n;
+
+    int[][] dp;
 
     public int minDistance(String word1, String word2) {
-        initialize(word1, word2);
+        m = word1.length();
+        n = word2.length();
 
-        return dfs(0, 0);
+        dp = new int[m][n];
+        for (var row : dp) Arrays.fill(row, -1);
+
+        return dfs(0, 0, word1, word2);
     }
+    private int dfs(int i, int j, String s1, String s2) {
+        if (i >= s1.length()) return n - j;
 
-    private int dfs(int index1, int index2) {
-        if (index1 == length1) {
-            return length2 - index2;
-        } 
+        if (j >= s2.length()) return m - i;
 
-        if (index2 == length2) {
-            return length1 - index1;
-        }
+        if (dp[i][j] != -1) return dp[i][j];
 
-        if (memo[index1][index2] != null) {
-            return memo[index1][index2];
-        }
+        if (s1.charAt(i) == s2.charAt(j)) {
+            return dp[i][j] = dfs(i + 1, j + 1, s1, s2);
+        };
 
-        if (word1.charAt(index1) == word2.charAt(index2)) {
-            memo[index1][index2] = dfs(index1 + 1, index2 + 1);
-        } else {
-            int insert = dfs(index1, index2 + 1) + 1;
-            int delete = dfs(index1 + 1, index2) + 1;
-            int replace = dfs(index1 + 1, index2 + 1) + 1;
+        int ins = dfs(i, j + 1, s1, s2);
+        int del = dfs(i + 1, j, s1, s2);
+        int rep = dfs(i + 1, j + 1, s1, s2);
 
-            memo[index1][index2] = Math.min(insert, Math.min(delete, replace));
-        }
-
-        return memo[index1][index2];
-    }
-
-    private void initialize(String word1, String word2) {
-        this.word1 = word1;
-        this.word2 = word2;
-        length1 = word1.length();
-        length2 = word2.length();
-        memo = new Integer[length1][length2];
+        return dp[i][j] = 1 + Math.min(ins, Math.min(del, rep));
     }
 }

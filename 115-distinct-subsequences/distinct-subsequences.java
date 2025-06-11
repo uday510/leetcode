@@ -3,7 +3,6 @@ class Solution {
     int[][] dp;
     int m;
     int n;
-    int max = 0;
     public int numDistinct(String s, String t) {
         m = s.length();
         n = t.length();
@@ -18,8 +17,8 @@ class Solution {
     }
 
     private int dfs(int i, int j, String s, String t) {
-        if (j >= t.length()) return 1;
-        if (i >= s.length()) return 0;
+        if (j >= n) return 1;
+        if (i >= m) return 0;
 
         if (dp[i][j] != -1) return dp[i][j];
 
@@ -29,7 +28,6 @@ class Solution {
             dp[i][j] = dfs(i + 1, j, s, t);
         }
 
-        // max = Math.max(max, dp[i][j]);
         return dp[i][j];
     }
 

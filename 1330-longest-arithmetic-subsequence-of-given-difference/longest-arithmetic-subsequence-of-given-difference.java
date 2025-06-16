@@ -1,7 +1,7 @@
 class Solution {
     public int longestSubsequence(int[] arr, int difference) {
-        int offset = 1_000_00;
-        int[] dp = new int[2_000_01];
+        int offset = 20_000;
+        int[] dp = new int[40_001];
         int longest = 0;
 
         for (int x : arr) {

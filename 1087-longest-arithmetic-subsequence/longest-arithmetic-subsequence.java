@@ -1,16 +1,16 @@
 class Solution {
     public int longestArithSeqLength(int[] nums) {
-        int len = nums.length;
-        Map<Integer, Integer>[] dp = new HashMap[len];
-        int longest = 2;
+        int n = nums.length;
+        int offset = 500;
+        int[][] dp = new int[n][1001];
+        for (int[] row : dp) Arrays.fill(row, 1);
+        int longest = 0;
 
-        for (int right = 0; right < len; ++right) {
-            dp[right] = new HashMap<>();
-            for (int left = 0; left < right; ++left) {
-                int diff = nums[right] - nums[left];
-                dp[right].put(diff, dp[left].getOrDefault(diff, 1) + 1);
-
-                longest = Math.max(longest, dp[right].get(diff));
+        for (int j = 0; j < n; ++j) {
+            for (int i = 0; i < j; ++i) {
+                int diff = nums[j] - nums[i] + 500;
+                dp[j][diff] = Math.max(dp[j][diff], dp[i][diff] + 1);
+                longest = Math.max(longest, dp[j][diff]);
             }
         }
 

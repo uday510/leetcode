@@ -1,7 +1,7 @@
 class Solution {
     public int longestArithSeqLength(int[] nums) {
         int n = nums.length;
-        int offset = 500;
+        int offset = 100;
         int[][] dp = new int[n][1001];
         for (int[] row : dp) Arrays.fill(row, 1);
         int longest = 0;

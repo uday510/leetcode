@@ -3,16 +3,11 @@ class Solution {
         Map<Integer, Integer> map = new HashMap<>();
         int longest = 0;
 
-        for (int val : arr) {
-            int req = val - difference;
-            if (map.containsKey(req)) {
-                map.putIfAbsent(val, 1);
-                map.put(val, Math.max(map.get(val), map.get(req) + 1));
-            } else {
-                map.put(val, 1);
-            }
-
-            longest = Math.max(longest, map.get(val));
+        for (int curr : arr) {
+            int prev = curr - difference;
+            int len = map.getOrDefault(prev, 0) + 1;
+            map.put(curr, len);
+            longest = Math.max(longest, len);
         }
 
         return longest;

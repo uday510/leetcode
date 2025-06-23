@@ -1,20 +1,25 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int[] dp = new int[n];
-        for (int i = 0; i < n; ++i) dp[i] = 1;
-        int longest = 1;
+        List<Integer> lis = new ArrayList<>();
 
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (nums[j] < nums[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                } 
-            }
-
-            longest = Math.max(longest, dp[i]);
+        for (int num : nums) {
+            int index = bisectLeft(lis, num);
+            if (index == lis.size()) lis.add(num);
+            else lis.set(index, num);
         }
-        
-       return longest;
+
+        return lis.size();
+    }
+
+    private int bisectLeft (List<Integer> list, int target) {
+        int leftIdx = 0, rightIdx = list.size();
+
+        while (leftIdx < rightIdx) {
+            int midIdx = (leftIdx + rightIdx) >> 1;
+            if (list.get(midIdx) < target) leftIdx = midIdx + 1;
+            else rightIdx = midIdx;
+        }
+
+        return leftIdx;
     }
 }

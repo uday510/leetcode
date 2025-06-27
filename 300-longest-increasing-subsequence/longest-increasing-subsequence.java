@@ -2,27 +2,48 @@ class Solution {
 
     int n;
     int[][] dp;
+    List<Integer> lis;
     
     public int lengthOfLIS(int[] nums) {
         n = nums.length;
+        lis = new ArrayList<>();
+
+        for (int idx = 0; idx < n; ++idx) {
+            int index = bisectLeft(nums[idx]);
+            if (index == lis.size()) lis.add(nums[idx]);
+            lis.set(index, nums[idx]);
+        }
+        return lis.size();
         // dp = new int[n + 1][n];
         // for (int[] row : dp) Arrays.fill(row, -1);
 
         // return dfs(-1, 0, nums.length, nums);
 
-        int[] dp = new int[n];
-        int longest = 1;
-        for (int j = 0; j < n; ++j) {
-            dp[j] = 1;
-            for (int i = 0; i < j; ++i) {
-                if (nums[i] < nums[j]) {
-                    dp[j] = Math.max(dp[i] + 1, dp[j]); 
-                }
-            }
-            longest = Math.max(dp[j], longest);
+        // int[] dp = new int[n];
+        // int longest = 1;
+        // for (int j = 0; j < n; ++j) {
+        //     dp[j] = 1;
+        //     for (int i = 0; i < j; ++i) {
+        //         if (nums[i] < nums[j]) {
+        //             dp[j] = Math.max(dp[i] + 1, dp[j]); 
+        //         }
+        //     }
+        //     longest = Math.max(dp[j], longest);
+        // }
+
+        // return longest;
+    }
+
+    private int bisectLeft(int target) {
+        int leftIdx = 0, rightIdx = lis.size();
+
+        while (leftIdx < rightIdx) {
+            int midIdx = (leftIdx + rightIdx) >> 1;
+            if (lis.get(midIdx) < target) leftIdx = midIdx + 1;
+            else rightIdx = midIdx;
         }
 
-        return longest;
+        return leftIdx;
     }
     private int dfs(int i, int j, int n, int[] nums) {
         if (j >= n) return 0;

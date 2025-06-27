@@ -1,20 +1,29 @@
 class Solution {
+
+    int n;
+    int[][] dp;
+    
     public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int[] dp = new int[n];
-        int longest = 1;
+        n = nums.length;
+        dp = new int[n + 1][n];
+        for (int[] row : dp) Arrays.fill(row, -1);
 
-        for (int i = 0; i < n; ++i) {
-            dp[i] = 1;
+        return dfs(-1, 0, nums.length, nums);
+    }
+    private int dfs(int i, int j, int n, int[] nums) {
+        if (j >= n) return 0;
+        
+        if (dp[i + 1][j] != -1) return dp[i + 1][j];
 
-            for (int j = 0; j < i; ++j) {
-                if (nums[j] < nums[i]) {
-                    dp[i] = Math.max(dp[j] + 1, dp[i]);
-                }
-            }
-            longest = Math.max(longest, dp[i]);
-        } 
-        return longest;
+        int skip = dfs(i, j + 1, n, nums);
 
+        int take = 0;
+
+        if (i == -1 || nums[i] < nums[j]) {
+            take = 1 + dfs(j, j + 1, n, nums);
+        }
+
+
+        return dp[i + 1][j] = Math.max(skip, take);
     }
 }

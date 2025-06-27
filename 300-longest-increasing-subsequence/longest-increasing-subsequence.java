@@ -5,10 +5,24 @@ class Solution {
     
     public int lengthOfLIS(int[] nums) {
         n = nums.length;
-        dp = new int[n + 1][n];
-        for (int[] row : dp) Arrays.fill(row, -1);
+        // dp = new int[n + 1][n];
+        // for (int[] row : dp) Arrays.fill(row, -1);
 
-        return dfs(-1, 0, nums.length, nums);
+        // return dfs(-1, 0, nums.length, nums);
+
+        int[] dp = new int[n];
+        int longest = 1;
+        for (int j = 0; j < n; ++j) {
+            dp[j] = 1;
+            for (int i = 0; i < j; ++i) {
+                if (nums[i] < nums[j]) {
+                    dp[j] = Math.max(dp[i] + 1, dp[j]); 
+                }
+            }
+            longest = Math.max(dp[j], longest);
+        }
+
+        return longest;
     }
     private int dfs(int i, int j, int n, int[] nums) {
         if (j >= n) return 0;

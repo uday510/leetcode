@@ -1,36 +1,41 @@
 class Solution {
     public int[] longestObstacleCourseAtEachPosition(int[] obstacles) {
-        int len = obstacles.length;
-        int[] result = new int[len];
+        int n = obstacles.length;
+        int[] dp = new int[n];
         List<Integer> lis = new ArrayList<>();
 
-        for (int idx = 0; idx < len; ++idx) {
-            int obstacle = obstacles[idx];
-
-            if (lis.isEmpty() || obstacle >= lis.getLast()) {
-                lis.add(obstacle);
-                result[idx] = lis.size();
-            } else {
-                int j = bs(lis, obstacle);
-                lis.set(j, obstacle);
-                result[idx] = j + 1;
-            }
+        for (int i = 0; i < n; ++i) {
+            int curr = obstacles[i];
+            int index = bisectLeft(curr, lis);
+            dp[i] = index + 1;
+            if (index == lis.size()) lis.add(curr);
+            lis.set(index, curr);
         }
-        return result;
-    }
-    private  int bs(List<Integer> lis, int num) {
-        int left = 0;
-        int right = lis.size();
+
+        return dp;
         
+
+        // for (int i = 0; i < n; ++i) {
+        //     dp[i] = 1;
+
+        //     for (int j = 0; j < i; ++j) {
+        //         if (obstacles[j] <= obstacles[i]) {
+        //             dp[i] = Math.max(dp[i], dp[j] + 1);
+        //         }
+        //     }
+        // }
+
+        // return dp;
+    }
+
+    private int bisectLeft(int target, List<Integer> lis) {
+        int left = 0, right = lis.size();
+
         while (left < right) {
             int mid = (left + right) >> 1;
-            
-            if (lis.get(mid) <= num) 
-                left = mid + 1;
-            else 
-                right = mid;
+            if (lis.get(mid) <= target) left = mid + 1;
+            else right = mid; 
         }
-        
         return left;
     }
 }

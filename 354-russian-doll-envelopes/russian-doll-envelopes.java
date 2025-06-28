@@ -9,7 +9,9 @@ class Solution {
         List<Integer> lis = new ArrayList<>();
         int[] arr = new int[n];
 
-        for (int i = 0; i < n; ++i) arr[i] = en[i][1];
+        for (int i = 0; i < n; ++i) {
+            arr[i] = en[i][1];
+        }
 
         for (int i = 0; i < n; ++i) {
             int index = bisectLeft(lis, arr[i]);

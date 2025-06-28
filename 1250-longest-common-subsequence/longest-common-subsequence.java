@@ -1,24 +1,30 @@
 class Solution {
-    Integer[][] dp;
+    
+    int n, m;
+    String s1, s2;
+    int[][] dp;
+    
     public int longestCommonSubsequence(String text1, String text2) {
-        dp = new Integer[text1.length()][text2.length()];
-        return dfs(text1, text2, 0, 0);
+        n = text1.length();
+        m = text2.length();
+        s1 = text1;
+        s2 = text2;
+        dp = new int[n][m];
+        for (int[] row : dp) Arrays.fill(row, -1);
+        
+        return dfs(0, 0);
     }
-
-    private int dfs(String s1, String s2, int idx1, int idx2) {
-        if (idx1 >= s1.length() || idx2 >= s2.length()) {
-            return 0;
+    private int dfs(int i, int j) {
+        if (i >= n || j >= m) return 0;
+        
+        if (dp[i][j] != -1) return dp[i][j];
+        
+        if (s1.charAt(i) == s2.charAt(j)) {
+            dp[i][j] = 1 + dfs(i + 1, j + 1);
+        } else {
+            dp[i][j] = Math.max(dfs(i, j + 1), dfs(i + 1, j));
         }
-
-        if (dp[idx1][idx2] != null) return dp[idx1][idx2];
-
-        if (s1.charAt(idx1) == s2.charAt(idx2)) {
-            return dp[idx1][idx2] = 1 + dfs(s1, s2, idx1 + 1, idx2 + 1);
-        }
-
-        return dp[idx1][idx2] = Math.max(
-            dfs(s1, s2, idx1 + 1, idx2),
-            dfs(s1, s2, idx1, idx2 + 1)
-        );
+        
+        return dp[i][j];
     }
 }

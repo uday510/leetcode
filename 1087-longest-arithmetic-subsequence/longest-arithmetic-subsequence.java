@@ -1,20 +1,23 @@
 class Solution {
     public int longestArithSeqLength(int[] nums) {
         int n = nums.length;
-        int offset = 500;
-        int[][] dp = new int[n][1001];
-        for (int[] row : dp) Arrays.fill(row, 1);
+        Map<Integer, Integer>[] dp = new HashMap[n];
         int longest = 0;
+        
+        for (int i = 0; i < n; ++i) {
+            int prev = nums[i];
+            dp[i] = new HashMap<>();
+            dp[i].put(nums[i], 0);
+            for (int j = 0; j < i; ++j) {
+                int curr = nums[j];
+                int diff = prev - curr;
 
-        for (int j = 0; j < n; ++j) {
-            dp[j][0] = 1;
-            for (int i = 0; i < j; ++i) {
-                int diff = nums[j] - nums[i] + offset;
-                dp[j][diff] = Math.max(dp[j][diff], dp[i][diff] + 1);
-                longest = Math.max(longest, dp[j][diff]);
+                int toBeKeep = Math.max(dp[j].getOrDefault(diff, 0) + 1, dp[i].getOrDefault(diff, 0));
+                dp[i].put(diff, toBeKeep);
+                longest = Math.max(longest, toBeKeep);
             }
         }
 
-        return longest;
+        return longest + 1;
     }
 }

@@ -9,10 +9,19 @@ class Solution {
         m = text2.length();
         s1 = text1;
         s2 = text2;
-        dp = new int[n][m];
-        for (int[] row : dp) Arrays.fill(row, -1);
+        dp = new int[n + 1][m + 1];
+
+        for (int i = n - 1; i > -1; --i) {
+            for (int j = m - 1; j > -1; --j) {
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+        }
         
-        return dfs(0, 0);
+        return dp[0][0];
     }
     private int dfs(int i, int j) {
         if (i >= n || j >= m) return 0;

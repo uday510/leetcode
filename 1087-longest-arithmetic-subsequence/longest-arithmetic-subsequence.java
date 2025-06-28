@@ -5,19 +5,15 @@ class Solution {
         int longest = 0;
         
         for (int i = 0; i < n; ++i) {
-            int prev = nums[i];
             dp[i] = new HashMap<>();
-            dp[i].put(nums[i], 0);
             for (int j = 0; j < i; ++j) {
-                int curr = nums[j];
-                int diff = prev - curr;
-
-                int toBeKeep = Math.max(dp[j].getOrDefault(diff, 0) + 1, dp[i].getOrDefault(diff, 0));
-                dp[i].put(diff, toBeKeep);
-                longest = Math.max(longest, toBeKeep);
+              int diff = nums[i] - nums[j];
+              int len = dp[j].getOrDefault(diff, 1) + 1;
+              dp[i].put(diff, len);
+              longest = Math.max(longest, len);
             }
         }
 
-        return longest + 1;
+        return longest;
     }
 }

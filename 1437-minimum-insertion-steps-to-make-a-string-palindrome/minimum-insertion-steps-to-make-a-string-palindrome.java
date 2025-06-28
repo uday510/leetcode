@@ -1,22 +1,27 @@
 class Solution {
-    Integer[][] dp;
+    int[][] dp;
+    String s;
+    int n;
     public int minInsertions(String s) {
-        dp = new Integer[s.length()][s.length()];
-        return dfs(0, s.length() - 1, s);
+        n = s.length();
+        this.s = s;
+        dp = new int[n][n];
+        for (int[] row : dp) Arrays.fill(row, -1);
+
+        return dfs(0, n - 1);
     }
 
-    private int dfs(int left, int right, String s) {
-        if (left > right) return 0;
+    private int dfs(int i, int j) {
+        if (i > j) return 0;
+        
+        if (dp[i][j] != -1) return dp[i][j];
 
-        if (dp[left][right] != null) return dp[left][right];
-
-        if (s.charAt(left) == s.charAt(right)) {
-            return dfs(left + 1, right - 1, s);
+        if (s.charAt(i) == s.charAt(j)) {
+            dp[i][j] = dfs(i + 1, j - 1);
+        } else {
+            dp[i][j] = 1 + Math.min(dfs(i + 1, j), dfs(i, j - 1));
         }
 
-        return dp[left][right] = Math.min(
-            dfs(left, right - 1, s),
-            dfs(left + 1, right, s)
-        ) + 1;
+        return dp[i][j];
     }
 }

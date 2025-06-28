@@ -1,7 +1,6 @@
 class Solution {
     public int findNumberOfLIS(int[] nums) {
-        
-       int n = nums.length;
+        int n = nums.length;
         int[] dp = new int[n];
         int[] cnt = new int[n];
         int longest = 1;
@@ -16,16 +15,16 @@ class Solution {
                     } else if (dp[j] + 1 == dp[i]) {
                         cnt[i] += cnt[j];
                     }
-                } 
-            }
+                }
+            } 
             longest = Math.max(longest, dp[i]);
         }
 
-        int ans = 0;
+        int total = 0;
         for (int i = 0; i < n; ++i) {
-            if (dp[i] == longest) ans += cnt[i];
+            total += (dp[i] == longest ? cnt[i] : 0); 
         }
-
-        return ans;
+        
+        return total;
     }
 }

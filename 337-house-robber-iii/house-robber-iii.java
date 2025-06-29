@@ -14,7 +14,9 @@
  * }
  */
 class Solution {
+    Map<TreeNode, int[]> dp;
     public int rob(TreeNode root) {
+        dp = new HashMap<>();
         int[] res = dfs(root);
 
         return Math.max(res[0], res[1]);
@@ -23,6 +25,7 @@ class Solution {
     private int[] dfs(TreeNode node) {
         if (node == null) return new int[] {0, 0};
 
+        if (dp.containsKey(node)) return dp.get(node);
         int[] left = dfs(node.left);
         int[] right = dfs(node.right);
 
@@ -30,6 +33,10 @@ class Solution {
 
         int skip = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
 
-        return new int[] {pick, skip};
+        int[] curr = {pick, skip};
+        
+        dp.put(node, curr);
+
+        return curr;
     }
 }

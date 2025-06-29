@@ -1,21 +1,30 @@
 class Solution {
-    Integer[][] dp;
+    int[][] dp;
+    int n;
+    int m;
+    int[] arr1;
+    int[] arr2;
     public int maxUncrossedLines(int[] nums1, int[] nums2) {
-        dp = new Integer[nums1.length][nums2.length];
-        return dfs(0, 0, nums1, nums2);
+        n = nums1.length;
+        m = nums2.length;
+        arr1 = nums1;
+        arr2 = nums2;
+        dp = new int[n][m];
+
+        for (int[] row : dp) Arrays.fill(row,  -1);
+        return dfs(0, 0);
     }
+    private int dfs(int i, int j) {
+        if (i >= arr1.length || j >= arr2.length) return 0;
 
-    private int dfs(int idx1, int idx2, int[] nums1, int[] nums2) {
-        if (idx1 >= nums1.length || idx2 >= nums2.length) {
-            return 0;
-        }
-        
-        if (dp[idx1][idx2] != null) return dp[idx1][idx2];
+        if (dp[i][j] != -1) return dp[i][j];
 
-        if (nums1[idx1] == nums2[idx2]) {
-            return 1 + dfs(idx1 + 1, idx2 + 1, nums1, nums2);
+        if (arr1[i] == arr2[j]) {
+            dp[i][j] = 1 + dfs(i + 1, j + 1);
+        } else { 
+            dp[i][j] = Math.max(dfs(i + 1, j), dfs(i, j + 1));
         }
-        return dp[idx1][idx2] = Math.max(dfs(idx1 + 1, idx2, nums1, nums2), 
-                                dfs(idx1, idx2 + 1, nums1, nums2));
+
+        return dp[i][j];
     }
 }

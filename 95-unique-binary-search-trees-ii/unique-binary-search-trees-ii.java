@@ -1,38 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
-    private List<TreeNode>[][] dp;
     public List<TreeNode> generateTrees(int n) {
-        dp = new ArrayList[n + 1][n + 1];
-
+        
         return dfs(1, n);
     }
-    private List<TreeNode> dfs(int left, int right) {
-        if (left > right) {
+
+    private List<TreeNode> dfs(int st, int en) {
+        if (st > en) {
             return Collections.singletonList(null);
         }
 
-        if (left == right) {
-            return Collections.singletonList(new TreeNode(right));
-        }
 
-        if (dp[left][right] != null) {
-            return dp[left][right];
-        }
+        List<TreeNode> list = new ArrayList<>();
 
-        var trees = new ArrayList<TreeNode>();
+        for (int i = st; i <= en; ++i) {
 
-        for (int idx = left; idx <= right; ++idx) {
+            List<TreeNode> leftNodes = dfs(st, i - 1);
+            List<TreeNode> rightNodes = dfs(i + 1, en);
 
-            var leftSubTrees = dfs(left, idx - 1);
-            var rightSubTrees = dfs(idx + 1, right);
-
-            for (var leftSubTree : leftSubTrees) {
-                for (var rightSubTree : rightSubTrees) {
-                    var tree =  new TreeNode(idx, leftSubTree, rightSubTree);
-                    trees.add(tree);
+            for (TreeNode left : leftNodes) {
+                for (TreeNode right : rightNodes) {
+                    TreeNode node = new TreeNode(i, left, right);
+                    list.add(node);
                 }
             }
         }
 
-        return trees;
+        return list;
     }
 }

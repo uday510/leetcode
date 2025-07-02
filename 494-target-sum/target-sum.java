@@ -1,18 +1,16 @@
 class Solution {
-    int result = 0;
     public int findTargetSumWays(int[] nums, int target) {
-        
-        dfs(0, 0, nums, target);
-        return result;
+        return dfs(0, 0, nums, target);
     }
 
-    private void dfs(int index, int currSum, int[] nums, int target) {
-        if (index >= nums.length) {
-            result += currSum == target ? 1 : 0;
-            return;
-        }
+    private int dfs(int curr, int idx, int[] nums, int target) {
+        if (curr == target && idx == nums.length) return 1;
+        if (idx >= nums.length) return 0;
 
-       dfs(index + 1, currSum + nums[index], nums, target);
-       dfs(index + 1, currSum - nums[index], nums, target);
+        int pos = dfs(curr + nums[idx], idx + 1, nums, target);
+
+        int neg = dfs(curr - nums[idx], idx + 1, nums, target);
+
+        return pos + neg;
     }
 }

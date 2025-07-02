@@ -19,10 +19,12 @@ class Solution {
 
         if (dp[i][sum] != -1) return dp[i][sum] == 1;
 
-        boolean include = dfs(i + 1, sum + nums[i]);
-        boolean exclude = !include ? dfs(i + 1, sum) : include;
+        if (dfs(i + 1, sum) || dfs(i + 1, sum + nums[i])) {
+            dp[i][sum] = 1;
+            return true;
+        }
 
-        dp[i][sum] = (include || exclude ? 1 : 0);
-        return dp[i][sum] == 1;
+        dp[i][sum] = 0;
+        return false;
     }
 }

@@ -8,13 +8,13 @@ class Solution {
         if (sum % 2 != 0) return false;
         target = sum / 2;
 
-        dp = new int[nums.length][sum];
+        dp = new int[nums.length][sum / 2 + 1];
         for (int[] row : dp) Arrays.fill(row, -1);
 
         return dfs(0, 0);
     }
     private boolean dfs(int i, int sum) {
-        if (i >= nums.length) return false;
+        if (i >= nums.length || sum > target) return false;
         if (sum == target) return true;
 
         if (dp[i][sum] != -1) return dp[i][sum] == 1;

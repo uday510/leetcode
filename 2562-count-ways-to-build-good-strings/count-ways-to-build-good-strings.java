@@ -1,34 +1,29 @@
 class Solution {
-
-    int[] arr;
     int[] dp;
-    int MOD;
+    int MOD = 1_000_000_007;
+    int low, high, zero, one;
 
     public int countGoodStrings(int low, int high, int zero, int one) {
-        this.arr = new int[4];
-        arr[0] = low;
-        arr[1] = high;
-        arr[2] = zero;
-        arr[3] = one;
-        this.MOD = (int) 1e9 + 7;
+        this.low = low;
+        this.high = high;
+        this.zero = zero;
+        this.one = one;
 
         dp = new int[high + 1];
-
         Arrays.fill(dp, -1);
 
         return dfs(0);
     }
 
-    private int dfs (int i) {
-        if (i > arr[1]) return 0;
+    private int dfs(int lengthSoFar) {
+        if (lengthSoFar > high) return 0;
+        if (dp[lengthSoFar] != -1) return dp[lengthSoFar];
 
-        if (dp[i] != -1) return dp[i];
+        int ways = (lengthSoFar >= low) ? 1 : 0;
 
-        int cnt = i >= arr[0] ? 1: 0;
+        ways = (ways + dfs(lengthSoFar + zero)) % MOD;
+        ways = (ways + dfs(lengthSoFar + one)) % MOD;
 
-        cnt = (cnt + dfs(i + arr[2])) % MOD;
-        cnt = (cnt + dfs(i + arr[3])) % MOD;
-
-        return dp[i] = cnt;
+        return dp[lengthSoFar] = ways;
     }
 }

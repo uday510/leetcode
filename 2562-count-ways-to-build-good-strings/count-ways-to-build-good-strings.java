@@ -14,7 +14,7 @@ class Solution {
         this.zero = zero;
         this.one = one;
         this.cnt = 0;
-        MOD = (int) 1e9 + 7;
+        this.MOD = (int) 1e9 + 7;
 
         dp = new int[high + 1];
 
@@ -23,15 +23,16 @@ class Solution {
         return dfs(0);
     }
 
-    private int dfs (int curr) {
-        if (curr > high) return 0;
+    private int dfs (int i) {
+        if (i > high) return 0;
 
-        if (dp[curr] != -1) return dp[curr];
+        if (dp[i] != -1) return dp[i];
 
-        if (curr >= low && curr <= high) {
-           return dp[curr] = 1 + (dfs(curr + zero) + dfs(curr + one)) % MOD;
-        }
+        int cnt = i >= low ? 1: 0;
 
-        return dp[curr] = (dfs(curr + zero) + dfs(curr + one)) % MOD;
+        cnt = (cnt + dfs(i + zero)) % MOD;
+        cnt = (cnt + dfs(i + one)) % MOD;
+
+        return dp[i] = cnt;
     }
 }

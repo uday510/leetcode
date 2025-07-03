@@ -1,27 +1,37 @@
 class Solution {
-    int MOD = (int) 1e9 + 7;
+
+    int low;
+    int high;
+    int zero;
+    int one;
+    int cnt;
     int[] dp;
+    int MOD;
+
     public int countGoodStrings(int low, int high, int zero, int one) {
+        this.low = low;
+        this.high = high;
+        this.zero = zero;
+        this.one = one;
+        this.cnt = 0;
+        MOD = (int) 1e9 + 7;
+
         dp = new int[high + 1];
-        
+
         Arrays.fill(dp, -1);
 
-        return dfs(0, low, high, zero, one);
+        return dfs(0);
     }
-    private int dfs(int index, int low, int high, int zero, int one) {
-        if (index > high) {
-            return 0;
+
+    private int dfs (int curr) {
+        if (curr > high) return 0;
+
+        if (dp[curr] != -1) return dp[curr];
+
+        if (curr >= low && curr <= high) {
+           return dp[curr] = 1 + (dfs(curr + zero) + dfs(curr + one)) % MOD;
         }
 
-        if (dp[index] != -1) {
-            return dp[index];
-        }
-
-        int count = index >= low ? 1 : 0;
-
-        count = (count + dfs(index + zero, low, high, zero, one)) % MOD;
-        count = (count + dfs(index + one, low, high, zero, one)) % MOD;
-
-        return dp[index] = count;
+        return dp[curr] = (dfs(curr + zero) + dfs(curr + one)) % MOD;
     }
 }

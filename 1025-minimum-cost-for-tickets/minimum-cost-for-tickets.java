@@ -1,8 +1,10 @@
 class Solution {
+
     Set<Integer> travellingDays;
     int[] dp;
     int lastDay;
     int[] costs;
+
     public int mincostTickets(int[] days, int[] costs) {
         dp = new int[366];
         travellingDays = new HashSet<>();
@@ -11,7 +13,7 @@ class Solution {
         for (int day : days) travellingDays.add(day);
         Arrays.fill(dp, -1);
 
-        return dfs(0);
+        return dfs(days[0]);
     }
 
     private int dfs (int day) {

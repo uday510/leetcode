@@ -1,30 +1,30 @@
 class Solution {
-
-    List<String> list;
     int n;
-
+    List<String> list;
     public List<String> generateParenthesis(int n) {
         this.n = n;
-        list = new ArrayList<>();
+        this.list = new ArrayList<>();
+
         dfs(0, 0, new StringBuilder());
         return list;
     }
 
-    private void dfs(int open, int close, StringBuilder curr) {
-        if (curr.length() == 2 * n) {
-            list.add(curr.toString());
+    private void dfs(int left, int right, StringBuilder sb) {
+        if (sb.length() >= 2 * n) {
+            list.add(sb.toString());
             return;
         }
 
-    if(close < open) {
-            curr.append(")");
-            dfs(open, close + 1, curr);
-            curr.deleteCharAt(curr.length() - 1);
+        if (left < n) {
+            sb.append("(");
+            dfs(left + 1, right, sb);
+            sb.deleteCharAt(sb.length() - 1);
         }
-        if (open < n) {
-            curr.append("(");
-            dfs(open + 1, close, curr);
-            curr.deleteCharAt(curr.length() - 1);
-        }  
+
+        if (right < left) {
+            sb.append(")");
+            dfs(left, right + 1, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
     }
 }

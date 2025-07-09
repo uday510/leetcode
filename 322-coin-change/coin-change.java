@@ -1,28 +1,33 @@
 class Solution {
-    int[] dp;
-    int[] coins;
-    public int coinChange(int[] coins, int amount) {
-        dp = new int[amount + 1];
-        this.coins = coins;
-        Arrays.fill(dp, -2);
 
-        return dfs(amount);
+    int[] coins;
+    int[] dp;
+
+    public int coinChange(int[] coins, int amount) {
+        this.coins = coins;
+        dp = new int[amount + 1];
+
+        Arrays.fill(dp, -1);
+
+        int res = dfs(amount);
+        return res == Integer.MAX_VALUE ? -1 : res;
     }
 
-    private int dfs(int rem) {
+    private int dfs (int rem) {
         if (rem == 0) return 0;
-        if (rem < 0) return -1;
+        if (rem < 0) return Integer.MAX_VALUE;
 
-        if (dp[rem] != -2) return dp[rem];
+        if (dp[rem] != -1) return dp[rem];
 
-        int min = (int) 1e9;
+        int min = Integer.MAX_VALUE;
         for (int coin : coins) {
-            int res = dfs(rem - coin);
-            if (res >= 0) {
-                min = Math.min(min, res + 1);
+            int curr = dfs(rem - coin);
+            if (curr != Integer.MAX_VALUE) {
+                min = Math.min(min, 1 + curr);
             }
         }
 
-        return dp[rem] = (min == (int) 1e9 ? -1 : min);
+        return dp[rem] = min;
     }
+
 }

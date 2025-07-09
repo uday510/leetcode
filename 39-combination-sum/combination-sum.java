@@ -1,30 +1,31 @@
 class Solution {
-    List<List<Integer>> list;
+
+    List<List<Integer>> combs;
     int[] candidates;
     int target;
+
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        list = new ArrayList<>();
+        
         this.candidates = candidates;
         this.target = target;
-        dfs(0, 0, new ArrayDeque<>());
-        return list;
+        combs = new ArrayList<>();
+
+        dfs(0, 0, new ArrayList<>());
+        return combs;
     }
-    private void dfs(int index, int currSum, Deque<Integer> queue) {
-        if (currSum == target) {
-            list.add(new ArrayList<>(queue));
+    private void dfs(int i, int sum, ArrayList<Integer> list) {
+        if (i >= candidates.length || sum > target) return;
+
+        if (sum == target) {
+            combs.add(new ArrayList<>(list));
             return;
         }
 
-        for (int idx = index; idx < candidates.length; ++idx) {
-            int candidate = candidates[idx];
-            if (candidate + currSum > target) 
-                continue;
-
-            currSum += candidate;
-            queue.offer(candidate);
-            dfs(idx, currSum, queue);
-            currSum -= candidate;
-            queue.pollLast();
-        }
+        list.add(candidates[i]);
+        sum += candidates[i];
+        dfs(i, sum, list);
+        list.remove(list.size() - 1);
+        sum -= candidates[i];
+        dfs(i + 1, sum, list);
     }
 }

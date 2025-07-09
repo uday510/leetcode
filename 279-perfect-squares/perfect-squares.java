@@ -18,8 +18,8 @@ class Solution {
 
         int min = INF;
         for (int i = 1; i * i <= rem; ++i) {
-            int curr = 1 + dfs(rem - i * i);
-            if (curr != INF) min = Math.min(min, curr);
+            int next = dfs(rem - i * i);
+            if (next != INF) min = Math.min(min, 1 + next);
         }
 
         return dp[rem] = min;

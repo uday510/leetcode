@@ -23,9 +23,12 @@ class Solution {
 
         list.add(candidates[i]);
         sum += candidates[i];
+        
         dfs(i, sum, list);
+
         list.remove(list.size() - 1);
         sum -= candidates[i];
+
         dfs(i + 1, sum, list);
     }
 }

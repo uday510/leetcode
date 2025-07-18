@@ -1,30 +1,32 @@
 class Solution {
 
-    int n;  
-    Set<Integer> visited;
-    int[][] edges;
-    
-    public int findCircleNum(int[][] edges) {
-        n = edges.length;
-        int numComponents = 0;
-        this.edges = edges;
-        visited = new HashSet<>();
+    int[][] arr;
+    int[] vis;
 
-        for (int i = 0; i < n; ++i) {
-            if (!visited.contains(i)) {
-                numComponents++;
-                dfs(edges[i]);
+    public int findCircleNum(int[][] arr) {
+        vis = new int[arr.length];
+        this.arr = arr;
+        int cnt = 0;
+
+        for (int city = 0; city < arr.length; ++city) {
+            if (vis[city] == 0) {
+                System.out.println(city + 1);
+                cnt++;
+                dfs(city);
             }
         }
 
-        return numComponents;
+        return cnt;
     }
 
-    private void dfs(int[] nodes) {
-        for (int i = 0; i < nodes.length; ++i) {
-            if (nodes[i] == 1 && !visited.contains(i)) {
-                visited.add(i);
-                dfs(edges[i]);
+    private void dfs(int i) {
+        if (vis[i] == 1) return;
+
+        vis[i] = 1;
+        for (int j = 0; j < arr[i].length; ++j) {
+            if (arr[i][j] == 1) {
+                System.out.println(i + " -> " + j);
+                dfs(j);
             }
         }
     }

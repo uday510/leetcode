@@ -25,7 +25,6 @@ class Solution {
         vis[i] = 1;
         for (int j = 0; j < arr[i].length; ++j) {
             if (arr[i][j] == 1) {
-                System.out.println(i + " -> " + j);
                 dfs(j);
             }
         }

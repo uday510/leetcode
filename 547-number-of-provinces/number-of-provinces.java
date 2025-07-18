@@ -10,7 +10,6 @@ class Solution {
 
         for (int city = 0; city < arr.length; ++city) {
             if (vis[city] == 0) {
-                System.out.println(city + 1);
                 cnt++;
                 dfs(city);
             }
@@ -24,9 +23,9 @@ class Solution {
 
         vis[i] = 1;
         for (int j = 0; j < arr[i].length; ++j) {
-            if (arr[i][j] == 1) {
-                dfs(j);
-            }
+            if (arr[i][j] == 0) continue;
+            
+            dfs(j);
         }
     }
 }

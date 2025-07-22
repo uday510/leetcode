@@ -11,7 +11,12 @@ class Solution {
         
         for (int[] row : dp) Arrays.fill(row, -1);
 
-        return Math.min(dfs(0, 0), Math.min(dfs(0, 1), dfs(0, 2)));
+        int ans = (int) 1e9;
+
+        for (int i = 0; i < costs[0].length; ++i) {
+            ans = Math.min(ans, dfs(0, i));
+        }
+        return ans;
     }
 
     private int dfs(int i, int color) {

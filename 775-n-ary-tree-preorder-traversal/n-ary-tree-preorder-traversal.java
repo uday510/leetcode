@@ -31,20 +31,11 @@ class Solution {
             if (node == null) continue;
             list.add(node.val);
 
-            Collections.reverse(node.children);
-            for (Node child : node.children) {
-                st.offerLast(child);
+            for (int i = node.children.size() - 1; i > -1; --i) {
+                st.offerLast(node.children.get(i));
             }
         }
 
         return list;
-    }
-    private void dfs(Node node) {
-        if (node == null) return;
-
-        list.add(node.val);
-        for (Node child : node.children) {
-            dfs(child);
-        }
     }
 }

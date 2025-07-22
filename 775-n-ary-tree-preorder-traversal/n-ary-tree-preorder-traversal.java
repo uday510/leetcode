@@ -21,7 +21,22 @@ class Solution {
     List<Integer> list;
     public List<Integer> preorder(Node root) {
         list = new ArrayList<>();
-        dfs(root);
+        if (root == null) return list;
+
+        Deque<Node> st = new ArrayDeque<>();
+        st.offer(root);
+
+        while (!st.isEmpty()) {
+            Node node = st.pollLast();
+            if (node == null) continue;
+            list.add(node.val);
+
+            Collections.reverse(node.children);
+            for (Node child : node.children) {
+                st.offerLast(child);
+            }
+        }
+
         return list;
     }
     private void dfs(Node node) {

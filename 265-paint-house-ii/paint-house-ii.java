@@ -1,34 +1,31 @@
 class Solution {
-
-    int[][] costs;
-    int[][] dp;
-    int n;
-    int m;
-
     public int minCostII(int[][] costs) {
-        this.costs = costs;
-        n = costs.length;
-        m = costs[0].length;
 
-        dp = new int[n][m + 1];
-        for (int[] row :dp) Arrays.fill(row, -1);
+        if (costs.length == 0) return 0;
 
-        return dfs(0, -1);
-    }
+        int n = costs.length;
+        int k = costs[0].length;
+        int[][] dp = new int[n][k];
 
-    private int dfs(int i, int exc) {
-        if (i >= costs.length) return 0;
-
-        if (dp[i][exc + 1] != -1) return dp[i][exc + 1];
-
-        int curr = (int) 1e9;
-
-        for (int j = 0; j < m; ++j) {
-            if (j == exc) continue;
-
-            curr = Math.min(curr, costs[i][j] + dfs(i + 1, j));
+        for (int j = 0; j < k; ++j) {
+            dp[0][j] = costs[0][j];
         }
 
-        return dp[i][exc + 1] = curr;
+        for (int house = 1; house < n; ++house) {
+            for (int col = 0; col < k; ++col) {
+                int min = (int) 1e9;
+                for (int prevCol = 0; prevCol < k; ++prevCol) {
+                    if (col == prevCol) continue;
+
+                    min = Math.min(min, costs[house][col] + dp[house - 1][prevCol]);
+                }
+                dp[house][col] = min;
+            }
+        }
+
+        int minCost = (int) 1e9;
+        for (int min : dp[n - 1]) minCost = Math.min(minCost, min);
+
+        return minCost;
     }
 }

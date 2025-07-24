@@ -1,44 +1,19 @@
 class Solution {
 
-    Map<Character, char[]> map;
-    int MOD;
-    int n;
-    int[][] dp;
-
     public int countVowelPermutation(int n) {
-        map = new HashMap<>();
-        MOD = (int) 1e9 + 7;
-        this.n = n;
-        dp = new int[26][n + 1];
+        long MOD = (int) 1e9 + 7;
+        long a = 1, e = 1, i = 1, o = 1, u = 1;
 
-        for (int[] row : dp) Arrays.fill(row, -1);
+        for (int idx = 2; idx <= n; ++idx) {
+            long newA = (e) % MOD,
+                 newE = (a + i) % MOD,
+                 newI = (a + e + o + u) % MOD,
+                 newO = (i + u) % MOD,
+                 newU = a % MOD;
 
-        map.put('#', new char[]{'a', 'e', 'i', 'o', 'u'});
-        map.put('a', new char[]{'e'});
-        map.put('e', new char[]{'a', 'i'});
-        map.put('i', new char[]{'a', 'e', 'o', 'u'});
-        map.put('o', new char[]{'i', 'u'});
-        map.put('u', new char[]{'a'});
-
-        return dfs('#', 0);
-    }
-
-    private int dfs(char ch, int i) {
-        if (i == n) return 1;
-
-        int curr = 0;
-
-        if (ch != '#' && dp[ch - 'a'][i] != -1) {
-            return dp[ch - 'a'][i];
-        }
-        
-        for (char next : map.get(ch)) {
-            curr = (curr + dfs(next, i + 1)) % MOD;
+            a = newA % MOD; e = newE % MOD; i = newI % MOD; o = newO % MOD; u = newU % MOD;
         }
 
-        if (ch != '#') dp[ch - 'a'][i] = curr;
-
-        return curr;
+        return (int) ((a + e + i + o + u) % MOD);
     }
-
 }

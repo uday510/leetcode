@@ -4,19 +4,16 @@ class Solution {
     }
 
     private int bs(int[] nums, int target) {
-        int leftIdx = 0;
-        int rightIdx = nums.length - 1;
+        int l = 0, r = nums.length - 1;
 
-        while (leftIdx < rightIdx) {
-            int midIdx = (leftIdx + rightIdx) >> 1;
+        while (l <= r) {
+            int mid = (l + r) >> 1;
 
-            if (nums[midIdx] < target) {
-                leftIdx = midIdx + 1;
-            } else {
-                rightIdx = midIdx;
-            }
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] < target) l = mid + 1;
+            else r = mid - 1;
         }
 
-        return nums[leftIdx] != target ? -1 : leftIdx;
+        return -1;
     }
 }

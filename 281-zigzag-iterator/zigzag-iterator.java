@@ -1,6 +1,6 @@
 public class ZigzagIterator {
 
-    Queue<Iterator> queue;
+    Queue<Iterator<Integer>> queue;
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
         queue = new ArrayDeque<>();
 
@@ -9,8 +9,8 @@ public class ZigzagIterator {
     }
 
     public int next() {
-        Iterator curr = queue.poll();
-        int result = (int) curr.next();
+        Iterator<Integer> curr = queue.poll();
+        int result = curr.next();
         if (curr.hasNext()) queue.offer(curr);
         return result;
     }

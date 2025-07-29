@@ -1,25 +1,21 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        int leftIdx = bs(nums, target);
-        if (leftIdx == nums.length || nums[leftIdx] != target) return new int[] {-1, -1};
-        int rightIdx = bs(nums, target + 1) - 1;
-
-        return new int[]{leftIdx, rightIdx};
+        int l = bs(nums, target);
+        if (l < nums.length && nums[l] != target || l >= nums.length) return new int[]{-1, -1};
+        int r = bs(nums, target + 1) - 1;
+        return new int[]{l, r};
     }
+    private int bs (int[] nums, int target) {
+        int l = 0;
+        int r = nums.length;
 
-    private int bs(int[] nums, int target) {
-        int leftIdx = 0;
-        int rightIdx = nums.length;
+        while (l < r) {
+            int mid = (l + r) >> 1;
 
-        while (leftIdx < rightIdx) {
-            int midIdx = (leftIdx + rightIdx) >> 1;
-
-            if (nums[midIdx] < target) {
-                leftIdx = midIdx + 1;
-            } else {
-                rightIdx = midIdx;
-            }
+            if (nums[mid] < target) l = mid + 1;
+            else r = mid;
         }
-        return leftIdx;
+
+        return l;
     }
 }

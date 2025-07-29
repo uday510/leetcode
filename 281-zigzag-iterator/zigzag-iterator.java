@@ -1,28 +1,21 @@
 public class ZigzagIterator {
 
-    List<Integer> list;
-    int idx;
+    Queue<Iterator> queue;
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        list = new ArrayList<>();
-        idx = 0;
+        queue = new ArrayDeque<>();
 
-        for (int i = 0, j = 0; i < v1.size() || j < v2.size();) {
-            if (i < v1.size()) list.add(v1.get(i++));
-            if (j < v2.size()) list.add(v2.get(j++));
-        }
+        if (!v1.isEmpty()) queue.offer(v1.iterator());
+        if (!v2.isEmpty()) queue.offer(v2.iterator());
     }
 
     public int next() {
-        return list.get(idx++);
+        Iterator curr = queue.poll();
+        int result = (int) curr.next();
+        if (curr.hasNext()) queue.offer(curr);
+        return result;
     }
 
     public boolean hasNext() {
-        return idx < list.size();
+        return !queue.isEmpty();
     }
 }
-
-/**
- * Your ZigzagIterator object will be instantiated and called as such:
- * ZigzagIterator i = new ZigzagIterator(v1, v2);
- * while (i.hasNext()) v[f()] = i.next();
- */

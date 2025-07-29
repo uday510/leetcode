@@ -1,9 +1,7 @@
-SELECT 
+SELECT
     product_id
-FROM 
-    products p
+FROM    
+    products 
 WHERE 
-    p.low_fats = 'Y' 
-    AND 
-    p.recyclable = 'Y'
+    low_fats = 'Y' AND recyclable = 'Y'
 ;

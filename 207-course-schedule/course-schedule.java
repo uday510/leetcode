@@ -1,39 +1,34 @@
 class Solution {
+    public boolean canFinish(int n, int[][] edges) {
+        
 
-    @SuppressWarnings("unchecked")
-    // O(V+E) time complexity | O(V+E) space complexity
-    public static boolean canFinish(int numCourses, int[][] prerequisites) {
-       ArrayDeque<Integer> queue = new ArrayDeque<>();
-       int[] inDegree = new int[numCourses];
-       List<Integer>[] adjList = new ArrayList[numCourses];
-       int finishedCourses = 0;
+        List<Integer>[] adjList = new ArrayList[n];
 
-       for (int idx = 0; idx < numCourses; idx++) {
-           adjList[idx] = new ArrayList<>();
-       }
+        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+        int[] indegree = new int[n];
 
-       for (int[] prerequisite : prerequisites) {
-           adjList[prerequisite[1]].add(prerequisite[0]);
-           inDegree[prerequisite[0]]++;
-       }
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            adjList[v].add(u);
+            indegree[u]++;
+        }
 
-       for (int idx = 0; idx < numCourses; ++idx) {
-           if (inDegree[idx] == 0) {
-               queue.offerLast(idx);
-           }
-       }
+        Queue<Integer> queue = new ArrayDeque<>();
 
-       while (!queue.isEmpty()) {
-           int course = queue.pollFirst();
-           finishedCourses++;
+        for (int i = 0; i < n; ++i) if (indegree[i] == 0) queue.offer(i);
 
-           for (int neighborCourse : adjList[course]) {
-                if (--inDegree[neighborCourse] == 0) {
-                     queue.add(neighborCourse);
-                }
-           }
-       }
+        int total = 0;
+        while (!queue.isEmpty()) {
+            Integer curr = queue.poll();
+            total++;
 
-       return finishedCourses == numCourses;
+            for (int next : adjList[curr]) {
+                indegree[next]--;
+
+                if (indegree[next] == 0) queue.offer(next);
+            }
+        }
+
+        return total == n;
     }
 }

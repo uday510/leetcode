@@ -40,6 +40,3 @@ class Solution {
         return l;
     }
 }
-
-//    [2, 3, 4] ends
-// bs [1, 2, 3] starts

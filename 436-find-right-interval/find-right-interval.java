@@ -3,18 +3,13 @@ class Solution {
         int n = intervals.length;
         int[] arr = new int[n];
         Map<Integer, Integer> map = new HashMap<>();
-        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < n; ++i) {
             arr[i] = intervals[i][0];
             map.put(intervals[i][0], i);
-            sb.append(intervals[i][1] + " ");
         }
 
         Arrays.sort(arr);
-        System.out.println("star " + Arrays.toString(arr));
-        System.out.println("ends " + sb);
-
         int[] res = new int[n];
 
         for (int i = 0; i < n; ++i) {
@@ -23,9 +18,7 @@ class Solution {
             try {
                 idx = bs(intervals[i][1], arr);
                 res[i] = map.get(arr[idx]);
-                System.out.println(intervals[i][1] + " : " + idx);
             } catch(Exception ex) {
-                System.out.println(intervals[i][1] + " exc " + idx);
                 res[i] = -1;
             }
         }

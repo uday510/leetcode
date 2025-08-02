@@ -13,14 +13,9 @@ class Solution {
         int[] res = new int[n];
 
         for (int i = 0; i < n; ++i) {
-            int c = -1;
-            int idx = -1;
-            try {
-                idx = bs(intervals[i][1], arr);
-                res[i] = map.get(arr[idx]);
-            } catch(Exception ex) {
-                res[i] = -1;
-            }
+            int idx = bs(intervals[i][1], arr);
+            if (idx == n) res[i] = -1;
+            else res[i] = map.get(arr[idx]);
         }
 
         return res;

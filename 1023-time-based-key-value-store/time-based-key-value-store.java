@@ -1,38 +1,43 @@
 class TimeMap {
 
-    Map<String, Map<String, Integer>> hm;
+    Map<String, List<Pair<String, Integer>>> hm;
     public TimeMap() {
         hm = new HashMap<>();
     }
     
     public void set(String key, String value, int timestamp) {
-        hm.computeIfAbsent(key, x -> new HashMap<>()).put(value, timestamp);
+        hm.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair(value, timestamp));
     }
     
     public String get(String key, int timestamp) {
-        Map<String, Integer> map = hm.get(key);
+        List<Pair<String, Integer>> list = hm.get(key);
 
-        if (map == null) return "";
+        timestamp++;
 
-        int prev = Integer.MIN_VALUE;
-        String res = "";
-        for (Map.Entry<String, Integer> e : map.entrySet()) {
-            String k = e.getKey();
-            int v = e.getValue();
+        if (list == null) return "";
 
-            if (v <= timestamp && v > prev) {
-                prev = v;
-                res = k;
-            }
+        int l = 0;
+        int r = list.size();
+
+        while (l < r) {
+            int m = (l + r) >> 1;
+            if (list.get(m).v < timestamp) l = m + 1;
+            else r = m;
         }
 
-        return res;
-    }
-}
+        if (l - 1 < 0 || l - 1 >= list.size()) return "";
 
-/**
- * Your TimeMap object will be instantiated and called as such:
- * TimeMap obj = new TimeMap();
- * obj.set(key,value,timestamp);
- * String param_2 = obj.get(key,timestamp);
- */
+        return list.get(l - 1).k;
+    }
+
+    class Pair<K, V> {
+        K k;
+        V v;
+
+        Pair(K k, V v) {
+            this.k = k;
+            this.v = v;
+        }
+    }
+
+}

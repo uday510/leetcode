@@ -6,7 +6,7 @@ class TimeMap {
     }
     
     public void set(String key, String value, int timestamp) {
-        hm.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair(value, timestamp));
+        hm.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair<>(value, timestamp));
     }
     
     public String get(String key, int timestamp) {

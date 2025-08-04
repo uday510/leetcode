@@ -6,7 +6,7 @@ class Solution {
 
         while (reader.get(r) < target) {
             l = r;
-            r <<= 1;
+            r <<= 2;
         }
 
         while (l < r) {

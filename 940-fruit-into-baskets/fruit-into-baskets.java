@@ -9,8 +9,7 @@ class Solution {
             if (basket[fruits[r]]++ == 0) unique++;
 
             while (unique > 2) {
-               if (--basket[fruits[l]] == 0) unique--;
-                l++;
+               if (--basket[fruits[l++]] == 0) unique--;
             }
 
             max = Math.max(max, r++ - l + 1);

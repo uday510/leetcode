@@ -1,0 +1,16 @@
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        long l = 1;
+        long r = num / 2 + 1;
+
+        while (l < r) {
+            long m = (l + r) >> 1;
+            long val = (long) (m * m);
+
+            if (val < num) l = m + 1;
+            else r = m;
+        }
+
+        return l * l == num;
+    }
+}

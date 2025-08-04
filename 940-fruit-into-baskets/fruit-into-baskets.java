@@ -1,27 +1,19 @@
 class Solution {
     public int totalFruit(int[] fruits) {
-        int l = 0;
-        int r = 0;
-        int n = fruits.length;
+        int l = 0, r = 0, n = fruits.length;
         int max = 0;
 
-        Map<Integer, Integer> basket = new HashMap<>();
+        int[] basket = new int[(int)1e5];
+        int unique = 0;
         while (r < n) {
-            basket.merge(fruits[r], 1, Integer::sum);
+            if (basket[fruits[r]]++ == 0) unique++;
 
-            while (l < r && basket.size() > 2) {
-                basket.merge(fruits[l], -1, Integer::sum);
-                if (basket.get(fruits[l]) == 0) basket.remove(fruits[l]);
+            while (unique > 2) {
+               if (--basket[fruits[l]] == 0) unique--;
                 l++;
             }
 
-            int curr = 0;
-            for (var E : basket.entrySet()) {
-                curr += E.getValue();
-            }
-
-            max = Math.max(curr, max);
-            r++;
+            max = Math.max(max, r++ - l + 1);
         }
 
         return max;

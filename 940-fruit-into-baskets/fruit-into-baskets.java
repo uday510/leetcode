@@ -4,12 +4,12 @@ class Solution {
         int max = 0;
 
         int[] basket = new int[(int)1e5];
-        int unique = 0;
+        int type = 0;
         while (r < n) {
-            if (basket[fruits[r]]++ == 0) unique++;
+            if (basket[fruits[r]]++ == 0) type++;
 
-            while (unique > 2) {
-               if (--basket[fruits[l++]] == 0) unique--;
+            while (type > 2) {
+               if (--basket[fruits[l++]] == 0) type--;
             }
 
             max = Math.max(max, r++ - l + 1);

@@ -1,28 +1,20 @@
 class Solution {
     public int mySqrt(int x) {
-        if (x <= 1) {
-            return x;
+        if (x == 1) return 1;
+        long l = 1;
+        long r = x;
+
+        while (l < r) {
+            long m = (l + r) >> 1;
+            long val = (m * m);
+
+            if (val == x) return (int) m;
+
+            if (val < x) l = m + 1;
+            else r = m;
         }
 
-        long left = 1;
-        long right = x;
 
-        while (left < right) {
-            long mid = (left + right) >> 1;
-
-            long val = mid * mid;
-
-            if ((int) val == x) {
-                return (int) mid;
-            }
-
-            if (val < x) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-
-        return (int) left - 1;
+        return (int) l - 1;
     }
 }

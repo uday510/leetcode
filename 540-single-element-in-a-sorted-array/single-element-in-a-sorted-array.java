@@ -1,27 +1,20 @@
 class Solution {
     public int singleNonDuplicate(int[] nums) {
-       int left = 0, right = nums.length - 1;
-       
-       while (left < right) {
-            int mid = (left + right) >> 1;
+        if (nums.length == 1) return nums[0];
+        int l = 0, r = nums.length - 1;
 
-            if (mid % 2 == 0) mid--;
+        while (l < r) {
+            int m = (l + r) >> 1;
 
-            if (nums[mid] == nums[mid + 1]) right = mid - 1;
-            else left = mid + 1;
-       }
+            if (m % 2 == 0) {
+                if (nums[m] == nums[m + 1]) l = m + 1;
+                else r = m;
+            } else {
+                if (nums[m] != nums[m + 1]) l = m + 1;
+                else r = m; 
+            }
+        }
 
-       return nums[left];
+        return nums[l];
     }
 }
-
-/**
-
-0 1 2 3 4 5 6 7 8
-1 1 2 2 3 3 4 8 8
-
-left = 0
-right = 9
-
-
- */

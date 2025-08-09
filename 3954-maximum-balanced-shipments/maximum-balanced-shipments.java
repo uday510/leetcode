@@ -6,16 +6,15 @@ class Solution {
         
         for (int i = 0; i < weight.length; ++i) {
             int j = i + 1;
-            List<Integer> list = new ArrayList<>();
-            list.add(weight[i]);
+            // List<Integer> list = new ArrayList<>();
+            // list.add(weight[i]);
 
-            while (j < n && weight[j] >= list.getLast()) {
-                list.add(weight[j++]);
+            while (j < n && weight[j] >= weight[j - 1]) {
+                j++;
             }
 
-            if (j < n) list.add(weight[j]);
-
-            cnt += list.size() > 1 && list.getLast() < list.get(list.size() - 2) ? 1 : 0;
+            int size = (j - i + 1);
+            cnt += size > 1 && j < n && weight[j] < weight[j - 1] ? 1 : 0;
             i = j;
         }
 

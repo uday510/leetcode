@@ -6,11 +6,10 @@ class Solution {
 
         for (int c = n - 1; c > 1; --c) {
             int a = 0, b = c - 1;
-
+            
             while (a < b) {
                 if (nums[a] + nums[b] > nums[c]) {
-                    cnt += b - a;
-                    b--;
+                    cnt += b-- - a;
                 } else a++;
             }
         }
@@ -21,9 +20,24 @@ class Solution {
 
 /**
 
-2 3 4 4
+[2, 3, 4, 5, 6, 8]
 
 
+3 6 8
+4 6 8
+5 6 8
+
+4 5 8
+
+3 4 6
+2 5 6
+3 5 6
+4 5 6
+
+2 4 5
+3 4 5
+
+2 3 4
 
 
  */

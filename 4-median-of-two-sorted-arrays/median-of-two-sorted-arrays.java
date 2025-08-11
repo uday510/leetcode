@@ -3,7 +3,7 @@ class Solution {
         int n1 = nums1.length;
         int n2 = nums2.length;
 
-        if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
+        // if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
 
         int total = n1 + n2;
         int target = (total + 1) / 2;
@@ -59,8 +59,6 @@ class Solution {
 ----------------------------------
 1  2  3  4  5  6  7  8  9  10  11
 0  1  2  3  4  5  6  7  8   9  10 
-
-
 
 
  */

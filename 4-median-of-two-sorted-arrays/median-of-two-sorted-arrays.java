@@ -1,9 +1,11 @@
 class Solution {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int n1 = nums1.length;
         int n2 = nums2.length;
 
-        // if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
+        // Always binary search the smaller array
+        // code works even without below line, but search space is more
+        if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
 
         int total = n1 + n2;
         int target = (total + 1) / 2;
@@ -15,23 +17,20 @@ class Solution {
             int m1 = (l + r) >> 1;
             int m2 = target - m1;
 
-            int mx1 = safeGet(nums1, m1 - 1);
-            int mn1 = safeGet(nums1, m1);
-            int mx2 = safeGet(nums2, m2 - 1);
-            int mn2 = safeGet(nums2, m2);
+            int left1 = safeGet(nums1, m1 - 1); // 7
+            int right1 = safeGet(nums1, m1); // 9
+            int left2 = safeGet(nums2, m2 - 1); //
+            int right2 = safeGet(nums2, m2);
 
-            if (mx1 > mn2) {
-                r = m1 - 1;
-                continue;
-            }
-            if (mx2 > mn1) {
-                l = m1 + 1;
-                continue;
-            }
-
-            int medianValOdd = Math.max(mx1, mx2);
-            if (total % 2 == 1) return medianValOdd;
-            return (medianValOdd + Math.min(mn1, mn2)) / 2.0;
+           
+            if (left1 <= right2 && left2 <= right1) {
+                // left1 <= right1 && left2 <= right2
+                int medianValOdd = Math.max(left1, left2);
+                if (total % 2 == 1) return medianValOdd;
+                return (medianValOdd + Math.min(right1, right2)) / 2.0;
+            } 
+            else if (left1 > right2) r = m1 - 1;
+            else if (left2 > right1) l = m1 + 1;
         }
 
         return -1;
@@ -43,22 +42,3 @@ class Solution {
         return nums[idx];
     }
 }
-
-/**
-
-1. apply bs on smaller array
-
----------------------------------
-1  2  3  4  6  8  11
-0  1  2  3  4  5  6  
-
-
-5  7  9  10
-0  1  2  3
-
-----------------------------------
-1  2  3  4  5  6  7  8  9  10  11
-0  1  2  3  4  5  6  7  8   9  10 
-
-
- */

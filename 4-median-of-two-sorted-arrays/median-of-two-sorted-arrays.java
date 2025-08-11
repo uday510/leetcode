@@ -14,10 +14,8 @@ class Solution {
         if ((m + n) % 2 == 0) {
             int t1 = list.get((m + n - 1) /2);
             int t2 = list.get((m + n) /2);
-
             return (double) (t1 + t2) / 2;
         } else {
-            System.out.println(m + " : " + (m + n) / 2);
             return (double) list.get((m + n )/ 2);
         }
     }

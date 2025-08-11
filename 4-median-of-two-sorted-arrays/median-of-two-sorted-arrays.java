@@ -15,8 +15,8 @@ class Solution {
             int t1 = list.get((m + n - 1) /2);
             int t2 = list.get((m + n) /2);
             return (double) (t1 + t2) / 2;
-        } else {
-            return (double) list.get((m + n )/ 2);
         }
+        
+        return (double) list.get((m + n ) / 2);
     }
 }

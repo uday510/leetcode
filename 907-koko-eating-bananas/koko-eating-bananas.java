@@ -17,7 +17,10 @@ class Solution {
     private boolean canEatAllBananasWithKPerHr(int[] piles, int k, int reqHrs) {
         int currHrs = 0;
 
-        for (int pile : piles) currHrs += Math.ceil(( (double) pile / k));
+        for (int pile : piles) {
+            currHrs += Math.ceil(( (double) pile / k));
+            if (currHrs > reqHrs) return false;
+        }
 
         return currHrs <= reqHrs;
     } 

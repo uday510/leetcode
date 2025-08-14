@@ -1,10 +1,13 @@
 class Solution {
-    int[] psum;
+
     int[] w;
+    int[] psum;
+    int n;
+
     public Solution(int[] w) {
-        int n = w.length;
-        psum = new int[n];
         this.w = w;
+        n = w.length;
+        psum = new int[n];
         int sum = 0;
         for (int i = 0; i < n; ++i) {
             sum += w[i];
@@ -14,14 +17,16 @@ class Solution {
     
     public int pickIndex() {
         int val = new Random().nextInt(psum[psum.length - 1]) + 1;
-        int left = 0, right = psum.length;
+        
+        int l = 0;
+        while (l < n && psum[l] < val) l++;
 
-        while (left < right) {
-            int midIdx = (left + right) >> 1;
-            if (psum[midIdx] < val) left = midIdx + 1;
-            else right = midIdx;
-        }
-
-        return left;
+        return l;
     }
 }
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */

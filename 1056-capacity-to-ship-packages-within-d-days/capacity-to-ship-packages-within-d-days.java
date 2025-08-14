@@ -1,30 +1,36 @@
 class Solution {
     public int shipWithinDays(int[] weights, int days) {
-        int left = Arrays.stream(weights).max().getAsInt();
-        int right = Arrays.stream(weights).sum();
-
-        while (left < right) {
-            int mid = (left + right) >> 1;
-
-            if (!canShip(weights, days, mid)) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
+        int l = 0, r = 0;
+        for (int w : weights) {
+            l = Math.min(w, l);
+            r += w;
         }
-        return left;
+
+        while (l < r) {
+            int m = (l + r) >> 1;
+            if (canShip(weights, m, days)) r = m;
+            else l = m + 1;
+        }
+
+        return l;
     }
-    private boolean canShip(int[] weights, int days, int req) {
-        int curr = 1;
-        int weight = 0;
 
-        for (int idx = 0; idx < weights.length; ++idx) {
-            weight += weights[idx];
-            if (weight > req) {
-                curr++;
-                weight = weights[idx];
-            }
+    private boolean canShip(int[] weights, int perDayWeight, int days) {
+        int currDays = 1;
+        int currWeight = 0;
+
+        for (int w : weights) {
+            
+            if (w > perDayWeight) return false;
+
+            if (currWeight + w > perDayWeight) {
+                currDays += 1;
+                currWeight = w;
+            } else currWeight += w;
+            
+            if (currDays > days) return false;
         }
-        return curr <= days;
+
+        return currDays <= days;
     }
 }

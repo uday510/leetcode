@@ -2,7 +2,7 @@ class Solution {
     public int shipWithinDays(int[] weights, int days) {
         int l = 0, r = 0;
         for (int w : weights) {
-            l = Math.min(w, l);
+            l = Math.max(w, l);
             r += w;
         }
 
@@ -20,7 +20,7 @@ class Solution {
         int currWeight = 0;
 
         for (int w : weights) {
-            
+
             if (w > perDayWeight) return false;
 
             if (currWeight + w > perDayWeight) {

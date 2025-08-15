@@ -26,7 +26,8 @@ class Solution {
 
         for (int s : sweetness) {
             curr += s;
-            if (curr >= limit) {
+            if (curr >= limit) { // atleast limit, we have cut int k + 1 such that all the 
+            //  cuts have atleast limit
                 curr = 0;
                 cuts += 1;
             }

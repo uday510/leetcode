@@ -5,17 +5,19 @@ class Solution {
         this.sweetness = sweetness;
         this.k = k;
 
-        int l = 1, r = (int) 1e9 / (k + 1) + 1;
+        int l = 1, r = Arrays.stream(sweetness).sum() / (k + 1);
+        int res = -1;
 
-        while (l < r) {
+        while (l <= r) {
             int m = l + ((r - l) >> 1);
             if (canDivide(m)) {
+                res = m;
                 l = m + 1;
             }
-            else r = m;
+            else r = m - 1;
         }
 
-        return r - 1;
+        return res;
     }
 
     private boolean canDivide(int limit) {

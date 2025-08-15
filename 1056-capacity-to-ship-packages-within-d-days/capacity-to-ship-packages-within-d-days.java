@@ -4,7 +4,7 @@ class Solution {
         int l = 0, r = 0;
 
         for (int w : weights) {
-            l = Math.min(l, w);
+            l = Math.max(l, w); // need max, if min choose cannot fit max
             r += w;
         }
 
@@ -19,18 +19,19 @@ class Solution {
 
     private boolean canShip(int[] w, int m, int d) {
         int curr = 0;
-        int days = 1;
+        int used = 1;
 
-        for (int i = 0; i < w.length && days <= d; ++i) {
-            if (w[i] > m) return false;
-            if (curr + w[i] > m) {
-                curr = w[i];
-                days++;
-            } else curr += w[i];
-
+        for (int x : w) {
+            if (x > m || used > d) return false;
+            if (curr + x > m) {
+                used++;
+                curr = x;
+            } else {
+                curr += x;
+            }
         }
 
-        return days <= d;
+        return used <= d;
     }
 
 }

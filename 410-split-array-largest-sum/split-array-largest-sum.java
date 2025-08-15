@@ -4,13 +4,13 @@ class Solution {
     int[] nums;
 
     public int splitArray(int[] nums, int k) {
+        if (Arrays.stream(nums).sum() == 0) return 0;
         this.nums = nums;
         this.k = k;
 
         int l = 1;
-        int r = Arrays.stream(nums).sum();
-
-        if (r == 0) return 0;
+        int r = 1;
+        while (!canSplit(r)) r <<= 1;
         
         while (l < r) {
             int m = l + ((r - l) >> 1);

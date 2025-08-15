@@ -15,13 +15,11 @@ class Solution {
     }
     
     private boolean canEat(int k, int[] piles, int reqHrs) {
-        int currHrs = 0;
 
-        for (int pile : piles) {
-            currHrs += Math.ceil((double) pile / k);
-            if (currHrs > reqHrs) break;
+        for (int i = 0; i < piles.length && reqHrs >= 0; ++i) {
+            reqHrs -= Math.ceil((double) piles[i] / k);
         }
 
-        return currHrs <= reqHrs;
+        return reqHrs >= 0;
     }
 }

@@ -2,7 +2,7 @@ class Solution {
     public int smallestDivisor(int[] nums, int threshold) {
         int l = 1, r = 1;
         for (int num : nums) {
-            l = Math.min(num, l);
+            l = 1;
             r = Math.max(num, r);
         }
 

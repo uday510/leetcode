@@ -1,35 +1,37 @@
 class Solution {
     public int minimumEffortPath(int[][] heights) {
-        int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+        int[][] dirs = {{0, 1},{1, 0}, {-1, 0}, {0, -1}};
         int m = heights.length, n = heights[0].length;
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
-        int[][] dists = new int[m][n];
-        int INF = (int) 1e9;
-        for (int[] row : dists) Arrays.fill(row, INF);
+        int[][] dist = new int[m][n];
+        int INF = 0x7fffffff;
+
+        for (int[] row : dist) Arrays.fill(row, INF);
+        dist[0][0] = 0;
+
+        var pq = new PriorityQueue<int[]>((o1, o2) -> o1[2] - o2[2]);
+
         pq.offer(new int[]{0, 0, 0});
-        dists[0][0] = 0;
 
         while (!pq.isEmpty()) {
             int[] curr = pq.poll();
-            int r = curr[0], c = curr[1], d = curr[2];
+            int x1 = curr[0], y1 = curr[1], d1 = curr[2];
 
-            if (dists[r][c] < d) continue;
+            if (dist[x1][y1] < d1) continue;
 
             for (int[] dir : dirs) {
-                int R = dir[0] + r, C = dir[1] + c;
+                int x2 = dir[0] + x1;
+                int y2 = dir[1] + y1;
+                if (x2 < 0 || x2 >= m || y2 < 0 || y2 >= n) continue;
+                int diff = Math.abs(heights[x1][y1] - heights[x2][y2]);
+                int d2 = Math.max(d1, diff);
 
-                if (R < 0 || R >= m || C < 0 || C >= n) continue;
-
-                int D = Math.abs(heights[R][C] - heights[r][c]);
-                D = Math.max(d, D);
-
-                if (D < dists[R][C]) {
-                    dists[R][C] = D;
-                    pq.offer(new int[] {R, C, D});
+                if (d2 < dist[x2][y2]) {
+                    dist[x2][y2] = d2;
+                    pq.offer(new int[] {x2, y2, d2});
                 }
             }
         }
 
-        return dists[m - 1][n - 1];
+        return dist[m - 1][n - 1];
     }
 }

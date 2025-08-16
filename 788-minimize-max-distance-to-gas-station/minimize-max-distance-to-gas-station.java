@@ -2,18 +2,14 @@ class Solution {
     public double minmaxGasDist(int[] stations, int k) {
         double l = 0;
         double r = 1e8;
-        double res = -1;
 
         while (r - l > 1e-6) {
             double m = (l + r) / 2.0;
-            if (isPossible(m, stations, k)) {
-                res = m;
-                r = m;
-            }
+            if (isPossible(m, stations, k)) r = m;
             else l = m;
         }
 
-        return res;
+        return l;
     }
 
     private boolean isPossible(double limit, int[] stations, int k) {

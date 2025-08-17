@@ -10,7 +10,7 @@ class Solution {
                 } else if (floor == 1)  {
                     dp[egg][floor] = 1;
                 }  else {
-                    int best = Integer.MAX_VALUE;
+                    int best = 0x7fffffff;
                     // int currMin = Integer.MAX_VALUE;
                     // for (int f = floor - 1, prevF = 0; f > -1; f--, prevF++) {
                     //     int v1 = dp[egg][f]; // egg survives

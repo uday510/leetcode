@@ -5,19 +5,7 @@ class Solution {
     int n;
 
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-        n = startTime.length;
-        jobs = new int[n][3];
-        dp = new int[n];
-
-        for (int i = 0; i < n; ++i) {
-            dp[i] = -1;
-            jobs[i] = new int[3];
-            jobs[i][0] = startTime[i];
-            jobs[i][1] = endTime[i];
-            jobs[i][2] = profit[i];
-        }
-
-        Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
+        intialize(startTime, endTime, profit);
 
         return dfs(0);    
     }
@@ -39,12 +27,29 @@ class Solution {
         while (l < r) {
             int m = l + ((r - l) >> 1);
 
-           if (target > jobs[m][0]) l = m + 1;
-           else r = m;
+            if (target > jobs[m][0]) l = m + 1;
+            else r = m;
         }
-
         return l;
     }
+    
+    private void intialize(int[] startTime, int[] endTime, int[] profit) {
+        n = startTime.length;
+        jobs = new int[n][3];
+        dp = new int[n];
+
+        for (int i = 0; i < n; ++i) {
+            dp[i] = -1;
+            jobs[i] = new int[3];
+            jobs[i][0] = startTime[i];
+            jobs[i][1] = endTime[i];
+            jobs[i][2] = profit[i];
+        }
+
+        Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
+    }
+
+
 
 // 0 -> [1, 3] ->  20
 // 1 -> [2, 5] ->  20
@@ -52,8 +57,8 @@ class Solution {
 // 3 -> [4, 6] ->  70
 // 4 -> [6, 9] ->  60
 
-
 // [[1, 3, 20], [2, 5, 20], [3, 10, 100], [4, 6, 70], [6, 9, 60]]
 
 // end: 3
+
 }

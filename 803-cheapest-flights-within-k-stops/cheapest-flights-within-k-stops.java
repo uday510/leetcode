@@ -5,30 +5,29 @@ class Solution {
 
         for (int[] flight : flights) {
             int u = flight[0], v = flight[1], w = flight[2];
-            adjList[u].add(new int[] {v, w});
+            adjList[u].add(new int[]{v, w});
         }
         
-        int INF = (int) 1e9;
+        int INF = 0x7fffffff;
         int[] dist = new int[n];
         Arrays.fill(dist, INF);
 
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[] {src, 0, 0});
+        queue.offer(new int[]{src, 0, 0});
         dist[src] = 0;
 
         while (!queue.isEmpty()) {
             int[] curr = queue.poll();
-            int u = curr[0], weight = curr[1], stops = curr[2];
+            int u1 = curr[0], w1 = curr[1], s1 = curr[2];
 
-            if (stops > k) continue;
+            if (s1 > k) continue;
 
-            for (int[] next : adjList[u]) {
-                int v = next[0], w = next[1];
-                int newW = w + weight;
+            for (int[] next : adjList[u1]) {
+                int v2 = next[0], w2 = w1 + next[1];
 
-                if (newW < dist[v]) {
-                    dist[v] = newW;
-                    queue.offer(new int[] {v, newW, stops + 1});
+                if (w2 < dist[v2]) {
+                    dist[v2] = w2;
+                    queue.offer(new int[] {v2, w2, s1 + 1});
                 }
             }
         }

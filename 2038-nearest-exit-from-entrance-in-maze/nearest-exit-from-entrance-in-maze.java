@@ -2,7 +2,7 @@ class Solution {
 
     private final char WALL = '+';
     private final char PATH = '.';
-    private int[][] DIRECTIONS = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+    private final int[][] DIRECTIONS = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 
     public int nearestExit(char[][] maze, int[] entrance) {
         return bfs(maze, entrance);

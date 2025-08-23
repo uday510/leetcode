@@ -1,27 +1,28 @@
 class Solution {
-
-    List<Integer> lis;
-
+    int[] nums;
+    int n;
+    int[][] dp;
     public int lengthOfLIS(int[] nums) {
-        lis = new ArrayList<>();
+        this.nums = nums;
+        n = nums.length;
+        dp = new int[n + 1][n];
 
-        for (int i = 0; i < nums.length; ++i) {
-            int idx = bs(nums[i]);
-            if (idx == lis.size()) lis.add(nums[i]);
-            lis.set(idx, nums[i]);
-        }
-
-        return lis.size();
+        for (int[] row : dp) Arrays.fill(row, -1);
+        return dfs(-1, 0);
     }
-    private int bs(int target) {
-        int l = 0, r = lis.size();
+    private int dfs(int i, int j) {
+        if (i >= n || j >= n) return 0;
 
-        while (l < r) {
-            int m = (l + r) >> 1;
-            if (lis.get(m) < target) l = m + 1;
-            else r = m;
+        if (dp[i + 1][j] != -1) return dp[i + 1][j];
+
+        int skip = dfs(i, j + 1);
+
+        int take = 0;
+
+        if (i == -1 || nums[i] < nums[j]) {
+            take = 1 + dfs(j, j + 1);
         }
-
-        return l;
+        
+        return dp[i + 1][j] = Math.max(skip, take);
     }
 }

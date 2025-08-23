@@ -5,7 +5,7 @@ class Solution {
 
         for (int i = 0; i < str.length(); ++i) {
             
-            int[] s1 = find(i, i + 1, str);
+            int[] s1 = find(i - 1, i, str);
             int[] s2 = find(i - 1, i + 1, str);
 
             int[] s = {0, 0};

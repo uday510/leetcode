@@ -1,19 +1,29 @@
 class Solution {
-
-    int[][] dp;
-    int m;
     public int minimumTotal(List<List<Integer>> triangle) {
-        m = triangle.size();
-        dp = new int[m][m];
+        int n = triangle.size();
 
-        for (int[] row : dp) Arrays.fill(row, -1);
-        return dfs(0, 0, triangle);
-    }
+        if (n == 1) return triangle.get(0).get(0);
 
-    private int dfs(int i, int j, List<List<Integer>> triangle) {
-        if (i >= m || j >= m) return 0;
-        if (dp[i][j] != -1) return dp[i][j];
-        int curr = triangle.get(i).get(j);
-        return dp[i][j] = curr + Math.min(dfs(i + 1, j, triangle), dfs(i + 1, j + 1, triangle));
+        int[][] dp = new int[n][n];
+        dp[0][0] = triangle.get(0).get(0);
+        int min = (int) 1e9;
+
+        for (int i = 1; i < n; ++i) {
+            int m = triangle.get(i).size();
+            int curr = min;
+            for (int j = 0; j < m; ++j) {
+                dp[i][j] = triangle.get(i).get(j);
+                if(j > 0) {
+                    if (j != m - 1) dp[i][j] += Math.min(dp[i - 1][j], dp[i - 1][j - 1]);
+                    else dp[i][j] += dp[i - 1][j - 1];
+                } 
+                else dp[i][j] += dp[i - 1][j];
+
+                curr = Math.min(curr, dp[i][j]);
+            }
+            if (i == n - 1) min = Math.min(curr, min);
+        }
+
+        return min;
     }
 }

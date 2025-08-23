@@ -1,26 +1,33 @@
 class Solution {
     public int minFallingPathSum(int[][] matrix) {
-        
-        int n = matrix.length;
-        int[][] dp = new int[n][n];
-        int ans = (int) 1e9;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m][n];
 
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 dp[i][j] = matrix[i][j];
-
-                int min = (int) 1e9;
-
-                if (i - 1 >= 0 && j >= 0) min = Math.min(min, dp[i - 1][j]);
-                if (i - 1 >= 0 && j + 1 < n) min = Math.min(min, dp[i - 1][j + 1]);
-                if (i - 1 >= 0 && j - 1 >= 0) min = Math.min(min, dp[i - 1][j - 1]);
-
-                dp[i][j] += (min == (int) 1e9 ? 0 : min);
-
-                if (i == n - 1) ans = Math.min(ans, dp[i][j]);
-            }
+                if (i > 0 && j > 0) {
+                   if (j + 1 < n) dp[i][j] += Math.min(dp[i - 1][j], Math.min(dp[i - 1][j - 1], dp[i - 1][j + 1]));
+                   else dp[i][j] += Math.min(dp[i - 1][j], dp[i - 1][j - 1]);
+                }
+                else if (i > 0) {
+                    dp[i][j] += Math.min(dp[i - 1][j], dp[i - 1][j + 1]);
+                }
+            }            
         }
-
-        return ans;
+        
+        return Arrays.stream(dp[m - 1]).min().getAsInt();
     }
 }
+
+/**
+
+[
+    [100,-42,-46,-41]
+    [31,97,10,-10]
+    [-58,-51,82,89]
+    [51,81,69,-51]]
+
+
+
+ */

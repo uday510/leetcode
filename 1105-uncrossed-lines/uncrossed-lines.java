@@ -1,27 +1,27 @@
 class Solution {
+    int[] a1, a2;
     int[][] dp;
-    int n;
-    int m;
-    int[] arr1;
-    int[] arr2;
+    int n, m;
     public int maxUncrossedLines(int[] nums1, int[] nums2) {
-        n = nums1.length;
-        m = nums2.length;
-        arr1 = nums1;
-        arr2 = nums2;
+        a1 = nums1;
+        a2 = nums2;
+        n = a1.length;
+        m = a2.length;
         dp = new int[n][m];
 
-        for (int[] row : dp) Arrays.fill(row,  -1);
+        for (int[] row : dp) Arrays.fill(row, -1);
+
         return dfs(0, 0);
     }
     private int dfs(int i, int j) {
-        if (i >= arr1.length || j >= arr2.length) return 0;
+        if (i >= n || j >= m) return 0;
 
         if (dp[i][j] != -1) return dp[i][j];
 
-        if (arr1[i] == arr2[j]) {
+        
+        if (a1[i] == a2[j]) {
             dp[i][j] = 1 + dfs(i + 1, j + 1);
-        } else { 
+        } else {
             dp[i][j] = Math.max(dfs(i + 1, j), dfs(i, j + 1));
         }
 

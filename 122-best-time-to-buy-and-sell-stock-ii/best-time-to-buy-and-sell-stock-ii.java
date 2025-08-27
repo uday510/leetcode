@@ -1,29 +1,11 @@
 class Solution {
+    public int maxProfit(int[] p) {
+        int profit = 0;
 
-    int[] dp;
-    int[] p;
-    int n;
-
-    public int maxProfit(int[] prices) {
-        p = prices;
-        n = prices.length;
-        dp = new int[n];
-        
-        Arrays.fill(dp, -1);
-
-        return dfs(0);   
-    }
-    private int dfs(int i) {
-        if (i >= n) return 0;
-        int max = 0;
-
-        if (dp[i] != -1) return dp[i];
-        for (int j = i; j < n; ++j) {
-            int curr = p[j] - p[i] + dfs(j + 1);
-
-            max = Math.max(max, curr);  
+        for (int i = 1; i < p.length; ++i) {
+            profit += Math.max(p[i] - p[i - 1], 0);
         }
 
-        return dp[i] = max;
+        return profit;
     }
 }

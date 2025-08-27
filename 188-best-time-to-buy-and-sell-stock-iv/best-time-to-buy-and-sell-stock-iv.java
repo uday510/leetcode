@@ -5,14 +5,21 @@ class Solution {
 
 
         for (int txn = 1; txn <= k; ++txn) {
+            int max = -(int) 1e9;
 
             for (int day = 1; day < n; ++day) {
-                dp[txn][day] = dp[txn][day - 1];
-
-                for (int prevDay = 0; prevDay < day; ++prevDay) {
-                    dp[txn][day] = Math.max(dp[txn][day], dp[txn - 1][prevDay] + prices[day] - prices[prevDay]);
+                
+                if (dp[txn - 1][day - 1] - prices[day - 1] > max) {
+                    max = dp[txn - 1][day - 1] - prices[day - 1];
                 }
-             }
+
+                if (max + prices[day] > dp[txn][day - 1]) {
+                    dp[txn][day] = max + prices[day];
+                } else {
+                    dp[txn][day] = dp[txn][day - 1];
+                }
+
+            }
         }
 
         return dp[k][n - 1];

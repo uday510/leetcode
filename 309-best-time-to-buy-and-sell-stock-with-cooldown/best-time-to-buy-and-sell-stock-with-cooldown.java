@@ -17,14 +17,12 @@ class Solution {
 
         int skip = dfs(i + 1);
 
-        int max = 0;
+        int take = 0;
         for (int j = i + 1; j < n; ++j) {
             int curr = p[j] - p[i] + dfs(j + 2);
-            max = Math.max(curr, max);
+            take = Math.max(curr, take);
         }
 
-        System.out.println(i + " : " + Math.max(skip, max));
-
-        return dp[i] = Math.max(skip, max);
+        return dp[i] = Math.max(skip, take);
     }
 }

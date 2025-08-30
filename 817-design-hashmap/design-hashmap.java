@@ -1,99 +1,89 @@
+import java.util.ArrayList;
+
 class MyHashMap {
 
-    private static double LOAD_FACTOR = 0.75;
-    private LinkedList<Entry>[] buckets;
+    private static final double LOAD_FACTOR = 0.75;
+    private ArrayList<Entry<Integer, Integer>>[] buckets;
     private int size;
 
     public MyHashMap() {
-        buckets = new LinkedList[16];
+        buckets = new ArrayList[16];
         size = 0;
     }
 
-    private int getIndex(int key) {
-        return key % buckets.length;
-    }
-
-    private static class Entry {
-        int key, value;
-
-        Entry(int key, int value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-    
     public void put(int key, int value) {
-        if ((double) size / buckets.length > LOAD_FACTOR) {
+
+        if ( (double) size / buckets.length >= LOAD_FACTOR) {
             resize();
         }
-
+        
         int index = getIndex(key);
         if (buckets[index] == null) {
-            buckets[index] = new LinkedList<>();
+            buckets[index] = new ArrayList<>();
         }
-
+        
         for (var entry : buckets[index]) {
-            if (entry.key == key) {
-                entry.value = value;
+            if (entry.k == key) {
+                entry.v = value;
                 return;
             }
         }
-
-        buckets[index].add(new Entry(key, value));
+        
+        buckets[index].add(new Entry<>(key, value));
         size++;
-
     }
-    
+
     public int get(int key) {
         int index = getIndex(key);
         int value = -1;
 
-        if (buckets[index] == null) {
-            return value;
-        }
+        if (buckets[index] == null) return value;
 
         for (var entry : buckets[index]) {
-            if (entry.key == key) {
-                value = entry.value;
+            if (entry.k == key) {
+                value = entry.v;
                 break;
             }
         }
 
         return value;
     }
-    
+
     public void remove(int key) {
         int index = getIndex(key);
 
-        if (buckets[index] == null) {
-            return;
-        }
+        if (buckets[index] == null) return;
 
-        buckets[index].removeIf(entry -> entry.key == key);
+        buckets[index].removeIf(e -> e.k == key);
         size--;
+    }
 
+    private int getIndex(int key) {
+        return key % buckets.length;
     }
 
     private void resize() {
-        LinkedList<Entry>[] old = buckets;
-        buckets = new LinkedList[old.length * 2];
-        size = 0;
+        var oldBuckets = buckets;
+        buckets = new ArrayList[oldBuckets.length * 2];
 
-        for (var bucket: old) {
-            if (bucket == null) 
-                continue;
-                
-            for (var entry : bucket) {
-                put(entry.key, entry.value);
+        for (var oldBucket : oldBuckets) {
+            if (oldBucket == null) continue;
+
+            for (var oldBucketEntry : oldBucket) {
+                put(oldBucketEntry.k, oldBucketEntry.v);
             }
         }
-    }
-}
 
-/**
- * Your MyHashMap object will be instantiated and called as such:
- * MyHashMap obj = new MyHashMap();
- * obj.put(key,value);
- * int param_2 = obj.get(key);
- * obj.remove(key);
- */
+    }
+
+    class Entry<K, V> {
+        K k;
+        V v;
+
+        Entry(K k, V v) {
+            this.k = k;
+            this.v = v;
+        }
+    }
+    
+}

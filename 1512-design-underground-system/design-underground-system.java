@@ -1,42 +1,76 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 class UndergroundSystem {
 
     Map<Integer, List<Entry>> checkIns;
     Map<Integer, List<Entry>> checkOuts;
-    Map<String, List<Integer>> times;
+    Map<String, Trips> tripsMap;
 
     public UndergroundSystem() {
         checkIns = new HashMap<>();
         checkOuts = new HashMap<>();
-        times = new HashMap<>();
+        tripsMap = new HashMap<>();
     }
-    
+
     public void checkIn(int id, String stationName, int t) {
         checkIns.computeIfAbsent(id, k -> new ArrayList<>()).add(new Entry(id, stationName, t));
     }
-    
+
     public void checkOut(int id, String stationName, int t) {
-        
+
         checkOuts.computeIfAbsent(id, k -> new ArrayList<>()).add(new Entry(id, stationName, t));
 
         Entry lastCheckIn = checkIns.get(id).getLast();
         String key = getKey(lastCheckIn.stn, stationName);
 
-        times.computeIfAbsent(key, k -> new ArrayList<>()).add(t - lastCheckIn.t);
+        tripsMap.computeIfAbsent(key, k -> new Trips());
+        
+        int currTrips = tripsMap.get(key).getNumTrips() + 1;
+        int currSum = tripsMap.get(key).getTripsSum() + t - lastCheckIn.t;
+        tripsMap.get(key).setNumTrips(currTrips);
+        tripsMap.get(key).setTripsSum(currSum);
+        
     }
-    
+
     public double getAverageTime(String src, String dest) {
-        List<Integer> list = times.get(getKey(src, dest));
+        Trips trips = tripsMap.get(getKey(src, dest));
 
-        if (list == null) return -1.0;
+        if (trips == null) return -1.0;
 
-        int sum = 0;
-        for (var t : list) sum += t;
-
-        return (double) sum / list.size();
+        return (double) trips.tripsSum / trips.numTrips;
     }
 
     private String getKey(String src, String dest) {
         return src + " -> " + dest;
+    }
+
+    class Trips {
+        private int numTrips;
+        private int tripsSum;
+
+        Trips() {
+            this.numTrips = 0;
+            this.tripsSum = 0;
+        }
+
+        public int getNumTrips() {
+            return numTrips;
+        }
+
+        public void setNumTrips(int numTrips) {
+            this.numTrips = numTrips;
+        }
+
+        public int getTripsSum() {
+            return tripsSum;
+        }
+
+        public void setTripsSum(int tripsSum) {
+            this.tripsSum = tripsSum;
+        }
     }
 
     class Entry {
@@ -51,11 +85,3 @@ class UndergroundSystem {
         }
     }
 }
-
-/**
- * Your UndergroundSystem object will be instantiated and called as such:
- * UndergroundSystem obj = new UndergroundSystem();
- * obj.checkIn(id,stationName,t);
- * obj.checkOut(id,stationName,t);
- * double param_3 = obj.getAverageTime(startStation,endStation);
- */

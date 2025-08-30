@@ -1,43 +1,42 @@
 class Solution {
-    static Map<String, Integer> values = new HashMap<>();
+
+    static Map<String, Integer> vals = new HashMap<>();
 
     static {
-        values.put("I", 1);
-        values.put("V", 5);
-        values.put("X", 10);
-        values.put("L", 50);
-        values.put("C", 100);
-        values.put("D", 500);
-        values.put("M", 1000);
-        values.put("IV", 4);
-        values.put("IX", 9);
-        values.put("XL", 40);
-        values.put("XC", 90);
-        values.put("CD", 400);
-        values.put("CM", 900);
+        vals.put("I", 1);
+        vals.put("V", 5);
+        vals.put("X", 10);
+        vals.put("L", 50);
+        vals.put("C", 100);
+        vals.put("D", 500);
+        vals.put("M", 1000);
+        vals.put("IV", 4);
+        vals.put("IX", 9);
+        vals.put("XL", 40);
+        vals.put("XC", 90);
+        vals.put("CD", 400);
+        vals.put("CM", 900);
     }
+
     public int romanToInt(String s) {
-        int currentSum = 0;
-        int i = 0;
+        int res = 0, idx = 0, n = s.length();
 
-        while (i < s.length()) {
-
-            if (i < s.length() - 1) {
-                String doubleSymbol = s.substring(i, i + 2);
-
-                if (values.containsKey(doubleSymbol)) {
-                      currentSum += values.get(doubleSymbol);
-                      i += 2;
-                      continue;
+        while (idx < n) {
+            if (idx < n - 1) {
+                String doubleStr = s.substring(idx, idx + 2);
+                
+                if (vals.containsKey(doubleStr)) {
+                    res += vals.get(doubleStr);
+                    idx += 2;
+                    continue;
                 }
             }
 
-            String singleSymbol = s.substring(i, i + 1);
-            currentSum += values.get(singleSymbol);
-            i += 1;
-            
+            String single = s.substring(idx, idx +1);
+            res += vals.get(single);
+            idx += 1;
         }
 
-        return currentSum;
-    } 
+        return res;
+    }
 }

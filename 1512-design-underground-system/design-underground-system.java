@@ -1,87 +1,60 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 class UndergroundSystem {
 
-    Map<Integer, List<Entry>> checkIns;
-    Map<Integer, List<Entry>> checkOuts;
-    Map<String, Trips> tripsMap;
+    private final Map<Integer, CheckIn> active;
+    private final Map<String, TripStats> stats;
 
     public UndergroundSystem() {
-        checkIns = new HashMap<>();
-        checkOuts = new HashMap<>();
-        tripsMap = new HashMap<>();
+        active = new HashMap<>();
+        stats = new HashMap<>();
     }
 
     public void checkIn(int id, String stationName, int t) {
-        checkIns.computeIfAbsent(id, k -> new ArrayList<>()).add(new Entry(id, stationName, t));
+        active.put(id, new CheckIn(stationName, t));
     }
 
     public void checkOut(int id, String stationName, int t) {
+        CheckIn in = active.remove(id);
+        if (in == null) {
+            return;
+        }
 
-        checkOuts.computeIfAbsent(id, k -> new ArrayList<>()).add(new Entry(id, stationName, t));
-
-        Entry lastCheckIn = checkIns.get(id).getLast();
-        String key = getKey(lastCheckIn.stn, stationName);
-
-        tripsMap.computeIfAbsent(key, k -> new Trips());
-        
-        int currTrips = tripsMap.get(key).getNumTrips() + 1;
-        int currSum = tripsMap.get(key).getTripsSum() + t - lastCheckIn.t;
-        tripsMap.get(key).setNumTrips(currTrips);
-        tripsMap.get(key).setTripsSum(currSum);
-        
+        String key = key(in.station, stationName);
+        TripStats tripStats = stats.computeIfAbsent(key, k -> new TripStats());
+        tripStats.addTrip(t - in.time);
     }
 
-    public double getAverageTime(String src, String dest) {
-        Trips trips = tripsMap.get(getKey(src, dest));
-
-        if (trips == null) return -1.0;
-
-        return (double) trips.tripsSum / trips.numTrips;
+    public double getAverageTime(String startStation, String endStation) {
+        TripStats tripStats = stats.get(key(startStation, endStation));
+        return tripStats == null ? -1.0 : tripStats.average();
     }
 
-    private String getKey(String src, String dest) {
+    private static String key(String src, String dest) {
         return src + " -> " + dest;
     }
 
-    class Trips {
-        private int numTrips;
-        private int tripsSum;
+    private static class CheckIn {
+        final String station;
+        final int time;
 
-        Trips() {
-            this.numTrips = 0;
-            this.tripsSum = 0;
-        }
-
-        public int getNumTrips() {
-            return numTrips;
-        }
-
-        public void setNumTrips(int numTrips) {
-            this.numTrips = numTrips;
-        }
-
-        public int getTripsSum() {
-            return tripsSum;
-        }
-
-        public void setTripsSum(int tripsSum) {
-            this.tripsSum = tripsSum;
+        CheckIn(String station, int time) {
+            this.station = station;
+            this.time = time;
         }
     }
 
-    class Entry {
-        int id;
-        String stn;
-        int t;
+    private static class TripStats {
+        long totalTime;
+        int count;
+        void addTrip(int duration) {
+            totalTime += duration;
+            count++;
+        }
 
-        Entry (int id, String stn, int t) {
-            this.id = id;
-            this.stn = stn;
-            this.t = t;
+        double average() {
+            return (count == 0) ? -1.0 : (double) totalTime / count;
         }
     }
 }

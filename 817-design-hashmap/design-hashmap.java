@@ -3,7 +3,7 @@ class MyHashMap {
     private static final int DEFAULT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
 
-    private ArrayList<Entry>[] buckets = new ArrayList[16];
+    private ArrayList<Entry>[] buckets = new ArrayList[DEFAULT_CAPACITY];
     private int size = 0;
 
     public MyHashMap() {}

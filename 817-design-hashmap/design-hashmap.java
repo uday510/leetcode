@@ -7,7 +7,7 @@ class MyHashMap {
     private int size;
 
     public MyHashMap() {
-        buckets = new ArrayList[16];
+        buckets = new ArrayList[2069];
         size = 0;
     }
 
@@ -85,5 +85,5 @@ class MyHashMap {
             this.v = v;
         }
     }
-    
+
 }

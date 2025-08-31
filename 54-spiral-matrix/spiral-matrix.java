@@ -1,37 +1,28 @@
 class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> order = new ArrayList<>();
-        int stRow = 0, enRow = matrix.length - 1, stCol = 0, enCol = matrix[0].length - 1;
+    public List<Integer> spiralOrder(int[][] mat) {
+        int n = mat.length, m = mat[0].length, r1 = 0, c1 = 0, r2 = n - 1, c2 = m - 1;
 
+        List<Integer> res = new ArrayList<>();
 
-        while (stRow <= enRow && stCol <= enCol) {
+        while (r1 <= r2 && c1 <= c2) {
 
-            for (int col = stCol; col <= enCol; ++col) {
-                order.add(matrix[stRow][col]);
-            }
+            for (int c = c1; c <= c2; c++) res.add(mat[r1][c]);
 
-            for (int row = stRow + 1; row <= enRow; ++row) {
-                order.add(matrix[row][enCol]);
-            }
+            for (int r = r1 + 1; r <= r2; r++) res.add(mat[r][c2]);
 
-            if (stRow == enRow) break;
-            for (int col = enCol - 1; col >= stCol; --col) {
-                order.add(matrix[enRow][col]);
-            }
+            if (r1 == r2) break;
 
-            if (stCol == enCol) break;
-            for (int row = enRow - 1; row > stRow; --row) {
-                order.add(matrix[row][stCol]);
-            }
+            for (int c = c2 - 1; c >= c1; c--) res.add(mat[r2][c]);
 
-            ++stRow;
-            ++stCol;
-            --enRow;
-            --enCol;
+            if (c1 == c2) break;
+            for (int r = r2 - 1; r > r1; r--) res.add(mat[r][c1]);
+
+            r1++;
+            c1++;
+            r2--;
+            c2--;
         }
 
-
-
-        return order;
+        return res;
     }
 }

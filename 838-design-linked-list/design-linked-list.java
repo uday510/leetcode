@@ -6,7 +6,7 @@ class MyLinkedList {
 
     public MyLinkedList() {
         head = new Node();
-        tail = new Node();
+        tail = head;
         head.next = tail;
         tail.prev = head;
         size = 0;

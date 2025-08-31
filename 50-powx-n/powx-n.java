@@ -1,26 +1,23 @@
 class Solution {
-    public double myPow(double x, long n) {
-        if (n < 0) {
-            x = 1 / x;
-            n = -n;
-        }
-
-        return dfs(x, n);
+    public double myPow(double x, int n) {
+        return binaryExp(x, (long) n);
     }
-    private double dfs(double x, long n) {
-        if (n <= 0) {
-            return 1.0;
+    private double binaryExp(double base, long exp) {
+        if (exp < 0) {
+            exp = -1 * exp;
+            base = 1.0 / base;
         }
 
-        double halfPower = dfs(x, n / 2);
+        double res = 1;
 
-        double power = halfPower * halfPower;
+        while (exp > 0) {
 
-        // odd
-        if (n % 2 == 1) {
-            power *= x;
+            if ((exp & 1L) == 1L) res *= base;
+
+            base *= base;
+            exp >>= 1;
         }
-
-        return power;
+        
+        return res;
     }
 }

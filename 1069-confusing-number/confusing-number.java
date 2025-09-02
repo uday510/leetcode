@@ -13,14 +13,11 @@ class Solution {
         int original = n;
 
         while (original > 0) {
-            reversed *= 10;
             int digit = original % 10;
             if (!map.containsKey(digit)) return false;
-            reversed += map.get(digit);
+            reversed = reversed * 10 + map.get(digit);
             original /= 10;
         }
-
-        System.out.println(reversed);
 
         return reversed != n;
     }

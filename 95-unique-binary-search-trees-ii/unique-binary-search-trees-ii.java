@@ -1,4 +1,5 @@
-/**
+
+import java.util.Collection;/**
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
@@ -15,27 +16,20 @@
  */
 class Solution {
     public List<TreeNode> generateTrees(int n) {
-        
         return dfs(1, n);
     }
-
-    private List<TreeNode> dfs(int st, int en) {
-        if (st > en) {
-            return Collections.singletonList(null);
-        }
-
+    private List<TreeNode> dfs(int s, int e) {
+        if (s > e) return Collections.singletonList(null);
 
         List<TreeNode> list = new ArrayList<>();
 
-        for (int i = st; i <= en; ++i) {
+        for (int i = s; i <= e; i++) {
+            List<TreeNode> left = dfs(s, i - 1);
+            List<TreeNode> right = dfs(i + 1, e);
 
-            List<TreeNode> leftNodes = dfs(st, i - 1);
-            List<TreeNode> rightNodes = dfs(i + 1, en);
-
-            for (TreeNode left : leftNodes) {
-                for (TreeNode right : rightNodes) {
-                    TreeNode node = new TreeNode(i, left, right);
-                    list.add(node);
+            for (TreeNode l : left) {
+                for (TreeNode r : right) {
+                    list.add(new TreeNode(i, l, r));
                 }
             }
         }

@@ -14,13 +14,32 @@ class Solution {
 
         // return dp[n];
 
-        long c = 1; // co = 1, cn+1 = 2(2n + 1)c/(n + 2)
+        // catalon number
+        // long c = 1; // co = 1, cn+1 = 2(2n + 1)c/(n + 2)
 
-        for (int i = 0; i < n; ++i) {
-            c = (c * 2 * (2 * i + 1)) / (i + 2);
+        // for (int i = 0; i < n; ++i) {
+        //     c = (c * 2 * (2 * i + 1)) / (i + 2);
+        // }
+
+        // return (int) c;
+
+        return dfs(1, n);
+    }
+
+    private int dfs(int st, int en) {
+        if (st >= en) return 1;
+
+        int a = 0;
+
+        for (int i = st; i <= en; ++i) {
+
+            int l = dfs(st, i - 1);
+            int r = dfs(i + 1, en);
+            a += (l * r);
+            
         }
 
-        return (int) c;
+        return a;
     }
 }
 

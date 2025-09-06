@@ -9,20 +9,18 @@ class Solution {
 
         return dfs(n);
     }
+    private int dfs(int n) {
+        if (n < 0) return INF;
+        if (n == 0) return 0;
 
-    private int dfs (int rem) {
-        if (rem < 0) return INF;
-        if (rem == 0) return 0;
+        if (dp[n] != -1) return dp[n];
 
-        if (dp[rem] != -1) return dp[rem];
-
-        int min = INF;
-        for (int i = 1; i * i <= rem; ++i) {
-            int next = dfs(rem - i * i);
-            if (next != INF) min = Math.min(min, 1 + next);
+        int min = n;
+        for (int i = 1; i * i <= n; i++) {
+            int cur = dfs(n - i * i);
+            if (cur != INF) min = Math.min(min, 1 + cur);
         }
 
-        return dp[rem] = min;
+        return dp[n] = min;
     }
-
 }

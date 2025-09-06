@@ -1,19 +1,24 @@
 class Solution {
-    public long mostPoints(int[][] ques) {
-        int n = ques.length;
-        long[] dp = new long[n + 1];
+    int[][] A;
+    int n;
+    long[] dp;
+    public long mostPoints(int[][] questions) {
+        A = questions;
+        n = A.length;
+        dp = new long[n];
+        Arrays.fill(dp, -1l);
 
-        for (int i = n - 1; i > -1; --i) {
-            int points = ques[i][0];
-            int skip = ques[i][1];
-            int skipIdx = i + skip + 1;
+        return dfs(0);
+    }
 
-            long inc = points + (skipIdx < n ? dp[skipIdx] : 0);
-            long exc = dp[i + 1];
+    private long dfs (int i) {
+        if (i >= n) return 0;
 
-            dp[i] = Math.max(inc, exc);
-        }
+        if (dp[i] != -1) return dp[i];
 
-        return dp[0];
+        long skip = dfs(i + 1);
+        long take = A[i][0] + dfs(i + A[i][1] + 1);
+
+        return dp[i] = Math.max(skip, take);
     }
 }

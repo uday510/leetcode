@@ -1,33 +1,34 @@
 class Solution {
 
     Set<Integer> travellingDays;
-    int[] dp;
     int lastDay;
-    int[] costs;
+    int[] dp;
+    int[] c;
 
     public int mincostTickets(int[] days, int[] costs) {
-        dp = new int[366];
+        if (days.length == 0) return 0;
+
         travellingDays = new HashSet<>();
+        dp = new int[days[days.length - 1] + 1];
         lastDay = days[days.length - 1];
-        this.costs = costs;
-        for (int day : days) travellingDays.add(day);
         Arrays.fill(dp, -1);
+        c = costs;
 
-        return dfs(days[0]);
+        for (int day : days) travellingDays.add(day);    
+
+        return dfs(0);
     }
-
-    private int dfs (int day) {
+    private int dfs(int day) {
         if (day > lastDay) return 0;
+
         if (dp[day] != -1) return dp[day];
 
-        if (!travellingDays.contains(day)) {
-            return dp[day] = dfs(day + 1);
-        }
+        if (!travellingDays.contains(day)) return dp[day] = dfs(day + 1);
 
-        int day1Pass = costs[0] + dfs(day + 1);
-        int day7Pass = costs[1] + dfs(day + 7);
-        int day30Pass = costs[2] + dfs(day + 30);
+        int day1 = c[0] + dfs(day + 1);
+        int day7 = c[1] + dfs(day + 7);
+        int day30 = c[2] + dfs(day + 30);
 
-        return dp[day] = Math.min(day1Pass, Math.min(day7Pass, day30Pass));
+        return dp[day] = Math.min(day1, Math.min(day7, day30));
     }
 }

@@ -26,7 +26,7 @@ class Solution {
         int t1 = dfs(i + 1);
         int t2 = 0;
 
-        if (i + 2 <= n && nums[i] * 10 + nums[i + 1] <= 26) t2 = dfs(i + 2);
+        if (i + 1 < n && nums[i] * 10 + nums[i + 1] <= 26) t2 = dfs(i + 2);
 
         return dp[i] = t1 + t2;
     }

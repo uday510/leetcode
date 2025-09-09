@@ -1,31 +1,29 @@
 class Solution {
+    int[][] dp; int[][] c;
+    int k, n;
     public int minCostII(int[][] costs) {
+        c = costs;
+        k = c[0].length;
+        n = c.length;
+        dp = new int[n][k + 1];
 
-        if (costs.length == 0) return 0;
+        for (int[] r : dp) Arrays.fill(r, -1);
 
-        int n = costs.length;
-        int k = costs[0].length;
-        int[][] dp = new int[n][k];
+        return dfs(0, -1);
+    }
+    private int dfs(int i, int exc) {
+        if (i >= n) return 0;
 
-        for (int j = 0; j < k; ++j) {
-            dp[0][j] = costs[0][j];
+        int cur = (int) 1e9;
+
+        if (dp[i][exc + 1] != -1) return dp[i][exc + 1];
+
+        for (int j = 0; j < k; j++) {
+            if (j == exc) continue;
+
+            cur = Math.min(cur, c[i][j] + dfs(i + 1, j));
         }
 
-        for (int house = 1; house < n; ++house) {
-            for (int col = 0; col < k; ++col) {
-                int min = (int) 1e9;
-                for (int prevCol = 0; prevCol < k; ++prevCol) {
-                    if (col == prevCol) continue;
-
-                    min = Math.min(min, costs[house][col] + dp[house - 1][prevCol]);
-                }
-                dp[house][col] = min;
-            }
-        }
-
-        int minCost = (int) 1e9;
-        for (int min : dp[n - 1]) minCost = Math.min(minCost, min);
-
-        return minCost;
+        return dp[i][exc + 1] = cur;
     }
 }

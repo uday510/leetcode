@@ -14,9 +14,7 @@ class Solution {
 
         while (j < m) a[k++] = a2[j++];
 
-        System.out.println(Arrays.toString(a));
-
-        if ((n + m)% 2 == 0) {
+        if (((n + m) & 1) == 0) {
             int idx = (n + m) / 2;
             return (a[idx - 1] + a[idx]) / 2.0;
         }

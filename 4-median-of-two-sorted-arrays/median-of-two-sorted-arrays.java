@@ -1,44 +1,26 @@
 class Solution {
-        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int n1 = nums1.length;
-        int n2 = nums2.length;
+    public double findMedianSortedArrays(int[] a1, int[] a2) {
+        int n = a1.length, m = a2.length;
+        int[] a = new int[n + m];
 
-        // Always binary search the smaller array
-        // code works even without below line, but search space is more
-        if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
+        int i = 0, j = 0, k = 0;
 
-        int total = n1 + n2;
-        int target = (total + 1) / 2;
-
-        int l = 0;
-        int r = n1;
-
-        while (l <= r) {
-            int m1 = (l + r) >> 1;
-            int m2 = target - m1;
-
-            int left1 = safeGet(nums1, m1 - 1); // 7
-            int right1 = safeGet(nums1, m1); // 9
-            int left2 = safeGet(nums2, m2 - 1); //
-            int right2 = safeGet(nums2, m2);
-
-           
-            if (left1 <= right2 && left2 <= right1) {
-                // left1 <= right1 && left2 <= right2
-                int medianValOdd = Math.max(left1, left2);
-                if (total % 2 == 1) return medianValOdd;
-                return (medianValOdd + Math.min(right1, right2)) / 2.0;
-            } 
-            else if (left1 > right2) r = m1 - 1;
-            else if (left2 > right1) l = m1 + 1;
+        while (i < n && j < m) {
+            if (a1[i] < a2[j]) a[k++] = a1[i++];
+            else a[k++] = a2[j++];
         }
 
-        return -1;
-    }
+        while (i < n) a[k++] = a1[i++];
 
-    private int safeGet(int[] nums, int idx) {
-        if (idx < 0) return Integer.MIN_VALUE;
-        if (idx >= nums.length) return Integer.MAX_VALUE;
-        return nums[idx];
+        while (j < m) a[k++] = a2[j++];
+
+        System.out.println(Arrays.toString(a));
+
+        if ((n + m)% 2 == 0) {
+            int idx = (n + m) / 2;
+            return (a[idx - 1] + a[idx]) / 2.0;
+        }
+
+        return a[(n + m) / 2];
     }
 }

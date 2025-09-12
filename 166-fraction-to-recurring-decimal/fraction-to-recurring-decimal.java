@@ -4,14 +4,14 @@ class Solution {
 
         StringBuilder sb = new StringBuilder();
 
-        if ( (numerator < 0 && denominator > 0) || (denominator < 0 && numerator > 0)) {
+        if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) 
             sb.append("-");
-        }
 
-        long nume = Math.abs(Long.valueOf(numerator));
-        long deno = Math.abs(Long.valueOf(denominator));
+        long nume = Math.abs((long) numerator);
+        long deno = Math.abs((long) denominator);
 
         sb.append(String.valueOf(nume / deno));
+
 
         long rem = nume % deno;
 
@@ -23,18 +23,17 @@ class Solution {
 
         while (rem != 0) {
             if (map.containsKey(rem)) {
-                int posToInsertOpenBracket = map.get(rem);
-                sb.insert(posToInsertOpenBracket, "(");
+                sb.insert(map.get(rem), "(");
                 sb.append(")");
                 break;
-            } else {
-                map.put(rem, sb.length());
-                rem *= 10l;
-                sb.append(rem / deno);
-                rem %= deno;
             }
-        }
 
+            map.put(rem, sb.length());
+
+            rem *= 10;
+            sb.append(rem / deno);
+            rem %= deno;
+        }
         return sb.toString();
     }
 }

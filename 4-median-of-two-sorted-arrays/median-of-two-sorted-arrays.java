@@ -1,39 +1,40 @@
 class Solution {
-    public double findMedianSortedArrays(int[] a1, int[] a2) {
-        int n = a1.length, m = a2.length;
-        int[] a = merge(a1, a2);
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        if (nums2.length < nums1.length)    
+            return findMedianSortedArrays(nums2, nums1);
 
-        if (((n + m) & 1) == 0) {
-            int idx = (n + m) / 2;
-            return (a[idx - 1] + a[idx]) / 2.0;
-        }
+        int n1 = nums1.length, n2 = nums2.length;
 
-        return a[(n + m) / 2];
-    }
+        int total = n1 + n2;
+        int left = (total+ 1) >> 1;
+        int l = 0, r = n1;
 
-    public int[] merge(int[] arr1, int[] arr2) {
-        int n = arr1.length;
-        int m = arr2.length;
-        int[] res = new int[n + m];
-        
-        int i = 0, j = 0, k = 0;
-        
-        while (i < n && j < m) {
-            if (arr1[i] < arr2[j]) {
-                res[k++] = arr1[i++];
-            } else {
-                res[k++] = arr2[j++];
+
+        while (l <= r) {
+            int m1 = (l + r) >> 1;
+            int m2 = left - m1;
+
+            int l1 = safeGet(m1 - 1, nums1), l2 = safeGet(m2 - 1, nums2);
+            int r1 = safeGet(m1, nums1), r2 = safeGet(m2, nums2);
+
+            if (l1 <= r2 && l2 <= r1) {
+                int midOdd = Math.max(l1, l2);
+                if ((total & 1) == 1) return midOdd;
+
+                return (midOdd + Math.min(r1, r2)) / 2.0;
             }
+            else if (l1 > r2) r = m1 - 1;
+            else if (l2 > r1) l = m1 + 1;
+
         }
-        
-        addRemNums(i, k, arr1, res);
-        addRemNums(j, k, arr2, res);
-        
-        return res;
-    }
-    
-    private void addRemNums(int i, int k, int[] src, int[] dest) {
-        while (i < src.length) dest[k++] = src[i++];
+
+        return -1;
     }
 
+    private int safeGet(int i, int[] nums) {
+        if (i < 0) return Integer.MIN_VALUE;
+        if (i >= nums.length) return Integer.MAX_VALUE;
+
+        return nums[i];
+    }
 }

@@ -16,9 +16,9 @@ class LRUCache {
     }
     
     public int get(int key) {
-        if (!lru.containsKey(key)) return -1;
-
         Node node = lru.get(key);
+
+        if (node == null) return -1;
 
         remove(node);
         add(node);
@@ -27,18 +27,19 @@ class LRUCache {
     }
     
     public void put(int key, int value) {
-        Node nodeToBeAdded = null;
-        if (lru.containsKey(key)) {
-            Node node = lru.get(key);
+        Node node = lru.get(key);
+
+        if (node != null) {
             remove(node);
             node.v = value;
-            nodeToBeAdded = node;
+        } else if (lru.size() == capacity) {
+            remove(head.next);
+            node = new Node(key, value);
         } else {
-            if ( lru.size() == capacity ) remove(head.next);
-            nodeToBeAdded = new Node(key, value);
+            node = new Node(key, value);
         }
 
-        add(nodeToBeAdded);
+        add(node);
     }
 
     private void remove(Node node) {
@@ -56,24 +57,17 @@ class LRUCache {
         tailPrev.next = node;
         node.prev = tailPrev;
 
-        node.next = tail;
         tail.prev = node;
-    }
-
-    class Node {
-        int k, v;
-        Node prev, next;
-
-        Node(int k, int v) {
-            this.k = k;
-            this.v = v;
-        }
+        node.next = tail;
     }
 }
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
+class Node {
+    int k, v;
+    Node prev, next;
+
+    Node (int k, int v) {
+        this.k = k;
+        this.v = v;
+    }
+}

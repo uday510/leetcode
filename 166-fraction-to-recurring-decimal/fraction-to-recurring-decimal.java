@@ -12,7 +12,6 @@ class Solution {
 
         sb.append(String.valueOf(nume / deno));
 
-
         long rem = nume % deno;
 
         if (rem == 0) return sb.toString();
@@ -22,7 +21,7 @@ class Solution {
         Map<Long, Integer> map = new HashMap<>();
 
         while (rem != 0) {
-            if (map.containsKey(rem)) {
+            if (map.containsKey(rem)) { 
                 sb.insert(map.get(rem), "(");
                 sb.append(")");
                 break;
@@ -34,6 +33,16 @@ class Solution {
             sb.append(rem / deno);
             rem %= deno;
         }
+
         return sb.toString();
     }
 }
+
+/*
+
+rem = 1
+
+rem = 10
+
+
+ */

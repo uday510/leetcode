@@ -1,13 +1,14 @@
 class Solution {
+    final int MAX = Integer.MAX_VALUE;
+    final int MIN = Integer.MIN_VALUE;
 
     public int myAtoi(String s) {
-        int n = s.length();
-        int i = 0;
+        int n = s.length(), i = 0;
+        int sign = 1;
         long num = 0;
 
         while (i < n && s.charAt(i) == ' ') i++;
 
-        int sign = 1;
         if (i < n && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
             if (s.charAt(i) == '-') sign = -1;
             i++;
@@ -20,13 +21,12 @@ class Solution {
 
             num = num * 10 + digit;
 
-            if (sign == 1 && num > Integer.MAX_VALUE) return Integer.MAX_VALUE;
-            if (sign == -1 && -num < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+            if (sign == 1 && num > MAX) return MAX;
+            if (sign == -1 && -num < MIN) return MIN;
 
             i++;
         }
 
-        return (int) num * sign;
+        return sign * (int) num;
     }
-
 }

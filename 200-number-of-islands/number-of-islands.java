@@ -12,25 +12,33 @@ class Solution {
             for (int j = 0; j < m; j++) {
                 if (grid[i][j] == '1') {
                     islands++;
-                    dfs(i, j);
+                    bfs(i, j);
                 }
             }
         }
 
-
         return islands;
     }
 
-    private void dfs(int i, int j) {
-        if (i < 0 || i >= n || j < 0 || j >= m || grid[i][j] != '1') return;
+    private void bfs(int i, int j) {
+        Queue<int[]> queue = new ArrayDeque<>();
 
+        queue.offer(new int[]{i, j});
         grid[i][j] = '0';
 
-        for (int[] dir : dirs) {
-            int dx = dir[0] + i;
-            int dy = dir[1] + j;
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int x = curr[0], y = curr[1];
 
-            dfs(dx, dy);
+            for (int[] dir : dirs) {
+                int dx = dir[0] + x, dy = dir[1] + y;
+
+                if (dx < 0 || dx >= n || dy < 0 || dy >= m || grid[dx][dy] == '0') continue;
+
+                grid[dx][dy] = '0';
+                queue.offer(new int[] {dx, dy});
+            }
         }
     }
+
 }

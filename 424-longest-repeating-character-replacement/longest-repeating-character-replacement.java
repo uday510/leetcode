@@ -11,8 +11,6 @@ class Solution {
 
             while ((j - i + 1) - maxFreq > k) {
                 freq[s.charAt(i)]--;
-                // maxFreq = 0;
-                // for (int f : freq) maxFreq = Math.max(f, maxFreq);
                 i++;
             }   
 

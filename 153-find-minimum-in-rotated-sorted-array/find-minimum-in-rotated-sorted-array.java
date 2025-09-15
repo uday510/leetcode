@@ -4,8 +4,7 @@ class Solution {
 
         while (l < r) {
             int m = (l + r) >> 1;
-
-            if (nums[r] < nums[m]) l = m + 1;
+            if (nums[m] > nums[r]) l = m + 1;
             else r = m;
         }
 

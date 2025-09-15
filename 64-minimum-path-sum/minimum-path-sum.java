@@ -10,10 +10,9 @@ class Solution {
                 int l = 0, t = 0;
                 if (j > 0) l = dp[i][j - 1];
                 if (i > 0) t = dp[i - 1][j];
+                
                 if (i > 0 && j > 0) dp[i][j] += Math.min(l, t);
                 else dp[i][j] += l + t;
-
-                if (j == M - 1) min = Math.min(min, dp[i][j]);
             }
         }
 

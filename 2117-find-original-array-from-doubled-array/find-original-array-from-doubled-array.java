@@ -15,9 +15,9 @@ class Solution {
             if (map.get(a) > 0) {
                 map.merge(a, -1, Integer::sum);
 
-                Integer doubleVal = map.get(a * 2);
+                Integer dCnt = map.get(a * 2);
 
-                if (doubleVal == null || doubleVal == 0) return new int[] {};
+                if (dCnt == null || dCnt == 0) return new int[] {};
 
                 map.merge(a * 2, -1, Integer::sum);
 

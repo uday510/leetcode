@@ -16,7 +16,6 @@ class Solution {
 
                 if (R < 0 || R >= N || C < 0 || C >= M || image[R][C] == color || image[R][C] != pc) continue;
                 image[R][C] = color;
-                System.out.println(R + " " + C);
                 queue.offer(new int[]{R, C});
             }
         }

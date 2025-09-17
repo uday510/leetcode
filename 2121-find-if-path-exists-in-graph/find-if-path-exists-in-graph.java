@@ -1,36 +1,34 @@
 class Solution {
-    public boolean validPath(int n, int[][] edges, int source, int destination) {
-        Set<Integer> visited = new HashSet<>();
-        Queue<Integer> queue = new ArrayDeque<>();
+    public boolean validPath(int n, int[][] edges, int src, int dest) {
         List<Integer>[] adjList = new ArrayList[n];
+        boolean[] vis = new boolean[n];
+        Queue<Integer> queue = new ArrayDeque<>();
 
-        for (int i = 0; i < n; ++i) {
-            adjList[i] = new ArrayList<>();
-        }
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
             adjList[u].add(v);
             adjList[v].add(u);
         }
 
-        queue.offer(source);
-        visited.add(source);
+        queue.offer(src);
+        vis[src] = true;
 
         while (!queue.isEmpty()) {
-            int node = queue.poll();
+            int u = queue.poll();
 
-           if (node == destination) return true;
+            if (u == dest) return true;
 
-            for (int neighbor : adjList[node]) {
-                    if (visited.add(neighbor)) {
-                        queue.add(neighbor);
-                    }
-                }
+            for (int v : adjList[u]) {
+                if (vis[v]) continue;
+
+                queue.offer(v);
+                vis[v] = true;
+            }
         }
-
+        
         return false;
     }
+
 }

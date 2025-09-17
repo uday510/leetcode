@@ -15,10 +15,8 @@ class Solution {
         queue.offer(src);
         vis[src] = true;
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && !vis[dest]) {
             int u = queue.poll();
-
-            if (u == dest) return true;
 
             for (int v : adjList[u]) {
                 if (vis[v]) continue;
@@ -28,7 +26,7 @@ class Solution {
             }
         }
         
-        return false;
+        return vis[dest];
     }
 
 }

@@ -19,10 +19,12 @@ class Solution {
             int u = queue.poll();
 
             for (int v : adjList[u]) {
-                if (vis[v]) continue;
-
-                queue.offer(v);
+                if (!vis[v]) {
+                    queue.offer(v);
                 vis[v] = true;
+                }
+
+                
             }
         }
         

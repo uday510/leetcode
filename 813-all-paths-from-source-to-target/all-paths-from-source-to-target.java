@@ -1,35 +1,32 @@
 class Solution {
+    int n;
+    List<Integer>[] adjList;
+    List<List<Integer>> res;
+    public List<List<Integer>> allPathsSourceTarget(int[][] edges) {
+        n = edges.length;
+        adjList = new ArrayList[n];
 
-    private List<Integer>[] adjList;
-    private int destination;
-    private List<List<Integer>> paths;
-
-    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        adjList = new ArrayList[graph.length];
-        destination = graph.length - 1;
-        paths = new ArrayList<>();
-
-        for (int i = 0; i < graph.length; ++i) adjList[i] = new ArrayList<>();
-
-        for (int i = 0; i < graph.length; ++i) {
-            for (int v : graph[i]) {
-                adjList[i].add(v);
+        for (int u = 0; u < n; u++) {
+            adjList[u] = new ArrayList<>();
+            for (int v : edges[u]) {
+                adjList[u].add(v);
             }
         }
 
-        dfs(0, new ArrayList<>(Arrays.asList(0)));
-
-        return paths;
+        res = new ArrayList<>();
+        
+        dfs(0, new ArrayList<>(List.of(0)));
+        return res;
     }
-    private void dfs(Integer node, List<Integer> path) {
-        if (node == destination) {
-            paths.add(new ArrayList<>(path));
+    private void dfs(int u, List<Integer> path) {
+        if (u == n - 1) {
+            res.add(new ArrayList<>(path));
             return;
         }
 
-        for (Integer nei : adjList[node]) {
-            path.add(nei);
-            dfs(nei, path);
+        for (int v : adjList[u]) {
+            path.add(v);
+            dfs(v, path);
             path.removeLast();
         }
     }

@@ -1,34 +1,61 @@
 class Solution {
-
-    int[][] arr;
-    int[] vis;
-
-    public int findCircleNum(int[][] arr) {
-        vis = new int[arr.length];
-        this.arr = arr;
-        int cnt = 0;
-
+    public int findCircleNum(int[][] edges) {
+        int n = edges.length;
         
+        UnionFind uf = new UnionFind(n);
+        int components = n;
 
-        for (int city = 0; city < arr.length; ++city) {     
-
-            if (vis[city] == 1) continue;
-            
-            cnt++;
-            Queue<Integer> queue = new ArrayDeque<>();
-            queue.offer(city);
-            vis[city] = 1;
-            while (!queue.isEmpty()) {
-                int i = queue.poll();
-
-                for (int j = 0; j < arr[i].length; ++j) {
-                    if (arr[i][j] == 0 || vis[j] == 1) continue;
-                     vis[j] = 1;
-                    queue.offer(j);
+        for (int u = 0; u < n; u++) {
+           for (int v = 0; v < edges[u].length; v++) {
+                if (edges[u][v] == 1 && !uf.connected(u, v)) {
+                    uf.union(u, v);
+                    components--;
                 }
+           }
+        }
+        
+        return components;
+    }
+    
+    class UnionFind {
+        int[] root, rank;
+        
+        UnionFind(int n) {
+            root = new int[n];
+            rank = new int[n];
+            
+            for (int i = 0; i < n; i++) {
+                root[i] = i;
+                rank[i] = 1;
             }
         }
-
-        return cnt;
+        
+        int find(int x) {
+            if (x == root[x]) {
+                return x;
+            }
+            
+            return root[x] = find(root[x]);
+        }
+        
+        void union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+            
+            if (rootX == rootY) return;
+            
+            if (rank[rootX] > rank[rootY]) {
+                root[rootY] = rootX;
+            } else if (rank[rootY] > rank[rootX]) {
+                root[rootX] = rootY;
+            } else {
+                root[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+        
+        boolean connected(int x, int y) {
+            return find(x) == find(y);
+        }
     }
 }

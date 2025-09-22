@@ -91,8 +91,8 @@ class Solution {
         }
         
         void union(int x, int y) {
-            int rootX = root[x];
-            int rootY = root[y];
+            int rootX = find(x);
+            int rootY = find(y);
 
             if (rootX == rootY) return;
 

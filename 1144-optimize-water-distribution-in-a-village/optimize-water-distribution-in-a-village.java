@@ -86,7 +86,7 @@ class Solution {
 
             for (int i = 0; i < n; i++) {
                 root[i] = i;
-                rank[i] = 1;
+                rank[i] = 0;
             }
         }
         

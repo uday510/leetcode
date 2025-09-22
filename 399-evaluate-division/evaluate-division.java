@@ -34,8 +34,6 @@ class Solution {
         if (u.equals(v)) return 1.0;
 
         for (Pair nei : adjList.get(u)) {
-            // if (!vis.add(nei.v)) continue;
-
             double d = dfs(nei.v, v, vis);
             
             if (d != -1.0) return nei.d * d;

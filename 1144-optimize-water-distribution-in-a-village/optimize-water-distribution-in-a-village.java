@@ -29,7 +29,7 @@ class Solution {
 
         pq.offer(new int[] {0, 0});
 
-        while (!pq.isEmpty() && visCnt <= n) {
+        while (!pq.isEmpty() && visCnt < n + 1) {
             int[] cur = pq.poll();
             int u = cur[0], w = cur[1];
 

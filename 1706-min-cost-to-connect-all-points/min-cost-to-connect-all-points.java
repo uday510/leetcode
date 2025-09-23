@@ -4,6 +4,46 @@ class Solution {
         return minCost;
     }
 
+    private int prims(int[][] points) {
+        int n = points.length;
+        List<int[]>[] edges = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) {
+            edges[i] = new ArrayList<>();
+            int[] p1 = points[i];
+            for (int j = i + 1; j < n; j++) {
+                int[] p2 = points[j];
+                int d = Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+                edges[i].add(new int[] {j, d});
+            }
+        }
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        pq.offer(new int[] {0, 0, 0});
+
+        boolean[] vis = new boolean[n];
+        int edgesVis = 0, minCost = 0;
+
+        while(!pq.isEmpty() && edgesVis < n - 1) {
+            int[] cur = pq.poll();
+            int u = cur[0], v = cur[1], w = cur[2];
+
+            if (vis[v]) continue;
+            vis[v] = true;
+            minCost += w;
+            edgesVis++;
+
+            for (int[] nxt : edges[v]) {
+                int v1 = nxt[0], w1 = nxt[1]; 
+                if (vis[v1]) continue;
+
+                pq.offer(new int[] {v, v1, w1});
+            }
+        }
+
+        return minCost;
+    }
+
     private int kruskal(int[][] points) {
         int n = points.length;
 

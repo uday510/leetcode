@@ -13,7 +13,7 @@ class Solution {
                     d += s1.charAt(k) != s2.charAt(k) ? 1 : 0;
                 }
 
-                if (d <= 2) {
+                if (d == 0 || d == 2) {
                     uf.union(i, j);
                 }
             }

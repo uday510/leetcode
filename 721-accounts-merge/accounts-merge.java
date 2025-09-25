@@ -1,65 +1,94 @@
 class Solution {
-
+    
     Map<String, List<String>> adj;
-    Set<String> vis;
 
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-            adj = new HashMap<>();
-            vis = new HashSet<>();
+        int n = accounts.size();
+        UnionFind uf = new UnionFind(n);
 
-        for (List<String> act : accounts) {
-            String u = act.get(1);
+        Map<String, Integer> map = new HashMap<>();
 
-            for (int j = 2; j < act.size(); ++j) {
-                String v = act.get(j);
+        for (int i = 0; i < accounts.size(); i++) {
+            var act = accounts.get(i);
+            for (int j = 1; j < act.size(); j++) {
+                String name = act.get(0);
+                String email = act.get(j);
 
-                adj.computeIfAbsent(u, _ -> new ArrayList<>()).add(v);
-                adj.computeIfAbsent(v, _ -> new ArrayList<>()).add(u);
+                if (!map.containsKey(email)) {
+                    map.put(email, i);
+                } else {
+                    uf.union(i, map.get(email));
+                }
             }
         }
 
+        Map<Integer, List<String>> cmps = new HashMap<>();
+
+        for (String email : map.keySet()) {
+            int grp = map.get(email);
+            int root = uf.find(grp);
+
+            cmps.computeIfAbsent(root, _ -> new ArrayList<>()).add(email);
+        }
+
         List<List<String>> res = new ArrayList<>();
-        
-        for (List<String> act : accounts) {
-            String name = act.get(0), u = act.get(1);
-            
-            if (vis.contains(u)) continue;
-            
-            List<String> cur = new ArrayList<>();
-            cur.add(name);
-            
-            dfs(u, cur);
-            
-            Collections.sort(cur.subList(1, cur.size()));
-            
+
+        for (var e: cmps.entrySet()) {
+            List<String> cur = e.getValue();
+            Collections.sort(cur);
+            cur.add(0, accounts.get(e.getKey()).get(0));
             res.add(cur);
         }
-        
 
         return res;
     }
+}
 
-    private void dfs(String u, List<String> cur) {
-        vis.add(u);
-        cur.add(u);
+class UnionFind {
+    int[] root, rank;
 
-        for (String v : adj.getOrDefault(u, new ArrayList<>())) {
-            if (vis.contains(v)) continue;
+    UnionFind (int n) {
+        root = new int[n];
+        rank = new int[n];
 
-            dfs(v, cur);
+        for (int i = 0; i < n; i++) {
+            rank[i] = 1;
+            root[i] = i;
         }
+    }
+
+    int find(int x) {
+        if (x == root[x])
+            return x;
+        return root[x] = find(root[x]);
+    }
+
+    void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rank[rootX] > rank[rootY]) {
+            root[rootY] = rootX;
+        } else if (rank[rootY] > rank[rootX]) {
+            root[rootX] = rootY;
+        } else {
+            root[rootY] = rootX;
+            rank[rootX]++;
+        }
+    }
+
+    boolean connected(int x, int y) {
+        return find(x) == find(y);
     }
 }
 
+/***
 
-/**
 
-"johnsmith@mail.com" -> [ "john_newyork@gmail.com" ]
+1 - [ johnsmith@mail.com, mary@mail.com, johnnybravo@mail.com ]
 
-"john_newyork@gmail.com" -> [ "johnsmith@mail.com" ]
-
-"john00@mail.com" -> [ "john_newyork@gmail.com" ]
+2 - [ john_newyork@mail.com, john00@mail.com ]
 
 
 
- */  
+ */

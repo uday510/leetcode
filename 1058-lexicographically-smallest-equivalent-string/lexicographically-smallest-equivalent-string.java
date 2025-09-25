@@ -8,14 +8,17 @@ class Solution {
             uf.union(x, y);
         }
 
-        Map<Integer, List<Character>> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         
         for (int i = 0; i < n; i++) {
             int x = s1.charAt(i) - 'a', y = s2.charAt(i) - 'a';
             int rootX = uf.find(x), rootY = uf.find(y);
-            
-            map.computeIfAbsent(rootX, _ -> new ArrayList<>()).add(s1.charAt(i));
-            map.computeIfAbsent(rootY, _ -> new ArrayList<>()).add(s2.charAt(i));
+
+            if (!map.containsKey(rootX)) map.put(rootX, x);
+            else map.put(rootX, Math.min(map.get(rootX), x));
+
+            if (!map.containsKey(rootY)) map.put(rootY, y);
+            else map.put(rootY, Math.min(map.get(rootY), y));
         }
         
         StringBuilder sb = new StringBuilder();
@@ -23,10 +26,8 @@ class Solution {
             int root = uf.find(baseStr.charAt(i) - 'a');
 
             if (map.containsKey(root)) {
-                Collections.sort(map.get(root)); 
-                sb.append(map.get(root).get(0));
+                sb.append((char)(map.get(root) + 'a'));
             } else sb.append(baseStr.charAt(i));
-
         }
 
         return sb.toString();

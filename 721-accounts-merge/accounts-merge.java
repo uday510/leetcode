@@ -1,17 +1,13 @@
 class Solution {
-    
-    Map<String, List<String>> adj;
-
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
         int n = accounts.size();
         UnionFind uf = new UnionFind(n);
-
         Map<String, Integer> map = new HashMap<>();
 
-        for (int i = 0; i < accounts.size(); i++) {
-            var act = accounts.get(i);
+        for (int i = 0; i < n; i++) {
+            List<String> act  = accounts.get(i);
+
             for (int j = 1; j < act.size(); j++) {
-                String name = act.get(0);
                 String email = act.get(j);
 
                 if (!map.containsKey(email)) {
@@ -22,21 +18,23 @@ class Solution {
             }
         }
 
-        Map<Integer, List<String>> cmps = new HashMap<>();
+        Map<Integer, List<String>> grps = new HashMap<>();
 
-        for (String email : map.keySet()) {
-            int grp = map.get(email);
+        for (var e : map.entrySet()) {
+            String email = e.getKey();
+            int grp = e.getValue();
             int root = uf.find(grp);
 
-            cmps.computeIfAbsent(root, _ -> new ArrayList<>()).add(email);
+            grps.computeIfAbsent(root, _ -> new ArrayList<>()).add(email);
         }
 
         List<List<String>> res = new ArrayList<>();
 
-        for (var e: cmps.entrySet()) {
-            List<String> cur = e.getValue();
+        for (var e : grps.entrySet()) {
+            int idx = e.getKey();
+            var cur = e.getValue();
             Collections.sort(cur);
-            cur.add(0, accounts.get(e.getKey()).get(0));
+            cur.add(0, accounts.get(idx).get(0));
             res.add(cur);
         }
 

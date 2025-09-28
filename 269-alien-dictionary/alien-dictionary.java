@@ -1,29 +1,33 @@
 class Solution {
     public String alienOrder(String[] words) {
         Map<Character, List<Character>> adj = new HashMap<>();
-        Map<Character, Integer> indegree = new HashMap<>();
+        Map<Character, Integer> inorder = new HashMap<>();
         int n = words.length;
 
         for (String w : words) {
-            for (int i = 0; i < w.length(); i++) {
-                indegree.put(w.charAt(i), 0);
+            for (char c : w.toCharArray()) {
+                adj.putIfAbsent(c, new ArrayList<>());
+                inorder.putIfAbsent(c, 0);
             }
         }
 
         for (int i = 0; i < n; i++) {
-            String w1 = words[i];
             for (int j = i + 1; j < n; j++) {
-                String w2 = words[j];
+                
+                int m = Math.min(words[i].length(), words[j].length());
 
-                if (w1.length() > w2.length() && w1.startsWith(w2)) return "";
+                for (int k = 0; k < m; k++) {
+                    String w1 = words[i], w2 = words[j];
 
-                for (int k = 0; k < Math.min(w1.length(), w2.length()); k++) {
+                    // "abcd", "ab" invalid 
+                    if (w1.length() > w2.length() && w1.startsWith(w2)) return "";
+
                     char c1 = w1.charAt(k), c2 = w2.charAt(k);
 
                     if (c1 == c2) continue;
 
                     adj.computeIfAbsent(c1, _ -> new ArrayList<>()).add(c2);
-                    indegree.merge(c2, 1, Integer::sum);
+                    inorder.merge(c2, 1, Integer::sum);
                     break;
                 }
             }
@@ -31,30 +35,35 @@ class Solution {
 
         Queue<Character> queue = new ArrayDeque<>();
 
-        for(var e : indegree.entrySet()) {
+        for (var e : inorder.entrySet()) {
             char k = e.getKey();
             int v = e.getValue();
 
-            if (v == 0) queue.offer(k);
+            if (v == 0) {
+                queue.offer(k);
+            }
         }
 
         StringBuilder sb = new StringBuilder();
 
         while (!queue.isEmpty()) {
-            char u = queue.poll();
+            char cur = queue.poll();
 
-            sb.append(u);
-            for (char v : adj.getOrDefault(u, new ArrayList<>())) {
-                indegree.merge(v, -1, Integer::sum);
-                if (indegree.get(v) == 0) {
+            sb.append(cur);
+
+            for (char v : adj.getOrDefault(cur, new ArrayList<>())) {
+                inorder.merge(v, -1, Integer::sum);
+
+                if (inorder.get(v) == 0) {
                     queue.offer(v);
                 }
             }
         }
 
-        if (indegree.size() != sb.length()) return "";
+        if (sb.length() != inorder.size()) {
+            return "";
+        }
 
         return sb.toString();
-
     }
 }

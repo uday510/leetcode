@@ -27,7 +27,7 @@ class Solution {
                     if (c1 == c2) continue;
 
                     adj.computeIfAbsent(c1, _ -> new ArrayList<>()).add(c2);
-                    inorder.merge(c2, 1, Integer::sum);
+                    inorder.put(c2, inorder.getOrDefault(c2, 0) + 1);
                     break;
                 }
             }
@@ -52,7 +52,7 @@ class Solution {
             sb.append(cur);
 
             for (char v : adj.getOrDefault(cur, new ArrayList<>())) {
-                inorder.merge(v, -1, Integer::sum);
+                inorder.put(v, inorder.getOrDefault(v, 0) - 1);
 
                 if (inorder.get(v) == 0) {
                     queue.offer(v);

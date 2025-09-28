@@ -1,4 +1,5 @@
 class Solution {
+    
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] adjList = new ArrayList[n + 1];
         int[] indegree = new int[n + 1];
@@ -16,22 +17,26 @@ class Solution {
             if (indegree[i] == 0) queue.offer(i);
         }
 
+        queue.offer(-1);
+
         int semesters = 0, studied = 0;
         while (!queue.isEmpty()) {
-            semesters++;
+            int u = queue.poll();
 
-            Queue<Integer> newQueue = new ArrayDeque<>();
-            for (int u : queue) {
-                studied++;
-                for (int v : adjList[u]) { 
-                    indegree[v]--;
-                    if (indegree[v] == 0) {
-                        newQueue.offer(v);
-                    }
-                }
+            if (u == -1) {
+                semesters++;
+                if (!queue.isEmpty()) queue.offer(-1);
+                continue;
             }
 
-            queue = newQueue;
+            studied++;
+
+            for (int v : adjList[u]) { 
+                indegree[v]--;
+                if (indegree[v] == 0) {
+                    queue.offer(v);
+                }
+            }
         }
 
         return studied == n ? semesters : -1;

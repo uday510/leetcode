@@ -23,6 +23,7 @@ class Solution {
 
     private void bfs(int x, int y) {
         Queue<Edge> queue = new ArrayDeque<>();
+        grid[x][y] = '0';
         queue.offer(new Edge(x, y));
 
         while (!queue.isEmpty()) {
@@ -40,7 +41,7 @@ class Solution {
                 }
             }
         }
-        
+
     }
 
     class Edge {

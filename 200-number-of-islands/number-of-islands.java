@@ -1,6 +1,5 @@
 class Solution {
 
-    private final int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
     private char[][] grid;
     private int m, n;
 
@@ -22,23 +21,33 @@ class Solution {
         return numIslands;
     }
 
-    private void bfs(int i, int j) {
-        Queue<int[]> queue = new ArrayDeque<>();
-
-        queue.offer(new int[] {i, j});
+    private void bfs(int x, int y) {
+        Queue<Edge> queue = new ArrayDeque<>();
+        queue.offer(new Edge(x, y));
 
         while (!queue.isEmpty()) {
-            int[] cur = queue.poll();
+            Edge e = queue.poll();
 
-            for (int[] dir : dirs) {
-                int x = dir[0] + cur[0];
-                int y = dir[1] + cur[1];
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (Math.abs(dx) + Math.abs(dy) != 1) continue;
 
-                if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == '0') continue;
-
-                grid[x][y] = '0';
-                queue.offer(new int[]{x, y});
+                    int nx = dx + e.x, ny = dy + e.y;
+                    if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') {
+                        grid[nx][ny] = '0';
+                        queue.offer(new Edge(nx, ny));
+                    }
+                }
             }
+        }
+        
+    }
+
+    class Edge {
+        int x, y;
+        Edge(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
 }

@@ -4,15 +4,15 @@ class Solution {
 
         StringBuilder sb = new StringBuilder();
 
-        if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) 
+        if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) {
             sb.append("-");
+        }
 
-        long nume = Math.abs((long) numerator);
+        long nemo = Math.abs((long) numerator);
         long deno = Math.abs((long) denominator);
 
-        sb.append(String.valueOf(nume / deno));
-
-        long rem = nume % deno;
+        sb.append(String.valueOf(nemo / deno));
+        long rem = nemo % deno; 
 
         if (rem == 0) return sb.toString();
 
@@ -21,14 +21,13 @@ class Solution {
         Map<Long, Integer> map = new HashMap<>();
 
         while (rem != 0) {
-            if (map.containsKey(rem)) { 
+            if (map.containsKey(rem)) {
                 sb.insert(map.get(rem), "(");
                 sb.append(")");
                 break;
             }
 
             map.put(rem, sb.length());
-
             rem *= 10;
             sb.append(rem / deno);
             rem %= deno;
@@ -37,12 +36,3 @@ class Solution {
         return sb.toString();
     }
 }
-
-/*
-
-rem = 1
-
-rem = 10
-
-
- */

@@ -1,9 +1,6 @@
 class Solution {
-
-    int[] nums;
-    int[] dp;
+    int[] nums, dp;
     int n;
-
     public int numDecodings(String s) {
         n = s.length();
         nums = new int[n];
@@ -16,21 +13,19 @@ class Solution {
 
         return dfs(0);
     }
-
     private int dfs(int i) {
         if (i >= n) return 1;
 
-        if (dp[i] != -1) return dp[i];
-
         if (nums[i] == 0) return 0;
+        
+        if (dp[i] != -1) return dp[i];
 
         int t1 = dfs(i + 1);
         int t2 = 0;
 
-        if (i + 1 < n && nums[i] * 10 + nums[i + 1] <= 26) {
+        if (i + 1 < n && nums[i] * 10 + nums[i + 1] <= 26) 
             t2 = dfs(i + 2);
-        }
 
-        return dp[i] = t1 + t2;
+        return dp[i] = t1 + t2;   
     }
 }

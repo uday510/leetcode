@@ -1,44 +1,44 @@
 class Solution {
-    final static int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    int n, m;
-    char[][] grid;
-    public int numIslands(char[][] grid) {
-        int islands = 0;
-        n = grid.length;
-        m = grid[0].length;
-        this.grid = grid;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+    private final int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    private char[][] grid;
+    private int m, n;
+
+    public int numIslands(char[][] grid) {
+        this.grid = grid;
+        this.m = grid.length;
+        this.n = grid[0].length;
+        int numIslands = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
-                    islands++;
+                    numIslands++;
                     bfs(i, j);
                 }
             }
         }
 
-        return islands;
+        return numIslands;
     }
 
     private void bfs(int i, int j) {
         Queue<int[]> queue = new ArrayDeque<>();
 
-        queue.offer(new int[]{i, j});
-        grid[i][j] = '0';
+        queue.offer(new int[] {i, j});
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int x = curr[0], y = curr[1];
+            int[] cur = queue.poll();
 
             for (int[] dir : dirs) {
-                int dx = dir[0] + x, dy = dir[1] + y;
+                int x = dir[0] + cur[0];
+                int y = dir[1] + cur[1];
 
-                if (dx < 0 || dx >= n || dy < 0 || dy >= m || grid[dx][dy] == '0') continue;
+                if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == '0') continue;
 
-                grid[dx][dy] = '0';
-                queue.offer(new int[] {dx, dy});
+                grid[x][y] = '0';
+                queue.offer(new int[]{x, y});
             }
         }
     }
-
 }

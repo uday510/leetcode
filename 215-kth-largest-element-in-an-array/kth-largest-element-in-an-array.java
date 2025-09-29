@@ -7,12 +7,6 @@ class Solution {
             if (pq.size() > k) pq.poll();
         }
 
-        int num = pq.peek();
-
-        for (int i : pq) {
-            num = Math.min(num, i);
-        }
-
-        return num;
+        return pq.peek();
     }
 }

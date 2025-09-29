@@ -1,20 +1,20 @@
 class Solution {
-    final int MAX = Integer.MAX_VALUE;
-    final int MIN = Integer.MIN_VALUE;
+
+    private final int MAX = Integer.MAX_VALUE;
+    private final int MIN = Integer.MIN_VALUE;
 
     public int myAtoi(String s) {
-        int n = s.length(), i = 0;
-        int sign = 1;
+        int i = 0, sign = 1, n = s.length();
         long num = 0;
 
         while (i < n && s.charAt(i) == ' ') i++;
-
+        
         if (i < n && (s.charAt(i) == '+' || s.charAt(i) == '-')) {
-            if (s.charAt(i) == '-') sign = -1;
-            i++;
+            if (s.charAt(i++) == '-') sign = -1;
         }
 
         while (i < n && s.charAt(i) == '0') i++;
+
 
         while (i < n && Character.isDigit(s.charAt(i))) {
             int digit = s.charAt(i) - '0';

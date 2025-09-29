@@ -1,13 +1,14 @@
 class LRUCache {
 
-    Map<Integer, Node> lru;
-    Node head, tail;
-    int capacity;
+    private final Map<Integer, Node> lru;
+    private final Node head, tail;
+    private int capacity;
 
     public LRUCache(int capacity) {
         lru = new HashMap<>();
         this.capacity = capacity;
-        head = tail = new Node(-1, -1);
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
         head.next = tail;
         tail.prev = head;
     }

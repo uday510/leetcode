@@ -21,13 +21,11 @@ class Solution {
             int id = es.getKey();
             int sum = 0;
             PriorityQueue<Integer> scores = es.getValue();
-            int size = scores.size();
 
-            // while (!scores.isEmpty()) sum += scores.poll();
             for (int scr : scores) sum += scr;
 
             res[i][0] = id;
-            res[i++][1] = sum / size;
+            res[i++][1] = sum / k;
         }
 
         return res;

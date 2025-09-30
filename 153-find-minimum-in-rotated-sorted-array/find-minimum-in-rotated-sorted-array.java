@@ -6,7 +6,9 @@ class Solution {
         int m = (l + r) >> 1;
 
        if (nums[m] > nums[r]) l = m + 1;
-       else r = m;
+       else if (nums[m] < nums[r]) r = m;
+       else r--;
+       
       } 
 
       return nums[l];

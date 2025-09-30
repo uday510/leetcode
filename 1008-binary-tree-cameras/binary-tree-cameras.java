@@ -14,15 +14,18 @@
  * }
  */
 class Solution {
-    int cameras;
-    private enum State {
-        HAS_CAMERA,
+
+    enum State {
         COVERED,
-        NEED_CAMERA
+        NEED_CAMERA,
+        HAS_CAMERA
     }
+
+    int cameras;
     public int minCameraCover(TreeNode root) {
         cameras = 0;
-        return dfs(root) == State.NEED_CAMERA ? cameras + 1 : cameras;
+        State state = dfs(root);
+        return state == State.NEED_CAMERA ? cameras + 1 : cameras;
     }
 
     private State dfs(TreeNode node) {

@@ -2,7 +2,7 @@ class Solution {
     public int maxDistance(int[] A, int balls) {
         Arrays.sort(A);
 
-        int l = 1, r = A[A.length - 1] - A[0] + 1;
+        int l = 1, r = A[A.length - 1];
 
         while (l < r) {
             int m = (l + r) >> 1;

@@ -1,30 +1,40 @@
 class Solution {
-    public int[] findOriginalArray(int[] C) {
-        if ((C.length & 1) == 1) return new int[] {};
+    public int[] findOriginalArray(int[] arr) {
+        int n = arr.length;
+        if (n <= 1 || n % 2 == 1) return new int[]{};
 
-        Arrays.sort(C);
-
-        int n = C.length;
-        int[] A = new int[n / 2];
-        int idx = 0;
         Map<Integer, Integer> map = new HashMap<>();
 
-        for (int i : C) map.merge(i, 1, Integer::sum);
+        Arrays.sort(arr);
 
-        for (int a : C) {
-            if (map.get(a) > 0) {
-                map.merge(a, -1, Integer::sum);
+        for (int num : arr) map.put(num, map.getOrDefault(num, 0) + 1);
 
-                Integer dCnt = map.get(a * 2);
+        int[] res = new int[n/ 2];
+        int i = 0;
 
-                if (dCnt == null || dCnt == 0) return new int[] {};
+        for (int a : arr) {
+            int aCnt = map.get(a);
+            if (aCnt == 0) continue;
 
-                map.merge(a * 2, -1, Integer::sum);
+            map.put(a, aCnt - 1);
 
-                A[idx++] = a; 
-            }
+            int d = a * 2;
+            Integer dCnt = map.get(d);
+            if (dCnt == null || dCnt == 0) return new int[] {};
+
+            map.put(d, dCnt - 1);
+            
+            res[i++] = a;
         }
 
-        return A;
+        return res;
     }
 }
+
+// [0, 0, 0, 1]
+
+// 0 : 1
+// 1 : 1
+
+
+// [0, 0]

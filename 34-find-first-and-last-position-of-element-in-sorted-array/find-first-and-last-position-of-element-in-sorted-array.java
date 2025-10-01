@@ -1,19 +1,23 @@
 class Solution {
+    int[] nums;
+    int n;
     public int[] searchRange(int[] nums, int target) {
-        int l = bs(nums, target);
-        if (l < nums.length && nums[l] != target || l >= nums.length) return new int[]{-1, -1};
-        int r = bs(nums, target + 1) - 1;
-        return new int[]{l, r};
+        this.nums = nums;
+        this.n = nums.length;
+
+        int l = bs(target);
+        if (l == n || nums[l] != target) return new int[] {-1, -1};
+        int r = bs(target + 1) - 1;
+        return new int[] {l, r};
     }
-    private int bs (int[] nums, int target) {
-        int l = 0;
-        int r = nums.length;
+    private int bs(int target) {
+        int l = 0, r = n;
 
         while (l < r) {
-            int mid = (l + r) >> 1;
+            int m = (l + r) >> 1;
 
-            if (nums[mid] < target) l = mid + 1;
-            else r = mid;
+            if (nums[m] < target) l = m + 1;
+            else r = m;
         }
 
         return l;

@@ -14,19 +14,19 @@
  * }
  */
 class Solution {
-    private int moves;
+    private int m;
     public int distributeCoins(TreeNode root) {
-        moves = 0;
+        m = 0;
         dfs(root);
-        return moves;
+        return m;
     }
     private int dfs(TreeNode node) {
         if (node == null) return 0;
 
         int l = dfs(node.left);
         int r = dfs(node.right);
-        
-        moves += Math.abs(l) + Math.abs(r);
+
+        m += Math.abs(l) + Math.abs(r);
 
         return (node.val - 1) + l + r;
     }

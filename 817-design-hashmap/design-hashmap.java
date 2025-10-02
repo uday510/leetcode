@@ -3,7 +3,7 @@ class MyHashMap {
     private static final int DEFAULT_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
 
-    private ArrayList<Entry>[] buckets = new ArrayList[DEFAULT_CAPACITY];
+    private LinkedList<Entry>[] buckets = new LinkedList[DEFAULT_CAPACITY];
     private int size = 0;
 
     public MyHashMap() {}
@@ -14,7 +14,7 @@ class MyHashMap {
         }
 
         int index = indexFor(key);
-        if (buckets[index] == null) buckets[index] = new ArrayList<>();
+        if (buckets[index] == null) buckets[index] = new LinkedList<>();
 
         for (Entry e : buckets[index]) {
             if (e.k == key) {
@@ -55,14 +55,14 @@ class MyHashMap {
     }
 
     private void resize() {
-        ArrayList<Entry>[] oldBuckets = buckets;
-        ArrayList<Entry>[] newBuckets = new ArrayList[oldBuckets.length * 2];
+        LinkedList<Entry>[] oldBuckets = buckets;
+        LinkedList<Entry>[] newBuckets = new LinkedList[oldBuckets.length * 2];
 
-        for (ArrayList<Entry> oldBucket : oldBuckets) {
+        for (LinkedList<Entry> oldBucket : oldBuckets) {
             if (oldBucket == null) continue;
             for (Entry e : oldBucket) {
                 int idx = Math.floorMod(e.k, newBuckets.length);
-                if (newBuckets[idx] == null) newBuckets[idx] = new ArrayList<>();
+                if (newBuckets[idx] == null) newBuckets[idx] = new LinkedList<>();
                 newBuckets[idx].add(e);
             }
         }

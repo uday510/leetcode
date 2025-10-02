@@ -1,10 +1,18 @@
 class Solution {
-    public int largestRectangleArea(int[] heights) {
-        int[] NSL = getNSL(heights);
-        int[] NSR = getNSR(heights);
-        int maxArea = 0;
 
-        for (int i = 0; i < heights.length; i++) {
+    int[] heights;
+    int n;
+
+    public int largestRectangleArea(int[] heights) {
+        this.heights = heights;
+        n = heights.length;
+
+        int[] NSL = getNSL();
+        int[] NSR = getNSR();
+
+        int maxArea = 0;
+        
+        for (int i = 0; i < n; i++) {
             int w = NSR[i] - NSL[i] - 1;
             int a = w * heights[i];
 
@@ -14,39 +22,33 @@ class Solution {
         return maxArea;
     }
 
-    private int[] getNSL(int[] H) {
+    private int[] getNSL() {
+        int[] NSL = new int[n];
         Deque<Integer> st = new ArrayDeque<>();
-        int[] NSL = new int[H.length];
 
-        for (int i = 0; i < H.length; i++) {
-            int h = H[i];
-
-            while (!st.isEmpty() && H[st.peekLast()] >= h) {
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
                 st.pollLast();
             }
 
-            if (st.isEmpty()) NSL[i] = -1;
-            else NSL[i] = st.peekLast();
+            NSL[i] = st.isEmpty() ? -1 : st.peekLast();
 
             st.offerLast(i);
         }
-        
+
         return NSL;
     }
 
-    private int[] getNSR(int[] H) {
+    private int[] getNSR() {
+        int[] NSR = new int[n];
         Deque<Integer> st = new ArrayDeque<>();
-        int[] NSR = new int[H.length];
 
-        for (int i = H.length - 1; i > -1; i--) {
-            int h = H[i];
-            
-            while (!st.isEmpty() && H[st.peekLast()] >= h) {
+        for (int i = n - 1; i > -1; i--) {
+            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
                 st.pollLast();
             }
 
-            if (st.isEmpty()) NSR[i] = H.length;
-            else NSR[i] = st.peekLast();
+            NSR[i] = st.isEmpty() ? n : st.peekLast();
 
             st.offerLast(i);
         }

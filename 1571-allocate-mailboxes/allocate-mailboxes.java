@@ -25,7 +25,7 @@ class Solution {
 
     private int dfs(int i, int k) {
         if (i >= n) return 0;
-        if (k == 0) return (int) 1e9;
+        if (k == 0) return 0x7ffffff;
         
         if (dp[i][k] != -1) return dp[i][k];
         

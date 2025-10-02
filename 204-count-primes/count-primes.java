@@ -1,20 +1,19 @@
 class Solution {
     public int countPrimes(int n) {
-        if (n < 2) return 0;
+        int[] primes = new int[n];
 
-        int[] prime = new int [n + 1];
+        for (int i = 2; i * i <= n; i++) {
+            if (primes[i] == 1) continue; // not prime
 
-        int cnt = 0;
-        for (int idx = 2; idx * idx < n; ++idx) {
-            if (prime[idx] == 0) {
-                for (int idx2 = idx * idx; idx2 <= n; idx2 += idx) {
-                    prime[idx2] = 1;
-                }
+            for (int j = i * i; j < n; j += i) {
+                primes[j] = 1;
             }
         }
 
-        for (int idx = 2; idx < n; ++idx) {
-            if (prime[idx] == 0) cnt++;
+        int cnt = 0;
+
+        for (int i = 2; i < n; i++) {
+            cnt += primes[i] == 0 ? 1 : 0;
         }
 
         return cnt;

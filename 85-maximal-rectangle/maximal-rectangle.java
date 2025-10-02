@@ -1,28 +1,35 @@
 class Solution {
-    public int maximalRectangle(char[][] A) {
-        int N = A.length, M = A[0].length;
-        int[] dp = new int[M];
-        int maximalRectangle = 0;
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                dp[j] = A[i][j] == '1' ? dp[j] + 1 : 0;
+    public int maximalRectangle(char[][] matrix) {
+        int n = matrix[0].length;
+        int[] dp = new int[n];
+        int maxRectangle = 0;
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                dp[j] = matrix[i][j] == '1' ? dp[j] + 1 : 0;
             }
-
-            maximalRectangle = Math.max(maximalRectangle, largestRectangleArea(dp));
+            maxRectangle = Math.max(largestRectangleArea(dp), maxRectangle);
         }
 
-        return maximalRectangle;
+        return maxRectangle;
     }
-    private int largestRectangleArea(int[] H) {
-        int n = H.length;
-        int[] NSL = getNSL(H, n);
-        int[] NSR = getNSR(H, n);
-        int maxArea = 0;
 
+    int[] heights;
+    int n;
+
+    public int largestRectangleArea(int[] heights) {
+        this.heights = heights;
+        n = heights.length;
+
+        int[] NSL = getNSL();
+        int[] NSR = getNSR();
+
+        int maxArea = 0;
+        
         for (int i = 0; i < n; i++) {
             int w = NSR[i] - NSL[i] - 1;
-            int a = w * H[i];
+            int a = w * heights[i];
 
             maxArea = Math.max(maxArea, a);
         }
@@ -30,36 +37,35 @@ class Solution {
         return maxArea;
     }
 
-    private int[] getNSL(int[] H, int n) {
-        Deque<Integer> st = new ArrayDeque<>();
+    private int[] getNSL() {
         int[] NSL = new int[n];
-        NSL[0] = -1;
+        Deque<Integer> st = new ArrayDeque<>();
 
         for (int i = 0; i < n; i++) {
-            
-            while (!st.isEmpty() && H[st.peek()] >= H[i]) st.pop();
+            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
+                st.pollLast();
+            }
 
-            if (st.isEmpty()) NSL[i] = -1;
-            else NSL[i] = st.peek();
+            NSL[i] = st.isEmpty() ? -1 : st.peekLast();
 
-            st.push(i);
+            st.offerLast(i);
         }
 
         return NSL;
     }
 
-    private int[] getNSR(int[] H, int n) {
-        Deque<Integer> st = new ArrayDeque<>();
+    private int[] getNSR() {
         int[] NSR = new int[n];
-        NSR[n - 1] = n;
+        Deque<Integer> st = new ArrayDeque<>();
 
         for (int i = n - 1; i > -1; i--) {
-            while (!st.isEmpty() && H[st.peek()] >= H[i]) st.pop();
+            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
+                st.pollLast();
+            }
 
-            if (st.isEmpty()) NSR[i] = n;
-            else NSR[i] = st.peek();
+            NSR[i] = st.isEmpty() ? n : st.peekLast();
 
-            st.push(i);
+            st.offerLast(i);
         }
 
         return NSR;

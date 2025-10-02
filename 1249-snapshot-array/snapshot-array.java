@@ -1,11 +1,11 @@
-public class SnapshotArray {
-
-    int snapId;
+class SnapshotArray {
+    
     List<Pair>[] records;
+    int snapId;
 
     public SnapshotArray(int length) {
-        snapId = 0;
         records = new ArrayList[length];
+        snapId = 0;
 
         for (int i = 0; i < length; i++) {
             records[i] = new ArrayList<>();
@@ -22,36 +22,31 @@ public class SnapshotArray {
             record.add(new Pair(snapId, val));
         }
     }
-
+    
     public int snap() {
         return snapId++;
     }
-
+    
     public int get(int index, int snap_id) {
         List<Pair> record = records[index];
         int l = 0, r = record.size();
-        int res = - 1;
-        
+        int res = -1;
+
         while (l < r) {
             int m = (l + r) >> 1;
-                
-            Pair p = record.get(m);
-            if (p.snapId <= snap_id) {
-                res = p.val;
-                l = m + 1;
-            } else {
-                r = m;
-            }
+            Pair pair = record.get(m);
+
+            if (pair.snapId <= snap_id) { l = m + 1; res = pair.val; }
+            else r = m;
         }
-        
+
         return res;
     }
 
-    class Pair {
-        int snapId;
-        int val;
+    private class Pair {
+        int snapId, val;
 
-        public Pair(int snapId, int val) {
+        Pair(int snapId, int val) {
             this.snapId = snapId;
             this.val = val;
         }

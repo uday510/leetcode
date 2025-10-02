@@ -11,9 +11,7 @@ class Solution {
         
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
-                
                 int  m = (i + j) >> 1;
-                
                 for (int t = i; t <= j; t++) {
                     arr[i][j] += Math.abs(houses[m] - houses[t]);
                 }

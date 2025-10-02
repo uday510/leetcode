@@ -1,22 +1,22 @@
 class Solution {
 
     public int findLengthOfShortestSubarray(int[] arr) {
-        int right = arr.length - 1;
-        while (right > 0 && arr[right] >= arr[right - 1]) {
-            right--;
+        int n = arr.length, r = n - 1;
+        
+        while (r > 0 && arr[r] >= arr[r - 1]) r--;
+        
+        int res = r, l = 0;
+        
+        while (l < r && (l == 0 || arr[l] >= arr[l - 1])) {
+            
+            while (r < n && arr[l] > arr[r]) r++;
+            
+            res = Math.min(res, r - l - 1);
+            
+            l++;
         }
-
-        int ans = right;
-        int left = 0;
-        while (left < right && (left == 0 || arr[left - 1] <= arr[left])) {
-            // find next valid number after arr[left]
-            while (right < arr.length && arr[left] > arr[right]) {
-                right++;
-            }
-            // save length of removed subarray
-            ans = Math.min(ans, right - left - 1);
-            left++;
-        }
-        return ans;
+        
+        return res;
     }
+    
 }

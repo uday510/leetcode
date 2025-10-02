@@ -1,32 +1,66 @@
 class Solution {
-    public int maxDistance(int[] A, int balls) {
-        Arrays.sort(A);
 
-        int l = 1, r = A[A.length - 1];
-
+    int[] position;
+    int n, m;
+    
+    public int maxDistance(int[] position, int m) {
+        Arrays.sort(position);
+        this.position = position;
+        n = position.length;
+        this.m = m;
+        
+        int l = 1, r = position[n - 1];
+        
         while (l < r) {
-            int m = (l + r) >> 1;
-
-            if (canPlace(A, m, balls)) l = m + 1;
-            else r = m;
+            int mid = (l + r) >> 1;
+            
+            if (canPlace(mid)) l = mid + 1;
+            else r = mid;
         }
-
+        
         return l - 1;
     }
-    private boolean canPlace(int[] A, int dist, int totalballs) {
-        int curballs = 1;
-        int prevPos = A[0];
-
-        for (int i = 0; i < A.length; i++) {
-            int curPos = A[i];
-
-            if (curPos - prevPos >= dist) {
-                curballs++;
-                prevPos = curPos;
-                if (curballs >= totalballs) return true;
+    
+    private boolean canPlace(int reqDist) {
+        int curBalls = 1, prevBallPos = position[0];
+        
+        for (int i = 1; i < n && curBalls < m; i++) {
+            int curBallPos = position[i];
+            
+            if (curBallPos - prevBallPos >= reqDist) {
+                curBalls++;
+                prevBallPos = curBallPos;
             }
         }
-
-        return curballs >= totalballs;
+        return curBalls >= m;
     }
+
 }
+
+/**
+ *
+ *
+ * position = [1, 2, 3, 4, 7], m = 3
+ *
+ *
+ *
+ * l = 1, r = 7
+ *
+ * m = (1+7)/2 = 4 -> not possible
+ *
+ * l = 1, r = 4
+ * m = (1+4)/2 = 2 -> possible -> maximize it
+ *
+ * l = 3, r = 4
+ * m = (3+4)/2 = 3 -> possible -> maximize it
+ *
+ * l = 4, r = 4
+ * m = (4+4)/2 = 4 -> not possible -> l == r => return (l-1)
+ *
+ *
+ * m = 3
+ * balls = 1+1+1
+ * pos = 7
+ *
+ *
+ */

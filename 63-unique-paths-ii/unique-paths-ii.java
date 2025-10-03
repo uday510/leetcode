@@ -1,13 +1,13 @@
 class Solution {
-    int m;
-    int n;
-    int[][] arr;
-    int[][] dp;
-    public int uniquePathsWithObstacles(int[][] arr) {
-        m = arr.length;
-        n = arr[0].length;
-        this.arr = arr;
-        dp = new int[m][n];
+
+    int n, m;
+    int[][] grid, dp;
+
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        n = obstacleGrid.length;
+        m = obstacleGrid[0].length;
+        grid = obstacleGrid;
+        dp = new int[n][m];
 
         for (int[] row : dp) Arrays.fill(row, -1);
 
@@ -15,26 +15,12 @@ class Solution {
     }
 
     private int dfs(int i, int j) {
-        if (isOutOfBounds(i, j) || isObstacle(i, j)) return 0;
-        if (isDestination(i, j)) return isObstacle(i, j) ? 0 : 1;
-        if (isCached(i, j)) return dp[i][j];
+        if (i >= n || j >= m || grid[i][j] == 1) return 0;
+
+        if (dp[i][j] != -1) return dp[i][j];
+
+        if (i == n - 1 && j == m - 1) return grid[i][j] == 1 ? 0 : 1;
 
         return dp[i][j] = dfs(i + 1, j) + dfs(i, j + 1);
-    }
-
-    private boolean isOutOfBounds(int i, int j) {
-        return i >= m || j >= n;
-    }
-
-    private boolean isObstacle(int i, int j) {
-        return arr[i][j] == 1;
-    }
-
-    private boolean isDestination(int i, int j) {
-        return i == m - 1 && j == n - 1;
-    }
-
-    private boolean isCached(int i, int j) {
-        return dp[i][j] != -1;
     }
 }

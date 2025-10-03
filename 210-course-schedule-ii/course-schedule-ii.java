@@ -1,41 +1,38 @@
 class Solution {
-   @SuppressWarnings("unchecked")
-    // O(V+E) time complexity | O(V+E) space complexity
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-       ArrayDeque<Integer> queue = new ArrayDeque<>();
-       int[] inDegree = new int[numCourses];
-       List<Integer>[] adjList = new ArrayList[numCourses];
-       int[] order = new int[numCourses];
-       int index = 0;
-       int finishedCourses = 0;
+        List<Integer>[] adjList = new ArrayList[numCourses];
+        int[] indegree = new int[numCourses];
 
-       for (int idx = 0; idx < numCourses; idx++) {
-           adjList[idx] = new ArrayList<>();
-       }
+        for (int i = 0; i < numCourses; i++) adjList[i] = new ArrayList<>();
 
-       for (int[] prerequisite : prerequisites) {
-           adjList[prerequisite[1]].add(prerequisite[0]);
-           inDegree[prerequisite[0]]++;
-       }
+        for (int[] p : prerequisites) {
+            int u = p[1], v = p[0];
 
-       for (int idx = 0; idx < numCourses; ++idx) {
-           if (inDegree[idx] == 0) {
-               queue.offerLast(idx);
-           }
-       }
+            adjList[u].add(v);
+            indegree[v]++;
+        }
 
-       while (!queue.isEmpty()) {
-           int course = queue.pollFirst();
-           order[index++] = course;
-           finishedCourses++;
+        Queue<Integer> queue = new ArrayDeque<>();
 
-           for (int neighborCourse : adjList[course]) {
-                if (--inDegree[neighborCourse] == 0) {
-                     queue.add(neighborCourse);
-                }
-           }
-       }
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) queue.offer(i);
+        }
 
-       return finishedCourses == numCourses ? order : new int[]{};
+        System.out.println(queue);
+
+        int[] res = new int[numCourses];
+        int index = 0;
+
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            res[index++] = u;
+
+            for (int v : adjList[u]) {
+                if (--indegree[v] == 0) queue.offer(v);
+            }
+        }
+
+        return index < res.length ? new int[] {} : res;
     }
 }
+

@@ -29,7 +29,7 @@ class Solution {
             s = s.next;
         }
 
-        if(p.next != null) p.next = p.next.next;
+        p.next = p.next.next;
 
         return head;
     }

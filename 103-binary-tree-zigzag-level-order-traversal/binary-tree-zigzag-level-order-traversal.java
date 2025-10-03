@@ -1,51 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        if (root == null) {
-            return new ArrayList<>();
-        }
+        if (root == null) return new ArrayList<>();
 
-        var levels = new ArrayList<List<Integer>>();
-        var queue = new LinkedList<TreeNode>();
+        List<List<Integer>> levels = new ArrayList<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
         boolean leftToRight = true;
 
-        queue.offer(root);
-        
-        while (!queue.isEmpty()) {
-            var level = getLevel(leftToRight, queue);
+        queue.offerLast(root);
 
-            levels.add(level);
+        while (!queue.isEmpty()) {
+            List<Integer> curLevel = getCurLevel(queue, leftToRight);
+
+            levels.add(curLevel);
 
             leftToRight = !leftToRight;
         }
 
         return levels;
     }
-    private List<Integer> getLevel(boolean leftToRight, LinkedList<TreeNode> queue) {
-        var level = new ArrayList<Integer>();
+
+    private List<Integer> getCurLevel(Deque<TreeNode> queue, boolean leftToRight) {
+        List<Integer> level = new LinkedList<>();
         int size = queue.size();
 
-        for (int i = 0; i < size; ++i) {
-            TreeNode node = queue.poll();
+        for (int i = 0; i < size; i++) {
+            TreeNode cur = queue.poll();
 
-            if (node == null) {
-                continue;
-            }
+            if (leftToRight) level.addLast(cur.val);
+            else level.addFirst(cur.val);
 
-            level.add(node.val);
-
-            if (node.left != null) {
-                queue.offer(node.left);
-            }
-
-            if (node.right != null) {
-                queue.offer(node.right);
-            }
-        }
-        
-        if (!leftToRight) {
-            Collections.reverse(level);
+            if (cur.left != null) queue.offer(cur.left);
+            if (cur.right != null) queue.offer(cur.right);
         }
 
         return level;
     }
 }
+
+/**
+
+[3]
+[9,20]
+[15,7]
+ */

@@ -18,10 +18,10 @@ class Solution {
         if (root == null) return new ArrayList<>();
 
         List<List<Integer>> levels = new ArrayList<>();
-        Deque<TreeNode> queue = new ArrayDeque<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
         boolean leftToRight = true;
 
-        queue.offerLast(root);
+        queue.offer(root);
 
         while (!queue.isEmpty()) {
             List<Integer> curLevel = getCurLevel(queue, leftToRight);
@@ -34,7 +34,7 @@ class Solution {
         return levels;
     }
 
-    private List<Integer> getCurLevel(Deque<TreeNode> queue, boolean leftToRight) {
+    private List<Integer> getCurLevel(Queue<TreeNode> queue, boolean leftToRight) {
         List<Integer> level = new LinkedList<>();
         int size = queue.size();
 

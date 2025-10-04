@@ -1,30 +1,25 @@
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        
-        int minBananasPerHr = 1;
-        int maxBananasPerHr = 1;
-        // Arrays.stream(piles).max().getAsInt();
+        int l = 1, r = Arrays.stream(piles).max().getAsInt();
 
-        while (!canEatAllBananasWithKPerHr(piles, maxBananasPerHr, h)) maxBananasPerHr <<= 2;
+        while (l < r) {
+            int m = (l + r) >> 1;
 
-        while (minBananasPerHr < maxBananasPerHr) {
-
-            int k = (minBananasPerHr + maxBananasPerHr) >> 1;
-
-            if (canEatAllBananasWithKPerHr(piles, k, h)) maxBananasPerHr = k; // reduce time
-            else minBananasPerHr = k + 1;
+            if (!canEat(piles, m, h)) l = m + 1;
+            else r = m;
         }
 
-        return minBananasPerHr;
+        return l;
     }
-    private boolean canEatAllBananasWithKPerHr(int[] piles, int k, int reqHrs) {
-        int currHrs = 0;
+
+    private boolean canEat(int[] piles, int k, int reqHrs) {
+        int curHrs = 0;
 
         for (int pile : piles) {
-            currHrs += (int) Math.ceil(( (double) pile / k));
-            if (currHrs > reqHrs) return false;
+            curHrs += (int) Math.ceil((double) pile / k);
+            if (curHrs > reqHrs) return false;
         }
 
-        return currHrs <= reqHrs;
-    } 
+        return curHrs <= reqHrs;
+    }
 }

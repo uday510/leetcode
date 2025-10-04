@@ -1,18 +1,18 @@
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         Set<ListNode> seen = new HashSet<>();
+        ListNode p1 = headA, p2 = headB;
 
-        ListNode currNode = headA;
-        while (currNode != null) {
-            seen.add(currNode);
-            currNode = currNode.next;
+        while(p1 != null) {
+            seen.add(p1);
+            p1 = p1.next;
         }
 
-        currNode = headB;
-        while (currNode != null) {
-            if (!seen.add(currNode)) return currNode;
-            currNode = currNode.next;
+        while (p2 != null) {
+            if (!seen.add(p2)) return p2;
+            p2 = p2.next;
         }
+
         return null;
     }
 }

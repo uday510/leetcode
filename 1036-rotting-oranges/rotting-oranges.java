@@ -1,37 +1,38 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
         Queue<int[]> queue = new ArrayDeque<>();
-        int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-        int time = -1, m = grid.length, n = grid[0].length, freshOranges = 0;
+        int fresh = 0, n = grid.length, m = grid[0].length;
 
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (grid[i][j] == 2) queue.offer(new int[] {i, j});
-                if (grid[i][j] == 1) ++freshOranges;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) fresh++;
+                else if (grid[i][j] == 2) queue.offer(new int[] {i, j});
             }
         }
 
-        if (freshOranges == 0) return 0;
+        if (fresh == 0) return 0;
+        int t = -1;
 
         while (!queue.isEmpty()) {
+            t++;
             int size = queue.size();
-            for (int i = 0; i < size; ++i) {
-                int[] curr = queue.poll();
-                for (int[] dir : dirs) {
-                    int R = dir[0] + curr[0];
-                    int C = dir[1] + curr[1];
+            for (int i = 0; i < size; i++) {
+                int[] cur = queue.poll();
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        if (Math.abs(dx) + Math.abs(dy) != 1) continue;
+                        int nx = cur[0] + dx, ny = cur[1] + dy;
 
-                    if (R < 0 || R >= m || C < 0 || C >= n || grid[R][C] != 1) continue;
+                        if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] != 1) continue;
 
-                    grid[R][C] = 2;
-                    --freshOranges;
-                    queue.offer(new int[]{R, C});
+                        queue.offer(new int[]{nx, ny});
+                        grid[nx][ny] = 2;
+                        fresh--;
+                    }
                 }
             }
-
-            time++;
         }
 
-        return freshOranges == 0 ? time : -1;
+        return fresh == 0 ? t : -1;
     }
 }

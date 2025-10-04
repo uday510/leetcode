@@ -16,7 +16,8 @@ class Solution {
         int curHrs = 0;
 
         for (int pile : piles) {
-            curHrs += (int) Math.ceil((double) pile / k);
+            // curHrs += (int) Math.ceil((double) pile / k);
+            curHrs += ((pile + k - 1 )/ k);
             if (curHrs > reqHrs) return false;
         }
 

@@ -1,37 +1,45 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        if (nums2.length < nums1.length)
+            return findMedianSortedArrays(nums2, nums1);
+
         int n = nums1.length, m = nums2.length;
-        int i = 0, j = 0;
+        int total = m + n;
+        int target = (total + 1) >> 1;
 
-        List<Integer> list = new ArrayList<>();
+        int l = 0, r = n;
 
-        while (i < n && j < m) {
-            if (nums1[i] < nums2[j]) list.add(nums1[i++]);
-            else list.add(nums2[j++]);
+        while (l <= r) {
+            int m1 = (l + r) >> 1, m2 = target - m1;
+            
+            int l1 = safeGet(m1 - 1, nums1), l2 = safeGet(m2 - 1, nums2);
+            int r1 = safeGet(m1, nums1), r2 = safeGet(m2, nums2);
+
+            if (l1 > r2) r = m1 - 1;
+            else if (l2 > r1) l = m1 + 1;
+
+            else if (l1 <= r2 && l2 <= r1) {
+                double median = -1;
+
+                if ((total & 1) == 1) {
+                    median = Math.max(l1, l2);
+                } else {
+                    median = (Math.max(l1, l2) + Math.min(r1, r2)) / 2.0; 
+                }
+
+                return median;
+            }
         }
 
-        while (i < n) list.add(nums1[i++]);
+        return -1;
+    }
 
-        while (j < m) list.add(nums2[j++]);
+    private int safeGet(int i, int[] nums) {
+        int val = -1;
+        if (i < 0) val = Integer.MIN_VALUE;
+        else if (i >= nums.length) val = Integer.MAX_VALUE;
+        else val = nums[i];
 
-        int k = n + m;
-        double res = -1;
-
-        if ((k & 1) == 1) {
-            res = (double) list.get(k / 2);
-        } else {
-            int a = list.get((k-1)/2);
-            int b = list.get(k/2);
-            res = (double) (a + b) / 2;
-        }
-
-        return res;
+        return val;  
     }
 }
-
-/**
-
-1 2 3 4
-
-
- */

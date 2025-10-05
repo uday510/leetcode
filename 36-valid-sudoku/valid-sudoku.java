@@ -1,52 +1,27 @@
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        for (int i = 0; i < 9; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                if (!valid(board, i, j)) 
+        int N = 9;
+        Set<Character>[] rows = new HashSet[N];
+        Set<Character>[] cols = new HashSet[N];
+        Set<Character>[] boxes = new HashSet[N];
+
+        for (int i = 0; i < 9; i++) {
+            rows[i] = new HashSet<>();
+            cols[i] = new HashSet<>();
+            boxes[i] = new HashSet<>();
+        }
+
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                char ch = board[r][c];
+                if (ch == '.') continue;
+
+                int boxIdx = (r / 3) * 3 + (c / 3);
+                if (!rows[r].add(ch) || !cols[c].add(ch) || !boxes[boxIdx].add(ch)) 
                     return false;
             }
         }
+
         return true;
-    }
-    private boolean valid(char[][] board, int row, int col) {
-       return (
-            validRow(board, row) && 
-            validCol(board, col) && 
-            validBox(board, row - (row % 3), col - (col % 3)
-       )); 
-    }
-    private boolean validRow(char[][] board, int row) {
-        var set = new HashSet<Character>();
-        for (int j = 0; j < 9; ++j) {
-            char c = board[row][j];
-
-            if (set.contains(c)) return false;
-
-            if (c != '.') set.add(c);
-        }
-        return true;
-    }
-    private boolean validCol(char[][] board, int col) {
-        var set = new HashSet<Character>();
-        for (int i = 0; i < 9; ++i) {
-            char c = board[i][col];
-
-            if (set.contains(c)) return false;
-
-            if (c != '.') set.add(c);
-        }
-        return true;
-    } 
-    private boolean validBox(char[][] board, int row, int col) {
-        var set = new HashSet<Character>();
-        for(int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                char c = board[i+row][j+col];
-
-                if (set.contains(c))  return false;
-
-                if (c != '.') set.add(c);
-            }
-        } return true;
     }
 }

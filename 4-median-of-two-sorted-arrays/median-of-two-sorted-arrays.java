@@ -1,39 +1,37 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        if (nums1.length > nums2.length) 
-            return findMedianSortedArrays(nums2, nums1);
-
         int n = nums1.length, m = nums2.length;
-        int total = n + m;
-        int target = (total + 1) >> 1;
+        int i = 0, j = 0;
 
-        int l = 0, r = n;
+        List<Integer> list = new ArrayList<>();
 
-        while (l <= r) {
-            int m1 = (l + r) >> 1;
-            int m2 = target - m1;
-
-            int l1 = safeGet(m1 - 1, nums1), l2 = safeGet(m2 - 1, nums2);
-            int r1 = safeGet(m1, nums1), r2 = safeGet(m2, nums2);
-
-            if (l1 <= r2 && l2 <= r1) {
-                if ((total & 1 )== 1) return Math.max(l1, l2);
-
-                return (Math.max(l1, l2) + Math.min(r1, r2)) / 2.0;
-            }
-
-            if (l1 > r2) r = m1 - 1;
-            if (l2 > r1) l = m1 + 1;
+        while (i < n && j < m) {
+            if (nums1[i] < nums2[j]) list.add(nums1[i++]);
+            else list.add(nums2[j++]);
         }
 
+        while (i < n) list.add(nums1[i++]);
 
-        return -1;
-    }
+        while (j < m) list.add(nums2[j++]);
 
-    private int safeGet(int i, int[] nums) {
-        if (i >= nums.length) return Integer.MAX_VALUE;
-        if (i <= -1) return Integer.MIN_VALUE;
+        int k = n + m;
+        double res = -1;
 
-        return nums[i];
+        if ((k & 1) == 1) {
+            res = (double) list.get(k / 2);
+        } else {
+            int a = list.get((k-1)/2);
+            int b = list.get(k/2);
+            res = (double) (a + b) / 2;
+        }
+
+        return res;
     }
 }
+
+/**
+
+1 2 3 4
+
+
+ */

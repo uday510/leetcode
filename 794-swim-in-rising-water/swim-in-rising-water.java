@@ -1,4 +1,5 @@
 class Solution {
+    
     public int swimInWater(int[][] grid) {
         int n = grid.length;
         int[][] dists = new int[n][n];
@@ -15,7 +16,7 @@ class Solution {
         while (!pq.isEmpty()) {
             int[] curr = pq.poll();
             int r = curr[0], c = curr[1], d = curr[2];
-            
+
             if (r == n - 1 && c == n - 1) return d;
             if (dists[r][c] < d) continue;
 

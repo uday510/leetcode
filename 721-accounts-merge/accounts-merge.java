@@ -1,63 +1,64 @@
 class Solution {
+
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, Integer> map = new HashMap<>();
         int n = accounts.size();
         UnionFind uf = new UnionFind(n);
-        Map<String, Integer> map = new HashMap<>();
 
         for (int i = 0; i < n; i++) {
-            List<String> act  = accounts.get(i);
+            List<String> ac = accounts.get(i);
 
-            for (int j = 1; j < act.size(); j++) {
-                String email = act.get(j);
+            for (int j = 1; j < ac.size(); j++) {
+                String a = ac.get(j);
 
-                if (!map.containsKey(email)) {
-                    map.put(email, i);
-                } else {
-                    uf.union(i, map.get(email));
-                }
+                map.putIfAbsent(a, i);
+                uf.union(map.get(a), i);
             }
         }
 
         Map<Integer, List<String>> grps = new HashMap<>();
 
-        for (var e : map.entrySet()) {
-            String email = e.getKey();
-            int grp = e.getValue();
+        for (Map.Entry<String, Integer> es : map.entrySet()) {
+            String email = es.getKey();
+            int grp = es.getValue();
             int root = uf.find(grp);
-
+            
             grps.computeIfAbsent(root, _ -> new ArrayList<>()).add(email);
         }
 
         List<List<String>> res = new ArrayList<>();
-
-        for (var e : grps.entrySet()) {
-            int idx = e.getKey();
-            var cur = e.getValue();
-            Collections.sort(cur);
-            cur.add(0, accounts.get(idx).get(0));
-            res.add(cur);
+        
+        for (Map.Entry<Integer, List<String>> es : grps.entrySet()) {
+            int root = es.getKey();
+            List<String> emails = es.getValue();
+            
+            Collections.sort(emails);
+            emails.add(0, accounts.get(root).get(0));
+            
+            res.add(emails);
         }
 
         return res;
     }
+
 }
 
 class UnionFind {
     int[] root, rank;
 
-    UnionFind (int n) {
-        root = new int[n];
-        rank = new int[n];
+    UnionFind(int n) {
+        this.root = new int[n];
+        this.rank = new int[n];
 
-        for (int i = 0; i < n; i++) {
-            rank[i] = 1;
-            root[i] = i;
+        for (int idx = 0; idx < n; idx++) {
+            root[idx] = idx;
+            rank[idx] = 1;
         }
     }
 
     int find(int x) {
-        if (x == root[x])
-            return x;
+        if (x == root[x]) return x;
+
         return root[x] = find(root[x]);
     }
 
@@ -65,13 +66,15 @@ class UnionFind {
         int rootX = find(x);
         int rootY = find(y);
 
+        if (rootX == rootY) return;
+
         if (rank[rootX] > rank[rootY]) {
             root[rootY] = rootX;
-        } else if (rank[rootY] > rank[rootX]) {
+        } else if (rank[rootY] > root[rootX]) {
             root[rootX] = rootY;
         } else {
             root[rootY] = rootX;
-            rank[rootX]++;
+            rank[rootX] += 1;
         }
     }
 
@@ -79,14 +82,3 @@ class UnionFind {
         return find(x) == find(y);
     }
 }
-
-/***
-
-
-1 - [ johnsmith@mail.com, mary@mail.com, johnnybravo@mail.com ]
-
-2 - [ john_newyork@mail.com, john00@mail.com ]
-
-
-
- */

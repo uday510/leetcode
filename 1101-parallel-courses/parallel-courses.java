@@ -1,11 +1,10 @@
 class Solution {
-    
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] adjList = new ArrayList[n + 1];
         int[] indegree = new int[n + 1];
 
         for (int i = 1; i <= n; i++) adjList[i] = new ArrayList<>();
-
+        
         for (int[] r : relations) {
             int u = r[0], v = r[1];
             adjList[u].add(v);
@@ -17,23 +16,20 @@ class Solution {
             if (indegree[i] == 0) queue.offer(i);
         }
 
-        queue.offer(-1);
-
-        int semesters = 0, studied = 0;
+        int studied = 0, semesters = 0, marker = -1;
+        queue.offer(marker);
         while (!queue.isEmpty()) {
             int u = queue.poll();
 
-            if (u == -1) {
+            if (u == marker) {
                 semesters++;
-                if (!queue.isEmpty()) queue.offer(-1);
+                if (!queue.isEmpty()) queue.offer(marker);
                 continue;
             }
-
             studied++;
 
-            for (int v : adjList[u]) { 
-                indegree[v]--;
-                if (indegree[v] == 0) {
+            for (int v : adjList[u]) {
+                if (--indegree[v] == 0) {
                     queue.offer(v);
                 }
             }
@@ -42,12 +38,3 @@ class Solution {
         return studied == n ? semesters : -1;
     }
 }
-
-/**
-
-1 -> 3
-2 -> 3
-
-
-
- */

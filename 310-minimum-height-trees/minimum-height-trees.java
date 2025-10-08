@@ -32,10 +32,6 @@ class Solution {
             }
         }
 
-        List<Integer> res = new ArrayList<>();
-
-        for (int u : queue) res.add(u);
-
-        return res;
+        return new ArrayList<Integer>(queue);
     }
 }

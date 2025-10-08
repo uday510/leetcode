@@ -33,7 +33,7 @@ class Solution {
             max = Math.max(max, dp[u][uColor]);
 
             for (int v : adjList[u]) {
-                for (int i = 0; i < 128; ++i) {
+                for (int i = 97; i < 128; ++i) {
                     dp[v][i] = Math.max(dp[u][i], dp[v][i]);
                 }
                 --inorder[v];

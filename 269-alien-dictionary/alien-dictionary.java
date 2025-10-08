@@ -26,7 +26,7 @@ class Solution {
 
                     if (c1 == c2) continue;
 
-                    adj.computeIfAbsent(c1, _ -> new ArrayList<>()).add(c2);
+                    adj.get(c1).add(c2);
                     inorder.put(c2, inorder.getOrDefault(c2, 0) + 1);
                     break;
                 }
@@ -51,7 +51,7 @@ class Solution {
 
             sb.append(cur);
 
-            for (char v : adj.getOrDefault(cur, new ArrayList<>())) {
+            for (char v : adj.get(cur)) {
                 inorder.put(v, inorder.getOrDefault(v, 0) - 1);
 
                 if (inorder.get(v) == 0) {

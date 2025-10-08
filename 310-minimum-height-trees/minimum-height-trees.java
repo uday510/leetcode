@@ -12,30 +12,30 @@ class Solution {
             adjList[v].add(u);
         }
 
-        List<Integer> leaves = new ArrayList<>();
+        Deque<Integer> queue = new ArrayDeque<>();
+
         for (int i = 0; i < n; i++) {
-            if (adjList[i].size() == 1) leaves.add(i);
+            if (adjList[i].size() == 1)
+                queue.offerLast(i);
         }
 
         int rem = n;
-
         while (rem > 2) {
-            rem -= leaves.size();
-            
-            List<Integer> newLeaves = new ArrayList<>();
-
-            for (int leaf : leaves) {
-                int nei = adjList[leaf].getFirst();
-                adjList[nei].remove(Integer.valueOf(leaf));
-                if (adjList[nei].size() == 1) {
-                    newLeaves.add(nei);
-                }
+            rem -= queue.size();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int u = queue.pollFirst();
+                int v = adjList[u].get(0);
+                adjList[v].remove(Integer.valueOf(u));
+                if (adjList[v].size() == 1) 
+                    queue.offerLast(v);
             }
-
-            leaves = newLeaves;
         }
-        
-        return leaves;
-    }
 
+        List<Integer> res = new ArrayList<>();
+
+        for (int u : queue) res.add(u);
+
+        return res;
+    }
 }

@@ -8,44 +8,40 @@ class Solution {
 
         int[] indegree = new int[n];
         for (int[] e : edges) {
-            int u = e[0], v = e[1];
-            adjList[u].add(v);
-            indegree[v]++;
+            adjList[e[0]].add(e[1]);
+            indegree[e[1]]++;
         }
 
-        Queue<Integer> queue = new ArrayDeque<>();
-        for (int u = 0; u < n; u++) {
-            if (indegree[u] == 0) queue.offer(u);
+        Queue<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) q.offer(i);
         }
 
-        int visitedVertices = 0, maxDepth = 0;
-        int[][] dp = new int[n][128];
-        
-        while (!queue.isEmpty()) {
-            int u = queue.poll();
-            ++visitedVertices;
-            
-            ++dp[u][colors.charAt(u)];
-            
-            maxDepth = Math.max(maxDepth, dp[u][colors.charAt(u)]);
-            
-            for (int v : adjList[u]) {            
-                for (int i = 97; i < 128; i++) {
-                    dp[v][i] = Math.max(dp[u][i], dp[v][i]);
+        int visited = 0, max = 0;
+        int[][] dp = new int[n][26];
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            ++visited;
+
+            int colorIdx = colors.charAt(u) - 'a';
+            ++dp[u][colorIdx];
+
+            max = Math.max(max, dp[u][colorIdx]);
+
+            for (int v : adjList[u]) {
+                for (int c = 0; c < 26; c++) {
+                    dp[v][c] = Math.max(dp[v][c], dp[u][c]);
                 }
-                
                 if (--indegree[v] == 0) {
-                    queue.offer(v);
+                    q.offer(v);
                 }
             }
         }
 
-        return isDeltaDetected(visitedVertices, n) ? maxDepth : -1;
+        return visited == n ? max : -1;
     }
-    
-    private boolean isDeltaDetected(int c, int p) {
-        return Math.abs(p - c) == 0;
-    }
+
 }
 
 /**

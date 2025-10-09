@@ -1,49 +1,94 @@
 class Solution {
+
     public int largestPathValue(String colors, int[][] edges) {
         int n = colors.length();
         List<Integer>[] adjList = new ArrayList[n];
-        int[] inorder = new int[n];
 
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-        for (int[] edge : edges) {
-            int u = edge[0], v = edge[1];
+        int[] indegree = new int[n];
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
             adjList[u].add(v);
-            ++inorder[v];
+            indegree[v]++;
         }
-
-        int[][] dp = new int[n][128];
 
         Queue<Integer> queue = new ArrayDeque<>();
-        for (int i = 0; i < n; ++i) {
-            if (inorder[i] == 0) queue.offer(i);
+        for (int u = 0; u < n; u++) {
+            if (indegree[u] == 0) queue.offer(u);
         }
 
-        if (queue.isEmpty()) return -1;
-
-        int vis = 0;
-        int max = 1;
-
+        int visitedVertices = 0, maxDepth = 0;
+        int[][] dp = new int[n][128];
+        
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            ++vis;
-            char uColor = colors.charAt(u);
-            dp[u][uColor]++;
-
-            max = Math.max(max, dp[u][uColor]);
-
-            for (int v : adjList[u]) {
-                for (int i = 97; i < 128; ++i) {
+            ++visitedVertices;
+            
+            ++dp[u][colors.charAt(u)];
+            
+            maxDepth = Math.max(maxDepth, dp[u][colors.charAt(u)]);
+            
+            for (int v : adjList[u]) {            
+                for (int i = 97; i < 128; i++) {
                     dp[v][i] = Math.max(dp[u][i], dp[v][i]);
                 }
-                --inorder[v];
-
-                if (inorder[v] != 0) continue;
-
-                queue.offer(v);
+                
+                if (--indegree[v] == 0) {
+                    queue.offer(v);
+                }
             }
         }
 
-        return vis < n ? -1 : max;
+        return isDeltaDetected(visitedVertices, n) ? maxDepth : -1;
+    }
+    
+    private boolean isDeltaDetected(int c, int p) {
+        return Math.abs(p - c) == 0;
     }
 }
+
+/**
+
+
+colors = "abaca"
+
+0 -> 1, 2
+1 -> 
+2 -> 3
+3 -> 4
+4 -> 
+
+dp[0]: a
+    [a] = 1
+    [b] = 0
+    [c] = 0
+
+dp[1]: b
+    [a] = 1
+    [b] = 1
+    [c] = 0
+
+dp[2]: a
+    [a] = 2
+    [b] = 0
+    [c] = 0
+
+dp[3]: c
+    [a] = 2
+    [b] = 0
+    [c] = 1
+
+dp[4]: a
+    [a] = 3
+    [b] = 0
+    [c] = 1
+
+vis = 0, 1, 2, 3
+
+queue: 
+
+poll: 
+
+
+*/

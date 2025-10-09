@@ -1,4 +1,5 @@
 class Solution {
+
     public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
         int numGroups = m;
         for (int i = 0; i < n; i++) {
@@ -11,9 +12,9 @@ class Solution {
         int[] itemsIndegree = new int[n];
         for (int i = 0; i < n; i++) itemsAdjList[i] = new ArrayList<>();
 
-        List<Integer>[] grpsAdjList = new ArrayList[numGroups];
-        int[] grpsIndegree = new int[numGroups];
-        for (int i = 0; i < numGroups; i++) grpsAdjList[i] = new ArrayList<>();
+        List<Integer>[] groupsAdjList = new ArrayList[numGroups];
+        int[] groupsIndegree = new int[numGroups];
+        for (int i = 0; i < numGroups; i++) groupsAdjList[i] = new ArrayList<>();
 
         for (int v = 0; v < n; v++) {
             for (int u : beforeItems.get(v)) {
@@ -21,43 +22,43 @@ class Solution {
                 itemsIndegree[v]++;
 
                 if (group[u] != group[v]) {
-                    grpsAdjList[group[u]].add(group[v]);
-                    grpsIndegree[group[v]]++;
+                    groupsAdjList[group[u]].add(group[v]);
+                    groupsIndegree[group[v]]++;
                 }
             }
         }
 
-        List<Integer> itemsOrder = topo(itemsAdjList, itemsIndegree);
-        if (itemsOrder.isEmpty()) return new int[]{};
+        List<Integer> items = topo(itemsAdjList, itemsIndegree);
+        if (items.isEmpty()) return new int[]{};
 
-        List<Integer> grpsOrder = topo(grpsAdjList, grpsIndegree);
-        if (grpsOrder.isEmpty()) return new int[]{};
+        List<Integer> groups = topo(groupsAdjList, groupsIndegree);
+        if (groups.isEmpty()) return new int[] {};
 
-        Map<Integer, List<Integer>> order = new HashMap<>();
-        for (int i : itemsOrder) {
-            order.computeIfAbsent(group[i], _ -> new ArrayList<>()).add(i);
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int item : items) {
+            map.computeIfAbsent(group[item], _ -> new ArrayList<>()).add(item);
         }
 
-        List<Integer> res = new ArrayList<>();
-        for (int g : grpsOrder) {
-            if (order.containsKey(g)) {
-                res.addAll(order.get(g));
-            }
+        List<Integer> list = new ArrayList<>();
+        for (int g : groups) {
+            if (map.containsKey(g)) list.addAll(map.get(g));
         }
 
-        return res.stream().mapToInt(Integer::intValue).toArray();
-
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) res[i] = list.get(i);
+        
+        return res;
     }
 
     private List<Integer> topo(List<Integer>[] adjList, int[] indegree) {
         int n = indegree.length;
+        List<Integer> visited = new ArrayList<>();
         Queue<Integer> queue = new ArrayDeque<>();
 
         for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) queue.offer(i);
         }
 
-        List<Integer> visited = new ArrayList<>();
         while (!queue.isEmpty()) {
             int u = queue.poll();
             visited.add(u);
@@ -65,7 +66,7 @@ class Solution {
             for (int v : adjList[u]) {
                 if (--indegree[v] == 0) {
                     queue.offer(v);
-                }     
+                }
             }
         }
 

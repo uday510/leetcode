@@ -1,72 +1,40 @@
 class Solution {
-    public int findCircleNum(int[][] edges) {
-        int n = edges.length;
-        
-        UnionFind uf = new UnionFind(n);
 
-        for (int u = 0; u < n; u++) {
-           for (int v = 0; v < edges[u].length; v++) {
-                if (edges[u][v] == 1 && !uf.connected(u, v)) {
-                    uf.union(u, v);
-                }
-           }
-        }
-        
-        return uf.getComponents();
-    }
-}
+    int[][] edges;
+    int n;
+    boolean[] vis;
 
-class UnionFind {
-    private final int[] root;
-    // Use a rank array to record the height of each vertex, i.e., the "rank" of each vertex.
-    private final int[] rank;
+    public int findCircleNum(int[][] isConnected) {
+        edges = isConnected;
+        n = edges.length;
+        vis = new boolean[n];
 
-    private int components;
+        int provinces = 0;
 
-    public UnionFind(int size) {
-        root = new int[size];
-        rank = new int[size];
-        components = size;
+        for (int i = 0; i < n; i++) {
+            if (vis[i]) continue;
 
-        for (int i = 0; i < size; i++) {
-            root[i] = i;
-            rank[i] = 1;  // The initial "rank" of each vertex is 1, because each of them is
-            // a standalone vertex with no connection to other vertices.
-        }
-    }
-
-    // The find function here is the same as that in the disjoint set with path compression.
-    public int find(int x) {
-        if (x == root[x]) return x;
-
-        // Some ranks may become obsolete so they are not updated
-        return root[x] = find(root[x]);
-    }
-
-    // The union function with union by rank
-    public void union(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
-
-        if (rootX == rootY) return;
-
-        if (rank[rootX] > rank[rootY]) {
-            root[rootY] = rootX;
-        } else if (rank[rootX] < rank[rootY]) {
-            root[rootX] = rootY;
-        } else {
-            root[rootY] = rootX;
-            rank[rootX] += 1;
+            provinces++;
+            bfs(i);
         }
 
-        components--;
+        return provinces;
     }
 
-    public boolean connected(int x, int y) {
-        return find(x) == find(y);
-    }
+    private void bfs(int node) {
+        vis[node] = true;
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(node);
 
-    public int getComponents() {
-        return components;
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+
+            for (int v = 0; v < n; v++) {
+                if (edges[u][v] == 0 || vis[v]) continue;
+
+                vis[v] = true;
+                queue.offer(v);
+            }
+        }
     }
 }

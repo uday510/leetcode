@@ -1,12 +1,12 @@
 class Solution {
 
     int[][] edges;
-    int[] state;
+    int[] dp;
 
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
         edges = graph;
-        this.state = new int[n];
+        dp = new int[n];
 
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -14,21 +14,23 @@ class Solution {
                 list.add(i);
             }
         }
-        return list;
+
+        return list;   
     }
 
     private boolean dfs(int u) {
-        if (state[u] != 0) {
-            return state[u] == 2;
+        if (dp[u] != 0) {
+            return dp[u] == 2;
         }
 
-        state[u] = 1; // vis
+        dp[u] = 1;
         for (int v : edges[u]) {
-            if (!dfs(v)) return false;
-        }
+            if (!dfs(v)) {
+                return false;
+            }
+        }   
 
-        state[u] = 2;
-
+        dp[u] = 2;
         return true;
     }
 }

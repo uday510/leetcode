@@ -2,20 +2,24 @@ class Solution {
 
     int[][] edges;
     int[] dp;
+    int n;
 
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n = graph.length;
+        n = graph.length;
         edges = graph;
         dp = new int[n];
 
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (dfs(i)) {
-                list.add(i);
-            }
-        }
+        // List<Integer> list = new ArrayList<>();
+        List<Integer> list = khans();
+        return list;
 
-        return list;   
+        // for (int i = 0; i < n; i++) {
+        //     if (dfs(i)) {
+        //         list.add(i);
+        //     }
+        // }
+
+        // return list;   
     }
 
     private boolean dfs(int u) {
@@ -32,4 +36,43 @@ class Solution {
         dp[u] = 2; // safe
         return true;
     }
+
+    private List<Integer> khans() {
+        int[] outdegree = new int[n];
+        List<Integer>[] reversedAdjList = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) reversedAdjList[i] = new ArrayList<>();
+
+        for (int u = 0; u < n; u++) {
+            for (int v : edges[u]) {
+                reversedAdjList[v].add(u);
+            }
+            outdegree[u] = edges[u].length;
+        }
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (outdegree[i] == 0) queue.offer(i);
+        }
+
+        boolean[] safe = new boolean[n];
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            safe[u] = true;
+            
+            for (int v : reversedAdjList[u]) {
+                if (--outdegree[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (safe[i]) list.add(i);
+        }
+
+        return list;
+    }
+
 }

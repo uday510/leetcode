@@ -22,14 +22,14 @@ class Solution {
         if (dp[u] == 1) return false; // cycle
         if (dp[u] == 2) return true; // safe
 
-        dp[u] = 1;
+        dp[u] = 1; // visited
         for (int v : edges[u]) {
             if (!dfs(v)) {
                 return false;
             }
         }   
 
-        dp[u] = 2;
+        dp[u] = 2; // safe
         return true;
     }
 }

@@ -25,8 +25,6 @@ class Solution {
         state[u] = 1; // vis
         for (int v : edges[u]) {
             if (!dfs(v)) return false;
-
-            state[v] = 2; // safe
         }
 
         state[u] = 2;

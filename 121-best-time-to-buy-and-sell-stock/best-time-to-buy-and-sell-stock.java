@@ -4,13 +4,8 @@ class Solution {
         int maxProfit = 0;
 
         for (int price : prices) {
-            if (price < minBuy) {
-                minBuy = price;
-            }
-
-            if (price - minBuy > maxProfit) {
-                maxProfit = price - minBuy;
-            }
+            minBuy = Math.min(price, minBuy);
+            maxProfit = Math.max(price - minBuy, maxProfit);
         }
 
         return maxProfit;

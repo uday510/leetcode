@@ -19,9 +19,8 @@ class Solution {
     }
 
     private boolean dfs(int u) {
-        if (dp[u] != 0) {
-            return dp[u] == 2;
-        }
+        if (dp[u] == 1) return false; // cycle
+        if (dp[u] == 2) return true; // safe
 
         dp[u] = 1;
         for (int v : edges[u]) {

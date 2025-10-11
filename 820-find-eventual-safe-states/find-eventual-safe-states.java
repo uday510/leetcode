@@ -1,5 +1,4 @@
 class Solution {
-
     int[][] edges;
     int[] dp;
     int n;
@@ -9,17 +8,15 @@ class Solution {
         edges = graph;
         dp = new int[n];
 
-        // List<Integer> list = new ArrayList<>();
-        List<Integer> list = khans();
-        return list;
+        return reversedKahns();
 
+        // List<Integer> list = new ArrayList<>();
         // for (int i = 0; i < n; i++) {
         //     if (dfs(i)) {
         //         list.add(i);
         //     }
         // }
-
-        // return list;   
+        // return list;
     }
 
     private boolean dfs(int u) {
@@ -31,13 +28,13 @@ class Solution {
             if (!dfs(v)) {
                 return false;
             }
-        }   
+        }
 
         dp[u] = 2; // safe
         return true;
     }
 
-    private List<Integer> khans() {
+    private List<Integer> reversedKahns() {
         int[] outdegree = new int[n];
         List<Integer>[] reversedAdjList = new ArrayList[n];
 
@@ -59,7 +56,7 @@ class Solution {
         while (!queue.isEmpty()) {
             int u = queue.poll();
             safe[u] = true;
-            
+
             for (int v : reversedAdjList[u]) {
                 if (--outdegree[v] == 0) {
                     queue.offer(v);

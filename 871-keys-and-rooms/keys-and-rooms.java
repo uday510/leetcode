@@ -1,23 +1,28 @@
 class Solution {
-    List<List<Integer>> adjList;
-    int[] vis;
+
+    List<List<Integer>> edges;
+    Set<Integer> vis;
+
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        adjList = rooms;
-        int n = rooms.size();
-        vis = new int[n];
+        edges = rooms;
+        vis = new HashSet<>();
 
         dfs(0);
 
-        for (int v : vis) if (v == 0) return false;
-
-        return true;
+        return vis.size() == edges.size();    
     }
 
-    private void dfs(int node) {
-        if (vis[node] == 1) return;
+    private void dfs(int u) {
+        if (!vis.add(u)) return;
 
-        vis[node] = 1;
-        
-        for (int nei : adjList.get(node))  dfs(nei);
+        for (int v : edges.get(u)) {
+            dfs(v);
+        }
     }
 }
+
+/**
+
+0 -> 1 -> 2
+
+ */

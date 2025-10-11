@@ -1,28 +1,25 @@
 class Solution {
 
-    List<List<Integer>> edges;
-    Set<Integer> vis;
+    public boolean canVisitAllRooms(List<List<Integer>> edges) {
+        boolean[] vis = new boolean[edges.size()];
+        int cnt = 0;
 
-    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        edges = rooms;
-        vis = new HashSet<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(0);
+        vis[0] = true;
 
-        dfs(0);
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            cnt++;
 
-        return vis.size() == edges.size();    
-    }
-
-    private void dfs(int u) {
-        if (!vis.add(u)) return;
-
-        for (int v : edges.get(u)) {
-            dfs(v);
+            for (int v : edges.get(u)) {
+                if(vis[v]) continue;
+                vis[v] = true;
+                queue.offer(v);
+            }
         }
+
+
+        return cnt == edges.size();
     }
 }
-
-/**
-
-0 -> 1 -> 2
-
- */

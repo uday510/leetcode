@@ -1,36 +1,36 @@
 class Solution {
-    List<Integer>[] adjList;
+
+    int[][] edges;
     int[] state;
-    int n;
+
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        n = graph.length;
-        adjList = new ArrayList[n];
-        state = new int[n];
+        int n = graph.length;
+        edges = graph;
+        this.state = new int[n];
+
         List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
-
-        for (int i = 0; i < n; ++i) {
-            for (int nei : graph[i]) {
-                adjList[i].add(nei);
+        for (int i = 0; i < n; i++) {
+            if (dfs(i)) {
+                list.add(i);
             }
         }
-
-        for (int i = 0; i < n; ++i) {
-            if (dfs(i)) list.add(i);
-        }
-
         return list;
     }
-    private boolean dfs(int node) {
-        if (state[node] != 0) return state[node] == 2;
 
-        state[node] = 1;
-        for (int nei : adjList[node]) {
-            if (!dfs(nei)) return false;
+    private boolean dfs(int u) {
+        if (state[u] != 0) {
+            return state[u] == 2;
         }
 
-        state[node] = 2;
+        state[u] = 1; // vis
+        for (int v : edges[u]) {
+            if (!dfs(v)) return false;
+
+            state[v] = 2; // safe
+        }
+
+        state[u] = 2;
+
         return true;
     }
 }

@@ -1,35 +1,47 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
+        
         return dfs(0, lists.length - 1, lists);
     }
 
-    private ListNode dfs(int i, int j, ListNode[] lists) {
-        if (i > j) return null;
-        if (i == j) return lists[i];
+    private ListNode dfs(int l, int r, ListNode[] lists) {
+        if (l > r) return null;
+        if (l == r) return lists[l];
 
-        int mid = (i + j) >> 1;
-        ListNode left = dfs(i, mid, lists);
-        ListNode right = dfs(mid + 1, j, lists);
-
+        int m = (l + r) >> 1;
+        ListNode left = dfs(l, m, lists);
+        ListNode right = dfs(m + 1, r, lists);
         return merge(left, right);
     }
 
     private ListNode merge(ListNode left, ListNode right) {
         ListNode head = new ListNode(-1);
-        ListNode tail = head;
+        ListNode cur = head;
+        ListNode l = left, r = right;
 
-        while (left != null && right != null) {
-            if (left.val < right.val) {
-                tail.next = left;
-                left = left.next;
+        while (l != null && r != null) {
+             if (l.val <= r.val) {
+                    cur.next = l;
+                    l = l.next;
             } else {
-                tail.next = right;
-                right = right.next;
+                    cur.next = r;
+                    r = r.next;
             }
-            tail = tail.next;
+
+            cur = cur.next;
         }
 
-        tail.next = (left == null) ? right : left;
+        cur.next = l == null ? r : l;
 
         return head.next;
     }

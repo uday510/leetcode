@@ -1,5 +1,5 @@
 class Solution {
-    static int THREADS = (int) 1e1 * 2;
+    static int THREADS = (int) 1e2;
     public boolean canVisitAllRooms(List<List<Integer>> edges) {
         ExecutorService ex = Executors.newFixedThreadPool(THREADS);
         Callable<Boolean> cl = () -> {

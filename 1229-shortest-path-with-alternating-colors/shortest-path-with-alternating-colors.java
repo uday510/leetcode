@@ -1,51 +1,42 @@
 class Solution {
-    public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
-        List<int[]>[] adjList = new ArrayList[n];
-        for (int i = 0; i < n; ++i) {
-            adjList[i] = new ArrayList<>();
+    public int[] shortestAlternatingPaths(int n, int[][] r, int[][] b) {
+        List<int[]>[] adj = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+
+        // 0 -> red, 1 -> blue
+        for (int[] e : r) {
+            int u = e[0], v = e[1];
+            adj[u].add(new int[]{v, 0});
         }
 
-        for (int i = 0; i < redEdges.length; ++i) {
-           int u = redEdges[i][0];
-           int v = redEdges[i][1];
-           adjList[u].add(new int[]{v, 0});
+        for (int[] e : b) {
+            int u = e[0], v = e[1];
+            adj[u].add(new int[]{v, 1});
         }
 
-        for (int i = 0; i < blueEdges.length; ++i) {
-            int u = blueEdges[i][0];
-            int v = blueEdges[i][1];
-            adjList[u].add(new int[]{v, 1});
-        }
-
+        int[] dis = new int[n];
+        Arrays.fill(dis, -1);
+        boolean[][] vis = new boolean[n][2];
         Queue<int[]> queue = new ArrayDeque<>();
-        boolean[][] visited = new boolean[n][2];
-        int[] distance = new int[n];
-        
-        queue.offer(new int[]{0, 0, -1});
-        visited[0][0] = visited[0][1] = true;
-        Arrays.fill(distance, -1);
-        distance[0] = 0;
+        queue.offer(new int[] {0, 0, -1});
+        vis[0][0] = vis[0][1] = true;
+        dis[0] = 0;
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int node = curr[0];
-            int dist = curr[1];
-            int prevColor = curr[2];
+            int[] cur = queue.poll();
+            int u = cur[0], w = cur[1], c1 = cur[2];
 
-            for (int[] next : adjList[node]) {
-                int nextNode = next[0];
-                int nextColor = next[1];
+            for (int[] nxt : adj[u]) {
+                int v = nxt[0], c2 = nxt[1];
+                if (vis[v][c2] || c1 == c2) continue;
 
-                if (visited[nextNode][nextColor] || prevColor == nextColor) {
-                    continue;
-                }
-
-                queue.offer(new int[]{nextNode, dist + 1, nextColor});
-                if (distance[nextNode] == -1 ) distance[nextNode] = 1 + dist;
-                visited[nextNode][nextColor] = true;
+                vis[v][c2] = true;
+                if (dis[v] == -1) dis[v] = w + 1;
+                queue.offer(new int[]{v, w + 1, c2});
             }
         }
 
-        return distance;
+        return dis;
     }
 }

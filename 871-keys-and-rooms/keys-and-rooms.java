@@ -9,8 +9,14 @@ class Solution {
         };
 
         List<Callable<Boolean>> cls = new ArrayList<>();
-        for (int i = 0; i < THREADS; ++i) cls.add(() -> bfs(edges));
-
+       for (int i = 0; i < THREADS; i++) {
+            int id = i;
+            cls.add(() -> {
+                System.out.println("Thread " + id + " running BFS...");
+                return bfs(edges);
+            });
+        }
+        
         try {
             List<Future<Boolean>> fs = ex.invokeAll(cls);
             ex.shutdown();

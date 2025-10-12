@@ -1,14 +1,14 @@
 class Solution {
     static int THREADS = (int) 1e2;
     public boolean canVisitAllRooms(List<List<Integer>> edges) {
-        ExecutorService ex = Executors.newFixedThreadPool(THREADS);
-        Callable<Boolean> cl = () -> {
-            Thread.sleep(5000);
-            return bfs(edges);
-        };
-
+       ExecutorService ex = Executors.newFixedThreadPool(THREADS);
        List<Callable<Boolean>> cls = new ArrayList<>();
-       for (int i = 0; i < THREADS; i++)  cls.add(() -> bfs(edges));
+       for (int i = 0; i < THREADS; i++) {
+            cls.add(() -> {
+                Thread.sleep(10);
+                return bfs(edges);
+            });
+       }
         
         try {
             List<Future<Boolean>> fs = ex.invokeAll(cls);

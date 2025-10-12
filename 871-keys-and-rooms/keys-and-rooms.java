@@ -1,5 +1,5 @@
 class Solution {
-    static int THREADS = 100;
+    static int THREADS = (int) 1e2;
     public boolean canVisitAllRooms(List<List<Integer>> edges) {
         ExecutorService ex = Executors.newFixedThreadPool(THREADS);
         Callable<Boolean> cl = () -> {
@@ -8,7 +8,7 @@ class Solution {
             return bfs(edges);
         };
 
-        List<Callable<Boolean>> cls = new ArrayList<>();
+       List<Callable<Boolean>> cls = new ArrayList<>();
        for (int i = 0; i < THREADS; i++)  cls.add(() -> bfs(edges));
         
         try {

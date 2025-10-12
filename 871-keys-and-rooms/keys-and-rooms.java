@@ -1,7 +1,7 @@
 class Solution {
 
     public boolean canVisitAllRooms(List<List<Integer>> edges) {
-        ExecutorService ex = Executors.newFixedThreadPool(1000);
+        ExecutorService ex = Executors.newFixedThreadPool(1);
         Callable<Boolean> cl = () -> bfs(edges);
         Future<Boolean> f = ex.submit(cl);
 

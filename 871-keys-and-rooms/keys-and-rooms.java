@@ -3,7 +3,7 @@ class Solution {
     public boolean canVisitAllRooms(List<List<Integer>> edges) {
         ExecutorService ex = Executors.newFixedThreadPool(THREADS);
         Callable<Boolean> cl = () -> {
-            Thread.sleep(500);
+            Thread.sleep(5000);
             boolean res = bfs(edges);
             return res;
         };

@@ -1,17 +1,15 @@
 class Solution {
-    int[] time;
+    
     List<Integer>[] adjList;
-    boolean[] visited;
-    int n;
+    int[] time;
+
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
-        this.n = n;
-        this.time = informTime;
         adjList = new ArrayList[n];
-        visited = new boolean[n];
+        this.time = informTime;
+        
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
-
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; i++) {
             if (manager[i] != -1) {
                 adjList[manager[i]].add(i);
             }
@@ -19,16 +17,27 @@ class Solution {
 
         return dfs(headID);
     }
-    private int dfs(int node) {
-        int curr = 0;
 
-        for (Integer next : adjList[node]) {
-            if (!visited[next]) {
-                visited[next] = true;
-                curr = Math.max(curr, dfs(next));
-            }
-        } 
+    private int dfs(int u) {
+        int dist = 0;
 
-        return curr + time[node];
+        for (int v : adjList[u]) {
+            dist = Math.max(dist, dfs(v));
+        }
+
+        return dist + time[u];
     }
 }
+
+/**
+
+
+Input: n = 6, headID = 2, manager = [2,2,-1,2,2,2], informTime = [0,0,1,0,0,0]
+
+
+2 -> 0, 1, 3, 4, 5
+
+
+
+
+*/

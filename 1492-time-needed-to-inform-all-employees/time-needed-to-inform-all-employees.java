@@ -15,7 +15,23 @@ class Solution {
             }
         }
 
-        return dfs(headID);
+        // return dfs(headID);
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        int dist = 0;
+
+        queue.offer(new int[] {headID, 0});
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int u = cur[0], w = cur[1];
+            dist = Math.max(dist, w);
+
+            for (int v : adjList[u]) {
+                queue.offer(new int[] {v, w + time[u]});
+            }
+        }
+
+        return dist;
     }
 
     private int dfs(int u) {

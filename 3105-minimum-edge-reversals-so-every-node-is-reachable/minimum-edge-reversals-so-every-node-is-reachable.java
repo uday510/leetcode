@@ -19,10 +19,10 @@ class Solution {
             adjList[v].add(new int[]{u, 1});
         }
 
-        res[0] = dfs1(0);
+        res[1] = dfs1(1);
 
         Arrays.fill(vis, false);
-        dfs2(0);
+        dfs2(1);
 
         return res;
     }

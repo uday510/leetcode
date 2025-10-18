@@ -1,49 +1,55 @@
 class Solution {
-
-    private final char WALL = '+';
-    private final char PATH = '.';
-    private final int[][] DIRECTIONS = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
-
+   
+    private static final int[][] dirs = {
+            {0, 1},
+            {1, 0},
+            {-1, 0},
+            {0, -1}
+    };
+    int n, m;
+    char[][] maze;
+    
     public int nearestExit(char[][] maze, int[] entrance) {
-        return bfs(maze, entrance);
-    }
-     private int bfs(char[][] maze, int[] entrance) {
-        int rows = maze.length;
-        int cols = maze[0].length;
-        boolean[][] visited = new boolean[rows][cols];
+        n = maze.length;
+        m = maze[0].length;
+        this.maze = maze;
+
         Queue<int[]> queue = new ArrayDeque<>();
-
+        boolean[][] vis = new boolean[n][m];
         queue.offer(new int[] {entrance[0], entrance[1], 0});
-        visited[entrance[0]][entrance[1]] = true;
-
+        vis[entrance[0]][entrance[1]] = true;
+        
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int row = curr[0], col = curr[1], distance = curr[2];
-
-            if (isBorderCell(row, col, rows, cols) && distance != 0) return distance;
-
-            for (int[] direction : DIRECTIONS) {
-                int newRow = direction[0] + row;
-                int newCol = direction[1] + col;
-
-                if (!isValid(newRow, newCol, rows, cols, maze, visited)) {
-                    continue;
+            int[] cur = queue.poll();
+            int dx = cur[0], dy = cur[1], d = cur[2];
+            
+            for (int[] dir : dirs) {
+                int nx = dir[0] + dx, ny = dir[1] + dy;
+                
+                if (isValid(nx, ny) && !vis[nx][ny] && maze[nx][ny] == '.') {
+                    if (isExit(nx, ny)) return d + 1;
+                    queue.offer(new int[] {nx, ny, d + 1});
+                    vis[nx][ny] = true;
                 }
-
-                visited[newRow][newCol] = true;
-                queue.offer(new int[] {newRow, newCol, distance + 1});
             }
-
         }
-
+        
         return -1;
     }
-
-    private boolean isValid(int row, int col, int rows, int cols, char[][] maze, boolean[][] visited) {
-        return (row > -1 && row <= rows - 1 && col > -1 && col <= cols - 1 && !visited[row][col] && maze[row][col] == '.');
+    
+    private boolean isExit(int x, int y) {
+        return isValid(x, y) && isBoundary(x, y);
     }
-
-    private boolean isBorderCell(int row, int col, int rows, int cols) {
-        return (row == 0 || row == rows - 1 || col == 0 || col == cols - 1);
+    
+    private boolean isValid(int x, int y) {
+        return (x >= 0 && x < n && y >= 0 && y < m);
+    }
+    
+    private boolean isBoundary(int x, int y) {
+      if (x == 0 || x == n - 1) {
+          return true;
+      }
+      
+      return y == 0 || y == m - 1;
     }
 }

@@ -1,38 +1,53 @@
 class Solution {
-    public int minMutation(String startGene, String endGene, String[] bank) {
-        Set<String> validGenes = new HashSet<>(Arrays.asList(bank));
-        Queue<String> queue = new ArrayDeque<>();
-        int mutations = 0;
+    
+    public int minMutation(String stGene, String enGene, String[] bank) {
+        if (stGene.equals(enGene)) return 0;
 
-        if (!validGenes.contains(endGene)) return -1;
-        queue.offer(startGene);
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> validGenes = new HashSet<>();
+        Collections.addAll(validGenes, bank);
+
+        if (!validGenes.contains(enGene)) return -1;
+        validGenes.remove(stGene);
+
+        queue.offer(stGene);
+
+        char[] validChars = new char[] {'A', 'C', 'G', 'T'};
+        int mts = 0;
 
         while (!queue.isEmpty()) {
-            int size = queue.size();
-            mutations++;
-            for (int idx = 0; idx < size; ++idx) {
-                String currentGene = queue.poll();
-                StringBuilder geneBuilder = new StringBuilder(currentGene);
+            mts++;
+            int n = queue.size();
 
-                for (int pos = 0; pos < currentGene.length(); ++pos) {
-                    char originalChar = geneBuilder.charAt(pos);
+            for (int i = 0; i < n; i++) {
+                String s = queue.poll();
+                assert s != null;
+                
+                for (int j = 0; j < s.length(); j++) {
+                    char[] chars = s.toCharArray();
+                    char originalChar = chars[j];
 
-                    for (char ch : new char[]{'A', 'C', 'G', 'T'}) {
-                        geneBuilder.setCharAt(pos, ch);
+                    for (char ch : validChars) {
+                        chars[j] = ch;
 
-                        String mutatedGene = geneBuilder.toString();
+                        String gene = new String(chars);
+                        if (!validGenes.contains(gene)) continue;
 
-                        if (!validGenes.contains(mutatedGene)) continue;
-                        
-                        if (mutatedGene.equals(endGene)) return mutations;
-                    
-                        validGenes.remove(mutatedGene);
-                        queue.offer(mutatedGene);
+                        if (gene.equals(enGene)) return mts;
+
+                        validGenes.remove(gene);
+                        queue.offer(gene);
                     }
-                    geneBuilder.setCharAt(pos, originalChar);
+
+                    chars[j] = originalChar;
                 }
             }
+
         }
+
+
         return -1;
     }
+
+
 }

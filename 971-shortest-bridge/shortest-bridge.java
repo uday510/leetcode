@@ -24,7 +24,6 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            System.out.println(Arrays.toString(cur));
             int dx = cur[0], dy = cur[1], w = cur[2];
 
             for (int[] dir : dirs) {

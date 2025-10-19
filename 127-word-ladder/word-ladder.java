@@ -19,9 +19,9 @@ class Solution {
         
             for (int i = 0; i < n; i++) {
                 String cur = queue.poll();
+                if (cur.equals(en)) return level;
                 List<String> neighbours = getNeighbors(cur);
                 for (String nei : neighbours) {  
-                    if (nei.equals(en)) return level + 1;                  
                     queue.offer(nei);
                 }
             }

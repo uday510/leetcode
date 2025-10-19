@@ -41,6 +41,7 @@ class Solution {
             char originalChar = ch[i];
 
             for (char cur = 'a'; cur <= 'z'; cur++) {
+                if (cur == originalChar) continue;
                 ch[i] = cur;
 
                 String nei = new String(ch);

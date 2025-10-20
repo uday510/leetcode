@@ -1,38 +1,30 @@
 class Solution {
-    int[][] DIRs = {
-                 {0, 1}, {0, -1},
-                 {-1, 0}, {1, 0},
-                 {-1, -1}, {-1, 1},
-                 {1, -1}, {1, 1}
-                };
+
     public int shortestPathBinaryMatrix(int[][] grid) {
         if (grid[0][0] == 1) return -1;
         int n = grid.length;
-        Queue<int[]> queue = new LinkedList<>();
-        boolean[][] visited = new boolean[n][n];
 
-        queue.offer(new int[]{0, 0, 1});
-        visited[0][0] = true;
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[] {0, 0, 1});
+        grid[0][0] = 2;
 
         while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int row = current[0];
-            int col = current[1];
-            int dist = current[2];
+            int[] cur = queue.poll();
+            int dx = cur[0], dy = cur[1], w = cur[2];
+            
+            if (dx == n - 1 && dy == n - 1) return w;
 
-            if (row == n-1 && col == n-1) return dist;
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (Math.abs(i) + Math.abs(j) == 0) continue;
 
-            for (int[] dir : DIRs) {
-                int R = row + dir[0];
-                int C = col + dir[1];
+                    int nx = dx + i, ny = dy + j;
 
-                if (R < 0 || R >= n || 
-                    C < 0 || C >= n || 
-                    visited[R][C] || grid[R][C] == 1
-                    ) { continue; }
+                    if (nx < 0 || nx >= n || ny < 0 || ny >= n || grid[nx][ny] != 0) continue;
 
-                visited[R][C] = true;
-                queue.offer(new int[] {R, C, dist + 1});
+                    queue.offer(new int[] {nx, ny, w + 1});
+                    grid[nx][ny] = 2;
+                }
             }
         }
 

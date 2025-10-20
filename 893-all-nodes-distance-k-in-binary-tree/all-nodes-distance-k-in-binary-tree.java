@@ -1,37 +1,39 @@
 class Solution {
-
-    Map<TreeNode, TreeNode> parentMap;
-    Set<TreeNode> visited;
-    List<Integer> kDistanceNodes;
+    Map<TreeNode, TreeNode> map;
+    List<Integer> list;
+    Set<TreeNode> vis;
 
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        parentMap = new HashMap<>();
-        visited = new HashSet<>();
-        kDistanceNodes = new ArrayList<>();
+        map = new HashMap<>();
+        list = new ArrayList<>();
+        vis = new HashSet<>();
 
-        assignParent(root, null);
+        applyParent(root);
+
         dfs(target, k);
-        return kDistanceNodes;
+        return list;
     }
-
-    private void dfs(TreeNode node, int k) {
-        if (node == null || !visited.add(node)) return;
-
-        if (k == 0) {
-            kDistanceNodes.add(node.val);
-            return;
-        }
-
-        dfs(parentMap.get(node), k - 1);
-        dfs(node.left, k - 1);
-        dfs(node.right, k - 1);
-    }
-
-    private void assignParent(TreeNode node, TreeNode parent) {
+    
+    private void applyParent(TreeNode node) {
         if (node == null) return;
 
-        parentMap.put(node, parent);
-        assignParent(node.left, node);
-        assignParent(node.right, node);
+       map.put(node.left, node);
+       map.put(node.right, node);
+
+       applyParent(node.left);
+       applyParent(node.right);
+    }
+    
+    private void dfs(TreeNode node, int dist) {
+        if (node == null || !vis.add(node)) return;
+        
+        if (dist == 0) {
+            list.add(node.val);
+            return;
+        }
+        
+        dfs(node.left, dist - 1);
+        dfs(node.right, dist - 1);
+        dfs(map.get(node), dist - 1);
     }
 }

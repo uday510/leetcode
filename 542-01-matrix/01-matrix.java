@@ -1,37 +1,50 @@
 class Solution {
     public int[][] updateMatrix(int[][] mat) {
-        final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-        final int m = mat.length;
-        final int n = mat[0].length;
-        final int[][] res = new int[m][n];
-        final Deque<int[]> queue = new ArrayDeque<>();
+        return highestPeak(mat);
+    }
 
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (mat[i][j] == 0) {
-                    queue.offerLast(new int[]{i, j, 0});
-                    mat[i][j] = 2;
+    private final static int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    
+    public int[][] highestPeak(int[][] arr) {
+        int m = arr.length, n = arr[0].length;
+        int[][] res = new int[m][n];
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (arr[i][j] == 0) {
+                    queue.offer(new int[] {i, j, 0});
+                } else {
+                    res[i][j] = -1;
                 }
             }
         }
-
+        
+        if (queue.size() == m * n) return res;
+        
         while (!queue.isEmpty()) {
-            int[] curr = queue.pollFirst();
-
+            int[] cur = queue.poll();
+            int dx = cur[0], dy = cur[1], w = cur[2];
+            
             for (int[] dir : dirs) {
-                int R = dir[0] + curr[0];
-                int C = dir[1] + curr[1];
-                int D = curr[2] + 1;
-
-                if (R < 0 || R >= m || C < 0 || C >= n || mat[R][C] == 2) continue;
-
-                res[R][C] = D;
-                mat[R][C] = 2;
-
-                queue.offerLast(new int[] {R, C, D});
+                int nx = dx + dir[0], ny = dy + dir[1];
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || res[nx][ny] >= 0) continue;
+                queue.offer(new int[] {nx, ny, w + 1});
+                res[nx][ny] = w + 1;
+                
             }
         }
-
+        
+        
         return res;
     }
 }
+
+/**
+
+0 1 2
+1 2 3
+2 3 4
+
+ */

@@ -20,8 +20,6 @@ class Solution {
             }
         }
 
-        if (queue.isEmpty()) return -1;
-
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
             int dx = cur[0], dy = cur[1], curKeysMask = cur[2], w = cur[3];
@@ -37,17 +35,13 @@ class Solution {
 
                 if (isWall(ch)) continue;
 
+                if (isLock(ch) && (curKeysMask & (1 << (ch - 'A'))) == 0) continue;
+
                 int newKeysMask = curKeysMask;
-                if (isKey(ch)) {
-                    newKeysMask |= (1 << (ch - 'a'));
-                }
+                if (isKey(ch)) newKeysMask |= (1 << (ch - 'a')); 
 
                 if (vis[nx][ny][newKeysMask]) continue;
 
-                if (isLock(ch)) {
-                    if ((newKeysMask & (1 << (ch - 'A'))) == 0) continue;
-                }
-                
                 vis[nx][ny][newKeysMask] = true;
                 queue.offer(new int[] {nx, ny, newKeysMask, w + 1});
             }

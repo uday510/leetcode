@@ -24,6 +24,7 @@ class Solution {
             int[] cur = queue.poll();
             int dx = cur[0], dy = cur[1], curKeysMask = cur[2], w = cur[3];
 
+            // found all keys
             if (keysMask == curKeysMask) return w;
 
             for (int[] dir : DIRs) {
@@ -35,6 +36,7 @@ class Solution {
 
                 if (isWall(ch)) continue;
 
+                // key not found
                 if (isLock(ch) && (curKeysMask & (1 << (ch - 'A'))) == 0) continue;
 
                 int newKeysMask = curKeysMask;

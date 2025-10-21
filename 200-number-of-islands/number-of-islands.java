@@ -1,54 +1,43 @@
 class Solution {
-
-    private char[][] grid;
-    private int m, n;
+    
+    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    int m, n;
+    char[][] grid;
 
     public int numIslands(char[][] grid) {
         this.grid = grid;
-        this.m = grid.length;
-        this.n = grid[0].length;
-        int numIslands = 0;
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1') {
-                    numIslands++;
-                    bfs(i, j);
+        m = grid.length;
+        n = grid[0].length;
+        int islands = 0;
+        
+        for (int x = 0; x < m; x++) {
+            for (int y = 0; y < n; y++) {
+                if (grid[x][y] == '1') {
+                    bfs(x, y);
+                    islands++;
                 }
             }
         }
-
-        return numIslands;
+        
+        return islands;
     }
-
+    
     private void bfs(int x, int y) {
-        Queue<Edge> queue = new ArrayDeque<>();
-        grid[x][y] = '0';
-        queue.offer(new Edge(x, y));
-
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[] {x, y});
+        
         while (!queue.isEmpty()) {
-            Edge e = queue.poll();
-
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dy = -1; dy <= 1; dy++) {
-                    if (Math.abs(dx) + Math.abs(dy) != 1) continue;
-
-                    int nx = dx + e.x, ny = dy + e.y;
-                    if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') {
-                        grid[nx][ny] = '0';
-                        queue.offer(new Edge(nx, ny));
-                    }
-                }
+            int[] cur = queue.poll();
+            int dx = cur[0], dy = cur[1];
+            
+            for (int[] dir : DIRs) {
+                int nx = dx + dir[0], ny = dy + dir[1];
+                
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || grid[nx][ny] == '0') continue;
+                
+                grid[nx][ny] = '0';
+                queue.offer(new int[] {nx, ny});
             }
-        }
-
-    }
-
-    class Edge {
-        int x, y;
-        Edge(int x, int y) {
-            this.x = x;
-            this.y = y;
         }
     }
 }

@@ -1,11 +1,8 @@
 class Solution {
 
-    boolean[] vis;
-
     public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
         int[] indegree = new int[n];
-        vis = new boolean[n];
-        
+                
         for (var e : edges) {
             int v = e.getLast();
             indegree[v]++;

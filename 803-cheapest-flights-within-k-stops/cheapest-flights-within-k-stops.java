@@ -1,37 +1,38 @@
 class Solution {
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    public int findCheapestPrice(int n, int[][] edges, int src, int dst, int k) {
         List<int[]>[] adjList = new ArrayList[n];
-        for (int i = 0; i < n; ++i) adjList[i] = new ArrayList<>();
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-        for (int[] flight : flights) {
-            int u = flight[0], v = flight[1], w = flight[2];
-            adjList[u].add(new int[]{v, w});
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            adjList[u].add(new int[] {v, w});
         }
-        
-        int INF = 0x7fffffff;
+
+        int inf = Integer.MAX_VALUE;
         int[] dist = new int[n];
-        Arrays.fill(dist, INF);
+        Arrays.fill(dist, inf);
 
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[]{src, 0, 0});
+        queue.offer(new int[] {src, 0, 0});
         dist[src] = 0;
 
         while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int u1 = curr[0], w1 = curr[1], s1 = curr[2];
+            int[] cur = queue.poll();
+            int u = cur[0], curK = cur[1], w = cur[2];
 
-            if (s1 > k) continue;
+            if (curK > k) continue;
 
-            for (int[] next : adjList[u1]) {
-                int v2 = next[0], w2 = w1 + next[1];
+            for (int[] nxt : adjList[u]) {
+                int v = nxt[0], w1 = nxt[1];
 
-                if (w2 < dist[v2]) {
-                    dist[v2] = w2;
-                    queue.offer(new int[] {v2, w2, s1 + 1});
+                if (w + w1 < dist[v]) {
+                    dist[v] = w + w1;
+                    System.out.println(u + " -> " + v + " " + dist[v]);
+                    queue.offer(new int[]{v, curK + 1, w + w1});
                 }
             }
         }
+    return dist[dst] == inf ? -1 : dist[dst];
 
-        return dist[dst] == INF ? -1 : dist[dst];
     }
 }

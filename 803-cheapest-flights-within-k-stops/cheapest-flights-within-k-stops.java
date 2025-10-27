@@ -12,7 +12,7 @@ class Solution {
         int inf = Integer.MAX_VALUE;
         Arrays.fill(dist, inf);
 
-        Queue<int[]> queue = new ArrayDeque<>();
+        PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(x -> x[2]));
         queue.offer(new int[] {src, 0, 0});
         dist[src] = 0;
 

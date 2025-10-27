@@ -16,8 +16,9 @@ class Solution {
             int[] cur = queue.poll();
             int x = cur[0], y = cur[1], w = cur[2];
 
-            // if (dist[x][y] < w) continue;
-             if (x == en[0] && y == en[1]) return dist[x][y];
+            if (x == en[0] && y == en[1]) return dist[x][y];
+
+            if (dist[x][y] < w) continue;
 
             for (int[] dir : dirs) {
                 int dx = x + dir[0], dy = y + dir[1];

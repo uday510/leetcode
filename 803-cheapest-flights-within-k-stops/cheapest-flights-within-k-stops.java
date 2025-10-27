@@ -1,47 +1,37 @@
 class Solution {
+    public int findCheapestPrice(int n, int[][] edges, int src, int dst, int k) {
+        List<int[]>[] adjList  = new ArrayList[n];
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            adjList[u].add(new int[] {v, w});
+        }
 
-        List<int[]>[] adjList = new ArrayList[n];
-        int[][] dist = new int[n][k + 2];
+        int[] dist = new int[n];
         int inf = Integer.MAX_VALUE;
-        
-        for (int i = 0; i < n; i++) {
-            adjList[i] = new ArrayList<>();
-            Arrays.fill(dist[i], inf);
-        }
-        
-        for (int[] flight : flights) {
-            int u = flight[0], v = flight[1], w = flight[2];
-            adjList[u].add(new int[]{v, w});
-        }
+        Arrays.fill(dist, inf);
 
         Queue<int[]> queue = new ArrayDeque<>();
         queue.offer(new int[] {src, 0, 0});
-        dist[src][0] = 0;
-        
+        dist[src] = 0;
+
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int u = cur[0], stops = cur[1], w = cur[2];
-            
-            if (stops > k ) continue;
+            int u = cur[0], w = cur[1], stops = cur[2];
+
+            if (stops > k) continue;
             
             for (int[] nxt : adjList[u]) {
                 int v = nxt[0], w1 = nxt[1];
-                
-                if (w + w1 < dist[v][stops + 1]) {
-                    dist[v][stops + 1] = w + w1;
-                    queue.offer(new int[] {v, stops + 1, w + w1});
+
+                if (w + w1 < dist[v]) {
+                    dist[v] = w + w1;
+                    queue.offer(new int[] {v, w + w1, stops + 1});
                 }
             }
         }
-        
-        int minDist = inf;
-        for (int i = 0; i <= k + 1; i++) {
-            minDist = Math.min(dist[dst][i], minDist);
-        }
 
-        return minDist == inf ? -1 : minDist;
+        return dist[dst] == inf ? -1 : dist[dst];
     }
-
 }

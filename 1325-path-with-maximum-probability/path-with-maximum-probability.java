@@ -26,8 +26,7 @@ class Solution {
             int u = cur.v;
             double w = cur.w;
             
-            // if (w < probs[u]) continue;
-
+            if (w < probs[u]) continue;
             
             for (Edge e : adjList[u]) {
                 int v = e.v;

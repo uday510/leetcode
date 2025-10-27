@@ -1,35 +1,44 @@
-public class Solution {
-    public int shortestDistance(int[][] maze, int[] start, int[] dest) {
-        int[][] distance = new int[maze.length][maze[0].length];
-        for (int[] row: distance)
-            Arrays.fill(row, Integer.MAX_VALUE);
-        distance[start[0]][start[1]] = 0;
-        dijkstra(maze, start, distance);
-        return distance[dest[0]][dest[1]] == Integer.MAX_VALUE ? -1 : distance[dest[0]][dest[1]];
-    }
+class Solution {
+    
+    private static final int[][] dirs = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+    static final int inf = Integer.MAX_VALUE;
 
-    public void dijkstra(int[][] maze, int[] start, int[][] distance) {
-        int[][] dirs={{0,1},{0,-1},{-1,0},{1,0}};
-        PriorityQueue < int[] > queue = new PriorityQueue < > ((a, b) -> a[2] - b[2]);
-        queue.offer(new int[]{start[0],start[1],0});
+    public int shortestDistance(int[][] maze, int[] st, int[] en) {
+        int m = maze.length, n = maze[0].length;
+        int[][] dist = new int[m][n];
+        for (int[] row : dist) Arrays.fill(row, inf);
+
+        PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt( k -> k[2]));
+        queue.offer(new int[] {st[0], st[1], 0});
+        dist[st[0]][st[1]] = 0;
+
         while (!queue.isEmpty()) {
-            int[] s = queue.poll();
-            if(distance[s[0]][s[1]] < s[2])
-                continue;
-            for (int[] dir: dirs) {
-                int x = s[0] + dir[0];
-                int y = s[1] + dir[1];
-                int count = 0;
-                while (x >= 0 && y >= 0 && x < maze.length && y < maze[0].length && maze[x][y] == 0) {
-                    x += dir[0];
-                    y += dir[1];
-                    count++;
+            int[] cur = queue.poll();
+            int x = cur[0], y = cur[1], w = cur[2];
+
+            if (dist[x][y] < w) continue;
+             if (x == en[0] && y == en[1]) return dist[x][y];
+
+            for (int[] dir : dirs) {
+                int dx = x + dir[0], dy = y + dir[1];
+                int cnt = 0;
+
+                while (dx >= 0 && dx < m && dy >= 0 && dy < n && maze[dx][dy] == 0) {
+                    dx += dir[0];
+                    dy += dir[1];
+                    cnt++;
                 }
-                if (distance[s[0]][s[1]] + count < distance[x - dir[0]][y - dir[1]]) {
-                    distance[x - dir[0]][y - dir[1]] = distance[s[0]][s[1]] + count;
-                    queue.offer(new int[]{x - dir[0], y - dir[1], distance[x - dir[0]][y - dir[1]]});
+
+                dx -= dir[0];
+                dy -= dir[1];
+
+                if (cnt + w < dist[dx][dy]) {
+                    dist[dx][dy] = cnt + w;
+                    queue.offer(new int[] {dx, dy, cnt + w});
                 }
             }
         }
+
+        return -1;
     }
 }

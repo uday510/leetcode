@@ -10,7 +10,7 @@ public class Solution {
 
     public void dijkstra(int[][] maze, int[] start, int[][] distance) {
         int[][] dirs={{0,1},{0,-1},{-1,0},{1,0}};
-        Queue < int[] > queue = new ArrayDeque < > ();
+        PriorityQueue < int[] > queue = new PriorityQueue < > ((a, b) -> a[2] - b[2]);
         queue.offer(new int[]{start[0],start[1],0});
         while (!queue.isEmpty()) {
             int[] s = queue.poll();

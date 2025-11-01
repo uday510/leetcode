@@ -11,7 +11,8 @@ class Solution {
             adjList[u].add(new int[] {v, w});
         }
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        // PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        Queue<int[]> pq = new ArrayDeque<>();
 
         int[] dists = new int[n + 1];
         Arrays.fill(dists, INF);

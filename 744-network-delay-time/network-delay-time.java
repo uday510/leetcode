@@ -1,41 +1,47 @@
 class Solution {
-    public int networkDelayTime(int[][] times, int n, int k) {
-        
-        List<int[]>[] adjList = new ArrayList[n + 1];
-        for (int i = 1; i <= n; ++i) adjList[i] = new ArrayList<>();
-        for (int[] time : times) adjList[time[0]].add(new int[] {time[1], time[2]});
 
-        int INF = (int) 1e9;
+    final static int INF = Integer.MAX_VALUE;
+
+    public int networkDelayTime(int[][] edges, int n, int src) {
+        List<int[]>[] adjList = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) adjList[i] = new ArrayList<>();
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1], w = e[2];
+            adjList[u].add(new int[] {v, w});
+        }
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+
         int[] dists = new int[n + 1];
         Arrays.fill(dists, INF);
 
-        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> {
-            return a[1] - b[1];
-        });
-        queue.offer(new int[] {k, 0});
-        dists[k] = 0;
+        pq.offer(new int[] {src, 0});
+        dists[src] = 0;
 
-        while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int node = curr[0], w = curr[1];
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int u = cur[0], w = cur[1];
 
-            if (dists[node] < w) continue;
+            if (dists[u] < w) continue;
 
-            for (int[] next : adjList[node]) {
-                int nei = next[0], neiW = next[1];
+            for (int[] nxt : adjList[u]) {
+                int v = nxt[0], w1 = nxt[1];
 
-                if (neiW + w < dists[nei]) {
-                    dists[nei] = neiW + w;
-                    queue.offer(new int[] {nei, neiW + w});
+                if (w + w1 < dists[v]) {
+                    dists[v] = w + w1;
+                    pq.offer(new int[] {v, w + w1});
                 }
             }
         }
 
-        int maxDelay = -INF;
-        for (int idx = 1; idx <= n; ++idx) {
-            if (dists[idx] == INF) return -1;
-            maxDelay = Math.max(maxDelay, dists[idx]);
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 1; i <= n; i++) {
+            if (dists[i] == INF) return -1;
+            max = Math.max(max, dists[i]);
         }
-        return maxDelay;
+
+        return max;
     }
 }

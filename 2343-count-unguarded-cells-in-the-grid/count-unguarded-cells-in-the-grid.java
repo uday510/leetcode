@@ -1,10 +1,9 @@
 class Solution {
-    
+    static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
         int visited = 0;
         int[][] vis = new int[m][n];
-        int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-
+        
         for (int[] g : guards) {
             int x = g[0], y = g[1];
             vis[x][y] = 2;

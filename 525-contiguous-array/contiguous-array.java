@@ -8,13 +8,10 @@ class Solution {
         for (int i = 0; i < nums.length; i++) {
             cur += nums[i] == 1 ? 1 : -1;
 
-            if (map.containsKey(cur)) {
-                longest = Math.max(longest, i - map.get(cur));
-            } else {
-                map.put(cur, i);
-            }
-
+            map.putIfAbsent(cur, i);
+            longest = Math.max(longest, i - map.get(cur));
         }
+
         return longest;
     }
 }

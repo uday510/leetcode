@@ -9,9 +9,7 @@ class Solution {
                 cur += time[j];
                 max = Math.max(max, time[j++]);
             }
-
-            i = j;
-
+            
             min += cur - max;
         }
 

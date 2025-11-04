@@ -14,7 +14,7 @@ class Solution {
         int en = st + k;
         Map<Integer, Integer> map = new HashMap<>();
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> {
+        Queue<Integer> pq = new PriorityQueue<>((a, b) -> {
             int c1 = map.get(a), c2 = map.get(b);
             if (c1 == c2) return a - b;
             return c1 - c2;
@@ -27,7 +27,6 @@ class Solution {
             pq.offer(key);
             if (pq.size() > x) pq.poll();
         }
-
 
         int sum = 0;
         while (!pq.isEmpty()) {

@@ -1,19 +1,29 @@
 class Solution {
+
+    String s;
+    int[] dp;
+    int n;
+
     public int numDecodings(String s) {
-        int n = s.length();
-        if (n == 0 || s.charAt(0) == '0') return 0;
+        this.s = s;
+        n = s.length();
+        dp = new int[n];
+        Arrays.fill(dp, -1);
+        
+        return dfs(0);
+    }
 
-        int[] dp = new int[n + 1];
-        dp[0] = dp[1] = 1;
+    private int dfs(int i) {
+        if (i >= n) return 1;
 
-        for (int i = 2; i <= n; i++) {
-            int one = s.charAt(i - 1) - '0';
-            int two = (s.charAt(i - 2) - '0') * 10 + one;
+        if (dp[i] != -1) return dp[i];
 
-            if (one >= 1) dp[i] = dp[i - 1];
-            if (two >= 10 && two <= 26) dp[i] += dp[i - 2];
-        }
+        if (s.charAt(i) == '0') return 0;
 
-        return dp[n];
+        int t1 = dfs(i + 1);
+        int t2 = i + 1 < n && (s.charAt(i) - '0')*10 + (s.charAt(i + 1) - '0')<= 26 ? dfs(i + 2) : 0;
+
+        return dp[i] = t1 + t2;
+
     }
 }

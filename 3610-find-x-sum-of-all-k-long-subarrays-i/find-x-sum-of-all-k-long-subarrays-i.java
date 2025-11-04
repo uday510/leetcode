@@ -19,21 +19,17 @@ class Solution {
             return a[1] - b[1];
         });
 
-        for (int i = st; i < en; i++) {
-            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-        }
+        for (int i = st; i < en; i++) 
+            map.merge(arr[i], 1, Integer::sum);
         
 
-        
-        for (Map.Entry<Integer, Integer> es : map.entrySet()) {
-            int a = es.getKey(), b = es.getValue();
-            pq.offer(new int[] {a, b});
+        for (var es : map.entrySet()) {
+            pq.offer(new int[] { es.getKey(), es.getValue() } );
             if (pq.size() > x) pq.poll();
         }
 
 
         int sum = 0;
-
         while (!pq.isEmpty()) {
             int[] cur = pq.poll();
             sum += cur[0] * cur[1];

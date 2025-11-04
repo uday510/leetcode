@@ -14,25 +14,25 @@ class Solution {
         int en = st + k;
         Map<Integer, Integer> map = new HashMap<>();
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
-            if (a[1] == b[1]) return a[0] - b[0];
-            return a[1] - b[1];
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> {
+            int c1 = map.get(a), c2 = map.get(b);
+            if (c1 == c2) return a - b;
+            return c1 - c2;
         });
 
         for (int i = st; i < en; i++) 
             map.merge(arr[i], 1, Integer::sum);
-        
 
-        for (var es : map.entrySet()) {
-            pq.offer(new int[] { es.getKey(), es.getValue() } );
+        for (int key : map.keySet()) {
+            pq.offer(key);
             if (pq.size() > x) pq.poll();
         }
 
 
         int sum = 0;
         while (!pq.isEmpty()) {
-            int[] cur = pq.poll();
-            sum += cur[0] * cur[1];
+            int key = pq.poll();
+            sum += key * map.get(key);
         }
 
         return sum;

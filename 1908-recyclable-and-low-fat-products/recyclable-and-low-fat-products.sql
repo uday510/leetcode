@@ -1,9 +1,9 @@
 # Write your MySQL query statement below
 
 SELECT 
-    product_id 
+    product_id
 FROM 
-    products p
+    products
 WHERE 
-    P.low_fats = 'Y' AND p.recyclable = 'Y'
+    low_fats = 'Y' AND recyclable = 'Y'
 ;

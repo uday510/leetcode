@@ -1,39 +1,37 @@
 class Solution {
 
     Map<String, Integer> dp;
-    Set<String> ws;
-    int n;
+    Set<String> w;
 
     public int longestStrChain(String[] words) {
-        n = words.length;
-        ws = new HashSet<>();
         dp = new HashMap<>();
+        w = new HashSet<>();
 
-        Collections.addAll(ws, words);
+        for (String word : words) w.add(word);
 
-        int res = 1;
+        int cur = 0;
         for (String w : words) {
-            res = Math.max(res, dfs(w));
+            cur = Math.max(cur, dfs(w));
         }
 
-        return res;
+        return cur;    
     }
 
-    private int dfs(String w) {
-        Integer cached = dp.get(w);
-        if (cached != null) return cached;
+    private int dfs(String s) {
+        if (dp.containsKey(s)) return dp.get(s);
 
         int cur = 1;
-        for (int i = 0; i < w.length(); i++) {
-            String s = w.substring(0, i) + w.substring(i + 1);
 
-            if (ws.contains(s)) {
-                cur = Math.max(cur, 1 + dfs(s));
+        for (int i = 0; i < s.length(); i++) {
+            String st = s.substring(0, i) + s.substring(i + 1);
+
+            if (w.contains(st)) {
+                cur = Math.max(cur, 1 + dfs(st));
             }
         }
 
-        dp.put(w, cur);
+        dp.put(s, cur);
+
         return cur;
     }
-    
 }

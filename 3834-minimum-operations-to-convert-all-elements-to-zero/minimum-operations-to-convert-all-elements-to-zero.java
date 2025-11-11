@@ -1,18 +1,20 @@
 class Solution {
     public int minOperations(int[] nums) {
+        Deque<Integer> st = new ArrayDeque<>();
+        st.push(0);
         int cnt = 0;
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(0);
 
-        for (int num : nums) {
-            while (!stack.isEmpty() && stack.peek() > num) {
-                stack.pop();
+        for (int i = 0; i < nums.length; i++) {
+            int cur = nums[i];
+
+            while (!st.isEmpty() && st.peek() > cur) st.pop();
+
+            if (st.isEmpty() || cur > st.peek()) {
+                cnt++;
+                st.push(cur);
             }
-        if (stack.isEmpty() || stack.peek() < num) {
-            stack.push(num);
-            cnt++;
         }
-    }
-    return cnt;
+
+        return cnt;
     }
 }

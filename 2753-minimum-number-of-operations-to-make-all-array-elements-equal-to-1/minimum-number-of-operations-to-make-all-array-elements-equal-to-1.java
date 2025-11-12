@@ -1,8 +1,6 @@
 class Solution {
-    Map<String, Integer> cache;
     public int minOperations(int[] arr) {
         int n = arr.length, minOps = n + 1;
-        cache = new HashMap<>();
         int cnt = 0;
 
         for (int i = 0; i < n; i++) {
@@ -24,17 +22,12 @@ class Solution {
         return n + minOps - 2;
     }
 
-    private int getEucliedianGCD(int x, int y) {
-        String k = Math.min(x, y) + ":" + Math.max(x, y);
-        if (cache.containsKey(k)) return cache.get(k);
-
+    private int getEucliedianGCD(int x, int y) {;
         while (y != 0) {
             int tmp = y;
             y = x % y;
             x = tmp;
         }
-
-        cache.put(k, x);
         return x;
     }
 }

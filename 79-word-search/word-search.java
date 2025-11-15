@@ -4,6 +4,7 @@ class Solution {
     String w;
     int n, m, wLen;
     boolean[][] vis;
+    int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
     public boolean exist(char[][] board, String word) {
         this.board = board; 
@@ -22,21 +23,19 @@ class Solution {
         return false;
     }
 
-    private boolean dfs(int i, int j, int idx) {
+    private boolean dfs(int x, int y, int idx) {
         if (idx >= wLen) return true;
 
-        if (!isValid(i, j, idx)) return false;
+        if (!isValid(x, y, idx)) return false;
 
-        vis[i][j] = true;
-        if (dfs(i + 1, j, idx + 1) || 
-            dfs(i - 1, j, idx + 1) || 
-            dfs(i, j + 1, idx + 1) || 
-            dfs(i, j - 1, idx + 1)) {
-            return true;
+        vis[x][y] = true;
+        for (int[] dir : dirs) {
+            int R = dir[0] + x, C = dir[1] + y;
+
+            if (dfs(R, C, idx + 1)) return true;
         }
 
-        vis[i][j] = false;
-        return false;
+        return vis[x][y] = false;
     }
 
     private boolean isValid(int i, int j, int idx) {

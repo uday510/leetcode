@@ -16,7 +16,7 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (dfs(i, j, 0)) return true;
+                if (w.charAt(0) == board[i][j] && dfs(i, j, 0)) return true;
             }
         }
 
@@ -31,11 +31,13 @@ class Solution {
         vis[x][y] = true;
         for (int[] dir : dirs) {
             int R = dir[0] + x, C = dir[1] + y;
-
-            if (dfs(R, C, idx + 1)) return true;
+            if (dfs(R, C, idx + 1)) {
+                return true;
+            }
         }
 
-        return vis[x][y] = false;
+        vis[x][y] = false;
+        return false;
     }
 
     private boolean isValid(int i, int j, int idx) {

@@ -18,7 +18,7 @@ class Solution {
         vis = new HashSet<>();
         nodesDistanceK = new ArrayList<>();
 
-        assignParent(root, null);
+        assignParent(root);
         dfs(target, k);
         return nodesDistanceK;
     }
@@ -33,12 +33,13 @@ class Solution {
         dfs(node.right, k - 1);
     }
 
-    private void assignParent(TreeNode node, TreeNode parent) {
+    private void assignParent(TreeNode node) {
         if (node == null) return;
 
-        parentMap.put(node, parent);
+        parentMap.put(node.left, node);
+        parentMap.put(node.right, node);
         
-        assignParent(node.left, node);
-        assignParent(node.right, node);
+        assignParent(node.left);
+        assignParent(node.right);
     }
 }

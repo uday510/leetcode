@@ -16,12 +16,12 @@ class LRUCache {
 
     public int get(int key) {
         Node cur = lru.get(key);
-        
+
         if (cur == null) return -1;
 
         remove(cur);
         add(cur);
-        
+
         return cur.v;
     }
 
@@ -37,7 +37,7 @@ class LRUCache {
             }
             cur = new Node(key, value);
         }
-
+        
         add(cur);
     }
 
@@ -45,8 +45,10 @@ class LRUCache {
         lru.put(node.k, node);
 
         Node tailPrev = tail.prev;
+
         tailPrev.next = node;
         node.prev = tailPrev;
+
         tail.prev = node;
         node.next = tail;
     }
@@ -60,15 +62,9 @@ class LRUCache {
 }
 
 class Node {
+
     Node prev, next;
     int k, v;
 
-    public Node(int k, int v) {
-        this.k = k;
-        this.v = v;
-    }
+    Node (int k, int v) { this.k = k; this.v = v; }
 }
-
-// 1 -> 2
-// get => 2 -> 1 
-// add 3 => 1 -> 3

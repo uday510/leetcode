@@ -1,46 +1,45 @@
 class Solution {
-    private int rows;
-    private int cols;
-    private boolean[][] vis;
+
+    char[][] board;
+    String w;
+    int n, m, wLen;
+    boolean[][] vis;
+
     public boolean exist(char[][] board, String word) {
-        initialize(board);
-        for (int row = 0; row < rows; ++row) {
-            for (int col = 0; col < cols; ++col) {
-                if (dfs(0, row, col, board, word)) {
-                    return true;
-                }
+        this.board = board; 
+        w = word;
+        n = board.length;
+        m = board[0].length;
+        wLen = w.length();
+        vis = new boolean[n][m];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (dfs(i, j, 0)) return true;
             }
         }
+
         return false;
     }
 
-    private boolean dfs(int index, int row, int col, char[][] board, String word) {
-        if (index >= word.length()) return true;
+    private boolean dfs(int i, int j, int idx) {
+        if (idx >= wLen) return true;
 
-        if (!valid(index, row, col, board, word)) {
-            return false;
-        } 
+        if (!isValid(i, j, idx)) return false;
 
-        vis[row][col] = true;
+        vis[i][j] = true;
+        if (dfs(i + 1, j, idx + 1) || 
+            dfs(i - 1, j, idx + 1) || 
+            dfs(i, j + 1, idx + 1) || 
+            dfs(i, j - 1, idx + 1)) {
+            return true;
+        }
 
-        if (
-            dfs(index + 1, row + 1, col, board, word) ||
-            dfs(index + 1, row - 1, col, board, word) || 
-            dfs(index + 1, row, col + 1, board, word) ||
-            dfs(index + 1, row, col - 1, board, word) 
-            ) return true;
-
-        vis[row][col] = false;
+        vis[i][j] = false;
         return false;
     }
-    private boolean valid(int i, int r, int c, char[][] board, String word) {
-        return !(r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] != word.charAt(i) ||
-            vis[r][c]);
-    }
 
-    private void initialize(char[][] board) {
-        this.rows = board.length;
-        this.cols = board[0].length;
-        vis = new boolean[rows][cols];
+    private boolean isValid(int i, int j, int idx) {
+        return (i >= 0 && i < n && j >= 0 && j < m && !vis[i][j] && board[i][j] == w.charAt(idx));
     }
 }

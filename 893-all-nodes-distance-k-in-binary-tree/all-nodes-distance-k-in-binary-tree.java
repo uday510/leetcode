@@ -1,39 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 class Solution {
-    Map<TreeNode, TreeNode> map;
-    List<Integer> list;
+
+    Map<TreeNode, TreeNode> parentMap;
     Set<TreeNode> vis;
+    List<Integer> nodesDistanceK;
 
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        map = new HashMap<>();
-        list = new ArrayList<>();
+        parentMap = new HashMap<>();
         vis = new HashSet<>();
+        nodesDistanceK = new ArrayList<>();
 
-        applyParent(root);
-
+        assignParent(root, null);
         dfs(target, k);
-        return list;
+        return nodesDistanceK;
     }
-    
-    private void applyParent(TreeNode node) {
+
+    private void dfs(TreeNode node, int k) {
+        if (node == null || !vis.add(node)) return;
+
+        if (k == 0) nodesDistanceK.add(node.val);
+
+        dfs(parentMap.get(node), k - 1);
+        dfs(node.left, k - 1);
+        dfs(node.right, k - 1);
+    }
+
+    private void assignParent(TreeNode node, TreeNode parent) {
         if (node == null) return;
 
-       map.put(node.left, node);
-       map.put(node.right, node);
-
-       applyParent(node.left);
-       applyParent(node.right);
-    }
-    
-    private void dfs(TreeNode node, int dist) {
-        if (node == null || !vis.add(node)) return;
+        parentMap.put(node, parent);
         
-        if (dist == 0) {
-            list.add(node.val);
-            return;
-        }
-        
-        dfs(node.left, dist - 1);
-        dfs(node.right, dist - 1);
-        dfs(map.get(node), dist - 1);
+        assignParent(node.left, node);
+        assignParent(node.right, node);
     }
 }

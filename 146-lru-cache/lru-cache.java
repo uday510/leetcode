@@ -1,82 +1,74 @@
 class LRUCache {
 
-        int capacity;
-        Node head, tail;
+    Map<Integer, Node> lru;
+    int capacity;
+    Node head, tail;
+
+    public LRUCache(int capacity) {
+        lru = new HashMap<>();
+        this.capacity = capacity;
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get(int key) {
+        Node cur = lru.get(key);
         
-        Map<Integer, Node> lru;
+        if (cur == null) return -1;
 
-        public LRUCache(int capacity) {
-            this.capacity = capacity;
-            lru = new HashMap<>();
-            head = new Node(-1, -1);
-            tail = new Node(-1, -1);
-            
-            head.next = tail;
-            tail.prev = head;
-        }
-
-        public int get(int key) {
-            Node node = lru.get(key);
-            
-            if (node == null) {
-                return -1;
-            }
-            
-            remove(node);
-            add(node);
-            
-            return node.v;
-        }
-
-        public void put(int key, int value) {
-            Node node = lru.get(key);
-            
-            if (node == null) {
-                if (lru.size() == capacity) {
-                    remove(head.next);
-                }
-                node = new Node(key, value);
-                add(node);
-            } else {
-                node.v = value;
-                remove(node);
-                add(node);
-            }
-            
-        }
-
-        private void add(Node node) {
-            lru.put(node.k, node);
-            
-            Node tailPrev = tail.prev;
-            
-            tailPrev.next = node;
-            node.prev = tailPrev;
-            node.next = tail;
-            tail.prev = node;
-        }
-
-        private void remove(Node node) {
-            lru.remove(node.k);
-            
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        }
+        remove(cur);
+        add(cur);
+        
+        return cur.v;
     }
 
-    class Node {
-        Node prev, next;
-        int k, v;
+    public void put(int key, int value) {
+        Node cur = lru.get(key);
 
-        Node(int k, int v) {
-            this.k = k;
-            this.v = v;
+        if (cur != null) {
+            remove(cur);
+            cur.v = value;
+        } else {
+            if (lru.size() == capacity) {
+                remove(head.next);
+            }
+            cur = new Node(key, value);
         }
+
+        add(cur);
     }
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
+    private void add(Node node) {
+        lru.put(node.k, node);
+
+        Node tailPrev = tail.prev;
+        tailPrev.next = node;
+        node.prev = tailPrev;
+        tail.prev = node;
+        node.next = tail;
+    }
+
+    private void remove(Node node) {
+        lru.remove(node.k);
+
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+}
+
+class Node {
+    Node prev, next;
+    int k, v;
+
+    public Node(int k, int v) {
+        this.k = k;
+        this.v = v;
+    }
+}
+
+// 1 -> 2
+// get => 2 -> 1 
+// add 3 => 1 -> 3

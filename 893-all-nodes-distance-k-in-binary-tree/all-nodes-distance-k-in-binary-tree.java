@@ -36,10 +36,14 @@ class Solution {
     private void assignParent(TreeNode node) {
         if (node == null) return;
 
-        parentMap.put(node.left, node);
-        parentMap.put(node.right, node);
+        add(node.left, node);
+        add(node.right, node);
         
         assignParent(node.left);
         assignParent(node.right);
+    }
+
+    private void add(TreeNode node, TreeNode parent) {
+        if (node != null) parentMap.put(node, parent);
     }
 }

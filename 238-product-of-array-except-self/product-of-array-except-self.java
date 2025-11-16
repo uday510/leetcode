@@ -3,17 +3,15 @@ class Solution {
         int n = nums.length;
         int[] res = new int[n];
 
-        int cur = nums[0];
         res[0] = 1;
         for (int i = 1; i < n; i++) {
-            res[i] = res[i - 1] * cur;
-            cur = nums[i];
+            res[i] = res[i - 1] * nums[i - 1];
         }
 
-        cur = 1;
+        int r = 1;
         for (int i = n - 1; i > -1; i--) {
-            res[i] *= cur;
-            cur *= nums[i];
+            res[i] *= r;
+            r *= nums[i];
         }
 
         return res;

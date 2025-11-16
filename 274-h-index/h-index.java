@@ -1,28 +1,22 @@
 class Solution {
     public int hIndex(int[] citations) {
-        
-        Arrays.sort(citations);
-        
-        int l = 0, r = citations.length;
         int n = citations.length;
+        Arrays.sort(citations);
 
-        while (l < r) {
-            int m = (l + r ) >> 1;
-
-            int h = n - m;
-            if (citations[m] < h) l = m + 1;
-            else r = m;
+        for (int i = 0; i < n; i++) {
+            int papers = n - i;
+            if (citations[i] >= papers) return papers;
         }
 
-        return n - l;
+        return 0;
     }
 }
 
 /**
 
-
+n = 5
 0 1 3 5 6
-
+h = 
 
 
 

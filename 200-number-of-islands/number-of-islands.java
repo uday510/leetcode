@@ -1,43 +1,57 @@
 class Solution {
-    
-    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    int m, n;
-    char[][] grid;
 
+    private char[][] grid;
+    private int n, m;
+    private final int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    private boolean[][] vis;
+    
     public int numIslands(char[][] grid) {
-        this.grid = grid;
-        m = grid.length;
-        n = grid[0].length;
+        initialize(grid);
+        
         int islands = 0;
         
-        for (int x = 0; x < m; x++) {
-            for (int y = 0; y < n; y++) {
-                if (grid[x][y] == '1') {
-                    bfs(x, y);
-                    islands++;
-                }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (vis[i][j] || grid[i][j] == '0') continue;
+                
+                islands++;
+                bfs(i, j);
             }
         }
+        
         
         return islands;
     }
     
-    private void bfs(int x, int y) {
+    private void bfs(int i, int j) {
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[] {x, y});
+        
+        vis[i][j] = true;
+        queue.offer(new int[] {i, j});
         
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
             int dx = cur[0], dy = cur[1];
             
-            for (int[] dir : DIRs) {
+            for (int[] dir : dirs) {
                 int nx = dx + dir[0], ny = dy + dir[1];
                 
-                if (nx < 0 || nx >= m || ny < 0 || ny >= n || grid[nx][ny] == '0') continue;
+                if (!valid(nx, ny)) continue;
                 
-                grid[nx][ny] = '0';
+                vis[nx][ny] = true;
                 queue.offer(new int[] {nx, ny});
             }
         }
     }
+    
+    private boolean valid(int nx, int ny) {
+        return (nx >= 0 && nx < n && ny >= 0 && ny < m && !vis[nx][ny] && grid[nx][ny] == '1');
+    }
+    
+    private void initialize(char[][] grid) {
+        this.grid = grid;
+        n = grid.length;
+        m = grid[0].length;
+        vis = new boolean[n][m];
+    } 
 }

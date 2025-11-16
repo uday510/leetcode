@@ -3,12 +3,16 @@ class Solution {
         int n = citations.length;
         Arrays.sort(citations);
 
-        for (int i = 0; i < n; i++) {
-            int papers = n - i;
-            if (citations[i] >= papers) return papers;
+        int l = 0, r = n;
+        while (l < r) {
+            int m = (l + r) >> 1;
+
+            int h = n - m;
+            if (citations[m] < h) l = m + 1;
+            else r = m;
         }
 
-        return 0;
+        return n - l;
     }
 }
 

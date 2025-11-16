@@ -1,21 +1,19 @@
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int totalGas = Arrays.stream(gas).sum();
-        int reqGas = Arrays.stream(cost).sum();
-
-        if (totalGas < reqGas) return -1;
-
-        int curGas = 0, idx = 0;
+        int total, tank, idx;
+        total = tank = idx = 0;
 
         for (int i = 0; i < gas.length; i++) {
-            curGas += gas[i] - cost[i];
+            int cur = gas[i] - cost[i];
+            total += cur;
+            tank += cur;
 
-            if (curGas < 0) {
-                curGas = 0;
+            if (tank < 0) {
+                tank = 0;
                 idx = i + 1;
             }
         }
 
-        return idx;
+        return total >= 0 ? idx : -1;
     }
 }

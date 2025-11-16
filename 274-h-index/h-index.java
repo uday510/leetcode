@@ -9,9 +9,9 @@ class Solution {
         }
 
         int papers = 0;
-        for (int i = n; i >= 0; i--) {
-            papers += cnt[i];
-            if (papers >= i) return i;
+        for (int h = n; h >= 0; h--) {
+            papers += cnt[h];
+            if (papers >= h) return h;
         }
 
         return 0;

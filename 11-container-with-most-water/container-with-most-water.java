@@ -4,16 +4,12 @@ class Solution {
         int maxArea = 0;
 
         while (l < r) {
-            int curArea;
-            if (h[l] < h[r]) {
-                curArea = (r - l) * h[l];
-                maxArea = Math.max(maxArea, curArea);
-                l++;
-            } else {
-                curArea = (r - l) * h[r];
-                maxArea = Math.max(maxArea, curArea);
-                r--;
-            }
+            int curArea = Math.min(h[l], h[r]) * (r - l);
+
+            maxArea = Math.max(maxArea, curArea);
+
+            if (h[l] < h[r]) l++;
+            else r--;
         }
 
         return maxArea;

@@ -17,6 +17,6 @@ class Solution {
             }
         }
 
-        return currGas > -1 ? index : -1;
+        return index;
     }
 }

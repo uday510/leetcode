@@ -23,7 +23,8 @@ class Solution {
             }
 
             res[i] = newName;
-            map.put(name, k + 1);
+            map.put(name, k);
+
             map.put(newName, 1);
         }
         return res;

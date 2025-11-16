@@ -11,7 +11,7 @@ class Solution {
                 curJump = maxJump;
             }
 
-            if (curJump >= n) return jumps;
+            if (curJump >= n - 1) return jumps;
         }
 
         return jumps;

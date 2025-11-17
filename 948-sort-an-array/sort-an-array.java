@@ -25,7 +25,7 @@ class Solution {
         
         int i = 0, j = 0, k = ls;
         
-        while (i < n & j < m) {
+        while (i < n && j < m) {
             if (l[i] < r[j]) nums[k] = l[i++];
             else nums[k] = r[j++];
             k++;

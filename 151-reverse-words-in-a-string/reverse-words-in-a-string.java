@@ -1,64 +1,59 @@
 class Solution {
+
     public String reverseWords(String s) {
-        StringBuilder stringBuilder = trim(s);
+        StringBuilder sb = trim(s);
 
-        reverse(0, stringBuilder.length() - 1, stringBuilder);
-        reverseEachWord(stringBuilder);
+        reverse(0, sb.length() - 1, sb);
+        reverseEachWord(sb);
 
-        return stringBuilder.toString();
+        return sb.toString();
     }
 
-    private StringBuilder trim(String str) {
-        int leftIdx = 0;
-        int rightIdx = str.length() - 1;
-        StringBuilder stringBuilder = new StringBuilder();
+    private StringBuilder trim(String s) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0, j = s.length() - 1;
 
-        while (leftIdx < rightIdx && str.charAt(leftIdx) == ' ') ++leftIdx;
-        while (leftIdx < rightIdx && str.charAt(rightIdx) == ' ') --rightIdx;
+        while (i < j && s.charAt(i) == ' ') i++;
+        while (i < j && s.charAt(j) == ' ') j--;
 
-        while (leftIdx <= rightIdx) {
-            char ch = str.charAt(leftIdx);
+        while (i <= j) {
+            char ch = s.charAt(i);
 
             if (ch != ' ') {
-                stringBuilder.append(ch);
-            } else if (stringBuilder.charAt(stringBuilder.length() - 1) != ' ') {
-                stringBuilder.append(ch);
+                sb.append(ch);
+            } else if (sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(ch);
             }
 
-            leftIdx++;
+            i++;
         }
 
-        return stringBuilder;
+        return sb;
     }
 
-    private void reverse(int leftIdx, int rightIdx, StringBuilder stringBuilder) {
-
-        while (leftIdx < rightIdx) {
-            char temp = stringBuilder.charAt(leftIdx);
-            stringBuilder.setCharAt(leftIdx++, stringBuilder.charAt(rightIdx));
-            stringBuilder.setCharAt(rightIdx--, temp);
-        }
-
-    }
-
-    private void reverseEachWord(StringBuilder stringBuilder) {
-
-        int leftIdx = 0;
-        int rightIdx = 0;
-        int length = stringBuilder.length();
-
-        while (leftIdx < length) {
-
-            while (rightIdx < length && stringBuilder.charAt(rightIdx) != ' ') {  
-                rightIdx++;
-            }
-
-            reverse(leftIdx, rightIdx - 1, stringBuilder);
-
-            leftIdx = rightIdx + 1;
-            rightIdx = leftIdx;
+    private void reverse(int i, int j, StringBuilder sb) {
+        while (i < j) {
+            swap(i++, j--, sb);
         }
     }
 
+    private void swap(int i, int j, StringBuilder sb) {
+        char tmp = sb.charAt(i);
+        sb.setCharAt(i, sb.charAt(j));
+        sb.setCharAt(j, tmp);
+    }
+
+    private void reverseEachWord(StringBuilder sb) {
+        int i = 0, j = 0, n = sb.length();
+
+        while (i < n) {
+            j = i;
+            while (j < n && sb.charAt(j) != ' ') j++;
+
+            reverse(i, j - 1, sb);
+
+            i = j + 1;
+        }
+    }
 
 }

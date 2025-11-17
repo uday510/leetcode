@@ -4,10 +4,10 @@ class Solution {
         return nums;
     }
 
-    private void mergesort(int l, int r, int[] nums) {
+        private void mergesort(int l, int r, int[] nums) {
         if (l >= r) return;
 
-        int m = (l + r) >> 1;
+        int m = (l + r) >>> 1;
 
         mergesort(l, m, nums);
         mergesort(m + 1, r, nums);
@@ -15,23 +15,22 @@ class Solution {
     }
 
     private void merge(int ls, int le, int rs, int re, int[] nums) {
-        int[] l = new int[le - ls + 1];
-        int[] r = new int[re - rs + 1];
+        int[] left = new int[le - ls + 1];
+        int[] right = new int[re - rs + 1];
 
-        int n = l.length, m = r.length;
-        for (int i = 0; i < n; i++) l[i] = nums[i + ls];
+        for (int i = 0; i < left.length; i++) left[i] = nums[i + ls];
 
-        for (int i = 0; i < m; i++) r[i] = nums[i + rs];
-        
+        for (int i = 0; i < right.length; i++) right[i] = nums[i + rs];
+
         int i = 0, j = 0, k = ls;
-        
-        while (i < n && j < m) {
-            if (l[i] < r[j]) nums[k] = l[i++];
-            else nums[k] = r[j++];
+
+        while (i < left.length && j < right.length) {
+            if (left[i] < right[j]) nums[k] = left[i++];
+            else nums[k] = right[j++];
             k++;
         }
-        
-        while (i < n) nums[k++] = l[i++];
-        while (j < m) nums[k++] = r[j++];
+
+        while (i < left.length) nums[k++] = left[i++];
+        while (j < right.length) nums[k++] = right[j++];
     }
 }

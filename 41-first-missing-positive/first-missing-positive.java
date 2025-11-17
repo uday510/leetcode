@@ -3,13 +3,13 @@ class Solution {
         int i = 0, n = nums.length;
 
         while (i < n) {
-            int correctIdx = nums[i] - 1;
+            int idx = nums[i] - 1;
 
-           if (nums[i] > 0 && nums[i] <= n && nums[i] != nums[correctIdx]) {
-               swap(i, correctIdx, nums);
-           } else {
-             i++;
-           }
+            if (nums[i] > 0 && nums[i] <= n && nums[i] != nums[idx]) {
+                swap(i, idx, nums);
+            } else {
+                i++;
+            }
         }
 
         for (i = 0; i < n; i++) {

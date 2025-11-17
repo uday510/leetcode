@@ -1,31 +1,30 @@
 class Solution {
     public String convert(String s, int numRows) {
-        if (numRows == 1 || numRows >= s.length()) {
-            return s;
-        }
-        var rows = new ArrayList<StringBuilder>();
+        if (numRows == 1 || numRows >= s.length()) return s;
 
-        for (int i = 0; i < numRows; ++i) {
+        int n = s.length();
+        
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
             rows.add(new StringBuilder());
         }
-        int currRow = 0;
-        int step = 1;
 
-        for (char c : s.toCharArray()) {
-            rows.get(currRow).append(c);
+        int i = 0, step = 1;
+        for (int j = 0; j < n; j++) {
+            char ch = s.charAt(j);
 
-            currRow += step;
+            rows.get(i).append(ch);
 
-            if (currRow == 0 || currRow == numRows - 1) {
-                step = -step;
-            }
+            i += step;
+
+            if (i == 0 || i == numRows - 1) step = -step;
         }
 
-        StringBuilder res = new StringBuilder();
-
-        for (var row : rows) {
-            res.append(row);
+        StringBuilder sb = new StringBuilder();
+        for (StringBuilder cur : rows) {
+            sb.append(cur);
         }
-        return res.toString();
+
+        return sb.toString();
     }
 }

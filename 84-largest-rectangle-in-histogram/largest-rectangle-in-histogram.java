@@ -1,25 +1,23 @@
 class Solution {
-
-    int[] heights;
     int n;
-
+    int[] h;
     public int largestRectangleArea(int[] heights) {
-        this.heights = heights;
-        n = heights.length;
+        h = heights;
+        n = h.length;
 
         int[] NSL = getNSL();
         int[] NSR = getNSR();
 
-        int maxArea = 0;
-        
+        int area = 0;
+
         for (int i = 0; i < n; i++) {
             int w = NSR[i] - NSL[i] - 1;
-            int a = w * heights[i];
+            int a = w * h[i];
 
-            maxArea = Math.max(maxArea, a);
+            area = Math.max(area, a);
         }
 
-        return maxArea;
+        return area;
     }
 
     private int[] getNSL() {
@@ -27,13 +25,12 @@ class Solution {
         Deque<Integer> st = new ArrayDeque<>();
 
         for (int i = 0; i < n; i++) {
-            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
-                st.pollLast();
-            }
 
-            NSL[i] = st.isEmpty() ? -1 : st.peekLast();
+            while (!st.isEmpty() && h[st.peek()] >= h[i]) st.pop();
 
-            st.offerLast(i);
+            NSL[i] = st.isEmpty() ? -1 : st.peek();
+
+            st.push(i);
         }
 
         return NSL;
@@ -44,13 +41,12 @@ class Solution {
         Deque<Integer> st = new ArrayDeque<>();
 
         for (int i = n - 1; i > -1; i--) {
-            while (!st.isEmpty() && heights[st.peekLast()] >= heights[i]) {
-                st.pollLast();
-            }
+            
+            while (!st.isEmpty() && h[st.peek()] >= h[i]) st.pop();
 
-            NSR[i] = st.isEmpty() ? n : st.peekLast();
+            NSR[i] = st.isEmpty() ? n : st.peek();
 
-            st.offerLast(i);
+            st.push(i);
         }
 
         return NSR;

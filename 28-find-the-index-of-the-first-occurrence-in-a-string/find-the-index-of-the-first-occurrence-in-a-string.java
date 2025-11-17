@@ -6,15 +6,14 @@ class Solution {
             int j = i, k = 0;
 
             while (
-                    j < n && k < m && 
-                    haystack.charAt(j) == needle.charAt(k)
-                ) {
-                  
-                j++; k++;
+                j < n && k < m && 
+                haystack.charAt(j) == needle.charAt(k)
+            ) {
+                k++;
+                j++;
             }
 
             if (k == m) return i;
-            System.out.println(j);
         }
 
         return -1;

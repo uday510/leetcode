@@ -56,7 +56,7 @@ class Solution {
             reverse(leftIdx, rightIdx - 1, stringBuilder);
 
             leftIdx = rightIdx + 1;
-            rightIdx += 1;
+            rightIdx = leftIdx;
         }
     }
 

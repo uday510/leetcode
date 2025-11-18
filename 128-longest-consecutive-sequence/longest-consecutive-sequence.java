@@ -9,8 +9,8 @@ class Solution {
         for (int cur : set) {
             if (set.contains(cur - 1)) continue;
 
-            int cnt = 1;
-            while (set.contains(cur + 1)) {
+            int cnt = 0;
+            while (set.contains(cur)) {
                 cur++;
                 cnt++;
             }

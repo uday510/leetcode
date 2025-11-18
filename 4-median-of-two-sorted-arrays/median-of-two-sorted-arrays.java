@@ -7,6 +7,7 @@ class Solution {
         int target = (total + 1) >> 1;
 
         int l = 0, r = n;
+
         while (l <= r) {
             int p1 = (l + r) >> 1, p2 = target - p1;
 
@@ -23,14 +24,13 @@ class Solution {
                 } else {
                     median = (Math.min(r1, r2) + Math.max(l1, l2)) / 2.0;
                 }
-
                 return median;
             }
         }
 
         return -1;
     }
-    
+
     private int safeGet(int i, int[] nums) {
         if (i < 0) return Integer.MIN_VALUE;
         if (i >= nums.length) return Integer.MAX_VALUE;

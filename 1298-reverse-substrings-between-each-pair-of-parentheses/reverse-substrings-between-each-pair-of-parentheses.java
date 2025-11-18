@@ -1,7 +1,6 @@
 class Solution {
     public String reverseParentheses(String s) {
         Deque<Integer> st = new ArrayDeque<>();
-
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {

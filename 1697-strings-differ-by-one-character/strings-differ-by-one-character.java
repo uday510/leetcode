@@ -1,41 +1,46 @@
 class Solution {
 
     static class TrieNode {
-        TrieNode[] nxt = new TrieNode[26];
-        boolean eow = false;
+        TrieNode[] next = new TrieNode[26];
+        boolean end = false;
     }
 
     TrieNode root;
+
     public boolean differByOne(String[] dict) {
         root = new TrieNode();
 
-        for (String w : dict) {
-            if (search(w, root, 0, false)) {
+        for (String word : dict) {
+            if (search(word, root, 0, 0)) {
                 return true;
             }
-            insert(w);
+            insert(word);
         }
 
         return false;
     }
 
-    private boolean search(String w, TrieNode cur, int i, boolean mismatched) {
-        if (cur == null) return false;
+    private boolean search(String word, TrieNode node, int idx, int mismatches) {
+        if (node == null) return false;
 
-        if (i == w.length()) return cur.eow && mismatched;
-
-        int ch = w.charAt(i) - 'a';
-
-        if (cur.nxt[ch] != null && search(w, cur.nxt[ch], i + 1, mismatched)) {
-            return true;
+        if (idx == word.length()) {
+            return mismatches == 1 && node.end;
         }
 
-        if (mismatched) return false;
+        int c = word.charAt(idx) - 'a';
 
-        for (int j = 0; j < 26; j++) {
-            if (j != ch && cur.nxt[j] != null) {
-                if (search(w, cur.nxt[j], i + 1, true)) {
-                    return true;
+        if (node.next[c] != null) {
+            if (search(word, node.next[c], idx + 1, mismatches)) {
+                return true;
+            }
+        }
+
+        if (mismatches == 0) {
+            for (int k = 0; k < 26; k++) {
+                if (k != c && node.next[k] != null) {
+                    if (search(word, node.next[k], idx + 1, 1)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -43,15 +48,15 @@ class Solution {
         return false;
     }
 
-    private void insert(String w) {
-        TrieNode cur = root;
-
-        for (int i = 0; i < w.length(); i++) {
-            int ch = w.charAt(i) - 'a';
-            if (cur.nxt[ch] == null) cur.nxt[ch] = new TrieNode();
-            cur = cur.nxt[ch];
+    private void insert(String word) {
+        TrieNode node = root;
+        for (char ch : word.toCharArray()) {
+            int c = ch - 'a';
+            if (node.next[c] == null) {
+                node.next[c] = new TrieNode();
+            }
+            node = node.next[c];
         }
-
-        cur.eow = true;
+        node.end = true;
     }
 }

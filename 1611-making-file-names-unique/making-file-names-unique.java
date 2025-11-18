@@ -1,5 +1,4 @@
 class Solution {
-
     public String[] getFolderNames(String[] names) {
         int n = names.length;
         String[] res = new String[n];
@@ -13,7 +12,7 @@ class Solution {
                 map.put(name, 1);
                 continue;
             }
-            
+
             int k = map.get(name);
             String newName = name + "(" + k + ")";
 
@@ -27,7 +26,7 @@ class Solution {
 
             map.put(newName, 1);
         }
+
         return res;
     }
-
 }

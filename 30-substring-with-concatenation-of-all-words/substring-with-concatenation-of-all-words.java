@@ -1,47 +1,45 @@
 class Solution {
+
     public List<Integer> findSubstring(String s, String[] words) {
-        int N = s.length();
+        int n = s.length();
         int window = words[0].length();
-        var ans = new ArrayList<Integer>();
-        var map = new HashMap<String, Integer>();
+        var res = new ArrayList<Integer>();
+        int m = words.length;
 
-        for (String word : words) {
-            map.put(word, map.getOrDefault(word, 0) + 1);            
-        }
+        var wordCntMap = new HashMap<String, Integer>();
+        for (String w : words) wordCntMap.put(w, wordCntMap.getOrDefault(w, 0) + 1);
 
-        for (int i = 0; i < window; ++i) {
-            int left = i;
-            int right = i;
-            int cnt = 0;
-            var tmp = new HashMap<String, Integer>();
-            System.out.println(" ---- ");
-            while (right + window <= N) {
-                String str = s.substring(right, right+window);
-                System.out.println(str);
-                right += window;
+        for (int i = 0; i < window; i++) {
+            int l = i, r = i;
+            var curWordCntMap = new HashMap<String, Integer>();
+            int curCnt = 0;
 
-                if (!map.containsKey(str)) {
-                    cnt = 0;
-                    left = right;
-                    tmp.clear();
+            while (r + window <= n) {
+                String curStr = s.substring(r, r + window);
+                r += window;
+
+                if (!wordCntMap.containsKey(curStr)) {
+                    curCnt = 0;
+                    curWordCntMap.clear();
+                    l = r;
                 } else {
-                    tmp.put(str, tmp.getOrDefault(str, 0) + 1);
-                    ++cnt;
-
-                    while (tmp.get(str) > map.get(str)) {
-                        String leftStr = s.substring(left, left+window);
-
-                        tmp.put(leftStr, tmp.get(leftStr)-1);
-                        left += window;
-                        --cnt;
+                    curWordCntMap.put(curStr, curWordCntMap.getOrDefault(curStr, 0) + 1);
+                    ++curCnt;
+                    
+                    while (curWordCntMap.get(curStr) > wordCntMap.get(curStr)) {
+                        String lStr = s.substring(l, l + window);
+                        
+                        curWordCntMap.put(lStr, curWordCntMap.get(lStr) - 1);
+                        l += window;
+                        --curCnt;
                     }
-
-                    if (cnt == words.length) {
-                        ans.add(left);
-                    }
+                    
+                    if (curCnt == m) res.add(l);
                 }
+    
             }
         }
-        return ans;
+        
+        return res;
     }
 }

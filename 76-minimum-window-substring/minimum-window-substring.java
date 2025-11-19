@@ -1,38 +1,37 @@
 class Solution {
+
     public String minWindow(String s, String t) {
-        Map<Character, Integer> cnt = new HashMap<>();
         int n = s.length(), m = t.length();
-        int len = Integer.MAX_VALUE;
-        int st = 0, l = 0, r = 0;
-        int count = 0;
+        var map = new HashMap<Character, Integer>();
+        int st = 0, min = (int) 1e9;
         
-        for (char ch : t.toCharArray()) cnt.merge(ch, 1, Integer::sum);
+        for (int i = 0; i < m; i++) map.put(t.charAt(i), map.getOrDefault(t.charAt(i), 0) + 1);
         
-        while (r < n) {
-            char ch = s.charAt(r);
-            if (cnt.containsKey(ch)) {
-                if (cnt.get(ch) > 0) count++;
-                cnt.merge(ch, -1, Integer::sum);
+        int cnt = 0;
+        for (int l = 0, r = 0; r < n; r++) {
+            char rightChar = s.charAt(r);
+            if (map.containsKey(rightChar)) {
+                if (map.get(rightChar) > 0) cnt++;
+                map.put(rightChar, map.get(rightChar) - 1);
             }
             
-            while (count == m) {
-                if (len > r - l + 1) {
-                    len = r - l + 1;
+            while (cnt == m) {     
+                if (min > r - l + 1) {
+                    min = r - l + 1;
                     st = l;
                 }
                 
-                char ch2 = s.charAt(l);
-                
-                if (cnt.containsKey(ch2)) {
-                    cnt.merge(ch2, 1, Integer::sum);
-                    if (cnt.get(ch2) > 0) count--;
+                char leftChar = s.charAt(l);
+                if (map.containsKey(leftChar)) {
+                    map.put(leftChar, map.get(leftChar) + 1);
+                    if (map.get(leftChar) > 0) cnt--;
                 }
+                
                 l++;
             }
-            
-            r++;
         }
         
-        return len == Integer.MAX_VALUE ? "" : s.substring(st, st + len);
+        
+        return min == (int) 1e9 ? "" : s.substring(st, st + min);
     }
 }

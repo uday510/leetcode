@@ -11,8 +11,8 @@ class Solution {
         for (int l = 0, r = 0; r < n; r++) {
             char rightChar = s.charAt(r);
             if (map.containsKey(rightChar)) {
-                if (map.get(rightChar) > 0) cnt++;
                 map.put(rightChar, map.get(rightChar) - 1);
+                if (map.get(rightChar) >= 0) cnt++;
             }
             
             while (cnt == m) {     

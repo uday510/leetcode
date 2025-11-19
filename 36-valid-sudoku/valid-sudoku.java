@@ -1,9 +1,9 @@
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        int N = 9;
-        Set<Character>[] rows = new HashSet[N];
-        Set<Character>[] cols = new HashSet[N];
-        Set<Character>[] boxes = new HashSet[N];
+        int n = 9;
+        Set<Character>[] rows = new HashSet[n];
+        Set<Character>[] cols = new HashSet[n];
+        Set<Character>[] boxes = new HashSet[n];
 
         for (int i = 0; i < 9; i++) {
             rows[i] = new HashSet<>();
@@ -11,14 +11,16 @@ class Solution {
             boxes[i] = new HashSet<>();
         }
 
-        for (int r = 0; r < N; r++) {
-            for (int c = 0; c < N; c++) {
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
                 char ch = board[r][c];
                 if (ch == '.') continue;
 
-                int boxIdx = (r / 3) * 3 + (c / 3);
-                if (!rows[r].add(ch) || !cols[c].add(ch) || !boxes[boxIdx].add(ch)) 
+                int boxId = ((r / 3) * 3) + (c / 3);
+
+                if (!rows[r].add(ch) || !cols[c].add(ch) || !boxes[boxId].add(ch)) {
                     return false;
+                }
             }
         }
 

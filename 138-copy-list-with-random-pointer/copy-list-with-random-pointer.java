@@ -1,39 +1,55 @@
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
 class Solution {
     public Node copyRandomList(Node head) {
         
         if (head == null) return null;
 
-        Node curr = head;
+        Node cur = head;
 
-        while (curr != null) {
-            Node node = new Node(curr.val);
+        while (cur != null) {
+            Node newNode = new Node(cur.val);
 
-            node.next = curr.next;
-            curr.next = node;
-            curr = node.next;
+            newNode.next = cur.next;
+            cur.next = newNode;
+            cur = newNode.next;
         }
 
-        curr = head;
-        while (curr != null) {
-            Node old = curr.random;
-            Node newNode = curr.next;
+        cur = head;
+        while (cur != null) {
+            Node oldNode = cur.random;
+            Node newNode = cur.next;
 
-            if (old != null) 
-                newNode.random = old.next;
+            if (oldNode != null) {
+                newNode.random = oldNode.next;
+            }
 
-            curr = newNode.next;
+            cur = newNode.next;
         }
 
         Node newHead = head.next;
-        Node node = newHead;
+        cur = newHead;
         Node old = head;
 
-        while (node != null && node.next != null) {
+        while (cur != null && cur.next != null) {
             old.next = old.next.next;
-            node.next = node.next.next;
+            cur.next = cur.next.next;
 
             old = old.next;
-            node = node.next;
+            cur = cur.next;
         }
 
         old.next = null;

@@ -1,30 +1,57 @@
 class Solution {
+
+    private int[] nums;
+    private int n;
+
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> list = new ArrayList<>();
-        int n = nums.length;
-        
+        if (nums == null || nums.length < 3) return new ArrayList<>();
+
+        this.nums = nums;
+        this.n = nums.length;
+
         Arrays.sort(nums);
 
-        for (int i = 0; i < n; ++i) {
-            if (i > 0 && nums[i] == nums[i-1]) continue;
+        return dfs(0, 3, 0);
+    }
+    private List<List<Integer>> dfs(int i, int k, int target) {
+        if (k == 2) return twoSum(i, target);
 
-            int left = i + 1, right = n - 1;
+        List<List<Integer>> res = new ArrayList<>();
 
-            while (left < right) {
-                int currSum = nums[i] + nums[left] + nums[right];
+        for (int j = i; j < n; j++) {
+            if (j > i && nums[j] == nums[j - 1]) continue;
 
-                if (currSum < 0) left++;
-                else if (currSum > 0) right--;
-                else {
+            List<List<Integer>> subLists = dfs(j + 1, k - 1, target - nums[j]);
 
-                    list.add(List.of(nums[i], nums[left], nums[right]));
-                    left++;
-                    right--;
+            for (List<Integer> sub : subLists) {
+                List<Integer> cur = new ArrayList<>();
+                cur.add(nums[j]);
+                cur.addAll(sub);
 
-                    while (left < n && nums[left] == nums[left-1]) left++;
+                res.add(cur);
+            }
+        }
 
-                    while (right > -1 && nums[right] == nums[right + 1]) right--;
-                }
+        return res;
+    }
+
+    private List<List<Integer>> twoSum (int index, int target) {
+        List<List<Integer>> list = new ArrayList<>();
+        int i = index, j = n - 1;
+
+        while (i < j) {
+            int cur = nums[i] + nums[j];
+
+            if (cur < target) i++;
+            else if (cur > target) j--;
+            else {
+                list.add(Arrays.asList(nums[i], nums[j]));
+
+                i++;
+                j--;
+
+                while (i < n && nums[i] == nums[i - 1]) i++;
+                while (j > -1 && nums[j] == nums[j + 1]) j--;
             }
         }
 

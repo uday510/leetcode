@@ -1,40 +1,40 @@
 class Solution {
+
     Set<Integer> dia, anti, col;
     int n;
     char[][] board;
     List<List<String>> boards;
+    private final char QUEEN = 'Q';
+    private final char EMPTY = '.';
 
     public List<List<String>> solveNQueens(int n) {
         initialize(n);
-        generateEmptyBoard();
 
         dfs(0);
+
         return boards;
     }
-    private void dfs(int r) {
-        if (r >= n) {
+
+    private void dfs(int i) {
+        if (i >= n) {
             boards.add(generateNewBoard());
             return;
         }
 
-        for (int c = 0; c < n; c++) {
-            int d = r - c, a = r + c;
-            if (dia.contains(d) || anti.contains(a) || col.contains(c)) continue;
+        for (int j = 0; j < n; j++) {
+            int d = i - j, a = i + j;
+            if (dia.contains(d) || anti.contains(a) || col.contains(j)) continue;
 
-            dia.add(d);
-            anti.add(a);
-            col.add(c);
-            board[r][c] = 'Q';
+            dia.add(d); anti.add(a); col.add(j);
 
-            dfs(r + 1);
-
-            dia.remove(d);
-            anti.remove(a);
-            col.remove(c);
+            board[i][j] = QUEEN;
             
-            board[r][c] = '.';
-        }
+            dfs(i + 1);
 
+            dia.remove(d); anti.remove(a); col.remove(j);
+
+            board[i][j] = EMPTY;
+        }
     }
 
     private void initialize(int n) {
@@ -44,55 +44,17 @@ class Solution {
         this.n = n;
         board = new char[n][n];
         boards = new ArrayList<>();
-    }
 
-    private void generateEmptyBoard() {
-        for (char[] row : board) {
-            Arrays.fill(row, '.');
-        }
+        for (char[] row : board) Arrays.fill(row, EMPTY);
     }
-
+    
     private List<String> generateNewBoard() {
         List<String> list = new ArrayList<>();
-        
-        for (int i = 0; i < n; i++) {
-            String r = String.valueOf(board[i]);
-            list.add(r);
+
+        for (char[] row : board) {
+            list.add(String.valueOf(row));
         }
-        
+
         return list;
     }
 }
-
-/**
-
-n = 4
-
-    0 1 2 3
-  0 Q - - -
-  1 - Q - -
-  2 - - - -
-  3 - - - -
-
-
-[
-
-    [
-        - Q - -,
-        - - - Q,
-        Q - - -,
-        - - Q -
-    ],
-    [
-        - - Q -,
-        Q - - -,
-        - - - Q,
-        - Q - -
-    ]
-
-]
-
-
-
-
- */

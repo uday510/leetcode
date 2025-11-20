@@ -5,6 +5,7 @@ class Solution {
             x = 1 / x;
             N = -N;
         }
+
         return fastPow(x, N);
     }
 
@@ -15,8 +16,8 @@ class Solution {
 
         if (n % 2 == 0) {
             return half * half;
-        } else {
-            return half * half * x;
         }
+
+        return half * half * x;
     }
 }

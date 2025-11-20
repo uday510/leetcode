@@ -21,23 +21,18 @@ class Solution {
             return node.eow && mismatches == 1;
         }
 
-        int nxtIdx = s.charAt(i) - 'a';
+        int idx = s.charAt(i) - 'a';
 
-        if (node.children[nxtIdx] != null) {
-            if (dfs(i + 1, mismatches, s, node.children[nxtIdx])) {
-                return true;
+        for (int c = 0; c < 26; c++) {
+            if (node.children[c] == null) continue;
+
+            int newMismatch = mismatches + (c == idx ? 0 : 1);
+            if (newMismatch <= 1) {
+                if (dfs(i + 1, newMismatch, s, node.children[c])) {
+                    return true;
+                }
             }
-        }
-
-        if (mismatches == 0) {
-            for (int j = 0; j < 26; j++) {
-                if (j == nxtIdx || node.children[j] == null) continue;
-
-                boolean found = dfs(i + 1, 1, s, node.children[j]);
-                if (found) return true;
-            }
-        }
-        
+        }        
         return false;
     }
 

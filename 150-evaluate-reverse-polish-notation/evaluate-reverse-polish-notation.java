@@ -1,37 +1,34 @@
 class Solution {
-    private final Map<String, Operation> OPERATIONS = new HashMap<>();
-
-    public Solution() {
-        OPERATIONS.put("+", (num1, num2) -> num1 + num2);
-        OPERATIONS.put("-", (num1, num2) -> num1 - num2);
-        OPERATIONS.put("*", (num1, num2) -> num1 * num2);
-        OPERATIONS.put("/", (num1, num2) -> num1 / num2);
+    private final static Set<String> hs = new HashSet<>();
+    static {
+        hs.add("+");
+        hs.add("-");
+        hs.add("*");
+        hs.add("/");
     }
     public int evalRPN(String[] tokens) {
-        var stack = new Stack<Integer>();
+        Deque<Integer> st = new ArrayDeque<>();
 
         for (String token : tokens) {
-            if (OPERATIONS.containsKey(token)) {
-                handleOperation(OPERATIONS.get(token), stack);
+            if (st.isEmpty() || !hs.contains(token)) {
+                st.push(Integer.parseInt(token));
             } else {
-                stack.push(Integer.parseInt(token));
+
+                int v2 = st.pop();
+                int v1 = st.pop();
+
+                if (token.equals("+")) {
+                    st.push(v1 + v2);
+                } else if (token.equals("*")) {
+                    st.push(v1 * v2);
+                } else if (token.equals("-")) {
+                    st.push(v1 - v2);
+                } else {
+                    st.push(v1 / v2);
+                }
             }
         }
-        return stack.pop();
-    }
-    private void handleOperation(Operation operation, Stack<Integer> stack) {
-        try {
-            int right = stack.pop();
-            int left = stack.pop();
 
-            int result = operation.eval(left, right);
-            stack.push(result);
-        } catch(Exception e) {
-
-        }
-    }
-    @FunctionalInterface
-    private interface Operation {
-        int eval(int num1, int num2);
+        return st.peek(); 
     }
 }

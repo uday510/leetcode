@@ -1,62 +1,66 @@
 class Solution {
 
-    static class TrieNode {
-        TrieNode[] next = new TrieNode[26];
-        boolean end = false;
-    }
-
     TrieNode root;
 
     public boolean differByOne(String[] dict) {
         root = new TrieNode();
 
-        for (String word : dict) {
-            if (search(word, root, 0, 0)) {
+        for (String s : dict) {
+            if (dfs(0, 0, s, root)) 
                 return true;
-            }
-            insert(word);
+            insert(s);
         }
 
         return false;
     }
 
-    private boolean search(String word, TrieNode node, int idx, int mismatches) {
+    private boolean dfs(int i, int mismatches, String s, TrieNode node) {
         if (node == null) return false;
 
-        if (idx == word.length()) {
-            return mismatches == 1 && node.end;
+        if (i == s.length()) {
+            return node.eow && mismatches == 1;
         }
 
-        int c = word.charAt(idx) - 'a';
+        int nxtIdx = s.charAt(i) - 'a';
 
-        if (node.next[c] != null) {
-            if (search(word, node.next[c], idx + 1, mismatches)) {
+        if (node.children[nxtIdx] != null) {
+            if (dfs(i + 1, mismatches, s, node.children[nxtIdx])) {
                 return true;
             }
         }
 
         if (mismatches == 0) {
-            for (int k = 0; k < 26; k++) {
-                if (k != c && node.next[k] != null) {
-                    if (search(word, node.next[k], idx + 1, 1)) {
-                        return true;
-                    }
-                }
+            for (int j = 0; j < 26; j++) {
+                if (j == nxtIdx || node.children[j] == null) continue;
+
+                boolean found = dfs(i + 1, 1, s, node.children[j]);
+                if (found) return true;
             }
         }
-
+        
         return false;
     }
 
-    private void insert(String word) {
-        TrieNode node = root;
-        for (char ch : word.toCharArray()) {
-            int c = ch - 'a';
-            if (node.next[c] == null) {
-                node.next[c] = new TrieNode();
-            }
-            node = node.next[c];
+    private void insert(String s) {
+        TrieNode cur = root;
+        for (int i = 0; i < s.length(); i++) {
+             int idx = s.charAt(i) - 'a';
+             if (cur.children[idx] == null) {
+                cur.children[idx] = new TrieNode();
+             }
+             cur = cur.children[idx];
         }
-        node.end = true;
+        cur.eow = true;
+    }
+}
+
+class TrieNode {
+
+    TrieNode[] children;
+    boolean eow;
+    
+    TrieNode () {
+        children = new TrieNode[26];
+        eow = false;
     }
 }

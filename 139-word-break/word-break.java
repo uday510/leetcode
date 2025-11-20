@@ -1,11 +1,13 @@
 class Solution {
+
     String s;
     Set<String> words;
     int n;
     int[] dp;
+
     public boolean wordBreak(String s, List<String> wordDict) {
         this.s = s;
-        n = s.length();
+        this.n = s.length();
         dp = new int[n];
         words = new HashSet<>(wordDict);
         dp = new int[n];
@@ -13,19 +15,21 @@ class Solution {
 
         return dfs(0);
     }
+    
     private boolean dfs(int i) {
-        if (i >= s.length()) return true;
+        if (i >= n) return true;
 
         if (dp[i] != -1) return dp[i] == 1;
-        for (int j = i; j < n; ++j) {
 
+        for (int j = i; j < n; j++) {
             if (words.contains(s.substring(i, j + 1)) && dfs(j + 1)) {
                 dp[i] = 1;
-                return true;
+                return true; 
             }
         }
 
         dp[i] = 0;
+
         return false;
     }
 }

@@ -1,12 +1,12 @@
 class RandomizedSet {
 
     Map<Integer, Integer> map;
-    List<Integer> list = new ArrayList<>();
-    Random rand = new Random();
+    List<Integer> list;
+    private final static Random rand = new Random();
 
     public RandomizedSet() {
         map = new HashMap<>();
-        list = new ArrayList<>();
+        list = new ArrayList<>();   
     }
     
     public boolean insert(int val) {
@@ -29,7 +29,7 @@ class RandomizedSet {
 
         list.removeLast();
         map.remove(val);
-
+        
         return true;
     }
     

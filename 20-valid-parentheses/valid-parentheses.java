@@ -1,21 +1,24 @@
 class Solution {
+    private final static Map<Character, Character> mappings = new HashMap<>();
+    
+    static {
+        mappings.put(')', '(');
+        mappings.put(']', '[');
+        mappings.put('}', '{');
+    }
+
     public boolean isValid(String s) {
-        Deque<Character> stack = new ArrayDeque<>();
-        Map<Character, Character> mapping = new HashMap<>();
-        
-        mapping.put(']', '[');
-        mapping.put(')', '(');
-        mapping.put('}', '{');
+        Deque<Character> st = new ArrayDeque<>();
 
         for (char ch : s.toCharArray()) {
-            if (!mapping.containsKey(ch)) {
-                stack.push(ch);
+            if (!mappings.containsKey(ch)) {
+                st.push(ch);
             } else {
-                if (stack.isEmpty() || mapping.get(ch) != stack.peek()) return false;
-                stack.pop();
+                if (st.isEmpty() || mappings.get(ch) != st.peek()) return false;
+                st.pop();
             }
         }
 
-        return stack.isEmpty();
+        return st.isEmpty();
     }
 }

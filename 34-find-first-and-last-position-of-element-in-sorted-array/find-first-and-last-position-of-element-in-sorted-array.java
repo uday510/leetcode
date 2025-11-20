@@ -1,6 +1,8 @@
 class Solution {
+
     int[] nums;
     int n;
+
     public int[] searchRange(int[] nums, int target) {
         this.nums = nums;
         this.n = nums.length;
@@ -9,6 +11,7 @@ class Solution {
         if (l == n || nums[l] != target) return new int[] {-1, -1};
         int r = bs(target + 1) - 1;
         return new int[] {l, r};
+        
     }
     private int bs(int target) {
         int l = 0, r = n;

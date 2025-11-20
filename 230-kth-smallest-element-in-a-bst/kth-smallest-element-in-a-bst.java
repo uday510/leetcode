@@ -1,21 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
-    int kth = -1;
-    int level = 0;
     public int kthSmallest(TreeNode root, int k) {
-        dfs(root, k);
-        return kth;
-    }
-    private void dfs(TreeNode node, int k) {
-        if (node == null) {
-            return;
+        Deque<TreeNode> st = new ArrayDeque<>();
+
+        TreeNode cur = root;
+        while (cur != null || !st.isEmpty()) {
+            while (cur != null) {
+                st.push(cur);
+                cur = cur.left;
+            }
+            cur = st.pop();
+            if (--k == 0) return cur.val;
+            cur = cur.right;
         }
 
-        dfs(node.left, k);
-        ++level;
-        if (level == k) {
-            kth = node.val;
-            return;
-        }
-        dfs(node.right, k);
+        return -1;
     }
 }

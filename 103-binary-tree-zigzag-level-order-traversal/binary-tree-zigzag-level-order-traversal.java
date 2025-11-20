@@ -9,20 +9,20 @@ class Solution {
         queue.offer(root);
         while (!queue.isEmpty()) {
 
-            List<Integer> curLevel = new LinkedList<>();
+            Deque<Integer> curLevel = new ArrayDeque<>();
             int sz = queue.size();
 
             for (int i = 0; i < sz; i++) {
                 TreeNode cur = queue.poll();
 
-                if (leftToRight) curLevel.addLast(cur.val);
-                else curLevel.addFirst(cur.val);
+                if (leftToRight) curLevel.offerLast(cur.val);
+                else curLevel.offerFirst(cur.val);
 
                 if (cur.left != null) queue.offer(cur.left);
                 if (cur.right != null) queue.offer(cur.right);
             }
 
-            res.add(curLevel);
+            res.add(new ArrayList<>(curLevel));
             leftToRight = !leftToRight;
         }
 

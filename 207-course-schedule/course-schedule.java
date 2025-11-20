@@ -1,28 +1,28 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adjList = new ArrayList[numCourses];
-        int[] indegree = new int[numCourses];
+    public boolean canFinish(int n, int[][] edges) {
+        List<Integer>[] adjList = new ArrayList[n];
+        int[] indegree = new int[n];
 
-        for (int i = 0; i < numCourses; i++) adjList[i] = new ArrayList<>();
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
 
-        for (int[] p : prerequisites) {
-            int u = p[0], v = p[1];
-            
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+
             adjList[v].add(u);
             indegree[u]++;
         }
-        
+
         Queue<Integer> queue = new ArrayDeque<>();
-        int finished = 0;
-        
-        for (int i = 0; i < numCourses; i++) {
+        int numFinished = 0;
+
+        for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) queue.offer(i);
         }
 
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             int u = queue.poll();
-            finished++;
-            
+            numFinished++;
+
             for (int v : adjList[u]) {
                 if (--indegree[v] == 0) {
                     queue.offer(v);
@@ -30,6 +30,6 @@ class Solution {
             }
         }
 
-        return finished == numCourses;
+        return numFinished == n;
     }
 }

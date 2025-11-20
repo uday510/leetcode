@@ -2,21 +2,20 @@ class Solution {
     public int findMinArrowShots(int[][] points) {
         Arrays.sort(points, (o1, o2) -> Integer.compare(o1[0], o2[0]));
 
-        int[] curr = points[0];
+        int[] cur = points[0];
         int arrows = 1;
         for (int[] p : points) {
-            int S2 = p[0];
-            int E2 = p[1];
-            int S1 = curr[0];
-            int E1 = curr[1];
+            int s1 = cur[0], s2 = p[0];
+            int e1 = cur[1], e2 = p[1];
 
-            if (E1 < S2) {
+            if (e1 < s2) {
                 ++arrows;
-                curr = p;
+                cur = p;
             } else {
-                curr[1] = Math.min(curr[1], p[1]);
+                cur[1] = Math.min(cur[1], e2);
             }
         }
+
         return arrows;
     }
 }

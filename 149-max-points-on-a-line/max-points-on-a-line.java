@@ -1,15 +1,15 @@
 class Solution {
     public int maxPoints(int[][] points) {
-        int N = points.length;
-        int max = 1;
+        int n = points.length;
+        int mx = 1;
 
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < n; i++) {
             int[] p1 = points[i];
 
             Map<Double, Integer> map = new HashMap<>();
-            for (int j = 0; j < N; ++j) {
+            for (int j = 0; j < n; j++) {
                 if (i == j) continue;
-                
+
                 int[] p2 = points[j];
                 double slope;
 
@@ -20,11 +20,10 @@ class Solution {
                 }
 
                 map.put(slope, map.getOrDefault(slope, 1) + 1);
-
-                max = Math.max(max, map.get(slope));
+                mx = Math.max(mx, map.get(slope));
             }
         }
 
-        return max;
+        return mx;
     }
 }

@@ -1,38 +1,42 @@
 class Solution {
-    List<List<Integer>> ans;
-    public List<List<Integer>> permute(int[] nums) {
-        ans = new ArrayList<>();
 
-        dfs(0, nums.length, nums);
-        
-        return ans;
+    List<List<Integer>> perms;
+    int[] nums;
+    int n;
+
+    public List<List<Integer>> permute(int[] nums) {
+        perms = new ArrayList<>();
+        this.nums = nums;
+        n = nums.length;    
+
+        dfs(0);
+        return perms;
     }
-    private void dfs(int index, int n, int[] nums) {
-        if (index >= n) {
-            add(nums);
+
+    private void dfs(int i) {
+        if (i >= n) {
+            addPerm();
             return;
         }
-        
-        for (int i = index; i < n; ++i) {
 
-            swap(index, i, nums);
-            dfs(index + 1, n, nums);
-            swap(index, i, nums);
+        for (int j = i; j < n; j++) {
+            swap(i, j);
+            dfs(i + 1);
+            swap(i, j);
         }
     }
-    private void swap(int i, int j, int[] nums) {
-        int tmp = nums[j];
-        nums[j] = nums[i];
-        nums[i] = tmp;
+
+    private void swap(int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 
-    private void add(int[] nums) {
-        List<Integer> list = new ArrayList<>();
+    private void addPerm() {
+        List<Integer> perm = new ArrayList<>();
 
-        for (int num : nums) {
-            list.add(num);
-        }
+        for (int num : nums) perm.add(num);
 
-        ans.add(new ArrayList<>(list));
+        perms.add(perm);
     }
 }

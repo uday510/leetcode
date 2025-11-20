@@ -1,9 +1,9 @@
 class Solution {
 
+    private final static String OPEN = "(";
+    private final static String CLOSE = ")";
     List<String> res;
     int n;
-    static final String OPEN = "(";
-    static final String CLOSE = ")";
 
     public List<String> generateParenthesis(int n) {
         res = new ArrayList<>();

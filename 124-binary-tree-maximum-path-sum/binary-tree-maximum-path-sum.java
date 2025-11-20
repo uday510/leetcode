@@ -20,6 +20,7 @@ class Solution {
         dfs(root);
         return max;
     }
+
     private int dfs(TreeNode node) {
         if (node == null) return 0;
 

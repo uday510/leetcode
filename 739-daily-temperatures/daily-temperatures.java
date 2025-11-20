@@ -3,7 +3,7 @@ class Solution {
         Deque<Integer> st = new ArrayDeque<>();
         int n = temps.length;
         int[] res = new int[n];
-        
+
         for (int i = 0; i < n; i++) {
             int cur = temps[i];
             while (!st.isEmpty() && cur > temps[st.peek()]) {

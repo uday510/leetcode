@@ -3,10 +3,8 @@ class Solution {
         int curSum = 0, maxSum = nums[0];
 
         for (int num : nums) {
-            curSum += num;
+            curSum = Math.max(num, curSum + num);
             maxSum = Math.max(maxSum, curSum);
-            curSum = Math.max(0, curSum);
-
         }
 
         return maxSum;

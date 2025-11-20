@@ -7,7 +7,7 @@ class Solution {
         res.add(intervals[0]);
 
         for (int[] cur : intervals) {
-            
+
             if (cur[0] <= res.getLast()[1]) {
                 res.getLast()[1] = Math.max(cur[1], res.getLast()[1]);
             } else {

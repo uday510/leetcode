@@ -10,21 +10,19 @@ class Solution {
         Deque<Integer> st = new ArrayDeque<>();
 
         for (String token : tokens) {
-            if (st.isEmpty() || !hs.contains(token)) {
+            if (!hs.contains(token)) {
                 st.push(Integer.parseInt(token));
             } else {
 
-                int v2 = st.pop();
-                int v1 = st.pop();
+                int b = st.pop();
+                int a = st.pop();
+                char op = token.charAt(0);
 
-                if (token.equals("+")) {
-                    st.push(v1 + v2);
-                } else if (token.equals("*")) {
-                    st.push(v1 * v2);
-                } else if (token.equals("-")) {
-                    st.push(v1 - v2);
-                } else {
-                    st.push(v1 / v2);
+                switch(op) {
+                    case '+': st.push(a + b); break;
+                    case '-': st.push(a - b); break;
+                    case '*': st.push(a * b); break;
+                    default: st.push(a / b); break;
                 }
             }
         }

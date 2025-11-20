@@ -1,21 +1,25 @@
 class Solution {
     public String simplifyPath(String path) {
-        var dirs = path.split("/");
-        var stack = new Stack<String>();
+        String[] paths = path.split("/");
+        Deque<String> st = new ArrayDeque<>();
 
-        for (String dir : dirs) {
-            handleDir(dir, stack);
-        }
+        for (String p : paths) {
+            if (p.isEmpty() || p.equals(".")) continue;
 
-        return "/" + String.join("/", stack);
-    }
-    private void handleDir(String dir, Stack<String> stack) {
-        if (dir.equals("..")) {
-            if (!stack.isEmpty()) {
-                stack.pop();
+            if (p.equals("..")) {
+                if (!st.isEmpty()) st.pop();
+            } else {
+                st.push(p);
             }
-        } else if (!dir.isEmpty() && !dir.equals(".")) {
-            stack.push(dir);
         }
+
+        StringBuilder sb = new StringBuilder();
+        if (st.isEmpty()) return "/";
+        
+        while (!st.isEmpty()) {
+            sb.append("/").append(st.pollLast());
+        }
+
+        return sb.toString();
     }
 }

@@ -1,6 +1,6 @@
 class Solution {
 
-    static Map<Character, char[]> map = new HashMap<>();
+    private final static Map<Character, char[]> map = new HashMap<>();
     static {
         map.put('2', new char[] {'a', 'b', 'c'});
         map.put('3', new char[] {'d', 'e', 'f'});
@@ -11,27 +11,29 @@ class Solution {
         map.put('8', new char[] {'t', 'u', 'v'});
         map.put('9', new char[] {'w', 'x', 'y', 'z'});
     }
-    List<String> res;
-    String digits;
+
+    List<String> combs;
+    String s;
+    int n;
+
     public List<String> letterCombinations(String digits) {
-        res = new ArrayList<>();
-        this.digits = digits;
+        combs = new ArrayList<>();
+        s = digits;
+        n = s.length();
 
         dfs(0, new StringBuilder());
-        return res;
+        return combs;
     }
-
     private void dfs(int i, StringBuilder sb) {
-        if (i >= digits.length()) {
-            if (sb.length() > 0) res.add(sb.toString());
+        if (i >= n) {
+            combs.add(sb.toString());
             return;
         }
 
-        for (char ch : map.get(digits.charAt(i))) {
+        for (char ch : map.get(s.charAt(i))) {
             sb.append(ch);
             dfs(i + 1, sb);
             sb.deleteCharAt(sb.length() - 1);
         }
     }
-
 }

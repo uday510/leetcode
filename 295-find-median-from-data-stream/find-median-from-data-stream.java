@@ -5,32 +5,30 @@ class MedianFinder {
 
     public MedianFinder() {
         maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        minHeap = new PriorityQueue<>();    
+        minHeap = new PriorityQueue<>();
     }
     
     public void addNum(int num) {
         maxHeap.offer(num);
         minHeap.offer(maxHeap.poll());
 
-        if (maxHeap.size() < minHeap.size())
+        if (maxHeap.size() < minHeap.size()) 
             maxHeap.offer(minHeap.poll());
     }
     
-    public double findMedian() {
+    public double findMedian() { 
         int m = minHeap.size() + maxHeap.size();
 
-        if (m % 2 == 0) {
-            return (maxHeap.peek() + minHeap.peek()) / 2.0; 
-        }
+        if ( (m & 1) == 1) return maxHeap.peek();
 
-        return maxHeap.peek();
+
+        return (maxHeap.peek() + minHeap.peek()) / 2.0;
     }
 }
 
 /**
-1, 2, 3, 4, 5
-
-max: 1, 2, 3
-min: 4, 5
-
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
  */

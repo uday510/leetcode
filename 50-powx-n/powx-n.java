@@ -1,23 +1,22 @@
 class Solution {
     public double myPow(double x, int n) {
-        return binaryExp(x, (long) n);
+        long N = n;
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+        return fastPow(x, N);
     }
-    private double binaryExp(double base, long exp) {
-        if (exp < 0) {
-            exp = -1 * exp;
-            base = 1.0 / base;
+
+    private double fastPow(double x, long n) {
+        if (n == 0) return 1.0;
+
+        double half = fastPow(x, n / 2);
+
+        if (n % 2 == 0) {
+            return half * half;
+        } else {
+            return half * half * x;
         }
-
-        double res = 1;
-
-        while (exp > 0) {
-
-            if ((exp & 1L) == 1L) res *= base;
-
-            base *= base;
-            exp >>= 1;
-        }
-        
-        return res;
     }
 }

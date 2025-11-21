@@ -4,20 +4,21 @@ class Solution {
     }
 
     private int maxProfitWithKTransactions(int k, int[] prices) {
-        
-       int INF = Integer.MAX_VALUE;
-       int[] buy = new int[k + 1];
-       int[] profit = new int[k + 1];
+        int INF = Integer.MAX_VALUE;
 
-       Arrays.fill(buy, INF);
+        int[] cost = new int[k + 1];
+        int[] profit = new int[k + 1];
 
-       for (int p : prices) {
+        Arrays.fill(cost, INF);
+
+        for (int p : prices) {
+
             for (int i = 1; i <= k; i++) {
-                buy[i] = Math.min(buy[i], p - profit[i - 1]);
-                profit[i] = Math.max(profit[i], p - buy[i]);
+                cost[i] = Math.min(cost[i], p - profit[i - 1]);
+                profit[i] = Math.max(profit[i], p - cost[i]);
             }
-       }
+        }
 
-       return profit[k];
+        return profit[k];
     }
 }

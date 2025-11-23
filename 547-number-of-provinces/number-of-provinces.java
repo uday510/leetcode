@@ -37,24 +37,22 @@ class UnionFind {
 
         if (rootX == rootY) return;
 
-        numComponents--;
-
         if (rank[rootX] > rank[rootY]) {
-            rank[rootX]++;
             root[rootY] = rootX; 
         } else if (rank[rootY] > rank[rootX]) {
-            rank[rootY]++;
             root[rootX] = rootY;
         } else {
             rank[rootX]++;
             root[rootY] = rootX; 
         }
+
+        numComponents--;
     }
 
     int find(int x) {
         if (root[x] == x) return x;
 
-        return x = find(root[x]);
+        return root[x] = find(root[x]);
     }
 
     boolean isConnected(int x, int y) {

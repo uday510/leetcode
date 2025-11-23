@@ -4,13 +4,12 @@ class Solution {
     int n;
     boolean[] vis;
 
-    public int findCircleNum(int[][] isConnected) {
-        edges = isConnected;
-        n = edges.length;
+    public int findCircleNum(int[][] edges) {
+        this.edges = edges;
+        this.n = edges.length;
         vis = new boolean[n];
-
         int provinces = 0;
-        
+
         for (int i = 0; i < n; i++) {
             if (vis[i]) continue;
 
@@ -23,7 +22,6 @@ class Solution {
 
     private void bfs(int st) {
         Queue<Integer> queue = new ArrayDeque<>();
-
         vis[st] = true;
         queue.offer(st);
 
@@ -37,5 +35,6 @@ class Solution {
                 queue.offer(v);
             }
         }
+
     }
 }

@@ -1,9 +1,11 @@
 class Solution {
+
     public String convert(String s, int numRows) {
+
         if (numRows == 1 || numRows >= s.length()) return s;
 
         int n = s.length();
-        
+
         List<StringBuilder> rows = new ArrayList<>();
         for (int i = 0; i < numRows; i++) {
             rows.add(new StringBuilder());
@@ -27,4 +29,5 @@ class Solution {
 
         return sb.toString();
     }
+    
 }

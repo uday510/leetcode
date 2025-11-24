@@ -1,6 +1,6 @@
 class Solution {
 
-    static Map<String, Integer> vals = new HashMap<>();
+    private static Map<String, Integer> vals = new HashMap<>();
 
     static {
         vals.put("I", 1);
@@ -22,21 +22,24 @@ class Solution {
         int res = 0, idx = 0, n = s.length();
 
         while (idx < n) {
+
             if (idx < n - 1) {
                 String doubleStr = s.substring(idx, idx + 2);
-                
+
                 if (vals.containsKey(doubleStr)) {
                     res += vals.get(doubleStr);
                     idx += 2;
                     continue;
                 }
+
             }
 
-            String single = s.substring(idx, idx +1);
+            String single = s.substring(idx, idx + 1);
             res += vals.get(single);
             idx += 1;
         }
 
         return res;
     }
+
 }

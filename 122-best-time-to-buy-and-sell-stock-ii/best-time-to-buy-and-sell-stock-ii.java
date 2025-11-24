@@ -9,14 +9,14 @@ class Solution {
         dp = new int[n];
         Arrays.fill(dp, -1);
 
-        // return dfs(0);
+        return dfs(0);
 
-        int profit = 0;
-        for (int i = 1; i < n; i++) {
-            profit += Math.max(p[i] - p[i - 1], 0);
-        }
+        // int profit = 0;
+        // for (int i = 1; i < n; i++) {
+        //     profit += Math.max(p[i] - p[i - 1], 0);
+        // }
         
-        return profit;
+        // return profit;
     }
 
     private int dfs(int i) {

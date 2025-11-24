@@ -13,6 +13,7 @@ class Solution {
 
         return dfs(0, 3, 0);
     }
+
     private List<List<Integer>> dfs(int i, int k, int target) {
         if (k == 2) return twoSum(i, target);
 
@@ -33,6 +34,7 @@ class Solution {
         }
 
         return res;
+
     }
 
     private List<List<Integer>> twoSum (int index, int target) {
@@ -57,4 +59,5 @@ class Solution {
 
         return list;
     }
+
 }

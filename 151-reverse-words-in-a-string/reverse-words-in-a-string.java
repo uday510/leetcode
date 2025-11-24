@@ -16,14 +16,11 @@ class Solution {
         while (i < j && s.charAt(i) == ' ') i++;
         while (i < j && s.charAt(j) == ' ') j--;
 
-        while (i <= j) {
+        while ( i <= j ) {
             char ch = s.charAt(i);
 
-            if (ch != ' ') {
-                sb.append(ch);
-            } else if (sb.charAt(sb.length() - 1) != ' ') {
-                sb.append(ch);
-            }
+            if (ch != ' ') sb.append(ch);
+            else if (sb.charAt(sb.length() - 1) != ' ') sb.append(ch);
 
             i++;
         }
@@ -32,15 +29,7 @@ class Solution {
     }
 
     private void reverse(int i, int j, StringBuilder sb) {
-        while (i < j) {
-            swap(i++, j--, sb);
-        }
-    }
-
-    private void swap(int i, int j, StringBuilder sb) {
-        char tmp = sb.charAt(i);
-        sb.setCharAt(i, sb.charAt(j));
-        sb.setCharAt(j, tmp);
+        while (i < j) swap(i++, j--, sb);
     }
 
     private void reverseEachWord(StringBuilder sb) {
@@ -54,6 +43,12 @@ class Solution {
 
             i = j + 1;
         }
+    }
+
+    private void swap(int i, int j, StringBuilder sb) {
+        char tmp = sb.charAt(i);
+        sb.setCharAt(i, sb.charAt(j));
+        sb.setCharAt(j, tmp);
     }
 
 }

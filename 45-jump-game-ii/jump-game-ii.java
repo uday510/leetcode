@@ -1,30 +1,26 @@
 class Solution {
 
-    Integer[] dp;
-    int[] nums;
-    int n;
+    int[] dp;
 
     public int jump(int[] nums) {
-        this.nums = nums;
-        n = nums.length;
-        dp = new Integer[n];
-        n = nums.length;
+        dp = new int[nums.length];
+        Arrays.fill(dp, -1);
 
-        return dfs(0);
-    } 
+        return dfs(nums, 0);
+    }
 
-    private int dfs(int i) {
-        if (i >= n - 1) return 0;
+    private int dfs(int[] nums, int pos) {
+        if (pos >= nums.length - 1) return 0;
 
-        if (dp[i] != null) return dp[i];
+        if (dp[pos] != -1) return dp[pos];
 
-        int min = n;
-        int m = Math.min(i + nums[i], n - 1);
+        int minSteps = nums.length;
+        int maxJump = Math.min(pos + nums[pos], nums.length - 1);
 
-        for (int j = i + 1; j <= m; ++j) {
-            min = Math.min(min, 1 + dfs(j));
+        for (int nxtJump = pos + 1; nxtJump <= maxJump; nxtJump++) {
+            minSteps = Math.min(minSteps, 1 + dfs(nums, nxtJump));
         }
 
-        return dp[i] = min;
+        return dp[pos] = minSteps;
     }
 }

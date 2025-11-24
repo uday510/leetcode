@@ -6,7 +6,7 @@ class RandomizedSet {
 
     public RandomizedSet() {
         map = new HashMap<>();
-        list = new ArrayList<>();   
+        list = new ArrayList<>();
     }
     
     public boolean insert(int val) {
@@ -29,13 +29,14 @@ class RandomizedSet {
 
         list.removeLast();
         map.remove(val);
-        
+
         return true;
     }
     
     public int getRandom() {
         return list.get(rand.nextInt(list.size()));
     }
+    
 }
 
 /**

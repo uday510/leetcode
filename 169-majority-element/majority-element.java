@@ -1,31 +1,17 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        int majorityElement = -1;
-        int count = 0;
+        int major = nums[0], cnt = 0;
 
-        for (int idx = 0; idx < nums.length; ++idx) {
-            if (count == 0) {
-                majorityElement = nums[idx];
-            }
+        for (int num : nums) {
+            if (num == major) cnt++;
+            else cnt--;
 
-            if (majorityElement == nums[idx]) {
-                count++;
-            } else {
-                count--;
+            if (cnt == 0) {
+                major = num;
+                cnt = 1;
             }
         }
 
-        return majorityElement;
+        return major;
     }
 }
-
-/***
-
-majorityElement = 2
-count = 1
-
-[2,2,1,1,1,2,2]
-
-
-
- */

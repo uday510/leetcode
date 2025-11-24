@@ -1,19 +1,19 @@
 class Solution {
-    public int trap(int[] h) {
-        int l = 0, r = h.length - 1;
-        int lMax = 0, rMax = 0;
-        int trapped = 0;
+    public int trap(int[] H) {
+        int l = 0, r = H.length - 1;
+        int water = 0, lMax = 0, rMax = 0;
 
-        while (l <= r) {
-            if (h[l] <= h[r]) {
-                lMax = Math.max(h[l], lMax);
-                trapped += lMax - h[l++];
+        while (l < r) {
+
+            if (H[l] <= H[r]) {
+                lMax = Math.max(lMax, H[l]);
+                water += lMax - H[l++];
             } else {
-                rMax = Math.max(h[r], rMax);
-                trapped += rMax - h[r--];
+                rMax = Math.max(rMax, H[r]);
+                water += rMax - H[r--];
             }
         }
 
-        return trapped;   
+        return water;
     }
 }

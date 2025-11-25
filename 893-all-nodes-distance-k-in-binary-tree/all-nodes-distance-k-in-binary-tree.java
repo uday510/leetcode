@@ -13,21 +13,22 @@ class Solution {
 
         assignParent(root);
         dfs(target, k);
-        
-        return nodesDistanceK;
+
+        return nodesDistanceK;    
     }
 
     private void dfs(TreeNode node, int k) {
         if (node == null || !vis.add(node)) return;
 
         if (k == 0) nodesDistanceK.add(node.val);
-        
+
         dfs(parentMap.get(node), k - 1);
         dfs(node.left, k - 1);
         dfs(node.right, k - 1);
-        
+
     }
-    
+
+
     private void assignParent(TreeNode node) {
         if (node == null) return;
 
@@ -39,6 +40,8 @@ class Solution {
     }
 
     private void add(TreeNode node, TreeNode parent) {
-        if (node != null) parentMap.put(node, parent);
+        if (node == null) return;
+        
+        parentMap.put(node, parent);
     }
 }

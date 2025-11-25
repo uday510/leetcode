@@ -20,6 +20,7 @@ class Solution {
                 }
 
                 map.put(slope, map.getOrDefault(slope, 1) + 1);
+
                 mx = Math.max(mx, map.get(slope));
             }
         }

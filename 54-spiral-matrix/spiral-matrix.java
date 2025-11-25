@@ -7,9 +7,9 @@ class Solution {
         List<Integer> res = new ArrayList<>();
 
         while (r1 <= r2 && c1 <= c2) {
-            
-            for (int j = c1; j <= c2; j++) {
-                res.add(A[r1][j]);
+
+            for (int c = c1; c <= c2; c++) {
+                res.add(A[r1][c]);
             }
 
             for (int r = r1 + 1; r <= r2; r++) {
@@ -22,7 +22,7 @@ class Solution {
             }
 
             if (c1 == c2) break;
-            
+
             for (int r = r2 - 1; r > r1; r--) {
                 res.add(A[r][c1]);
             }

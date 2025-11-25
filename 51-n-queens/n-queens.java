@@ -23,12 +23,13 @@ class Solution {
 
         for (int j = 0; j < n; j++) {
             int d = i - j, a = i + j;
+
             if (dia.contains(d) || anti.contains(a) || col.contains(j)) continue;
 
             dia.add(d); anti.add(a); col.add(j);
 
             board[i][j] = QUEEN;
-            
+
             dfs(i + 1);
 
             dia.remove(d); anti.remove(a); col.remove(j);
@@ -47,7 +48,7 @@ class Solution {
 
         for (char[] row : board) Arrays.fill(row, EMPTY);
     }
-    
+
     private List<String> generateNewBoard() {
         List<String> list = new ArrayList<>();
 
@@ -57,4 +58,5 @@ class Solution {
 
         return list;
     }
+
 }

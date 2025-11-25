@@ -10,7 +10,7 @@ class Solution {
         this.n = n;
 
         dfs(0, 0, new StringBuilder());
-        return res;    
+        return res;
     }
 
     private void dfs(int l, int r, StringBuilder sb) {
@@ -30,6 +30,5 @@ class Solution {
             dfs(l, r + 1, sb);
             sb.deleteCharAt(sb.length() - 1);
         }
-
     }
 }

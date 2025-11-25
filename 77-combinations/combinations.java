@@ -8,8 +8,8 @@ class Solution {
         this.n = n;
         this.k = k;
 
-        dfs(1, 1, new ArrayList<>());  
-        return res;  
+        dfs(1, 1, new ArrayList<>());
+        return res;    
     }
 
     private void dfs(int i, int cur, List<Integer> list) {
@@ -23,6 +23,5 @@ class Solution {
             dfs(j + 1, cur + 1, list);
             list.removeLast();
         }
-
     }
 }

@@ -11,7 +11,8 @@ class Solution {
         }
 
         int j = n - 1;
-        while (pivot < j && nums[j] <= nums[pivot]) j--;
+
+        while (pivot < j && nums[pivot] >= nums[j]) j--;
 
         swap(pivot, j, nums);
 
@@ -25,8 +26,19 @@ class Solution {
     }
 
     private void reverse(int i, int j, int[] nums) {
-        while (i < j) {
-            swap(i++, j--, nums);
-        }
+        while (i < j) swap(i++, j--, nums);
     }
+
 }
+
+/**
+
+1 3 2
+
+i
+2 3 1
+
+3 2 1
+
+
+ */

@@ -15,10 +15,11 @@ class Solution {
                     map.put(nei, new Node(nei.val));
                     queue.offer(nei);
                 }
-                map.get(cur).neighbors.add(map.get(nei));
-            }
-        }
 
+                map.get(cur).neighbors.add(map.get(nei));
+            } 
+        }
+        
         return map.get(node);
     }
 }

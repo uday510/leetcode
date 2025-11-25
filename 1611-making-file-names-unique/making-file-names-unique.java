@@ -17,8 +17,7 @@ class Solution {
             String newName = name + "(" + k + ")";
 
             while (map.containsKey(newName)) {
-                k++;
-                newName = name + "(" + k + ")";
+                newName = name + "(" + ++k + ")";
             }
 
             res[i] = newName;
@@ -26,7 +25,7 @@ class Solution {
 
             map.put(newName, 1);
         }
-
+        
         return res;
     }
 }

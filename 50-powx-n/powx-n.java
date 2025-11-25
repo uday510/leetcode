@@ -3,7 +3,6 @@ class Solution {
         long N = n;
         if (N < 0) {
             x = 1 / x;
-            N = -N;
         }
 
         return fastPow(x, N);

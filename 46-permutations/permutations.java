@@ -7,10 +7,10 @@ class Solution {
     public List<List<Integer>> permute(int[] nums) {
         perms = new ArrayList<>();
         this.nums = nums;
-        n = nums.length;    
+        this.n = nums.length;
 
         dfs(0);
-        return perms;
+        return perms;    
     }
 
     private void dfs(int i) {
@@ -26,12 +26,6 @@ class Solution {
         }
     }
 
-    private void swap(int i, int j) {
-        int tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
-    }
-
     private void addPerm() {
         List<Integer> perm = new ArrayList<>();
 
@@ -39,4 +33,11 @@ class Solution {
 
         perms.add(perm);
     }
+
+    private void swap(int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
 }

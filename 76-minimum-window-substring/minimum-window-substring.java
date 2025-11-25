@@ -3,15 +3,15 @@ class Solution {
         int n = s.length(), m = t.length();
         int st = -1, min = n + 1, cnt = 0;
 
-        Map<Character, Integer> map = new HashMap<>();
+        Map<Character, Integer> cnts = new HashMap<>();
 
-        for (int i = 0; i < m; i++) map.put(t.charAt(i), map.getOrDefault(t.charAt(i), 0) + 1);
+        for (int i = 0; i < m; i++) cnts.put(t.charAt(i), cnts.getOrDefault(t.charAt(i), 0) + 1);
 
         for (int l = 0, r = 0; r < n; r++) {
-            char c2 = s.charAt(r); 
-            if (map.containsKey(c2)) {
-                map.put(c2, map.get(c2) - 1);
-                if (map.get(c2) >= 0) cnt++;
+            char c2 = s.charAt(r);
+            if (cnts.containsKey(c2)) {
+                cnts.put(c2, cnts.get(c2) - 1);
+                if (cnts.get(c2) >= 0) cnt++;
             }
 
             while (cnt == m) {
@@ -21,13 +21,15 @@ class Solution {
                 }
 
                 char c1 = s.charAt(l);
-                if (map.containsKey(c1)) {
-                    map.put(c1, map.get(c1) + 1);
-                    if (map.get(c1) > 0) cnt--;
+
+                if (cnts.containsKey(c1)) {
+                    cnts.put(c1, cnts.get(c1) + 1);
+                    if (cnts.get(c1) > 0) cnt--;
                 }
                 l++;
             }
         }
+
 
         return st == -1 ? "" : s.substring(st, st + min);
     }

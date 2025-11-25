@@ -1,12 +1,13 @@
 class MinStack {
 
     private Node head;
+    
     public MinStack() {
-        head = new Node(-1, Integer.MAX_VALUE, null);   
+        head = new Node(-1, Integer.MAX_VALUE, null);    
     }
     
     public void push(int val) {
-        head = new Node(val, Math.min(val, head.min), head);
+        head = new Node(val, Math.min(head.min, val), head);
     }
     
     public void pop() {
@@ -25,11 +26,10 @@ class MinStack {
         int val, min;
         Node next;
 
-        Node(int val, int min, Node next) {
+        Node (int val, int min, Node next) {
             this.val = val;
             this.min = min;
             this.next = next;
         }
-
     }
 }

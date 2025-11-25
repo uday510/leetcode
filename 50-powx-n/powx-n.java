@@ -14,9 +14,7 @@ class Solution {
 
         double half = fastPow(x, n / 2);
 
-        if (n % 2 == 0) {
-            return half * half;
-        }
+        if (n % 2 == 0) return half * half;
 
         return half * half * x;
     }

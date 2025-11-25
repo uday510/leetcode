@@ -12,7 +12,7 @@ class Solution {
             if (canEat(m, h)) r = m;
             else l = m + 1;
         }
-        
+
         return l;
     }
 
@@ -20,7 +20,7 @@ class Solution {
         int curHrs = 0;
 
         for (int pile : piles) {
-            curHrs += Math.ceil( (double) pile / perHr);
+            curHrs += Math.ceil((double) pile / perHr);
             if (curHrs > reqHrs) return false;
         }
 

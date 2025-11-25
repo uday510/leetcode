@@ -1,46 +1,41 @@
-public class Solution {
-    private boolean[] cols;
-    private boolean[] dia45;
-    private boolean[] dia135;
-    private int ans;
-    private int n;
+class Solution {
+
+    Set<Integer> dia, anti, col;
+    int cnt, n;
 
     public int totalNQueens(int n) {
         initialize(n);
+
         dfs(0);
-        return ans;
+        return cnt;
     }
 
-    private void dfs(int row) {
-        if (row == n) {
-            ans++;
+    private void dfs(int i) {
+        if (i >= n) {
+            cnt++;
             return;
         }
 
-        for (int col = 0; col < n; col++) {
-            if (!isValid(row, col)) continue;
+        for (int j = 0; j < n; j++) {
+            int d = i - j, a = i + j;
 
-            toggle(row, col);
-            dfs(row + 1);
-            toggle(row, col);
+            if (dia.contains(d) || anti.contains(a) || col.contains(j)) continue;
+
+            dia.add(d); anti.add(a); col.add(j);
+
+            dfs(i + 1);
+
+            dia.remove(d); anti.remove(a); col.remove(j);
         }
-    }
 
-    private void toggle(int row, int col) {
-        cols[col] = !cols[col];
-        dia45[row + col] = !dia45[row + col];
-        dia135[row - col + n - 1] = !dia135[row - col + n - 1];
-    }
-
-    private boolean isValid(int row, int col) {
-        return !cols[col] && !dia45[row + col] && !dia135[row - col + n - 1];
     }
 
     private void initialize(int n) {
-        cols = new boolean[n];
-        dia45 = new boolean[2 * n - 1];
-        dia135 = new boolean[2 * n - 1];
-        ans = 0;
+        dia = new HashSet<>();
+        anti = new HashSet<>();
+        col = new HashSet<>();
+        cnt = 0;
         this.n = n;
     }
+
 }

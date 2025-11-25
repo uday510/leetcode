@@ -1,22 +1,20 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        return maxProfitWithKTransactions(2, prices);
+        return maxProfitWithKTransactions(prices, 2);
     }
-    
-    private int maxProfitWithKTransactions(int k, int[] prices) {
-        int n = prices.length;
+    private int maxProfitWithKTransactions(int[] prices, int k) {
+        int inf = (int) 1e9;
 
-        int INF = Integer.MAX_VALUE;
-        int[] buy = new int[k + 1];
+        int[] cost = new int[k + 1];
         int[] profit = new int[k + 1];
 
-        Arrays.fill(buy, INF);
+        Arrays.fill(cost, inf);
 
         for (int price : prices) {
+
             for (int i = 1; i <= k; i++) {
-                // profit[i - 1] ==> profit from previous stock to reinvest
-                buy[i] = Math.min(buy[i], price - profit[i - 1]);
-                profit[i] = Math.max(profit[i], price - buy[i]);
+                cost[i] = Math.min(cost[i], price - profit[i - 1]);
+                profit[i] = Math.max(profit[i], price - cost[i]);
             }
         }
 

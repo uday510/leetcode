@@ -1,5 +1,7 @@
 class Solution {
+
     public void setZeroes(int[][] A) {
+
         boolean col0 = false;
         int n = A.length, m = A[0].length;
 
@@ -33,4 +35,5 @@ class Solution {
         }
 
     }
+
 }

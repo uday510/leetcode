@@ -1,4 +1,5 @@
 class Solution {
+
     private final static Set<String> hs = new HashSet<>();
     static {
         hs.add("+");
@@ -6,6 +7,7 @@ class Solution {
         hs.add("*");
         hs.add("/");
     }
+
     public int evalRPN(String[] tokens) {
         Deque<Integer> st = new ArrayDeque<>();
 
@@ -27,6 +29,6 @@ class Solution {
             }
         }
 
-        return st.peek(); 
+        return st.peek();
     }
 }

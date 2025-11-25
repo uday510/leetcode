@@ -1,43 +1,52 @@
 class Bank {
 
-    long[] balance;
+    long[] b;
     int n;
 
-    public Bank(long[] balance) {
-        this.balance = balance;
-        this.n = balance.length;
+    public Bank(long[] b) {
+        this.b = b;
+        this.n = b.length;
     }
+    
+    public boolean transfer(int a1, int a2, long m) {
+        if (!validA(a1) || !validA(a2)) return false;
 
-    public boolean transfer(int acc1, int acc2, long money) {
-        if (!validAcc(acc1) || !validAcc(acc2)) return false;
-        if (!validMoney(money)) return false;
-        if (balance[acc1 - 1] < money) return false;
+        if (!validM(m) || b[a1 - 1] < m) return false;
 
-        balance[acc1 - 1] -= money;
-        balance[acc2 - 1] += money;
+        b[a1 - 1] -= m;
+        b[a2 - 1] += m;
+
+        return true;
+    }
+    
+    public boolean deposit(int a, long m) {
+        if (!validA(a) || !validM(m)) return false;
+
+        b[a - 1] += m;
+        return true;
+    }
+    
+    public boolean withdraw(int a, long m) {
+        if (!validA(a) || !validM(m)) return false;
+        if (b[a - 1] < m) return false;
+
+        b[a - 1] -= m;
         return true;
     }
 
-    public boolean deposit(int acc, long money) {
-        if (!validAcc(acc) || !validMoney(money)) return false;
-
-        balance[acc - 1] += money;
-        return true;
+    private boolean validA(int a) {
+        return a >= 1 && a <= n;
     }
 
-    public boolean withdraw(int acc, long money) {
-        if (!validAcc(acc) || !validMoney(money)) return false;
-        if (balance[acc - 1] < money) return false;
-
-        balance[acc - 1] -= money;
-        return true;
-    }
-
-    private boolean validAcc(int acc) {
-        return acc >= 1 && acc <= n;
-    }
-
-    private boolean validMoney(long money) {
-        return money >= 0;
+    private boolean validM(long m) {
+        return m >= 0;
     }
 }
+
+/**
+ * Your Bank object will be instantiated and called as such:
+ * Bank obj = new Bank(balance);
+ * boolean param_1 = obj.transfer(account1,account2,money);
+ * boolean param_2 = obj.deposit(account,money);
+ * boolean param_3 = obj.withdraw(account,money);
+ */

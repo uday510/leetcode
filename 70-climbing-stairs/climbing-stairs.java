@@ -1,18 +1,14 @@
 class Solution {
-    
-    int[] dp;
     public int climbStairs(int n) {
-        dp = new int[n + 1];
-        Arrays.fill(dp, -1);
-        return dfs(n);
-    }
+        if (n < 2) return n;
+        int step1 = 0, step2 = 1;
 
-    private int dfs(int n) {
-        if (n == 0) return 1;
-        if (n < 0) return 0;
-        if (dp[n] != -1) return dp[n];
+        for (int i = 1; i <= n; i++) {
+            int step3 = step1 + step2;
+            step1 = step2;
+            step2 = step3;
+        }
 
-        return dp[n] = dfs(n - 1) + dfs(n - 2);
+        return step2;
     }
 }
-

@@ -1,5 +1,6 @@
 class Solution {
     public boolean canFinish(int n, int[][] edges) {
+        
         List<Integer>[] adjList = new ArrayList[n];
         int[] indegree = new int[n];
 
@@ -13,7 +14,7 @@ class Solution {
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
-        int numFinished = 0;
+        int finished = 0;
 
         for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) queue.offer(i);
@@ -21,7 +22,7 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            numFinished++;
+            finished++;
 
             for (int v : adjList[u]) {
                 if (--indegree[v] == 0) {
@@ -30,6 +31,6 @@ class Solution {
             }
         }
 
-        return numFinished == n;
+        return finished == n;
     }
 }

@@ -1,45 +1,45 @@
 class Solution {
-
     public List<Integer> findSubstring(String s, String[] words) {
         int n = s.length();
         int window = words[0].length();
-        var res = new ArrayList<Integer>();
+        List<Integer> res = new ArrayList<>();
         int m = words.length;
 
-        var wordCntMap = new HashMap<String, Integer>();
-        for (String w : words) wordCntMap.put(w, wordCntMap.getOrDefault(w, 0) + 1);
+        Map<String, Integer> wordsCntMap = new HashMap<String, Integer>();
+        for (String w : words) wordsCntMap.put(w, wordsCntMap.getOrDefault(w, 0) + 1);
 
+        Map<String, Integer> curCntMap = new HashMap<String, Integer>();
         for (int i = 0; i < window; i++) {
+            curCntMap.clear();
             int l = i, r = i;
-            var curWordCntMap = new HashMap<String, Integer>();
             int curCnt = 0;
 
             while (r + window <= n) {
                 String curStr = s.substring(r, r + window);
                 r += window;
 
-                if (!wordCntMap.containsKey(curStr)) {
+                if (!wordsCntMap.containsKey(curStr)) {
                     curCnt = 0;
-                    curWordCntMap.clear();
+                    curCntMap.clear();
                     l = r;
                 } else {
-                    curWordCntMap.put(curStr, curWordCntMap.getOrDefault(curStr, 0) + 1);
+                    curCntMap.put(curStr, curCntMap.getOrDefault(curStr, 0) + 1);
                     ++curCnt;
-                    
-                    while (curWordCntMap.get(curStr) > wordCntMap.get(curStr)) {
+
+                    while (curCntMap.get(curStr) > wordsCntMap.get(curStr)) {
                         String lStr = s.substring(l, l + window);
-                        
-                        curWordCntMap.put(lStr, curWordCntMap.get(lStr) - 1);
+
+                        curCntMap.put(lStr, curCntMap.get(lStr) - 1);
                         l += window;
                         --curCnt;
                     }
-                    
+
                     if (curCnt == m) res.add(l);
                 }
-    
             }
         }
-        
+
+
         return res;
     }
 }

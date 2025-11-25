@@ -1,6 +1,6 @@
 class Solution {
 
-    private static final int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+    private final static int[][] dirs =  { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
     private final static char WATER = '0';
     private final static char LAND = '1';
 

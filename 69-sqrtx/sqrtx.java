@@ -1,7 +1,7 @@
 class Solution {
     public int mySqrt(int x) {
         if (x < 2) return x;
-        
+
         long l = 1, r = x >> 1;
 
         while (l <= r) {

@@ -6,27 +6,29 @@ class Solution {
 
     public int numDistinct(String s, String t) {
         m = s.length(); n = t.length();
-        this.s = s;
-        this.t = t;
+        this.s = s; this.t = t;
         dp = new int[m][n];
+
         for (int[] row : dp) Arrays.fill(row, -1);
 
         return dfs(0, 0);
     }
 
     private int dfs(int i, int j) {
-        // if (i >= m && j >= n) return 1;
         if (j >= n) return 1;
         if (i >= m) return 0;
-        
+
         if (dp[i][j] != -1) return dp[i][j];
 
+        int cur = -1;
+
         if (s.charAt(i) == t.charAt(j)) {
-            dp[i][j] = dfs(i + 1, j) + dfs(i + 1, j + 1);
+            cur = dfs(i + 1, j + 1) + dfs(i + 1, j);
         } else {
-            dp[i][j] = dfs(i + 1, j);
+            cur = dfs(i + 1, j);
         }
 
-        return dp[i][j];
+
+        return dp[i][j] = cur;
     }
 }

@@ -1,55 +1,53 @@
 class Solution {
-    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+    public double maxProbability(int n, int[][] E, double[] probs, int st, int en) {
+        List<Edge>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
 
-        List<Edge>[] adjList = new ArrayList[n];
-
-        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
-
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0], v = edges[i][1];
-            double w = succProb[i];
-
-            adjList[u].add(new Edge(v, w));
-            adjList[v].add(new Edge(u, w));
+        for (int i = 0; i < E.length; i++) {
+            int u = E[i][0], v = E[i][1];
+            double w = probs[i];
+            adj[u].add(new Edge(v, w));
+            adj[v].add(new Edge(u, w));
         }
 
-        double INF = Double.MIN_VALUE;
-        double[] probs = new double[n];
-        Arrays.fill(probs, INF);
+        double[] dists = new double[n];
+        Arrays.fill(dists, -1.0);
+        
+        Queue<Edge> pq = new PriorityQueue<>((o1, o2) -> Double.compare(o2.w, o1.w));
 
-        Queue<Edge> queue = new ArrayDeque<>();
-        queue.offer(new Edge(start_node, 1));
-        probs[start_node] = 1;
-
-        while (!queue.isEmpty()) {
-            Edge cur = queue.poll();
-            int u = cur.v;
+        dists[st] = 1.0;
+        pq.offer(new Edge(st, 1.0));
+        
+        Edge cur;
+        int u;
+        double p;
+        while (!pq.isEmpty()) {
+            cur = pq.poll();
+            u = cur.v;
             double w = cur.w;
-            
-            if (w < probs[u]) continue;
-            
-            for (Edge e : adjList[u]) {
-                int v = e.v;
-                double w1 = e.w;
 
-                if ((w * w1) > probs[v]) {
-                    probs[v] = w * w1;
-                    queue.offer(new Edge(v, w * w1));
+            if (u == en) return w;
+            if (w < dists[u]) continue;
+
+            for (Edge e : adj[u]) {
+                double newDist = w * e.w;
+
+                if (newDist > dists[e.v]) {
+                    dists[e.v] = newDist;
+                    pq.offer(new Edge(e.v, newDist));
                 }
             }
         }
 
-        return probs[end_node] == INF ? 0 : probs[end_node];
+        return 0.0;
     }
 }
 
 class Edge {
-    final int v;
+    int v;
     double w;
-
-    Edge(int v, double w) {
+    Edge (int v, double w) {
         this.v = v;
         this.w = w;
     }
 }
-

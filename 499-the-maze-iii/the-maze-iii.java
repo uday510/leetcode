@@ -4,15 +4,15 @@ class Solution {
     private final static String[] pathDirs = {"r", "l", "u", "d"};
     private final static int UNKNOWN = Integer.MAX_VALUE;
     private final static String IMPOSSIBLE = "impossible";
+    private final static Queue<State> pq = new PriorityQueue<>((o1, o2) -> o1.w != o2.w ? o1.w - o2.w : o1.path.compareTo(o2.path));
 
     public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+        pq.clear();
         int m = maze.length, n = maze[0].length;
         int[][] dists = new int[m][n];
         String[][] paths = new String[m][n];
 
         for (int[] row : dists) Arrays.fill(row, UNKNOWN);
-
-        Queue<State> pq = new PriorityQueue<>((o1, o2) -> o1.w != o2.w ? o1.w - o2.w : o1.path.compareTo(o2.path));
 
         paths[ball[0]][ball[1]] = "";
         dists[ball[0]][ball[1]] = 0;

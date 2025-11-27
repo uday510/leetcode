@@ -1,6 +1,6 @@
 class Solution {
 
-    List<String> list;
+    List<String> res;
     Set<String> words;
     String s;
     int n;
@@ -9,29 +9,29 @@ class Solution {
         this.s = s;
         this.n = s.length();
         this.words = new HashSet<>(wordDict);
-        this.list = new ArrayList<>();
+        this.res = new ArrayList<>();
 
         dfs(0, new StringBuilder());
 
-        return list;
+        return res;    
     }
 
     private void dfs(int i, StringBuilder sb) {
-        if (i == n) {
-            list.add(sb.toString().trim());
+        if (i >= n) {
+            res.add(sb.toString().trim());
             return;
         }
 
-        for (int j = i + 1; j <= n; ++j) {
-            String word = s.substring(i, j);
-            if (!words.contains(word)) continue;
+        for (int j = i; j < n; j++) {
+            String cur = s.substring(i, j + 1);
+            if (!words.contains(cur)) continue;
 
-            int lenBefore = sb.length();
-            sb.append(word).append(" ");
+            int before = sb.length();
+            sb.append(cur).append(" ");
 
-            dfs(j, sb);
+            dfs(j + 1, sb);
 
-            sb.setLength(lenBefore);
+            sb.setLength(before);
         }
     }
 }

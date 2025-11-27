@@ -1,54 +1,77 @@
 class Solution {
 
-    Map<String, List<Pair>> adjList;
-    int n;
+    private Map<String, List<Edge>> adj;
+    private int n;
 
     public double[] calcEquation(List<List<String>> E, double[] V, List<List<String>> Q) {
         n = E.size();
-        adjList = new HashMap<>();
+        adj = new HashMap<>();
+
+        String u, v;
+        Double w;
 
         for (int i = 0; i < n; i++) {
-            var e = E.get(i);
+            List<String> e = E.get(i);
+            u = e.get(0); v = e.get(1);
+            w = V[i];
 
-            String u = e.get(0), v = e.get(1);
-            double d = V[i];
-
-            adjList.computeIfAbsent(u, k -> new ArrayList<>()).add(new Pair(v, d));
-            adjList.computeIfAbsent(v, k -> new ArrayList<>()).add(new Pair(u, 1.0 / d));
+            adj.computeIfAbsent(u, _ -> new ArrayList<>()).add(new Edge(v, w));
+            adj.computeIfAbsent(v, _ -> new ArrayList<>()).add(new Edge(u, 1.0 / w));
         }
 
-        double[] D = new double[Q.size()];
+
+        double[] res = new double[Q.size()];
 
         for (int i = 0; i < Q.size(); i++) {
-            String u = Q.get(i).get(0), v = Q.get(i).get(1);
+            u = Q.get(i).get(0); v = Q.get(i).get(1);
 
-            D[i] = dfs(u, v, new HashSet<>());
+            res[i] = bfs(u, v);
         }
 
-        return D;
+        return res;
     }
 
-    private double dfs(String u, String v, Set<String> vis) {
-        if (!adjList.containsKey(u) || !adjList.containsKey(v) || !vis.add(u)) return -1.0;
+    private double bfs(String src, String dest) {
+        Set<String> vis = new HashSet<>();
+        Queue<Edge> queue = new ArrayDeque<>();
 
-        if (u.equals(v)) return 1.0;
+        vis.add(src);
+        queue.offer(new Edge(src, 1.0));
 
-        for (Pair nei : adjList.get(u)) {
-            double d = dfs(nei.v, v, vis);
+        Edge cur;
+        String u;
+        Double w;
+        while (!queue.isEmpty()) {
+            cur = queue.poll();
+            u = cur.v;
+            w = cur.d;
+            
+            if (!adj.containsKey(u)) return -1.0;
 
-            if (d != -1.0) return nei.d * d;
+            if (u.equals(dest)) return w;
+
+            for (Edge e : adj.get(u)) {
+                Double w1 = w * e.d;
+
+                if (!vis.contains(e.v)) {
+                    vis.add(e.v);
+                    queue.offer(new Edge(e.v, w1));
+                }
+            }
+
         }
 
         return -1.0;
     }
 }
 
-class Pair {
+class Edge {
     String v;
     Double d;
 
-    Pair(String v, Double d) {
+    Edge (String v, Double d) {
         this.v = v;
         this.d = d;
     }
+
 }

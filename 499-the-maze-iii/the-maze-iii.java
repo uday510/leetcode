@@ -1,71 +1,82 @@
 class Solution {
-   
+
+    private final static int[][] dirs = { {0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+    private final static String[] pathDirs = {"r", "l", "u", "d"};
+    private final static int UNKNOWN = Integer.MAX_VALUE;
+    private final static String IMPOSSIBLE = "impossible";
+
     public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
-        int[][] dirs = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
-        String[] pathDirs = { "r", "l", "u", "d" };
         int m = maze.length, n = maze[0].length;
         int[][] dists = new int[m][n];
         String[][] paths = new String[m][n];
-        int INF = (int) 1e9;
-        for (int[] row : dists) Arrays.fill(row, INF);
-        PriorityQueue<State> pq = new PriorityQueue<>((a, b) -> a.dist != b.dist ? Integer.compare(a.dist, b.dist) : a.path.compareTo(b.path));
-        pq.offer(new State(ball[0], ball[1], 0, ""));
+
+        for (int[] row : dists) Arrays.fill(row, UNKNOWN);
+
+        Queue<State> pq = new PriorityQueue<>((o1, o2) -> o1.w != o2.w ? o1.w - o2.w : o1.path.compareTo(o2.path));
+
         paths[ball[0]][ball[1]] = "";
         dists[ball[0]][ball[1]] = 0;
-        
+        pq.offer(new State(ball[0], ball[1], 0, ""));
+
         while (!pq.isEmpty()) {
-            State state = pq.poll();
-            
-            if (state.row == hole[0] && state.col == hole[1]) return state.path;
-            
-            if (dists[state.row][state.col] < state.dist) continue;
-            
-            for (int i = 0; i < 4; ++i) {
+            State curState = pq.poll();
+            int x = curState.x, y = curState.y, w = curState.w;
+            String path = curState.path;
+
+            if (x == hole[0] && y == hole[1]) return path;
+
+            if (dists[x][y] < w) continue;
+
+            for (int i = 0; i < dirs.length; i++) {
                 int[] dir = dirs[i];
-                int r = state.row, c = state.col;
+                int nx = x, ny = y;
                 int cnt = 0;
+
                 while (
-                        r + dir[0] >= 0 && r + dir[0] < m &&
-                        c + dir[1] >= 0 && c + dir[1] < n &&
-                        maze[r + dir[0]][c + dir[1]] == 0        
+                    nx + dir[0] >= 0 && nx + dir[0] < m &&
+                    ny + dir[1] >= 0 && ny + dir[1] < n &&
+                    maze[nx + dir[0]][ny + dir[1]] == 0
                 ) {
-                    r += dir[0];
-                    c += dir[1];
+
+                    nx += dir[0];
+                    ny += dir[1];
                     cnt++;
-                    
-                    if (r == hole[0] && c == hole[1]) break;
+
+                    if (nx == hole[0] && ny == hole[1]) break;
                 }
 
-                String newPath = state.path + pathDirs[i];
-                int d = cnt + state.dist;
-                
-                if (d < dists[r][c] || 
-                        (d == dists[r][c] && (paths[r][c] == null || paths[r][c].compareTo(newPath) > 0))
+                String newPath = path + pathDirs[i];
+                int w1 = w + cnt;
+
+                if (
+                    w1 < dists[nx][ny] ||
+                    (w1 == dists[nx][ny] && (paths[nx][ny] == null || paths[nx][ny].compareTo(newPath) > 0))
                 ) {
-                    dists[r][c] = d;
-                    paths[r][c] = newPath;
-                    
-                    pq.offer(new State(r, c, d, newPath));
+                    dists[nx][ny] = w1;
+                    paths[nx][ny] = newPath;
+
+                    pq.offer(new State(nx, ny, w1, newPath));
                 }
-            }
-            
-            
+                
+            }   
         }
-        
-        return "impossible";
+
+
+        return IMPOSSIBLE;
+
     }
+}
 
-    class State {
-        int row;
-        int col;
-        int dist;
-        String path;
+class State {
+    final int x;
+    final int y;
+    final int w;
+    final String path;
 
-        State (int row, int col, int dist, String path) {
-            this.row = row;
-            this.col = col;
-            this.dist = dist;
-            this.path = path;
-        }
+    State (int x, int y, int w, String path) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.path = path;
     }
 }

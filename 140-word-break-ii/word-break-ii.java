@@ -1,37 +1,39 @@
 class Solution {
 
-    List<String> res;
-    Set<String> words;
+    Map<Integer, List<String>> memo;
+    Set<String> dict;
     String s;
     int n;
 
     public List<String> wordBreak(String s, List<String> wordDict) {
         this.s = s;
         this.n = s.length();
-        this.words = new HashSet<>(wordDict);
-        this.res = new ArrayList<>();
-
-        dfs(0, new StringBuilder());
-
-        return res;    
+        this.dict = new HashSet<>(wordDict);
+        this.memo = new HashMap<>();
+        return dfs(0);
     }
 
-    private void dfs(int i, StringBuilder sb) {
-        if (i >= n) {
-            res.add(sb.toString().trim());
-            return;
+    private List<String> dfs(int i) {
+        if (memo.containsKey(i)) {
+            System.out.println("CACHED");
+            return memo.get(i);
         }
+        
+        if (i == n) return List.of("");
+
+        List<String> result = new ArrayList<>();
 
         for (int j = i; j < n; j++) {
             String cur = s.substring(i, j + 1);
-            if (!words.contains(cur)) continue;
+            if (!dict.contains(cur)) continue;
 
-            int before = sb.length();
-            sb.append(cur).append(" ");
-
-            dfs(j + 1, sb);
-
-            sb.setLength(before);
+            for (String suffix : dfs(j + 1)) {
+                if (suffix.isEmpty()) result.add(cur);
+                else result.add(cur + " " + suffix);
+            }
         }
+
+        memo.put(i, result);
+        return result;
     }
 }

@@ -1,24 +1,28 @@
 class Solution {
-    public boolean canReach(int[] arr, int start) {
+    public boolean canReach(int[] arr, int st) {
+        
+        int n = arr.length;
         Queue<Integer> queue = new ArrayDeque<>();
-        queue.offer(start);
+        boolean[] vis = new boolean[n];
 
-       int dest = 0; 
-       int n = arr.length; 
-       boolean[] vis = new boolean[n];
-       vis[start] = true;
+        int dest = 0;
+        vis[st] = true;
+        queue.offer(st);
 
-       while (!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             int cur = queue.poll();
             if (arr[cur] == dest) return true;
 
-            for (int next : new int[] {cur + arr[cur], cur - arr[cur]}) {
-                if (next < 0 || next >= n || vis[next]) continue;
-                vis[next] = true;
-                queue.offer(next);
-            }
-       }
 
-       return false;
+            for (int nxt : new int[] {cur + arr[cur], cur - arr[cur]}) {
+
+                if (nxt < 0 || nxt >= n || vis[nxt]) continue;
+
+                vis[nxt] = true;
+                queue.offer(nxt);
+            }
+        }
+
+        return false;
     }
 }

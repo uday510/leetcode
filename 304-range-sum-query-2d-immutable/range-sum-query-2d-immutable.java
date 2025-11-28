@@ -10,16 +10,10 @@ class NumMatrix {
             for (int j = 0; j < m; j++) {
                 dp[i + 1][j + 1] = A[i][j] + dp[i + 1][j] + dp[i][j + 1] - dp[i][j];
             }
-        }
+        } 
     }
     
     public int sumRegion(int r1, int c1, int r2, int c2) {
-        return dp[r2 + 1][c2 + 1] - dp[r1][c2 + 1] - dp[r2 + 1][c1] + dp[r1][c1];
+        return dp[r2 + 1][c2 + 1] - dp[r2 + 1][c1] - dp[r1][c2 + 1] + dp[r1][c1];
     }
 }
-
-/**
- * Your NumMatrix object will be instantiated and called as such:
- * NumMatrix obj = new NumMatrix(matrix);
- * int param_1 = obj.sumRegion(row1,col1,row2,col2);
- */

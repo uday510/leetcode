@@ -3,7 +3,7 @@ class Solution {
     private Trie root;
 
     public boolean differByOne(String[] dict) {
-        
+
         root = new Trie();
 
         for (String s : dict) {
@@ -15,6 +15,7 @@ class Solution {
     }
 
     private boolean dfs(String s, Trie cur, int i, int mismatches) {
+
         if (cur == null) return false;
 
         if (i == s.length()) return cur.eow && mismatches == 1;
@@ -23,6 +24,7 @@ class Solution {
 
         for (int c = 0; c < 26; c++) {
             Trie nxt = cur.children[c];
+
             if (nxt == null) continue;
 
             int newMismatches = mismatches + (c == idx ? 0 : 1);
@@ -45,12 +47,13 @@ class Solution {
             if (cur.children[idx] == null) {
                 cur.children[idx] = new Trie();
             }
-            
+
             cur = cur.children[idx];
         }
 
         cur.eow = true;
     }
+
 }
 
 class Trie {
@@ -61,5 +64,4 @@ class Trie {
         children = new Trie[26];
         eow = false;
     }
-
 }

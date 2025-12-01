@@ -1,9 +1,6 @@
 class Solution {
     public long maxRunTime(int n, int[] B) {
-        long sum = 0;
-        for (int b : B) sum += b;
-
-        long l = 1, r = sum / n;
+        long l = 1, r = Arrays.stream(B).asLongStream().sum() / n;
 
         while (l < r) {
             long m = (l + r + 1) >>> 1;

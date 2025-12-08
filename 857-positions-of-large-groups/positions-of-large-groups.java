@@ -16,9 +16,9 @@ class Solution {
             int len = j - i + 1;
             
             if (j - i >= 3) {
-                System.out.println(s.substring(i, j));
                 list.add(new ArrayList<>(List.of(i, j - 1)));
             }
+
             i = j;
         }
         

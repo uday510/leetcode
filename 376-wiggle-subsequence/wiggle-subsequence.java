@@ -24,4 +24,5 @@ class Solution {
 
         return Math.max(up[n - 1], down[n - 1]);
     }
+    
 }

@@ -24,9 +24,11 @@ class Solution {
     }
 
     private List<TreeNode> dfs(int n) {
-        if (n % 2 == 0) return new ArrayList<TreeNode>();
+        if (n < 1) return new ArrayList<TreeNode>();
 
         if (n == 1) return Arrays.asList(new TreeNode());
+
+        if (dp.containsKey(n)) return dp.get(n);
 
         List<TreeNode> list = new ArrayList<>();
 

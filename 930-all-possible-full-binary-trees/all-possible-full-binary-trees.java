@@ -26,7 +26,10 @@ class Solution {
     private List<TreeNode> dfs(int n) {
         List<TreeNode> list = new ArrayList<>();
 
-        if (n < 1) return list;
+        if (n % 2 == 0) {
+            dp.put(n, list);
+            return list;
+        }
 
         if (n == 1) {
             list.add(new TreeNode());

@@ -24,13 +24,18 @@ class Solution {
     }
 
     private List<TreeNode> dfs(int n) {
-        if (n < 1) return new ArrayList<TreeNode>();
+        List<TreeNode> list = new ArrayList<>();
 
-        if (n == 1) return Arrays.asList(new TreeNode());
+        if (n < 1) return list;
+
+        if (n == 1) {
+            list.add(new TreeNode());
+            return list;
+        }
 
         if (dp.containsKey(n)) return dp.get(n);
 
-        List<TreeNode> list = new ArrayList<>();
+        
 
         for (int i = 1; i < n; i += 2) {
             List<TreeNode> left = dfs(i);

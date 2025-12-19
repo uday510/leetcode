@@ -1,5 +1,10 @@
 class Solution {
     public List<Integer> findAllPeople(int n, int[][] edges, int src) {
+        // return applyDSU(n, edges, src);
+        return applyDijsktra(n, edges, src);
+    }
+
+    private List<Integer> applyDSU(int n, int[][] edges, int src) {
         Arrays.sort(edges, Comparator.comparingInt(e -> e[2]));
 
         DSU dsu = new DSU(n);
@@ -33,6 +38,52 @@ class Solution {
             if (dsu.connected(src, i)) {
                 res.add(i);
             }
+        }
+
+        return res;
+    }
+    
+    private List<Integer> applyDijsktra(int n, int[][] edges, int src) {
+        List<int[]>[] adjList = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
+
+        int u, v, w;
+        for (int[] e : edges) {
+            u = e[0]; v = e[1]; w = e[2];
+            adjList[u].add(new int[]{v, w});
+            adjList[v].add(new int[]{u, w});
+        }
+
+        adjList[0].add(new int[]{src, 0});
+        adjList[src].add(new int[]{0, 0});
+        
+        int[] dist = new int[n];
+        Arrays.fill(dist, (int) 1e9);
+
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[1]));
+        pq.offer(new int[]{0, 0});
+        dist[0] = 0;
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            u = cur[0]; w = cur[1];
+            if (w > dist[u]) continue;
+
+            for (int[] nxt : adjList[u]) {
+                v = nxt[0]; 
+                int w1 = nxt[1];
+
+                if (w1 >= w && w1 < dist[v]) {
+                    dist[v] = w1;
+                    pq.offer(new int[]{v, w1});
+                }
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (dist[i] != (int) 1e9) res.add(i);
         }
 
         return res;

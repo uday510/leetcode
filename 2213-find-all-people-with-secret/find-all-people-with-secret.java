@@ -20,7 +20,7 @@ class Solution {
 
             for (int[] b : batch) {
                 u = b[0]; v = b[1];
-                if (!dsu.connected(0, u)) {
+                if (!dsu.connected(src, u)) {
                     dsu.reset(u);
                     dsu.reset(v);
                 }

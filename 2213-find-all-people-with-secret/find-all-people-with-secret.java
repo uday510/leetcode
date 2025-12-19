@@ -30,7 +30,7 @@ class Solution {
         List<Integer> res = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            if (dsu.connected(0, i)) {
+            if (dsu.connected(src, i)) {
                 res.add(i);
             }
         }

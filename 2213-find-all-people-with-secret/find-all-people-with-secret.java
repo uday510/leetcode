@@ -56,7 +56,7 @@ class Solution {
         }
 
         adjList[0].add(new int[]{src, 0});
-        adjList[src].add(new int[]{0, 0});
+        // adjList[src].add(new int[]{0, 0});
         
         int[] dist = new int[n];
         Arrays.fill(dist, (int) 1e9);
@@ -88,6 +88,7 @@ class Solution {
 
         return res;
     }
+
 }
 
 class DSU {

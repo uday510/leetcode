@@ -2,7 +2,7 @@ class Solution {
     public int minDeletionSize(String[] strs) {
         int rows = strs.length, cols = strs[0].length();
         int numDeletions = 0;
-        boolean[] sorted = new boolean[rows];
+        boolean[] sorted = new boolean[rows - 1];
 
         boolean invalid;
         for (int col = 0; col < cols; col++) {

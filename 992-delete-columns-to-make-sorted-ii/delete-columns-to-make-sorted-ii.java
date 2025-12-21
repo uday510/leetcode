@@ -1,36 +1,36 @@
 class Solution {
     public int minDeletionSize(String[] strs) {
-        int n = strs.length;
-        int cols = strs[0].length();
-        boolean[] sorted = new boolean[n - 1];
-        int cnt = 0;
+        int rows = strs.length, cols = strs[0].length();
+        int numDeletions = 0;
+        boolean[] sorted = new boolean[rows];
 
+        boolean invalid;
         for (int col = 0; col < cols; col++) {
-            boolean invalid = false;
+            invalid = false;
 
-            // 1️⃣ Check validity
-            for (int i = 0; i < n - 1; i++) {
-                if (!sorted[i] &&
-                    strs[i].charAt(col) > strs[i + 1].charAt(col)) {
+            for (int row = 0; row < rows - 1; row++) {
+
+                if (!sorted[row] && strs[row].charAt(col) > strs[row + 1].charAt(col)) {
                     invalid = true;
                     break;
                 }
+
             }
 
             if (invalid) {
-                cnt++;
+                numDeletions++;
                 continue;
             }
 
-            // // 2️⃣ Update sorted
-            for (int i = 0; i < n - 1; i++) {
-                if (
-                    strs[i].charAt(col) < strs[i + 1].charAt(col)) {
-                    sorted[i] = true;
+            for (int row = 0; row < rows - 1; row++) {
+                if (strs[row].charAt(col) < strs[row + 1].charAt(col)) {
+                    sorted[row] = true;
                 }
             }
+
         }
 
-        return cnt;
+        return numDeletions;
     }
+
 }

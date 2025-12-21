@@ -4,9 +4,12 @@ class Solution {
         int cols = strs[0].length();
 
         String[] cur1 = new String[n];
+        Arrays.fill(cur1, "");
+
         for (int col = 0; col < cols; col++) {
             
             String[] cur2 = Arrays.copyOf(cur1, n);
+
             for (int i = 0; i < n; i++) {
                 cur2[i] += strs[i].charAt(col);
             }
@@ -16,6 +19,7 @@ class Solution {
             } else {
                 cnt++;
             }
+
         }
 
 

@@ -1,36 +1,47 @@
 class Solution {
+
+    private int rows, cols;
+    private boolean[] sorted;
+    private String[] strs;
+
     public int minDeletionSize(String[] strs) {
-        int rows = strs.length, cols = strs[0].length();
+        initialize(strs);
         int numDeletions = 0;
-        boolean[] sorted = new boolean[rows - 1];
 
-        boolean invalid;
         for (int col = 0; col < cols; col++) {
-            invalid = false;
-
-            for (int row = 0; row < rows - 1; row++) {
-
-                if (!sorted[row] && strs[row].charAt(col) > strs[row + 1].charAt(col)) {
-                    invalid = true;
-                    break;
-                }
-
-            }
-
-            if (invalid) {
+            if (!isValidCol(col)) {
                 numDeletions++;
-                continue;
+            } else {
+                updateRows(col);
             }
-
-            for (int row = 0; row < rows - 1; row++) {
-                if (strs[row].charAt(col) < strs[row + 1].charAt(col)) {
-                    sorted[row] = true;
-                }
-            }
-
         }
 
         return numDeletions;
+    }
+
+    private void initialize(String[] strs) {
+        this.strs = strs;
+        rows = strs.length; 
+        cols = strs[0].length();
+        sorted = new boolean[rows - 1];
+    }
+
+    private void updateRows(int col) {
+        for (int row = 0; row < rows - 1; row++) {
+            if (strs[row].charAt(col) < strs[row + 1].charAt(col)) {
+                sorted[row] = true;
+            }
+        }
+    }
+
+    private boolean isValidCol(int col) {
+        for (int row = 0; row < rows - 1; row++) {
+            if (!sorted[row] && strs[row].charAt(col) > strs[row + 1].charAt(col)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

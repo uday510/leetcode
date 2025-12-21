@@ -19,11 +19,13 @@ class Solution {
         return numDeletions;
     }
 
-    private void initialize(String[] strs) {
-        this.strs = strs;
-        rows = strs.length; 
-        cols = strs[0].length();
-        sorted = new boolean[rows - 1];
+    private boolean isValidCol(int col) {
+        for (int row = 0; row < rows - 1; row++) {
+            if (!sorted[row] && strs[row].charAt(col) > strs[row + 1].charAt(col)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updateRows(int col) {
@@ -34,14 +36,11 @@ class Solution {
         }
     }
 
-    private boolean isValidCol(int col) {
-        for (int row = 0; row < rows - 1; row++) {
-            if (!sorted[row] && strs[row].charAt(col) > strs[row + 1].charAt(col)) {
-                return false;
-            }
-        }
-
-        return true;
+    private void initialize(String[] strs) {
+        this.strs = strs;
+        rows = strs.length; 
+        cols = strs[0].length();
+        sorted = new boolean[rows - 1];
     }
 
 }

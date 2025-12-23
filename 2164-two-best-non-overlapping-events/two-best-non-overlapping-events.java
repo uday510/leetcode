@@ -1,32 +1,20 @@
 class Solution {
-    public int maxTwoEvents(int[][] events) {
-        Arrays.sort(events, (x, y) -> Integer.compare(x[0], y[0]));
+    public int maxTwoEvents(int[][] E) {
+        Arrays.sort(E, (o1, o2) -> Integer.compare(o1[0], o2[0]));
+        
+        var pq = new PriorityQueue<int[]>(Comparator.comparingInt(k -> k[1]));
 
-        var pq = new PriorityQueue<Pair>((x, y) -> Integer.compare(x.end, y.end));
-        var max = 0;
-        var curr = 0;
+        int maxSum = 0, curSum = 0;
+        for (var e : E) {
 
-        for (var event : events) {
-
-            while (!pq.isEmpty() && pq.peek().end < event[0]) {
-                curr = Math.max(curr, pq.poll().val);
+            while (!pq.isEmpty() && pq.peek()[1] < e[0]) {
+                curSum = Math.max(curSum, pq.poll()[2]);
             }
 
-            max = Math.max(max, curr + event[2]);
-
-            pq.offer(new Pair(event[1], event[2]));
+            pq.offer(e);
+            maxSum = Math.max(maxSum, curSum + e[2]);
         }
 
-        return max;
-    }
-
-    private class Pair {
-        int end;
-        int val;
-
-        Pair(int end, int val) {
-            this.end = end;
-            this.val = val;
-        }
+        return maxSum;
     }
 }

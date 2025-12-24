@@ -5,12 +5,10 @@ class LFUCache {
     int capacity, minFreq;
 
     public LFUCache(int capacity) {
-
-        this.lfu = new HashMap<>();
-        this.freqMap = new HashMap<>();
+        lfu = new HashMap<>();
+        freqMap = new HashMap<>();
         this.capacity = capacity;
         this.minFreq = 0;
-
     }
     
     public int get(int key) {
@@ -35,30 +33,32 @@ class LFUCache {
         }
 
         if (lfu.size() == capacity) {
-            DLL minList = freqMap.get(minFreq);
-            Node nodeToEvict = minList.evictHeadNext();
+            DLL dll = freqMap.get(minFreq);
+            Node nodeToEvict = dll.evictHeadNext();
             lfu.remove(nodeToEvict.k);
         }
 
         node = new Node(key, value);
-        lfu.put(node.k, node);
-        freqMap.computeIfAbsent(1, k -> new DLL()).add(node);
+
+        lfu.put(key, node);
+        freqMap.computeIfAbsent(1, _ -> new DLL()).add(node);
         minFreq = 1;
     }
 
     private void updateFreq(Node node) {
-
         int oldFreq = node.freq;
 
         DLL oldList = freqMap.get(oldFreq);
-        oldList.remove(node);
 
-        if (oldList.isEmpty() && oldFreq== minFreq) minFreq++;
+        oldList.remove(node);
+        if (oldFreq == minFreq && oldList.isEmpty()) {
+            minFreq++;
+        }
 
         node.freq++;
-        freqMap.computeIfAbsent(node.freq, k -> new DLL()).add(node);
-
+        freqMap.computeIfAbsent(node.freq, _ -> new DLL()).add(node);
     }
+
 }
 
 class Node {
@@ -69,11 +69,7 @@ class Node {
     Node (int k, int v) {
         this.k = k;
         this.v = v;
-        this.freq = 1;
-    }
-
-    Node () {
-        this(-1, -1);
+        freq = 1;
     }
 
 }
@@ -83,39 +79,45 @@ class DLL {
     int size;
 
     DLL () {
-        head = new Node();
-        tail = new Node();
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        size = 0;
+
         head.next = tail;
         tail.prev = head;
-        size = 0;
     }
 
     void add(Node node) {
-        
+
         Node tailPrev = tail.prev;
 
         tailPrev.next = node;
         node.prev = tailPrev;
+
         tail.prev = node;
         node.next = tail;
+
         size++;
     }
 
-    void remove(Node node) {
+    Node remove(Node node) {
 
         node.prev.next = node.next;
         node.next.prev = node.prev;
         size--;
+
+        return node;
     }
 
     Node evictHeadNext() {
-        Node nodeToEvict = head.next;
-        remove(nodeToEvict);
-        return nodeToEvict;
+        Node node = head.next;
+        remove(node);
+
+        return node;
     }
 
     boolean isEmpty() {
         return size == 0;
     }
-
 }
+

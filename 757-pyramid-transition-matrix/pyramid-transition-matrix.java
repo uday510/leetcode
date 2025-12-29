@@ -1,7 +1,7 @@
 class Solution {
 
-    private Map<String, List<Character>> map = new HashMap<>();
-    private Set<String> bad = new HashSet<>();
+    private final Map<String, List<Character>> map = new HashMap<>();
+    private final Set<String> bad = new HashSet<>();
 
     public boolean pyramidTransition(String bottom, List<String> allowed) {
         map.clear();
@@ -20,9 +20,11 @@ class Solution {
         if (cur.length() == 1) return true;
 
         if (nxt.length() + 1 == cur.length()) {
-            if (bad.contains(cur)) return false;
-            boolean res = (dfs(nxt, ""));
-            if (!res) bad.add(nxt);
+            if (bad.contains(nxt)) return false;
+
+            boolean res = dfs(nxt, "");
+            if (!res) bad.add(cur);
+
             return res;
         }
 

@@ -23,7 +23,7 @@ class Solution {
             if (bad.contains(nxt)) return false;
 
             boolean res = dfs(nxt, "");
-            if (!res) bad.add(cur);
+            if (!res) bad.add(nxt);
 
             return res;
         }

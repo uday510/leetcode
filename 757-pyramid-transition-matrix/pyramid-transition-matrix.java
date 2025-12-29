@@ -1,11 +1,11 @@
 class Solution {
 
     private Map<String, List<Character>> map = new HashMap<>();
-    private int idx;
-    private String k;
+    private Set<String> bad = new HashSet<>();
 
     public boolean pyramidTransition(String bottom, List<String> allowed) {
         map.clear();
+        bad.clear();
 
         for (String s : allowed) {
             String k = s.substring(0, 2);
@@ -19,10 +19,15 @@ class Solution {
     private boolean dfs(String cur, String nxt) {
         if (cur.length() == 1) return true;
 
-        if (nxt.length() + 1 == cur.length()) return dfs(nxt, "");
+        if (nxt.length() + 1 == cur.length()) {
+            if (bad.contains(cur)) return false;
+            boolean res = (dfs(nxt, ""));
+            if (!res) bad.add(nxt);
+            return res;
+        }
 
-        idx = nxt.length();
-        k = cur.substring(idx, idx + 2);
+        int idx = nxt.length();
+        String k = cur.substring(idx, idx + 2);
 
         if (!map.containsKey(k)) return false;
 

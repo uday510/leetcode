@@ -1,10 +1,10 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        if (nums2.length < nums1.length) return findMedianSortedArrays(nums2, nums1);
-
+        if (nums2.length < nums1.length) 
+            return findMedianSortedArrays(nums2, nums1);
 
         int n = nums1.length, m = nums2.length;
-        int total = n + m, target = (total + 1) >> 1;
+        int total = m + n, target = (total + 1) >> 1;
         int l = 0, r = n;
         double median = -1;
 
@@ -16,14 +16,16 @@ class Solution {
 
             if (l1 > r2) r = p1 - 1;
             else if (l2 > r1) l = p1 + 1;
-            else if (l1 <= r2 && l2 <= r2) {
+            else if (l1 <= r2 && l2 <= r1) {
+                
+                if ((total & 1) == 1) 
+                    median = Math.max(l1, l2);
+                else 
+                    median = (Math.max(l1, l2) + Math.min(r1, r2)) / 2.0;
 
-                if ( (total & 1) == 1) median = Math.max(l1, l2);
-                else median = ( Math.max(l1, l2) + Math.min(r1, r2) ) / 2.0;
                 break;
             }
         }
-
 
         return median;
     }

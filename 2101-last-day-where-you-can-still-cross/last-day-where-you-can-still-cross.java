@@ -21,7 +21,7 @@ class Solution {
         return l - 1;
     }
 
-    public boolean bfs(int d) {
+    private boolean bfs(int d) {
         int[][] mat = new int[n][m];
         int cnt = 0;
 

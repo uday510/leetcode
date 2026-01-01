@@ -10,6 +10,7 @@ class Solution {
                 return digits;
             }
         }
+        
 
         int[] res = new int[n + 1];
         res[0] = 1;
@@ -17,13 +18,3 @@ class Solution {
         return res;
     }
 }
-
-/**
-
-[1, 2, 0]
-
-[1, 9, 9]
-
-
-
- */

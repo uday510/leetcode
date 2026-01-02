@@ -1,24 +1,24 @@
 class Solution {
-    
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> res = new ArrayList<>();
-        Set<String> dict = new HashSet<>(wordList);
-        if (!dict.contains(endWord)) return res;
-        dict.add(beginWord);
 
+    public List<List<String>> findLadders(String st, String en, List<String> list) {
+        
+        List<List<String>> res = new ArrayList<>();
+        Set<String> dic = new HashSet<>(list);
+        if (!dic.contains(en)) return res;
+        dic.add(st);
 
         Map<String, List<String>> adjList = new HashMap<>();
         Queue<String> queue = new ArrayDeque<>();
-        queue.offer(beginWord);
+        queue.offer(st);
 
         boolean found = false;
-        dict.remove(beginWord);
+        dic.remove(st);
 
         while (!queue.isEmpty() && !found) {
-            int size = queue.size();
+            int sz = queue.size();
             Set<String> visitedThisLevel = new HashSet<>();
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < sz; i++) {
                 String cur = queue.poll();
                 assert cur != null;
                 char[] curArr = cur.toCharArray();
@@ -29,7 +29,7 @@ class Solution {
                         if (c == original) continue;
                         curArr[pos] = c;
                         String nxt = new String(curArr);
-                        if (!dict.contains(nxt)) continue;
+                        if (!dic.contains(nxt)) continue;
 
                         adjList.computeIfAbsent(nxt, k -> new ArrayList<>()).add(cur);
 
@@ -38,41 +38,47 @@ class Solution {
                             queue.offer(nxt);
                         }
 
-                        if (nxt.equals(endWord)) {
+                        if (nxt.equals(en)) {
                             found = true;
                         }
                     }
+
                     curArr[pos] = original;
+
                 }
             }
-            
-            dict.removeAll(visitedThisLevel);
+
+            dic.removeAll(visitedThisLevel);
         }
-        
-        
+
         if (!found) return res;
-        
+
         List<String> path = new ArrayList<>();
-        path.add(endWord);
-        dfs(endWord, beginWord, adjList, path, res);
+        path.add(en);
+        dfs(en, st, adjList, path, res);
         return res;
+
     }
-    
-    private void dfs(String u, String st, Map<String, List<String>> adjList, List<String> path, List<List<String>> res) {
-        
-        if (u.equals(st)) {
-            List<String> newPath = new ArrayList<>(path);
-            Collections.reverse(newPath);
-            res.add(newPath);
-            return;
-        }
-        
-        
-        for (String v : adjList.get(u)) {
-            path.addLast(v);
-            dfs(v, st, adjList, path, res);
-            path.removeLast();
-        }
+
+    private void dfs(String u, String st, 
+            Map<String, List<String>> adjList, 
+            List<String> path, 
+            List<List<String>> res
+        ) {
+
+            if (u.equals(st)) {
+                List<String> newPath = new ArrayList<>(path);
+                Collections.reverse(newPath);
+                res.add(newPath);
+                return;
+            }
+
+            for (String v : adjList.get(u)) {
+                path.addLast(v);
+                dfs(v, st, adjList, path, res);
+                path.removeLast();
+            }
+
     }
 
 }

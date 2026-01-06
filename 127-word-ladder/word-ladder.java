@@ -1,59 +1,67 @@
 class Solution {
 
-    Set<String> validWords;
+    public int ladderLength(String st, String en, List<String> words) {
+        Set<String> wList = new HashSet<>(words);
 
-    public int ladderLength(String st, String en, List<String> wordList) {
-        validWords = new HashSet<>(wordList);
+        if (!wList.contains(en)) return 0;
 
-        if (!validWords.contains(en)) return 0;
+        wList.remove(st);
 
-        if (st.equals(en)) return 0;
-
-        int len = 1;
         Queue<String> queue = new ArrayDeque<>();
         queue.offer(st);
-        validWords.remove(st);
+
+        int level = 1, sz;
 
         while (!queue.isEmpty()) {
-            int sz = queue.size();
+            level++;
 
-            len++;
+            sz = queue.size();
+
             for (int i = 0; i < sz; i++) {
                 String cur = queue.poll();
-                List<String> neighbors = getNeighbors(cur);
+
+                List<String> neighbors = getNeighbors(cur, wList);
 
                 for (String nei : neighbors) {
-                    if (nei.equals(en)) return len;
+
+                    if (nei.equals(en)) {
+                        return level;
+                    }
+
                     queue.offer(nei);
                 }
             }
+
         }
 
         return 0;
     }
 
-    private List<String> getNeighbors(String s) {
+    private List<String> getNeighbors(String s, Set<String> validWords) {
+
         char[] chars = s.toCharArray();
         List<String> neighbors = new ArrayList<>();
 
         for (int i = 0; i < chars.length; i++) {
-            char originalChar = chars[i];
+            char or = chars[i];
 
             for (char c = 'a'; c <= 'z'; c++) {
-                if (originalChar == c) continue;
+                if (c == or) continue;  
 
                 chars[i] = c;
-                String nei = new String(chars);
 
-                if (!validWords.contains(nei)) continue;
+                String cur = new String(chars);
 
-                validWords.remove(nei);
-                neighbors.add(nei);
-            } 
+                if (!validWords.contains(cur)) continue;
 
-            chars[i] = originalChar;
+                validWords.remove(cur);
+                neighbors.add(cur); 
+            }
+
+            chars[i] = or;
         }
 
         return neighbors;
     }
+
 }

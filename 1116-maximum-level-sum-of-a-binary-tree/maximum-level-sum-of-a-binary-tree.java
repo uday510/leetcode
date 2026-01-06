@@ -1,36 +1,34 @@
 class Solution {
     public int maxLevelSum(TreeNode root) {
-        var heap = new PriorityQueue<int[]> ((p1, p2) -> Integer.compare(p2[1], p1[1]));
-        var queue = new LinkedList<TreeNode>();
-        int currLevel = 1;
+        Queue<TreeNode> queue = new ArrayDeque<>();
 
         queue.offer(root);
-        heap.offer(new int[]{currLevel, root.val});
+
+        int tmp, curLevel = 1, mx = -(int) 1e9, res = 1, sz;
+
+        TreeNode curNode;
 
         while (!queue.isEmpty()) {
-            int size = queue.size();
-            int currSum = 0;
+            sz = queue.size();
+            tmp = 0;
 
-            for (; size > 0; --size) {
-                TreeNode currNode = queue.poll();
-                if (currNode == null) {
-                    continue;
-                }
-                currSum += currNode.val;
+            for (int i = 0; i < sz; ++i) {
+                curNode = queue.poll();
+                tmp += curNode.val;
 
-                if (currNode.left != null) {
-                    queue.offer(currNode.left);
-                }
-                if (currNode.right != null) {
-                    queue.offer(currNode.right);
-                }
+                if (curNode.left != null) queue.offer(curNode.left);
+                if (curNode.right != null) queue.offer(curNode.right);
             }
-            System.out.println(currLevel + " " + currSum);
 
-            heap.offer(new int[]{currLevel, currSum});
-            ++currLevel;
+            if (tmp > mx) {
+                mx = tmp;
+                res = curLevel;
+            }
+
+            ++curLevel;
         }
 
-        return heap.poll()[0];
+        return res;
     }
+
 }

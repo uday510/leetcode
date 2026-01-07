@@ -5,12 +5,12 @@ class Solution {
         for (int i = 0; i < n; i++) {
             int cur = gas[i] - cost[i];
 
-            total += cur;
             tank += cur;
+            total += cur;
 
             if (tank < 0) {
-                tank = 0;
                 st = i + 1;
+                tank = 0;
             }
         }
 

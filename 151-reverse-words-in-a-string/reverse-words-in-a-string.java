@@ -1,5 +1,4 @@
 class Solution {
-
     public String reverseWords(String s) {
         StringBuilder sb = trim(s);
 
@@ -11,25 +10,22 @@ class Solution {
 
     private StringBuilder trim(String s) {
         StringBuilder sb = new StringBuilder();
+
         int i = 0, j = s.length() - 1;
 
         while (i < j && s.charAt(i) == ' ') i++;
         while (i < j && s.charAt(j) == ' ') j--;
 
-        while ( i <= j ) {
+        while (i <= j) {
             char ch = s.charAt(i);
 
             if (ch != ' ') sb.append(ch);
             else if (sb.charAt(sb.length() - 1) != ' ') sb.append(ch);
 
-            i++;
+            i++; 
         }
 
         return sb;
-    }
-
-    private void reverse(int i, int j, StringBuilder sb) {
-        while (i < j) swap(i++, j--, sb);
     }
 
     private void reverseEachWord(StringBuilder sb) {
@@ -43,6 +39,11 @@ class Solution {
 
             i = j + 1;
         }
+        
+    }
+
+    private void reverse(int i, int j, StringBuilder sb) {
+        while (i < j) swap(i++, j--, sb);
     }
 
     private void swap(int i, int j, StringBuilder sb) {

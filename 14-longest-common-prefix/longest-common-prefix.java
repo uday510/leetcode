@@ -1,5 +1,4 @@
 class Solution {
-
     public String longestCommonPrefix(String[] strs) {
         int n = strs.length;
         StringBuilder sb = new StringBuilder();
@@ -8,14 +7,15 @@ class Solution {
             char ch = strs[0].charAt(i);
 
             for (int j = 1; j < n; j++) {
-                if (i >= strs[j].length() ||
-                    strs[0].charAt(i) != strs[j].charAt(i)) return sb.toString();      
+                if (i >= strs[j].length() || ch != strs[j].charAt(i)) {
+                    return sb.toString();
+                }
             }
 
             sb.append(ch);
         }
 
         return sb.toString();
+
     }
-    
 }

@@ -1,17 +1,18 @@
 class Solution {
-
     public String convert(String s, int numRows) {
-
+        
         if (numRows == 1 || numRows >= s.length()) return s;
 
         int n = s.length();
 
         List<StringBuilder> rows = new ArrayList<>();
+
         for (int i = 0; i < numRows; i++) {
             rows.add(new StringBuilder());
         }
 
         int i = 0, step = 1;
+
         for (int j = 0; j < n; j++) {
             char ch = s.charAt(j);
 
@@ -29,5 +30,4 @@ class Solution {
 
         return sb.toString();
     }
-    
 }

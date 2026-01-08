@@ -10,16 +10,17 @@
  * }
  */
 public class Solution {
+
     public boolean hasCycle(ListNode head) {
         if (head == null) return false;
 
-        ListNode s = head, f = s.next;
+        ListNode s = head, f = head.next;
 
         while (f != null && f.next != null) {
             if (s == f) return true;
             s = s.next;
             f = f.next.next;
-        }
+        }    
 
         return false;
     }

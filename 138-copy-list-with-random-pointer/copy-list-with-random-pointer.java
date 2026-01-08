@@ -15,6 +15,7 @@ class Node {
 
 class Solution {
     public Node copyRandomList(Node head) {
+        
         if (head == null) return null;
 
         Node cur = head;
@@ -28,12 +29,15 @@ class Solution {
         }
 
         cur = head;
+
         while (cur != null) {
-            Node oldNode = cur.random;
+
+            Node oldRandom = cur.random;
             Node newNode = cur.next;
 
-            if (oldNode != null) {
-                newNode.random = oldNode.next;
+
+            if (oldRandom != null) {
+                newNode.random = oldRandom.next;
             }
 
             cur = newNode.next;

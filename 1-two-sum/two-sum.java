@@ -1,19 +1,18 @@
 class Solution {
     public int[] twoSum(int[] A, int T) {
-
         
-        // i = 0, n
-        // j = i + 1, n
+        Map<Integer, Integer> map = new HashMap<>();
 
-        for (int i = 0, n = A.length; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
+        for (int i = 0; i < A.length; i++) {
+            int curSum = T - A[i];
 
-                if (A[i] + A[j] == T) return new int[] {i, j};
+            if (map.containsKey(curSum)) {
+                return new int[] {map.get(curSum), i};
             }
+
+            map.put(A[i], i);
         }
 
         return new int[] {-1, -1};
     }
 }
-
-// [2,7,11,15]

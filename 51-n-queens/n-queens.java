@@ -4,8 +4,8 @@ class Solution {
     int n;
     char[][] board;
     List<List<String>> boards;
-    private final char QUEEN = 'Q';
-    private final char EMPTY = '.';
+    char Q = 'Q';
+    char E = '.';
 
     public List<List<String>> solveNQueens(int n) {
         initialize(n);
@@ -17,24 +17,24 @@ class Solution {
 
     private void dfs(int i) {
         if (i >= n) {
-            boards.add(generateNewBoard());
+            boards.add(genBoard());
             return;
         }
 
         for (int j = 0; j < n; j++) {
-            int d = i - j, a = i + j;
+            int d = i - j, an = i + j;
 
-            if (dia.contains(d) || anti.contains(a) || col.contains(j)) continue;
+            if (dia.contains(d) || anti.contains(an) || col.contains(j)) continue;
 
-            dia.add(d); anti.add(a); col.add(j);
+            dia.add(d); anti.add(an); col.add(j);
 
-            board[i][j] = QUEEN;
+            board[i][j] = Q;
 
             dfs(i + 1);
 
-            dia.remove(d); anti.remove(a); col.remove(j);
+            dia.remove(d); anti.remove(an); col.remove(j);
 
-            board[i][j] = EMPTY;
+            board[i][j] = E; 
         }
     }
 
@@ -46,17 +46,16 @@ class Solution {
         board = new char[n][n];
         boards = new ArrayList<>();
 
-        for (char[] row : board) Arrays.fill(row, EMPTY);
+        for (char[] row : board) Arrays.fill(row, E);
     }
 
-    private List<String> generateNewBoard() {
+    private List<String> genBoard() {
         List<String> list = new ArrayList<>();
 
         for (char[] row : board) {
             list.add(String.valueOf(row));
-        }
+        } 
 
         return list;
     }
-
 }

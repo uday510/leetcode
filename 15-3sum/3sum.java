@@ -4,14 +4,12 @@ class Solution {
     private int n;
 
     public List<List<Integer>> threeSum(int[] nums) {
-        if (nums == null || nums.length < 3) return new ArrayList<>();
-
         this.nums = nums;
         this.n = nums.length;
 
         Arrays.sort(nums);
 
-        return dfs(0, 3, 0);
+        return dfs(0, 3, 0);   
     }
 
     private List<List<Integer>> dfs(int i, int k, int target) {
@@ -22,24 +20,23 @@ class Solution {
         for (int j = i; j < n; j++) {
             if (j > i && nums[j] == nums[j - 1]) continue;
 
-            List<List<Integer>> subLists = dfs(j + 1, k - 1, target - nums[j]);
-
-            for (List<Integer> sub : subLists) {
+            for (List<Integer> sub : dfs(j + 1, k - 1, target - nums[j])) {
                 List<Integer> cur = new ArrayList<>();
                 cur.add(nums[j]);
                 cur.addAll(sub);
 
                 res.add(cur);
             }
+
         }
 
         return res;
-
     }
 
-    private List<List<Integer>> twoSum (int index, int target) {
+    private List<List<Integer>> twoSum(int idx, int target) {
         List<List<Integer>> list = new ArrayList<>();
-        int i = index, j = n - 1;
+
+        int i = idx, j = n - 1;
 
         while (i < j) {
             int cur = nums[i] + nums[j];
@@ -47,17 +44,13 @@ class Solution {
             if (cur < target) i++;
             else if (cur > target) j--;
             else {
-                list.add(Arrays.asList(nums[i], nums[j]));
+                list.add(Arrays.asList(nums[i++], nums[j--]));
 
-                i++;
-                j--;
-
-                while (i < n && nums[i] == nums[i - 1]) i++;
+                while (i < n && nums[i - 1] == nums[i]) i++;
                 while (j > -1 && nums[j] == nums[j + 1]) j--;
             }
         }
 
         return list;
     }
-
 }

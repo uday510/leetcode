@@ -14,26 +14,25 @@
  * }
  */
 class Solution {
-    int min;
-    TreeNode prev;
+
+    int res;
+    TreeNode prevNode;
+    
     public int getMinimumDifference(TreeNode root) {
-        min = (int) 1e9;
-        dfs(root);
-        return min;
+        res = (int) 1e9;
+        solve(root);
+        return res;
     }
-    private void dfs(TreeNode node) {
-        if (node == null) {
-            return;
-        }
+    public void solve(TreeNode currNode) {
+        if (currNode == null) return;
+        
+        solve(currNode.left);
 
-       dfs(node.left);
+        if (prevNode != null) 
+            res = Math.min(res, currNode.val - prevNode.val);
 
-       if (prev != null) {
-        min = Math.min(min, node.val - prev.val);
-       }
-       
-       prev = node;
+        prevNode = currNode;
 
-       dfs(node.right);
+        solve(currNode.right);
     }
 }

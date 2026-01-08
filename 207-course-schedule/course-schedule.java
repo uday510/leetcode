@@ -1,36 +1,37 @@
 class Solution {
-    public boolean canFinish(int n, int[][] edges) {
-        
-        List<Integer>[] adjList = new ArrayList[n];
-        int[] indegree = new int[n];
+    public boolean canFinish(int n, int[][] preq) {
 
-        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
+        List<Integer>[] adj = new ArrayList[n];   
+        int[] in = new int[n];
 
-        for (int[] e : edges) {
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+
+        for (int[] e : preq) {
+
             int u = e[0], v = e[1];
 
-            adjList[v].add(u);
-            indegree[u]++;
+            adj[v].add(u);
+            in[u]++;
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
-        int finished = 0;
+        int fi = 0;
 
         for (int i = 0; i < n; i++) {
-            if (indegree[i] == 0) queue.offer(i);
+            if (in[i] == 0) queue.offer(i);
         }
 
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            finished++;
-
-            for (int v : adjList[u]) {
-                if (--indegree[v] == 0) {
+            fi++;
+            
+            for (int v : adj[u]) {
+                if (--in[v] == 0) {
                     queue.offer(v);
                 }
             }
         }
 
-        return finished == n;
+        return fi == n;
     }
 }

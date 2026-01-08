@@ -29,5 +29,7 @@ class Solution {
         list.add(c[i]);
         dfs(i, list, cur + c[i]);
         list.removeLast();
+
     }
+
 }

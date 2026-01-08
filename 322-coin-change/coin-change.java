@@ -1,5 +1,6 @@
 class Solution {
     public int coinChange(int[] C, int A) {
+        
         int n = C.length;
         int[] dp = new int[A + 1];
 
@@ -13,6 +14,7 @@ class Solution {
             }
         }
 
-        return dp[A] > A ? -1 : dp[A];
+        return dp[A] > A ? -1: dp[A];
+
     }
 }

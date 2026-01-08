@@ -8,7 +8,7 @@ class LFUCache {
         lfu = new HashMap<>();
         freqMap = new HashMap<>();
         this.capacity = capacity;
-        this.minFreq = 0;
+        this.minFreq = 0;    
     }
     
     public int get(int key) {
@@ -45,6 +45,8 @@ class LFUCache {
         minFreq = 1;
     }
 
+
+
     private void updateFreq(Node node) {
         int oldFreq = node.freq;
 
@@ -58,7 +60,6 @@ class LFUCache {
         node.freq++;
         freqMap.computeIfAbsent(node.freq, _ -> new DLL()).add(node);
     }
-
 }
 
 class Node {
@@ -75,10 +76,10 @@ class Node {
 }
 
 class DLL {
-    Node head, tail;
+    Node head , tail;
     int size;
 
-    DLL () {
+    DLL() {
         head = new Node(-1, -1);
         tail = new Node(-1, -1);
         size = 0;
@@ -120,4 +121,3 @@ class DLL {
         return size == 0;
     }
 }
-

@@ -10,6 +10,7 @@ class Solution {
         this.n = nums.length;
 
         dfs(0);
+
         return perms;    
     }
 
@@ -24,6 +25,7 @@ class Solution {
             dfs(i + 1);
             swap(i, j);
         }
+
     }
 
     private void addPerm() {
@@ -39,5 +41,4 @@ class Solution {
         nums[i] = nums[j];
         nums[j] = tmp;
     }
-
 }

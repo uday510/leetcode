@@ -31,7 +31,7 @@ class Solution {
         int del = dfs(i + 1, j);
         int repl = dfs(i + 1, j + 1);
 
-
-        return dp[i][j] = 1 + Math.min(ins, Math.min(del, repl));
+        return dp[i][j] = 
+            Math.min(ins, Math.min(del, repl)) + 1;
     }
 }

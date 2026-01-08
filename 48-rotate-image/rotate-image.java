@@ -1,31 +1,43 @@
 class Solution {
-    public void rotate(int[][] matrix) {
-        transpose(matrix);
-        for (int[] mt : matrix)
-             System.out.println(Arrays.toString(mt));
-        reverseRows(matrix);
+    public void rotate(int[][] A) {
+        
+        transpose(A);
+        reverse(A);
     }
-    void transpose(int[][] matrix) {
-        for (int i = 0; i < matrix.length; ++i) {
-            for (int j = i; j < matrix[i].length; ++j) {
-                int tmp = matrix[j][i];
-                matrix[j][i] = matrix[i][j];
-                matrix[i][j] = tmp;
+
+    private void transpose(int[][] A) {
+        int n = A.length;
+        int m = A[0].length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < m; j++) {
+
+                int tmp = A[i][j];
+                A[i][j] = A[j][i];
+                A[j][i] = tmp;
+
             }
         }
     }
-    void reverseRows(int[][] matrix) {
-       for (int i = 0; i < matrix.length; ++i) {
-            int st = 0;
-            int en = matrix[i].length - 1;
-            while (st < en) {
-                int tmp = matrix[i][st];
-                matrix[i][st] = matrix[i][en];
-                matrix[i][en] = tmp;
-                ++st;
-                --en;
-            }
-       }
-       
+
+    private void reverse(int[][] A) {
+        for (int[] row : A) {
+            reverse(row);
+        }
     }
+
+    private void reverse(int[] A) {
+        int l = 0, r = A.length - 1;
+
+        while (l < r) {
+            swap(l++, r--, A);
+        }
+    }
+
+    private void swap(int i, int j, int[] arr) {
+        int tmp = arr[j];
+        arr[j] = arr[i];
+        arr[i] = tmp;
+    }
+
 }

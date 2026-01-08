@@ -1,25 +1,30 @@
 class Solution {
+
+    Map<Node, Node> vis;
+
     public Node cloneGraph(Node node) {
-        if (node == null) return null;
 
-        Queue<Node> queue = new ArrayDeque<>();
-        Map<Node, Node> map = new HashMap<>();
+        vis = new HashMap<>();
 
-        queue.offer(node);
-        map.put(node, new Node(node.val));
+        return dfs(node);    
+    }
 
-        while (!queue.isEmpty()) {
-            Node cur = queue.poll();
-            for (Node nei : cur.neighbors) {
-                if (!map.containsKey(nei)) {
-                    map.put(nei, new Node(nei.val));
-                    queue.offer(nei);
-                }
-
-                map.get(cur).neighbors.add(map.get(nei));
-            } 
+    private Node dfs(Node node) {
+        if (node == null) {
+            return null;
         }
-        
-        return map.get(node);
+
+        if (vis.containsKey(node)) {
+            return vis.get(node);
+        }
+
+        Node cloned = new Node(node.val, new ArrayList<>());
+        vis.put(node, cloned);
+
+        for (Node nei : node.neighbors) {
+            cloned.neighbors.add(dfs(nei));
+        }
+
+        return cloned;
     }
 }

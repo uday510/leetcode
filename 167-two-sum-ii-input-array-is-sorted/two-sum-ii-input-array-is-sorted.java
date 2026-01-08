@@ -1,14 +1,20 @@
 class Solution {
-    public int[] twoSum(int[] arr, int target) {
-        int i = 0; int j = arr.length - 1;
+    public int[] twoSum(int[] A, int T) {
+        
+        int curSum;
+        for (int i = 0, j = A.length - 1; i < j;) {
+            
+            curSum = A[i] + A[j];
+            if (curSum == T) {
+                return new int[] {i + 1, j + 1};
+            } else if (curSum < T) {
+                i++;
+            } else {
+                j--;
+            }
 
-        while (i < j) {
-            if (arr[i] + arr[j] == target)
-                return new int[]{i+1, j+1};
-            else if (arr[i] + arr[j] < target)
-                ++i;
-            else --j;
         }
+
         return new int[] {-1, -1};
     }
 }

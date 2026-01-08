@@ -1,21 +1,22 @@
 class LRUCache {
 
-    private Map<Integer, Node> lru;
-    private int capacity;
-    private Node head;
-    private Node tail;
+
+    Map<Integer, Node> lru;
+    Node head, tail;
+    int capacity;
 
     public LRUCache(int capacity) {
         lru = new HashMap<>();
-        this.capacity = capacity;
         head = new Node(-1, -1);
         tail = new Node(-1, -1);
 
         head.next = tail;
         tail.prev = head;
+        this.capacity = capacity;    
     }
     
     public int get(int key) {
+        
         Node node = lru.get(key);
 
         if (node == null) return -1;
@@ -27,20 +28,21 @@ class LRUCache {
     }
     
     public void put(int key, int value) {
-        Node node = lru.get(key);
 
-        if (node != null) {
-            remove(node);
-            node.v = value;
-        } else {
-            if (lru.size() == capacity) {
-                remove(head.next);
-            }
+      Node node = lru.get(key) ;
 
-            node = new Node(key, value);
+      if (node != null) {
+        remove(node);
+        node.v = value;
+      } else {
+        if (lru.size() == capacity) {
+            remove(head.next);
         }
+        node = new Node(key, value);
+      }
 
-        add(node);
+      add(node);
+
     }
 
     private void add(Node node) {
@@ -50,6 +52,7 @@ class LRUCache {
 
         tailPrev.next = node;
         node.prev = tailPrev;
+
         tail.prev = node;
         node.next = tail;
     }

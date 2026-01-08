@@ -1,5 +1,7 @@
 class Solution {
     public String minWindow(String s, String t) {
+        
+
         int n = s.length(), m = t.length();
         int st = -1, min = n + 1, cnt = 0;
 
@@ -9,6 +11,7 @@ class Solution {
 
         for (int l = 0, r = 0; r < n; r++) {
             char c2 = s.charAt(r);
+
             if (cnts.containsKey(c2)) {
                 cnts.put(c2, cnts.get(c2) - 1);
                 if (cnts.get(c2) >= 0) cnt++;
@@ -26,10 +29,10 @@ class Solution {
                     cnts.put(c1, cnts.get(c1) + 1);
                     if (cnts.get(c1) > 0) cnt--;
                 }
+
                 l++;
             }
         }
-
 
         return st == -1 ? "" : s.substring(st, st + min);
     }

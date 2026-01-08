@@ -3,7 +3,7 @@ class Solution {
     private Trie root;
 
     public boolean differByOne(String[] dict) {
-
+        
         root = new Trie();
 
         for (String s : dict) {
@@ -14,22 +14,22 @@ class Solution {
         return false;
     }
 
-    private boolean dfs(String s, Trie cur, int i, int mismatches) {
+    private boolean dfs(String s, Trie cur, int i, int mis) {
 
         if (cur == null) return false;
 
-        if (i == s.length()) return cur.eow && mismatches == 1;
+        if (i == s.length()) return cur.eow && mis == 1;
 
         int idx = s.charAt(i) - 'a';
 
         for (int c = 0; c < 26; c++) {
-            Trie nxt = cur.children[c];
+            Trie nxt = cur.chi[c];
 
             if (nxt == null) continue;
 
-            int newMismatches = mismatches + (c == idx ? 0 : 1);
-            if (newMismatches <= 1) {
-                if (dfs(s, nxt, i + 1, newMismatches)) {
+            int newM = mis + (c == idx ? 0 : 1);
+            if (newM <= 1) {
+                if (dfs(s, nxt, i + 1, newM)) {
                     return true;
                 }
             }
@@ -44,24 +44,23 @@ class Solution {
         for (int i = 0; i < s.length(); i++) {
             int idx = s.charAt(i) - 'a';
 
-            if (cur.children[idx] == null) {
-                cur.children[idx] = new Trie();
+            if (cur.chi[idx] == null) {
+                cur.chi[idx] = new Trie();
             }
 
-            cur = cur.children[idx];
+            cur = cur.chi[idx];
         }
 
         cur.eow = true;
     }
-
 }
 
 class Trie {
-    Trie[] children;
+    Trie[] chi;
     boolean eow;
 
     Trie () {
-        children = new Trie[26];
+        chi = new Trie[26];
         eow = false;
     }
 }

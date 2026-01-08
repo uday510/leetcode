@@ -41,6 +41,7 @@ class Solution {
         Edge cur;
         String u;
         Double w;
+
         while (!queue.isEmpty()) {
             cur = queue.poll();
             u = cur.v;
@@ -57,6 +58,7 @@ class Solution {
                     vis.add(e.v);
                     queue.offer(new Edge(e.v, w1));
                 }
+                
             }
 
         }

@@ -1,39 +1,55 @@
 class Solution {
     public String minWindow(String s, String t) {
         
+        int m = s.length(), n = t.length(), reqChars = 0;
 
-        int n = s.length(), m = t.length();
-        int st = -1, min = n + 1, cnt = 0;
+        Map<Character, Integer> cntMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            cntMap.put(t.charAt(i), cntMap.getOrDefault(t.charAt(i), 0) + 1);
+        }
 
-        Map<Character, Integer> cnts = new HashMap<>();
+        int min = m + 1, st = -1;
 
-        for (int i = 0; i < m; i++) cnts.put(t.charAt(i), cnts.getOrDefault(t.charAt(i), 0) + 1);
+        for (int l = 0, r = 0; r < m; r++) {
+            
+            char rChar = s.charAt(r);
 
-        for (int l = 0, r = 0; r < n; r++) {
-            char c2 = s.charAt(r);
+            if (cntMap.containsKey(rChar)) {
+                cntMap.put(rChar, cntMap.get(rChar) - 1);
 
-            if (cnts.containsKey(c2)) {
-                cnts.put(c2, cnts.get(c2) - 1);
-                if (cnts.get(c2) >= 0) cnt++;
+                if (cntMap.get(rChar) >= 0) reqChars++;
             }
 
-            while (cnt == m) {
+            while (l <= r && reqChars == n) {
+
                 if (r - l + 1 < min) {
                     st = l;
                     min = r - l + 1;
                 }
 
-                char c1 = s.charAt(l);
 
-                if (cnts.containsKey(c1)) {
-                    cnts.put(c1, cnts.get(c1) + 1);
-                    if (cnts.get(c1) > 0) cnt--;
+                char lChar = s.charAt(l);
+
+                if (cntMap.containsKey(lChar)) {
+                    cntMap.put(lChar, cntMap.get(lChar) + 1);
+
+                    if (cntMap.get(lChar) > 0) reqChars--;
                 }
 
                 l++;
+
             }
         }
 
         return st == -1 ? "" : s.substring(st, st + min);
     }
 }
+
+/**
+
+
+ZZAB CD
+
+AB
+
+ */

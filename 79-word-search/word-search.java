@@ -4,10 +4,10 @@ class Solution {
     String w;
     int n, m, wLen;
     boolean[][] vis;
-    int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 
     public boolean exist(char[][] board, String word) {
-        this.board = board; 
+        this.board = board;
         w = word;
         n = board.length;
         m = board[0].length;
@@ -16,7 +16,11 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (w.charAt(0) == board[i][j] && dfs(i, j, 0)) return true;
+                if (w.charAt(0) == board[i][j]) {
+                    if (dfs(i, j, 0)) {
+                        return true;
+                    }
+                }
             }
         }
 
@@ -31,16 +35,22 @@ class Solution {
         vis[x][y] = true;
         for (int[] dir : dirs) {
             int R = dir[0] + x, C = dir[1] + y;
+
             if (dfs(R, C, idx + 1)) {
                 return true;
             }
+
         }
 
         vis[x][y] = false;
         return false;
     }
 
-    private boolean isValid(int i, int j, int idx) {
-        return (i >= 0 && i < n && j >= 0 && j < m && !vis[i][j] && board[i][j] == w.charAt(idx));
+    private boolean isValid(int x, int y, int idx) {
+        return (
+            x >= 0 && x < n &&
+            y >= 0 && y < m &&
+            !vis[x][y] && board[x][y] == w.charAt(idx)
+        );
     }
 }

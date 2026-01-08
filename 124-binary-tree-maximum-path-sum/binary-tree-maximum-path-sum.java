@@ -13,13 +13,11 @@ class Solution {
     private int dfs(TreeNode node) {
         if (node == null) return 0;
 
-
-        int l = dfs(node.left);
-        int r = dfs(node.right);
-
+        int l = Math.max(dfs(node.left), 0);
+        int r = Math.max(dfs(node.right), 0);
 
         maxPathSum = Math.max(maxPathSum, l + r + node.val);
 
-        return Math.max(Math.max(l, r) + node.val, 0);
+        return Math.max(l, r) + node.val;
     }
 }

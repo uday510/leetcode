@@ -1,10 +1,8 @@
 class Solution {
     public int minSubArrayLen(int t, int[] nums) {
         
-        if (Arrays.stream(nums).sum() < t) return 0;
-
         int n = nums.length;
-        int res = n, cur = 0;
+        int res = n + 1, cur = 0;
 
         for (int i = 0, j = 0; j < n; j++) {
             cur += nums[j];
@@ -16,6 +14,6 @@ class Solution {
 
         }
 
-        return res;
+        return res == n + 1 ? 0 : res;
     }
 }

@@ -9,9 +9,10 @@
  * }
  */
 class Solution {
-    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        
         ListNode h = new ListNode(-1);
-        ListNode c = h, p1 = list1, p2 = list2;
+        ListNode c = h, p1 = l1, p2 = l2;
 
         while (p1 != null && p2 != null) {
 
@@ -22,10 +23,12 @@ class Solution {
                 c.next = p2;
                 p2 = p2.next;
             }
+
             c = c.next;
         }
 
         c.next = p1 == null ? p2 : p1;
+
         return h.next;
     }
 }

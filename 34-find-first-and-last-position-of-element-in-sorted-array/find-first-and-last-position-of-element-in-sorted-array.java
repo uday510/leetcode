@@ -2,7 +2,7 @@ class Solution {
 
     int[] nums;
     int n;
-    
+
     public int[] searchRange(int[] nums, int target) {
         this.nums = nums;
         this.n = nums.length;
@@ -10,7 +10,7 @@ class Solution {
         int l = bs(target);
         if (l == n || nums[l] != target) return new int[] {-1, -1};
         int r = bs(target + 1) - 1;
-        
+
         return new int[] {l, r};
     }
 
@@ -23,7 +23,7 @@ class Solution {
             if (nums[m] < target) l = m + 1;
             else r = m;
         }
-
+        
         return l;
     }
 }

@@ -1,33 +1,35 @@
 class Solution {
-    public int minPathSum(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
-        int[] dp = new int[n];
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0) {
-                    dp[j] = grid[i][j];
-                } else if (i == 0) {
-                    dp[j] = dp[j - 1] + grid[i][j];
-                } else if (j == 0) {
-                    dp[j] = dp[j] + grid[i][j];
-                } else {
-                    dp[j] = Math.min(dp[j], dp[j - 1]) + grid[i][j];
-                }
+    int r, c;
+    int[][] dp;
+
+    public int minPathSum(int[][] g) {
+        r = g.length;
+        c = g[0].length;
+        dp = new int[r][c];
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                dp[i][j] = g[i][j] + getMin(i, j);
             }
         }
 
-        return dp[n - 1];
+        return dp[r - 1][c - 1];
     }
+
+    private int getMin(int i, int j) {
+        int cur = 0;
+
+        if (i > 0 && j > 0) {
+            cur = Math.min(dp[i - 1][j], dp[i][j - 1]);
+        } else if (i > 0) {
+            cur = dp[i - 1][j];
+        } else if (j > 0) {
+            cur = dp[i][j - 1];
+        }
+
+        return cur;
+
+    }
+
 }
-
-/**
-
-
-[1, 2, 3]
-[1, 1, 1]
-
-[1, 3]
-
-
- */

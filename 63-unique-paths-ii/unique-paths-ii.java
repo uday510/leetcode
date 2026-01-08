@@ -1,5 +1,5 @@
 class Solution {
-    
+
     int n, m;
     int[][] G, dp;
 
@@ -11,9 +11,9 @@ class Solution {
 
         if (O[n - 1][m - 1] == 1) return 0;
 
-        for (int[] row : dp) Arrays.fill(row, -1);
+        for (int[] r : dp) Arrays.fill(r, -1);
 
-        return dfs(0, 0);
+        return dfs(0, 0); 
     }
 
     private int dfs(int i, int j) {

@@ -1,18 +1,15 @@
 class Solution {
 
-    int n;
     List<Integer> lis;
 
     public int lengthOfLIS(int[] nums) {
-        n = nums.length;
         lis = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
+        
+        for (int i = 0; i < nums.length; i++) {
             int num = nums[i];
-
-            int nxtIdx = bs(num);
-            if (nxtIdx == lis.size()) lis.add(nxtIdx);
-            lis.set(nxtIdx, num);
+            int index = bs(num);
+            if (index == lis.size()) lis.add(num);
+            lis.set(index, num);
         }
 
         return lis.size();

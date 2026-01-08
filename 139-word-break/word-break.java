@@ -16,20 +16,20 @@ class Solution {
     }
 
     private boolean dfs(int i) {
-        if (i >= n) return true;;
+        if (i >= n) return true;
 
         if (dp[i] != -1) return dp[i] == 1;
 
         for (int j = i; j < n; j++) {
-            String substr = s.substring(i, j + 1);
-            if (words.contains(substr) && dfs(j + 1)) {
+            String sub = s.substring(i, j + 1);
+            if (words.contains(sub) && dfs(j + 1)) {
                 dp[i] = 1;
                 return true;
             }
         }
 
         dp[i] = 0;
-
+        
         return false;
     }
 }

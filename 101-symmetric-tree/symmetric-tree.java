@@ -3,11 +3,12 @@ class Solution {
         return dfs(root, root);
     }
 
-    private boolean dfs(TreeNode node1, TreeNode node2) {
-        if (node1 == null || node2 == null) return node1 == node2;
+    private boolean dfs(TreeNode n1, TreeNode n2) {
+        if (n1 == null || n2 == null) return n1 == n2;
+        if (n1 == null && n2 == null) return true;
 
-        return node1.val == node2.val &&
-            dfs(node1.left, node2.right) &&
-            dfs(node1.right, node2.left);
+        return n1.val == n2.val &&
+                dfs(n1.left, n2.right) &&
+                dfs(n2.right, n1.left);
     }
 }

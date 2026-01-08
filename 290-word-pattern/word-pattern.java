@@ -1,23 +1,24 @@
 class Solution {
-    public boolean wordPattern(String pattern, String s) {
+    public boolean wordPattern(String p, String s) {
+        
         String[] words = s.split(" ");
-        if (words.length != pattern.length()) return false;
+        if (words.length != p.length()) return false;
 
-        Map<Character, String> mapChar = new HashMap<>();
-        Map<String, Character> mapWord = new HashMap<>();
+        Map<Character, String> cMap = new HashMap<>();
+        Map<String, Character> wMap = new HashMap<>();
 
         for (int i = 0; i < words.length; i++) {
             String w = words[i];
-            char ch = pattern.charAt(i);
+            char ch = p.charAt(i);
 
-            if (mapChar.containsKey(ch)) {
-                if (!mapChar.get(ch).equals(w)) return false;
-            } else {
-                if (mapWord.containsKey(w)) return false;
-
-                mapWord.put(w, ch);
-                mapChar.put(ch, w);
+            if (cMap.containsKey(ch)) {
+                if (!cMap.get(ch).equals(w)) return false;
+            } else if (wMap.containsKey(w)) {
+                if (wMap.get(w) != ch) return false;
             }
+
+            wMap.put(w, ch);
+            cMap.put(ch, w);
         }
 
         return true;

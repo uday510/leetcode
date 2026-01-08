@@ -1,31 +1,42 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
-    public ListNode rotateRight(ListNode head, int k) {
-        if (head == null || k == 0) return head;
+    public ListNode rotateRight(ListNode h, int k) {
 
-        ListNode oldHead = head;
-        ListNode oldTail = head;
-        int len = 1;
+        if (h == null || k == 0) return h;
 
-        while (oldTail.next != null) {
-            oldTail = oldTail.next;
-            len++;
+        ListNode oH = h;
+        ListNode oT = h;
+        int l = 1;
+
+        while (oT.next != null) {
+            oT = oT.next;
+            l++;
         }
 
-        if (Math.abs(k) % len == 0) {
-            return head;
+        if (Math.abs(k) % l == 0) return oH;
+
+        int p = k > 0 ? l - (k % l) : k;
+
+        ListNode nT = h;
+
+        for (int i = 1; i < p && nT != null; i++) {
+            nT = nT.next;
         }
 
-        int pos = k > 0 ? len - k % len : k;
-        ListNode newTail = head;
+        ListNode nH = nT.next;
+        nT.next = null;
+        oT.next = h;
 
-        for (int i = 1; i < pos && newTail != null; i++) {
-            newTail = newTail.next;
-        }
-
-        ListNode newHead = newTail.next;
-        newTail.next = null;
-        oldTail.next = oldHead;
-
-        return newHead;
+        return nH;
     }
+
 }

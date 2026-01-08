@@ -1,13 +1,15 @@
 class Solution {
-    public int change(int amt, int[] coins) {
-        int[] dp = new int[amt + 1];
+    public int change(int A, int[] C) {
+        int[] dp = new int[A + 1];
         dp[0] = 1;
 
-         for (int c : coins) {
-            for (int i = c; i <= amt; i++) {
-                dp[i] += dp[i - c];
+        for (int c : C) {
+
+            for (int a = c; a <= A; a++) {
+                dp[a] += dp[a - c];
             }
         }
-        return dp[amt];
+        
+        return dp[A];
     }
 }

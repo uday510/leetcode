@@ -3,6 +3,7 @@ class Solution {
     List<Integer> lis;
 
     public int maxEnvelopes(int[][] E) {
+
         lis = new ArrayList<>();
 
         Arrays.sort(E, (o1, o2) -> {

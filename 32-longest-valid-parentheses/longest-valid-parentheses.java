@@ -1,19 +1,35 @@
 class Solution {
+
+    private char OPEN = '(';
+
     public int longestValidParentheses(String s) {
-        int longest = 0;
+        
         Deque<Integer> stack = new ArrayDeque<>();
+        int longest = 0;
+
         stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
 
-        for (int idx = 0; idx < s.length(); ++idx) {
-            char currChar = s.charAt(idx);
-
-            if (currChar == '(') stack.push(idx);
-            else {
-                stack.pop();
-                if (stack.isEmpty()) stack.push(idx);
-                longest = Math.max(longest, idx - stack.peek());
+            if (cur == OPEN) {
+                stack.push(i);
+            } else {
+               stack.pop();
+               if (stack.isEmpty()) {
+                stack.push(i);
+               } else {
+                longest = Math.max(longest, i - stack.peek());
+               }
             }
         }
+
+
         return longest;
     }
 }
+
+/**
+
+
+
+ */

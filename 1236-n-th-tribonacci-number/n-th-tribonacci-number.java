@@ -1,15 +1,17 @@
 class Solution {
     public int tribonacci(int n) {
-        if (n == 0) return n;
-        int s1 = 0, s2 = 1, s3 = 1;
+        if (n < 2) return n;
 
-        for (int idx = 3; idx <= n; ++idx) {
-            int s4 = s1 + s2 + s3;
-            s1 = s2;
-            s2 = s3;
-            s3 = s4;
-        }
+        int t0 = 0, t1 = 1, t2 = 1;
 
-        return s3;
+        for (int i = 3; i <= n; i++) {
+            int t3 = t0 + t1 + t2;
+            
+            t0 = t1;
+            t1 = t2;
+            t2 = t3;
+        }   
+
+        return t2;
     }
 }

@@ -9,7 +9,7 @@ class Solution {
         cache = new HashMap<>();
 
         for (int num : nums) {
-            map.merge(num, num, Integer::sum);
+            map.put(num, map.getOrDefault(num, 0) + num);
             n = Math.max(n, num);
         }
 

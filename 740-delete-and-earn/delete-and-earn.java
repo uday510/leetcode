@@ -1,24 +1,35 @@
 class Solution {
+
+    Map<Integer, Integer> map;
+    Map<Integer, Integer> cache;
+
     public int deleteAndEarn(int[] nums) {
-        
-        Map<Integer, Integer> points = new HashMap<>();
-        int max = 0;
+        int n = -1;
+        map = new HashMap<>();
+        cache = new HashMap<>();
 
         for (int num : nums) {
-            max = Math.max(num, max);
-            points.merge(num, num, Integer::sum);
+            map.merge(num, num, Integer::sum);
+            n = Math.max(n, num);
         }
 
-        int p0 = 0;
-        int p1 = points.getOrDefault(1, 0);
+        return dfs(n);
+    }
 
-        for (int i = 2; i <= max; ++i) {
-            int p2 = Math.max(p1, p0 + points.getOrDefault(i, 0));
+    private int dfs(int n) {
+        if (n < 0) return 0;
 
-            p0 = p1;
-            p1 = p2;
+        if (cache.containsKey(n)) {
+            System.out.println("cached");
+            return cache.get(n);
         }
 
-        return p1;
+        int pick = map.getOrDefault(n, 0) + dfs(n - 2);
+        int dont = dfs(n - 1);
+
+        int cur = Math.max(pick, dont);
+        cache.put(n, cur);
+
+        return cur;
     }
 }

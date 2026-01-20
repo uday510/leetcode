@@ -1,17 +1,18 @@
 class Solution {
 
-    int[][] q;
-    long[] dp;
-    int n;
+    private int[][] q;
+    private long[] dp;
+    private int n;
 
-    public long mostPoints(int[][] q) {
-        this.q = q;
+    public long mostPoints(int[][] questions) {
+        q = questions;
         n = q.length;
-        this.dp = new long[n];
+        dp = new long[n];
         Arrays.fill(dp, -1);
 
         return dfs(0);
     }
+    
     private long dfs(int i) {
         if (i >= n) return 0;
 

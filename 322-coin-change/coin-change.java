@@ -1,20 +1,33 @@
 class Solution {
-    public int coinChange(int[] C, int A) {
-        
-        int n = C.length;
-        int[] dp = new int[A + 1];
 
-        for (int a = 1; a <= A; a++) {
-            dp[a] = A + 1;
+    int[] coins;
+    int n;
+    int[] dp;
 
-            for (int c : C) {
-                if (a - c >= 0) {
-                    dp[a] = Math.min(dp[a], 1 + dp[a - c]);
-                }
-            }
+    public int coinChange(int[] coins, int amount) {
+        this.coins = coins;
+        this.n = coins.length;
+        this.dp = new int[amount + 1];
+
+        Arrays.fill(dp, -1);
+
+        dp[0] = 0;
+
+        dfs(amount);
+
+        return dp[amount] == (int) 1e9 ? -1 : dp[amount];
+    }
+    private int dfs(int amt) {
+        if (amt == 0) return 0;
+        if (amt < 0) return (int) 1e9;
+
+        if (dp[amt] != -1) return dp[amt];
+
+        int cur = (int) 1e9;
+        for (int coin : coins) {
+            cur = Math.min(cur, 1 + dfs(amt - coin));
         }
 
-        return dp[A] > A ? -1: dp[A];
-
+        return dp[amt] = cur;
     }
 }

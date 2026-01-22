@@ -1,22 +1,29 @@
 class Solution {
 
+
     Set<String> validWords;
     Map<String, Integer> dp;
-    public int longestStrChain(String[] words) {
+
+    public int longestStrChain(String[] strs) {
+
         validWords = new HashSet<>();
         dp = new HashMap<>();
 
-        for (String word : words) validWords.add(word);
-
-        int mx = 1;
-        for (String w : words) {
-            mx = Math.max(mx, dfs(w));
+        for (String w : strs) {
+            validWords.add(w);
         }
 
-        return mx;
+        int longest = 1;
+
+        for (String s : strs) {
+            longest = Math.max(longest, dfs(s));
+        }
+
+        return longest;
     }
 
     private int dfs(String s) {
+
         if (dp.containsKey(s)) {
             return dp.get(s);
         }
@@ -28,7 +35,6 @@ class Solution {
             if (validWords.contains(sub)) {
                 cur = Math.max(cur, 1 + dfs(sub));
             }
-
         }
 
         dp.put(s, cur);

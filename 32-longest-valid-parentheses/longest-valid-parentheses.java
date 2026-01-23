@@ -19,17 +19,23 @@ class Solution {
                 stack.push(i);
                } else {
                 longest = Math.max(longest, i - stack.peek());
-               }
+              }
             }
-        }
 
+        }
 
         return longest;
     }
+
 }
 
 /**
 
 
+0 1 2 3 4 5
+) ( ) ( ) )
 
- */
+-1, 1
+
+
+*/

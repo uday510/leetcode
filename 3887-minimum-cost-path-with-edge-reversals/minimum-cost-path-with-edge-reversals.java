@@ -13,7 +13,7 @@ class Solution {
             adj[v].add(new int[] {u, w * 2});
         }
 
-        Queue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[1]));
 
         int[] dist = new int[n];
         Arrays.fill(dist, (int) 1e9);
@@ -36,7 +36,6 @@ class Solution {
                 }
             }
         }
-
 
         return -1;
 

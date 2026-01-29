@@ -24,20 +24,19 @@ class Solution {
             if (u == v) continue;
 
             if (dist[u][v] == INF) {
-                long[] cur = dijsktra(u);
-                for (int j = 0; j < n; j++) {
-                    dist[u][j] = cur[j];
-                }
+                long cur = dijsktra(u, v);
+                if (cur == INF) return -1;
+                dist[u][v] = cur;
             }
 
-            if (dist[u][v] == INF) return -1;
+            // if (dist[u][v] == INF) return -1;
             min += dist[u][v];
         }
 
         return min;
     }
 
-    private long[] dijsktra(int src) {
+    private long dijsktra(int src, int dest) {
        long[] dist = new long[n];
        Arrays.fill(dist, INF);
 
@@ -63,7 +62,7 @@ class Solution {
             }
         }
 
-        return dist;
+        return dist[dest];
     }
 
 

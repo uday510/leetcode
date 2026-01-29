@@ -29,7 +29,6 @@ class Solution {
                 dist[u][v] = cur;
             }
 
-            // if (dist[u][v] == INF) return -1;
             min += dist[u][v];
         }
 

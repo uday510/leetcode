@@ -23,8 +23,10 @@ class Solution {
 
             if (u == v) continue;
 
-            if (dist[u][v] == INF) {
-                long cur = dijsktra(u, v);
+            long cur = dist[u][v];
+
+            if (cur == INF) {
+                cur = dijsktra(u, v);
                 if (cur == INF) return -1;
                 dist[u][v] = cur;
             }

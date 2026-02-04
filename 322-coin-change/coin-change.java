@@ -8,9 +8,9 @@ class Solution {
         Arrays.fill(dp, -1);
         dp[0] = 0;
 
-        int res = dfs(amount);  
+        dfs(amount);  
 
-        return res == (int) 1e9 ? -1 : res;
+        return dp[amount] == (int) 1e9 ? -1 : dp[amount];
     }
 
     private int dfs(int amt) {

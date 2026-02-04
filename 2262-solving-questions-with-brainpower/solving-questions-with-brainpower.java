@@ -10,9 +10,9 @@ class Solution {
         dp = new long[n];
         Arrays.fill(dp, -1);
 
-        return dfs(0);
+        return dfs(0);    
     }
-    
+
     private long dfs(int i) {
         if (i >= n) return 0;
 

@@ -1,9 +1,11 @@
 class Solution {
-    int l, h, z, o;
-    int[] dp;
-    int MOD = (int) 1e9 + 7;
+
+    private int l, h, z, o;
+    private int[] dp;
+    private final int MOD = (int) 1e9 + 7;
+
     public int countGoodStrings(int low, int high, int zero, int one) {
-        l = low;
+        l = low; 
         h = high;
         z = zero;
         o = one;
@@ -13,15 +15,15 @@ class Solution {
         return dfs(0);
     }
 
-    private int dfs(int i) {
-        if (i > h) return 0;
+    private int dfs(int idx) {
+        if (idx > h) return 0;
 
-        if (dp[i] != -1) return dp[i];
+        if (dp[idx] != -1) return dp[idx];
 
-        int cnt = i >= l ? 1 : 0;
+        int cur = idx >= l ? 1 : 0;
 
-        cnt += dfs(i + z) % MOD + dfs(i + o) % MOD;
+        cur += dfs(idx + z) % MOD + dfs(idx + o) % MOD;
 
-        return dp[i] = cnt % MOD; 
+        return dp[idx] = cur % MOD;
     }
 }

@@ -1,44 +1,40 @@
 class Solution {
 
+    private Map<String, Integer> dp;
+    private Set<String> ws;
+    private int n;
 
-    Set<String> validWords;
-    Map<String, Integer> dp;
+    public int longestStrChain(String[] words) {
 
-    public int longestStrChain(String[] strs) {
-
-        validWords = new HashSet<>();
         dp = new HashMap<>();
+        ws = new HashSet<>();
+        n = words.length;
 
-        for (String w : strs) {
-            validWords.add(w);
+        Collections.addAll(ws, words);
+
+        int res = 1;
+        for (String w : words) {
+            res = Math.max(res, 1 + dfs(w));
         }
 
-        int longest = 1;
-
-        for (String s : strs) {
-            longest = Math.max(longest, dfs(s));
-        }
-
-        return longest;
+        return res;
     }
 
-    private int dfs(String s) {
-
-        if (dp.containsKey(s)) {
-            return dp.get(s);
+    private int dfs(String w) {
+        if (dp.containsKey(w)) {
+            return dp.get(w);
         }
 
-        int cur = 1;
-        for (int i = 0; i < s.length(); i++) {
-            String sub = s.substring(0, i) + s.substring(i + 1);
+        int cur = 0;
+        for (int i = 0; i < w.length(); i++) {
+            String sub = w.substring(0, i) + w.substring(i + 1);
 
-            if (validWords.contains(sub)) {
+            if (ws.contains(sub)) {
                 cur = Math.max(cur, 1 + dfs(sub));
             }
         }
 
-        dp.put(s, cur);
-
+        dp.put(w, cur);
         return cur;
     }
 }

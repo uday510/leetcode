@@ -2,17 +2,17 @@ class RideSharingSystem {
 
     Deque<Integer> riders;
     Deque<Integer> drivers;
-    Map<Integer, Boolean> ridersMap;
+    Set<Integer> activeRiders;
 
     public RideSharingSystem() {
         riders = new ArrayDeque<>();
         drivers = new ArrayDeque<>();
-        ridersMap = new HashMap<>();
+        activeRiders = new HashSet<>();
     }
     
     public void addRider(int riderId) {
         riders.offerLast(riderId);
-        ridersMap.put(riderId, true);
+        activeRiders.add(riderId);
     }
     
     public void addDriver(int driverId) {
@@ -24,8 +24,9 @@ class RideSharingSystem {
             return new int[] {-1, -1};
         }
 
-        while (!riders.isEmpty() && !ridersMap.get(riders.peekFirst())) {
-            riders.remove(riders.pollFirst());    
+        while (!riders.isEmpty() && 
+               !activeRiders.contains(riders.peekFirst())) {
+            riders.pollFirst();    
         }
 
         if (riders.isEmpty()) {
@@ -33,21 +34,16 @@ class RideSharingSystem {
         }
 
         int rider = riders.pollFirst();
-
-        ridersMap.remove(rider);
-
         int driver = drivers.pollFirst();
+
+        activeRiders.remove(rider);
 
         return new int[] {driver, rider};
 
     }
 
     public void cancelRider(int riderId) {
-
-        if (ridersMap.containsKey(riderId)) {
-            ridersMap.put(riderId, false);
-        }
-
+        activeRiders.remove(riderId);
     }
 
 }

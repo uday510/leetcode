@@ -37,8 +37,10 @@ class Solution {
 
         int m = (l + r) >> 1;
 
-        TreeNode node = new TreeNode(list.get(m), bs(l, m - 1), bs(m + 1, r));
-
-        return node;
+        return new TreeNode(
+            list.get(m), 
+            bs(l, m - 1), 
+            bs(m + 1, r)
+            );
     }
 }

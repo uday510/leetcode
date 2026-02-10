@@ -12,9 +12,9 @@ class Solution {
                 if ((nums[j] & 1 ) == 1) odd.add(nums[j]);
                 else even.add(nums[j]);
 
-                if (even.size() == odd.size()) {
-                    longest = Math.max(longest, j - i + 1);
-                }
+                longest = even.size() == odd.size() ? 
+                            Math.max(longest, j - i + 1) : 
+                            longest;
 
             }
 

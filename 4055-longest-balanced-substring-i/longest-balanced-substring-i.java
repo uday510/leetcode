@@ -1,33 +1,26 @@
 class Solution {
     public int longestBalanced(String s) {
-        
+        int n = s.length(), longest = 0;
 
-        int n = s.length();
-        int longest = 0;
+        int[] cnt = new int[26];
+        boolean flag;
 
         for (int i = 0; i < n; i++) {
-            Map<Character, Integer> map = new HashMap<>();
+            Arrays.fill(cnt, 0);
 
             for (int j = i; j < n; j++) {
-                char c = s.charAt(j);
-                map.put(c, map.getOrDefault(c, 0) + 1);
-                int len = j - i + 1;
-                if (map.size() == len || map.get(c) == len) {
-                    longest = Math.max(longest, len);
-                } else {
-                    int req = map.get(c);
-                    boolean flag = true;
-                    for (Map.Entry<Character, Integer> es : map.entrySet()) {
-                        int k = es.getKey(), v = es.getValue();
-                        if (v != req) {
-                            flag = false;
-                            break;
-                        }
-                    }   
+                int idx = s.charAt(j) - 'a';
 
-                    if (flag) longest = Math.max(longest, len);
+                cnt[idx]++;
+                flag = true;
+                for (int c : cnt) {
+                    if (c > 0 && c != cnt[idx]) {
+                        flag = false;
+                        break;
+                    }
                 }
 
+                longest = flag ? Math.max(longest, j - i + 1) : longest;
             }
         }
 

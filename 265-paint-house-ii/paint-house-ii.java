@@ -1,13 +1,15 @@
 class Solution {
-    int[][] dp; int[][] c;
-    int k, n;
+
+    private int[][] dp; int[][] c;
+    private int k, n;
+
     public int minCostII(int[][] costs) {
         c = costs;
         k = c[0].length;
         n = c.length;
         dp = new int[n][k + 1];
 
-        for (int[] r : dp) Arrays.fill(r, -1);
+        for (int[] row : dp) Arrays.fill(row, -1);
 
         return dfs(0, -1);
     }
@@ -27,5 +29,5 @@ class Solution {
 
         return dp[i][exc + 1] = cur;
     }
-    
+
 }

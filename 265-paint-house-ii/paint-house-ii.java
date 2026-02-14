@@ -11,6 +11,7 @@ class Solution {
 
         return dfs(0, -1);
     }
+
     private int dfs(int i, int exc) {
         if (i >= n) return 0;
 
@@ -26,4 +27,5 @@ class Solution {
 
         return dp[i][exc + 1] = cur;
     }
+    
 }

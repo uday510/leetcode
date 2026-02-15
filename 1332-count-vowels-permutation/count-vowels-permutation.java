@@ -1,7 +1,7 @@
 class Solution {
 
     
-    private static final int mod = (int) 1e9 + 7;
+    private static final long mod = (int) 1e9 + 7;
 
     public int countVowelPermutation(int n) {
         long a, e, i, o, u;
@@ -26,4 +26,5 @@ class Solution {
         long total = (a + e + i + o + u) % mod;
         return (int) total;
     }
+
 }

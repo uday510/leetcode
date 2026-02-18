@@ -1,12 +1,15 @@
 class Solution {
     public boolean hasAlternatingBits(int n) {
+        int p = n & 1;
+        n >>= 1;
         
-        String bits = Integer.toBinaryString(n);
+        while (n > 0) {
+            int c = n & 1;
 
-        for (int i = 0; i < bits.length() - 1; i++) {
-            if (bits.charAt(i) == bits.charAt(i + 1)) {
-                return false;
-            }
+            if (p == c) return false;
+            
+            p = c;
+            n >>= 1;
         }
 
         return true;

@@ -12,27 +12,28 @@ class Solution {
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
+        int studied = 0, semesters = 0;
+
         for (int i = 1; i <= n; i++) {
             if (indegree[i] == 0) queue.offer(i);
         }
 
-        int studied = 0, semesters = 0, marker = -1;
-        queue.offer(marker);
+        
         while (!queue.isEmpty()) {
-            int u = queue.poll();
+            semesters++;
+            int sz = queue.size();
 
-            if (u == marker) {
-                semesters++;
-                if (!queue.isEmpty()) queue.offer(marker);
-                continue;
-            }
-            studied++;
+            for (int i = 0; i < sz; i++) {
+                int u = queue.poll(); 
+                studied++;
 
-            for (int v : adjList[u]) {
-                if (--indegree[v] == 0) {
-                    queue.offer(v);
+                for (int v : adjList[u]) {
+                    if (--indegree[v] == 0) {
+                        queue.offer(v);
+                    }
                 }
             }
+
         }
 
         return studied == n ? semesters : -1;

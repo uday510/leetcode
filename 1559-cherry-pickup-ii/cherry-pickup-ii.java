@@ -1,7 +1,7 @@
 class Solution {
 
-    private int n, m;
     private int[][] grid;
+    private int n, m;
     private Integer[][][] dp;
 
     public int cherryPickup(int[][] grid) {
@@ -15,15 +15,15 @@ class Solution {
 
     private int dfs(int x, int y1, int y2) {
         if (
-            y1 >= m || y1 < 0 ||
-            y2 >= m || y2 < 0
+                y1 >= m || y2 >= m ||
+                y1 < 0 || y2 < 0
         ) {
             return Integer.MIN_VALUE;
         }
-        
+
         if (x == n - 1) {
-           if (y1 == y2) return grid[x][y1];
-           return grid[x][y1] + grid[x][y2];
+            if (y1 == y2) return grid[x][y1];
+            return grid[x][y1] + grid[x][y2];
         }
 
         if (dp[x][y1][y2] != null) {
@@ -31,7 +31,10 @@ class Solution {
         }
 
         int cur = grid[x][y1];
-        if (y1 != y2) cur += grid[x][y2];
+        if (y1 != y2) {
+            cur += grid[x][y2];
+        }
+
         int nxt = 0;
 
         for (int y3 = y1 - 1; y3 <= y1 + 1; y3++) {
@@ -41,5 +44,6 @@ class Solution {
         }
 
         return dp[x][y1][y2] = cur + nxt;
+
     }
 }

@@ -36,13 +36,13 @@ class Solution {
             return dp[x1][y1][x2];
         }
 
-        int pick = grid[x1][y1];
+        int cur = grid[x1][y1];
 
         if (x1 != x2 && y1 != y2) {
-            pick += grid[x2][y2];
+            cur += grid[x2][y2];
         }
 
-        pick +=
+        cur +=
                 Math.max(
                     Math.max(
                         dfs(x1 + 1, y1, x2 + 1),
@@ -54,6 +54,6 @@ class Solution {
                     )
                 );
 
-        return dp[x1][y1][x2] = pick;
+        return dp[x1][y1][x2] = cur;
     }
 }

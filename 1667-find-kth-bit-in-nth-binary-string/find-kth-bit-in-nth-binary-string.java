@@ -1,6 +1,7 @@
 class Solution {
+
     public char findKthBit(int n, int k) {
-        return dfs(n, k).charAt(k-1);
+        return dfs(n, k).charAt(k - 1);
     }
 
     private String dfs(int n, int k) {
@@ -17,7 +18,7 @@ class Solution {
         for (char c : str.toCharArray()) {
             sb.append (c == '1' ? 0 : 1);
         }
-        
+
         return sb.toString();
     }
 

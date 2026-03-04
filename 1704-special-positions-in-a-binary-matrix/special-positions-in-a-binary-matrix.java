@@ -1,25 +1,28 @@
 class Solution {
-    public int numSpecial(int[][] mat) {
-        int[] row = new int[mat.length];
-        int[] col = new int[mat[0].length];
 
-        for (int i = 0; i < mat.length; ++i) {
-            for (int j = 0; j < mat[i].length; ++j) {
-                if (mat[i][j] == 1) {
-                    row[i]++;
-                    col[j]++;
+    public int numSpecial(int[][] arr) {
+        int n = arr.length, m = arr[0].length;
+        int[] r = new int[n];
+        int[] c = new int[m];
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (arr[i][j] == 1) {
+                    r[i]++;
+                    c[j]++;
                 }
             }
         }
-        
+
         int cnt = 0;
-        for (int i = 0; i < mat.length; ++i) {
-            for (int j = 0; j < mat[0].length; ++j) {
-                if (mat[i][j] == 1 && row[i] == 1 && col[j] == 1) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (arr[i][j] == 1 && r[i] == 1 && c[j] == 1) {
                     cnt++;
                 }
              }
         }
+
         return cnt;
     }
 }

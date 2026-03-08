@@ -1,15 +1,15 @@
 class Solution {
 
-    private static final String ZERO;
-    private static final String ONE;
+    private static final Character ZERO;
+    private static final Character ONE;
 
     private Set<String> vaidStrs;
     private String res;
     private boolean isFound;
 
     static {
-        ZERO = "0";
-        ONE = "1";
+        ZERO = '0';
+        ONE = '1';
     }
 
     public String findDifferentBinaryString(String[] nums) {

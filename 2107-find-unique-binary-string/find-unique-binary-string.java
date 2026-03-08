@@ -1,8 +1,16 @@
 class Solution {
 
-    Set<String> vaidStrs;
-    String res;
-    boolean isFound;
+    private static final String ZERO;
+    private static final String ONE;
+
+    private Set<String> vaidStrs;
+    private String res;
+    private boolean isFound;
+
+    static {
+        ZERO = "0";
+        ONE = "1";
+    }
 
     public String findDifferentBinaryString(String[] nums) {
         vaidStrs = new HashSet<>();
@@ -30,11 +38,11 @@ class Solution {
             return;
         }
         
-        sb.append("0");
+        sb.append(ZERO);
         dfs(idx + 1, n, sb);
         sb.deleteCharAt(sb.length() - 1);
 
-        sb.append("1");
+        sb.append(ONE);
         dfs(idx + 1, n, sb);
         sb.deleteCharAt(sb.length() - 1);
     }

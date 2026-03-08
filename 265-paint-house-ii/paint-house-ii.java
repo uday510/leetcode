@@ -1,33 +1,33 @@
 class Solution {
 
-    private int[][] dp; int[][] c;
-    private int k, n;
+    private int[][] costs, dp;
+    private int n, k;
 
     public int minCostII(int[][] costs) {
-        c = costs;
-        k = c[0].length;
-        n = c.length;
-        dp = new int[n][k + 1];
-
+        this.costs = costs;
+        this.n = costs.length;
+        this.k = costs[0].length;
+        this.dp = new int[n][k + 1];
+        
         for (int[] row : dp) Arrays.fill(row, -1);
-
+        
         return dfs(0, -1);
     }
-
-    private int dfs(int i, int exc) {
-        if (i >= n) return 0;
-
-        int cur = (int) 1e9;
-
-        if (dp[i][exc + 1] != -1) return dp[i][exc + 1];
-
-        for (int j = 0; j < k; j++) {
-            if (j == exc) continue;
-
-            cur = Math.min(cur, c[i][j] + dfs(i + 1, j));
+    
+    private int dfs(int i, int x) {
+        if (i >= n || x >= k) return 0;
+        
+        if (dp[i][x + 1] != -1) {
+            return dp[i][x + 1];
         }
+        
+        int cur = (int) 1e9;
+        for (int j = 0; j < k; j++) {
+            if (x == j) continue;
 
-        return dp[i][exc + 1] = cur;
+            cur = Math.min(cur, costs[i][j] + dfs(i + 1, j));
+        }
+        
+        return dp[i][x + 1] = cur;
     }
-
 }

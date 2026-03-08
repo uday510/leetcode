@@ -41,15 +41,15 @@ class Solution {
             c = H[idx];
             curNeighbors = neighbors + (c != prevColor ? 1 : 0);
 
-            return dfs(idx + 1, c, curNeighbors);
+            return dp[idx][prevColor][neighbors] = dfs(idx + 1, c, curNeighbors);
         }
 
         for (int j = 0; j < C[idx].length; j++) {
             c = j + 1;
             curNeighbors = neighbors + (c != prevColor ? 1 : 0);
-            int nxt = C[idx][j] + dfs(idx + 1, c, curNeighbors);
+            int nxt = dfs(idx + 1, c, curNeighbors);
 
-            min = Math.min(min, nxt);
+            min = Math.min(min, C[idx][j] + nxt);
         }
 
         return dp[idx][prevColor][neighbors] = min;

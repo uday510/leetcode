@@ -48,8 +48,9 @@ class Solution {
             c = j + 1;
             curNeighbors = neighbors + (c != prevColor ? 1 : 0);
             int nxt = dfs(idx + 1, c, curNeighbors);
-
-            min = Math.min(min, C[idx][j] + nxt);
+            
+            if (nxt != INF)
+                min = Math.min(min, C[idx][j] + nxt);
         }
 
         return dp[idx][prevColor][neighbors] = min;

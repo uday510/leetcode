@@ -1,6 +1,8 @@
 class Solution {
+
     Set<String> strings;
     String result;
+
     public String findDifferentBinaryString(String[] nums) {
         strings = new HashSet<>();
 
@@ -26,8 +28,10 @@ class Solution {
         sb.append("0");
         dfs(idx + 1, n, sb);
         sb.deleteCharAt(sb.length() - 1);
+        
         sb.append("1");
         dfs(idx + 1, n, sb);
         sb.deleteCharAt(sb.length() - 1);
     }
+
 }

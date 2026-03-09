@@ -1,44 +1,50 @@
 class Solution {
 
-    Integer[][] dp;
+    private int[][] dp;
+    private String s;
 
     public int strangePrinter(String s) {
-        s = removeDuplicates(s);
-        int n = s.length();
-        dp = new Integer[n][n];
-        return dfs(0, n - 1, s);
+        this.s = removeDuplicates(s);
+        int n = this.s.length();
+
+        this.dp = new int[n][n];
+
+        for (int[] row : dp) Arrays.fill(row, -1);
+
+        return dfs(0, n - 1);
     }
 
-    public int dfs(int i, int j, String s) {
-        if (i > j) return 0;
+    private int dfs(int st, int en) {
+        if (st > en) return 0;
+        if (st == en) return 1;
 
-        if (dp[i][j] != null) return dp[i][j];
+        if (dp[st][en] != -1) return dp[st][en];
 
-        int min = 1 + dfs(i+1, j, s);
-        for (int k = i + 1; k <= j; ++k) {
-            if (s.charAt(k) == s.charAt(i)) {
-                int sum = dfs(i, k-1, s) + dfs(k+1, j, s);
-                min = Math.min(min, sum);
+        int cur = 1 + dfs(st + 1, en);
+
+        for (int i = st + 1; i <= en; i++) {
+            if (s.charAt(i) == s.charAt(st)) {
+                cur = Math.min(cur,
+                    dfs(st + 1, i - 1) + dfs(i, en)
+                );
             }
         }
-        dp[i][j] = min;
-        return min;
+
+        return dp[st][en] = cur;
     }
 
-    public String removeDuplicates(String s) {
+    private String removeDuplicates(String s) {
         StringBuilder sb = new StringBuilder();
-        int n = s.length();
-        
-        for (int i = 0; i < n;) {
-            char c = s.charAt(i);
-            sb.append(c);
 
-            int j = i + 1;
-            while (j < n && s.charAt(j) == c) {
-                ++j;
+        for (int i = 0; i < s.length();) {
+            sb.append(s.charAt(i));
+
+            char c = s.charAt(i);
+            while (i < s.length() && c == s.charAt(i)) {
+                i++;
             }
-            i = j;
         }
+
         return sb.toString();
     }
 }

@@ -23,11 +23,13 @@ class Solution {
         int cur = 1 + dfs(st + 1, en);
 
         for (int i = st + 1; i <= en; i++) {
+
             if (s.charAt(i) == s.charAt(st)) {
                 cur = Math.min(cur,
                     dfs(st + 1, i - 1) + dfs(i, en)
                 );
             }
+
         }
 
         return dp[st][en] = cur;

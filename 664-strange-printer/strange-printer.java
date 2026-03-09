@@ -24,12 +24,12 @@ class Solution {
 
         for (int i = st + 1; i <= en; i++) {
 
-            if (s.charAt(i) == s.charAt(st)) {
+            if (s.charAt(st) == s.charAt(i)) {
+
                 cur = Math.min(cur,
-                    dfs(st + 1, i - 1) + dfs(i, en)
+                        dfs(st + 1, i - 1) + dfs(i, en)
                 );
             }
-
         }
 
         return dp[st][en] = cur;
@@ -41,8 +41,8 @@ class Solution {
         for (int i = 0; i < s.length();) {
             sb.append(s.charAt(i));
 
-            char c = s.charAt(i);
-            while (i < s.length() && c == s.charAt(i)) {
+            char ch = s.charAt(i);
+            while (i < s.length() && s.charAt(i) == ch) {
                 i++;
             }
         }

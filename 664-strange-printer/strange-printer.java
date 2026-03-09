@@ -3,7 +3,7 @@ class Solution {
     Integer[][] dp;
 
     public int strangePrinter(String s) {
-        // s = removeDuplicates(s);
+        s = removeDuplicates(s);
         int n = s.length();
         dp = new Integer[n][n];
         return dfs(0, n - 1, s);

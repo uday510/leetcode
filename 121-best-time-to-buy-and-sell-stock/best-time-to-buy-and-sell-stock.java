@@ -14,7 +14,11 @@ class Solution {
 
             for (int i = 1; i <= k; i++) {
 
-                buy[i] = Math.min(buy[i], price - profit[i - 1]);
+                // take from prev transaction profit as discount instead of buying at actual price
+
+                int discount = price - profit[i - 1]; 
+                buy[i] = Math.min(buy[i], discount);
+
                 profit[i] = Math.max(profit[i], price - buy[i]);
             }
         }

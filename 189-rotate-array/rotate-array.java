@@ -1,26 +1,20 @@
 class Solution {
-
-    private int[] nums;
-
     public void rotate(int[] nums, int k) {
-        this.nums = nums;
-        int n = nums.length;
-        k %= n;
-
-        rotate(0, n - 1);
-        rotate(0, k - 1);
-        rotate(k, n - 1);
-        
+        k = k % nums.length;
+        reverse(0, nums.length - 1, nums);
+        reverse(0, k - 1, nums);
+        reverse(k, nums.length - 1, nums);
     }
 
-    private void rotate(int i, int j) {
-        while (i < j) swap(i++, j--);
+    private void reverse(int i, int j, int[] nums) {
+        while (i < j) {
+            swap(i++, j--, nums);
+        }
     }
 
-    private void swap(int i, int j) {
-        int tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
+    private void swap(int i, int j, int[] nums) {
+        int tmp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = tmp;
     }
-
 }

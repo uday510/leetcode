@@ -10,13 +10,13 @@ class Solution {
         }
 
         int papers = 0;
-        for (int i = n; i >= 0; i--) {
+        for (int i = n; i > -1; i--) {
             papers += cnt[i];
 
             if (papers >= i) {
                 return i;
             }
-        }
+        } 
 
         return -1;
     }

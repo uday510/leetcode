@@ -1,7 +1,7 @@
 class RandomizedSet {
 
-    Map<Integer, Integer> map;
-    List<Integer> list;
+    private Map<Integer, Integer> map;
+    private List<Integer> list;
     private Random rand = new Random();
 
     public RandomizedSet() {
@@ -17,15 +17,16 @@ class RandomizedSet {
 
         return true;
     }
-    
+
+
     public boolean remove(int val) {
         if (!map.containsKey(val)) return false;
 
-        int valIdx = map.get(val);
-        int lastEl = list.getLast();
+        int index = map.get(val);
+        int last = list.getLast();
 
-        list.set(valIdx, lastEl);
-        map.put(lastEl, valIdx);
+        list.set(index, last);
+        map.put(last, index);
 
         list.removeLast();
         map.remove(val);

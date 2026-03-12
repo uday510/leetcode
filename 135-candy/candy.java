@@ -15,7 +15,6 @@ class Solution {
             if (R[i] > R[i + 1]) {
                 cnts[i] = Math.max(cnts[i], cnts[i + 1] + 1);
             }
-
             total += cnts[i];
         }
 

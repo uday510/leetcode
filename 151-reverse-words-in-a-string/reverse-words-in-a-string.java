@@ -1,55 +1,49 @@
 class Solution {
     public String reverseWords(String s) {
-        StringBuilder sb = trim(s);
+        StringBuilder sb =  trim(s);
 
-        reverse(0, sb.length() - 1, sb);
+        reverse(sb, 0, sb.length() - 1);
         reverseEachWord(sb);
 
         return sb.toString();
     }
 
+    private void reverseEachWord(StringBuilder sb) {
+        int n = sb.length();
+        int i = 0, j = n - 1;
+
+        while (i < n) {
+            j = i;
+
+            while (j < n && sb.charAt(j) != ' ') j++;
+
+            reverse(sb, i, j - 1);
+
+            i = j + 1;
+        }
+    }
+
+    private void reverse(StringBuilder sb, int i, int j) {
+
+        while (i < j) {
+            char tmp = sb.charAt(i);
+            sb.setCharAt(i, sb.charAt(j));
+            sb.setCharAt(j, tmp);
+            i++; j--;
+        }
+    }
+
     private StringBuilder trim(String s) {
+        s = s.trim();
         StringBuilder sb = new StringBuilder();
 
-        int i = 0, j = s.length() - 1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
 
-        while (i < j && s.charAt(i) == ' ') i++;
-        while (i < j && s.charAt(j) == ' ') j--;
-
-        while (i <= j) {
-            char ch = s.charAt(i);
-
-            if (ch != ' ') sb.append(ch);
-            else if (sb.charAt(sb.length() - 1) != ' ') sb.append(ch);
-
-            i++; 
+            if (c != ' ') sb.append(c);
+            else if (sb.charAt(sb.length() - 1) != ' ') sb.append(c);
         }
 
         return sb;
     }
-
-    private void reverseEachWord(StringBuilder sb) {
-        int i = 0, j = 0, n = sb.length();
-
-        while (i < n) {
-            j = i;
-            while (j < n && sb.charAt(j) != ' ') j++;
-
-            reverse(i, j - 1, sb);
-
-            i = j + 1;
-        }
-        
-    }
-
-    private void reverse(int i, int j, StringBuilder sb) {
-        while (i < j) swap(i++, j--, sb);
-    }
-
-    private void swap(int i, int j, StringBuilder sb) {
-        char tmp = sb.charAt(i);
-        sb.setCharAt(i, sb.charAt(j));
-        sb.setCharAt(j, tmp);
-    }
-
 }

@@ -1,6 +1,7 @@
 class Solution {
     public boolean isPalindrome(String s) {
         
+
         int i = 0, j = s.length() - 1;
 
         while (i < j) {
@@ -9,18 +10,19 @@ class Solution {
             else if (!isAlpha(s.charAt(j))) j--;
             else if (lower(s.charAt(i)) != lower(s.charAt(j))) break;
             else {
-                i++; j--;
+                i++;
+                j--;
             }
         }
 
         return i >= j;
     }
 
-    private boolean isAlpha(char ch) {
-        return Character.isLetterOrDigit(ch);
+    private boolean isAlpha(char c) {
+        return Character.isLetterOrDigit(c);
     }
 
-    private char lower(char ch) {
-        return Character.toLowerCase(ch);
+    private char lower(char c) {
+        return Character.toLowerCase(c);
     }
 }

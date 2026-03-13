@@ -1,19 +1,16 @@
 class Solution {
     public int maxArea(int[] H) {
         
-        int maxArea = 0, curArea;
-        int l = 0, r = H.length - 1;
+        int mx = 0, cur = 0, i = 0, j = H.length - 1;
 
-        while (l < r) {
-            curArea = Math.min(H[l], H[r]) * (r - l);
+        while (i < j) {
+            cur = Math.min(H[i], H[j]) * (j - i);
+            mx = Math.max(cur, mx);
 
-            maxArea = Math.max(curArea, maxArea);
-
-            if (H[l] <= H[r]) l++;
-            else r--;
+            if (H[i] <= H[j]) i++;
+            else j--;
         }
-
-        return maxArea;
         
+        return mx;
     }
 }

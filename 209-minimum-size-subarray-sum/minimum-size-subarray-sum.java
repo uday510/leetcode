@@ -1,19 +1,19 @@
 class Solution {
-    public int minSubArrayLen(int t, int[] nums) {
-        
-        int n = nums.length;
+    public int minSubArrayLen(int T, int[] A) {
+        int n = A.length;
         int res = n + 1, cur = 0;
 
         for (int i = 0, j = 0; j < n; j++) {
-            cur += nums[j];
+            cur += A[j];
 
-            while (i <= j && cur >= t) {
+            while (i <= j && cur >= T) {
                 res = Math.min(res, j - i + 1);
-                cur -= nums[i++];
+                cur -= A[i++];
             }
 
         }
 
         return res == n + 1 ? 0 : res;
+
     }
 }

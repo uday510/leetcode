@@ -1,65 +1,54 @@
 class Solution {
-    private int[] nums;
+
+    private int[] arr;
     private int n;
 
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> result = new ArrayList<>();
+        arr = nums;
+        this.n = arr.length;
 
-        if (nums == null || nums.length < 3) return result;
+        Arrays.sort(arr);
 
-        this.nums = nums;
-        this.n = nums.length;
-        Arrays.sort(nums);
-
-        return dfs(0, 4, target*1l);
+        return dfs(0, 4, target);
     }
-    private List<List<Integer>> dfs(int i, int k, long target) {
-        if (k == 2) {
-            return twoSum(i, target);
-        }
 
-        List<List<Integer>> result = new ArrayList<>();
+    private List<List<Integer>> dfs(int idx, int k, long cur) {
+        if (k == 2) return twoSum(idx, cur);
 
+        List<List<Integer>> res = new ArrayList<>();
 
-        for (int idx = i; idx < n; ++idx) {
-            if (idx > i && nums[idx] == nums[idx - 1]) continue;
+        for (int i = idx; i < n; i++) {
+            if (i > idx && arr[i] == arr[i - 1]) continue;
 
-            List<List<Integer>> subLists = dfs(idx + 1, k - 1, target - nums[idx]);
-
-            for (var sub : subLists) {
-                List<Integer> combination = new ArrayList<>();
-                combination.add(nums[idx]);
-                combination.addAll(sub);
-                result.add(combination);
+            for (List<Integer> list : dfs(i + 1, k - 1, cur - arr[i])) {
+                List<Integer> sub = new ArrayList<>(List.of(arr[i]));
+                sub.addAll(list);
+                res.add(sub);
             }
         }
-
-
-
-        return result;
+        
+        return res;
     }
-
+    
     private List<List<Integer>> twoSum(int idx, long target) {
-        List<List<Integer>> result = new ArrayList<>();
-        int left = idx, right = n - 1;
+        List<List<Integer>> res = new ArrayList<>();
+        int i = idx, j = n - 1;
 
-        while (left < right) {
-            int curr = nums[left] + nums[right];
+        while (i < j) {
+            int cur = arr[i] + arr[j];
 
-            if (curr < target) left++;
-            else if (curr > target) right--;
+            if (cur < target) i++;
+            else if (cur > target) j--;
             else {
-                result.add(Arrays.asList(nums[left], nums[right]));
 
-                left++;
-                right--;
+                res.add(Arrays.asList(arr[i++], arr[j--]));
 
-                while (left < n && nums[left] == nums[left - 1]) left++;
-
-                while (right > -1 && nums[right] == nums[right + 1]) right--;
+                while (i < n && arr[i] == arr[i - 1]) i++;
+                while (j > - 1 && arr[j] == arr[j + 1]) j--;
             }
         }
 
-        return result;
+        return res;
     }
+
 }

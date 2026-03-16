@@ -1,33 +1,25 @@
 class Solution {
     public String convert(String s, int numRows) {
-        
-        if (numRows == 1 || numRows >= s.length()) return s;
+        if (numRows >= s.length() || numRows == 1) return s;
+        int step = 1, row = 0;
+        StringBuilder[] arr = new StringBuilder[numRows];
 
-        int n = s.length();
+        for (int i = 0; i < numRows; i++) arr[i] = new StringBuilder();
 
-        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            arr[row].append(s.charAt(i));
 
-        for (int i = 0; i < numRows; i++) {
-            rows.add(new StringBuilder());
+            row += step;
+            
+            if (row == 0 || row == numRows - 1) step = -step;
         }
 
-        int i = 0, step = 1;
+        StringBuilder res = new StringBuilder();
 
-        for (int j = 0; j < n; j++) {
-            char ch = s.charAt(j);
+        for (StringBuilder sb : arr) {
+            res.append(sb);
+        } 
 
-            rows.get(i).append(ch);
-
-            i += step;
-
-            if (i == 0 || i == numRows - 1) step = -step;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (StringBuilder cur : rows) {
-            sb.append(cur);
-        }
-
-        return sb.toString();
+        return res.toString();
     }
 }

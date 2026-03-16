@@ -1,43 +1,40 @@
 class Solution {
 
-    private final static Map<Character, char[]> map = new HashMap<>();
-    static {
-        map.put('2', new char[] {'a', 'b', 'c'});
-        map.put('3', new char[] {'d', 'e', 'f'});
-        map.put('4', new char[] {'g', 'h', 'i'});
-        map.put('5', new char[] {'j', 'k', 'l'});
-        map.put('6', new char[] {'m', 'n', 'o'});
-        map.put('7', new char[] {'p', 'q', 'r', 's'});
-        map.put('8', new char[] {'t', 'u', 'v'});
-        map.put('9', new char[] {'w', 'x', 'y', 'z'});
-    }
-
-    private List<String> combs;
-    private StringBuilder sb;
-    private String s;
-    private int n;
+    private static final char[][] MAP = {
+        {}, {}, 
+        {'a','b','c'}, 
+        {'d','e','f'}, 
+        {'g','h','i'}, 
+        {'j','k','l'}, 
+        {'m','n','o'}, 
+        {'p','q','r','s'}, 
+        {'t','u','v'}, 
+        {'w','x','y','z'}
+    };
 
     public List<String> letterCombinations(String digits) {
-        combs = new ArrayList<>();
-        sb = new StringBuilder();
-        s = digits;
-        n = s.length();
 
-        dfs(0, new StringBuilder());
-        return combs;
+        List<String> res = new ArrayList<>();
+        if (digits == null || digits.length() == 0) return res;
+
+        char[] path = new char[digits.length()];
+        dfs(digits, 0, path, res);
+
+        return res;
     }
 
-    private void dfs(int i, StringBuilder sb) {
-        if (i >= n) {
-            combs.add(sb.toString());
+    private void dfs(String digits, int index, char[] path, List<String> res) {
+
+        if (index == digits.length()) {
+            res.add(new String(path));
             return;
         }
 
-        for (char c : map.get(s.charAt(i))) {
-            sb.append(c);
-            dfs(i + 1, sb);
-            sb.deleteCharAt(sb.length() - 1);
-        }
+        char[] letters = MAP[digits.charAt(index) - '0'];
 
+        for (char c : letters) {
+            path[index] = c;
+            dfs(digits, index + 1, path, res);
+        }
     }
 }

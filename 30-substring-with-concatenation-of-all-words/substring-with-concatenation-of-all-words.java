@@ -2,44 +2,41 @@ class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
         
         int n = s.length();
-        int window = words[0].length();
+        int w = words[0].length();
         List<Integer> res = new ArrayList<>();
         int m = words.length;
 
-        Map<String, Integer> wCntMap = new HashMap<>();
-        for (String w : words) wCntMap.put(w, wCntMap.getOrDefault(w, 0) + 1);
+        Map<String, Integer> cnts = new HashMap<>();
+        for (String word : words) cnts.merge(word, 1, Integer::sum);
 
-        Map<String, Integer> curCntMap = new HashMap<>();
-        for (int i = 0; i < window; i++) {
-            curCntMap.clear();
+        Map<String, Integer> cur = new HashMap<>();
+        for (int i = 0; i < w; i++) {
+            cur.clear();
             int l = i, r = i;
-            int curCnt = 0;
+            int cnt = 0;
 
-            while (r + window <= n) {
-                String curStr = s.substring(r, r + window);
-                r += window;
+            while (r + w <= n) {
+                String sub = s.substring(r, r + w);
+                r += w;
 
-                if (!wCntMap.containsKey(curStr)) {
-                    curCnt = 0;
-                    curCntMap.clear();
+                if (!cnts.containsKey(sub)) {
+                    cnt = 0;
+                    cur.clear();
                     l = r;
                 } else {
-                    curCntMap.put(curStr, curCntMap.getOrDefault(curStr, 0) + 1);
-                    ++curCnt;
+                    cur.merge(sub, 1, Integer::sum);
+                    cnt++;
 
-                    while (curCntMap.get(curStr) > wCntMap.get(curStr)) {
-                        String lStr = s.substring(l, l + window);
+                    while (cur.get(sub) > cnts.get(sub)) {
+                        cur.merge(s.substring(l, l + w), -1, Integer::sum);
 
-                        curCntMap.put(lStr, curCntMap.getOrDefault(lStr, 0) - 1);
-
-                        l += window;
-                        --curCnt;
+                        l += w;
+                        --cnt;
                     }
 
-                    if (curCnt == m) res.add(l);
+                    if (cnt == m) res.add(l);
                 }
             }
-
         }
 
         return res;

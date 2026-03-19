@@ -5,7 +5,6 @@ class Solution {
     private int n, t;
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Arrays.sort(candidates);
         res = new ArrayList<>();
         c = candidates;
         n = candidates.length;
@@ -24,7 +23,6 @@ class Solution {
         if (idx >= n || sum > t) return;
 
         for (int curIdx = idx; curIdx < n; curIdx++) {
-            if (sum + c[curIdx] > t) break;
             curList.add(c[curIdx]);
             dfs(curIdx, sum + c[curIdx], curList);
             curList.removeLast();

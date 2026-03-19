@@ -18,7 +18,7 @@ class Solution {
             return;
         }
 
-        for (int j = i; j <= n; j++) {
+        for (int j = i; j <= (n - (k - cur.size() - 1)); j++) {
             cur.add(j);
             dfs(j + 1, cur);
             cur.removeLast();

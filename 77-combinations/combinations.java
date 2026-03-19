@@ -1,5 +1,5 @@
 class Solution {
-
+    
     private List<List<Integer>> res;
     private int n, k;
 
@@ -11,18 +11,17 @@ class Solution {
         dfs(1, new ArrayList<>());
         return res;
     }
-
-    private void dfs(int i, List<Integer> cur) {
-        if (cur.size() == k) {
-            res.add(new ArrayList<>(cur));
+    
+    private void dfs(int idx, List<Integer> curList) {
+        if (curList.size() == k) {
+            res.add(new ArrayList<>(curList));
             return;
         }
 
-        for (int j = i; j <= (n - (k - cur.size() - 1)); j++) {
-            cur.add(j);
-            dfs(j + 1, cur);
-            cur.removeLast();
+        for (int curIdx = idx; curIdx <= n - (k - curList.size() - 1); curIdx++) {
+            curList.add(curIdx);
+            dfs(curIdx + 1, curList);
+            curList.removeLast();
         }
-
     }
 }

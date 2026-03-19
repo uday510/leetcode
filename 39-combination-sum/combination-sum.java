@@ -23,7 +23,8 @@ class Solution {
 
         if (idx >= n || sum > t) return;
 
-        for (int curIdx = idx; curIdx < n && (sum + c[curIdx]) <= t; curIdx++) {
+        for (int curIdx = idx; curIdx < n; curIdx++) {
+            if (sum + c[curIdx] > t) break;
             curList.add(c[curIdx]);
             dfs(curIdx, sum + c[curIdx], curList);
             curList.removeLast();

@@ -6,7 +6,6 @@ class Solution {
     
 
     public List<List<Integer>> permuteUnique(int[] nums) {
-        Arrays.sort(nums);
 
         res = new ArrayList<>();
         arr = new ArrayList<>();

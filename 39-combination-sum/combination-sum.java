@@ -1,13 +1,12 @@
 class Solution {
 
     private List<List<Integer>> res;
-    private List<Integer> list;
     private int[] c;
     private int n, t;
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
         res = new ArrayList<>();
-        list = new ArrayList<>();
         c = candidates;
         n = candidates.length;
         t = target;
@@ -24,7 +23,7 @@ class Solution {
 
         if (idx >= n || sum > t) return;
 
-        for (int curIdx = idx; curIdx < n; curIdx++) {
+        for (int curIdx = idx; curIdx < n && (sum + c[curIdx]) <= t; curIdx++) {
             curList.add(c[curIdx]);
             dfs(curIdx, sum + c[curIdx], curList);
             curList.removeLast();

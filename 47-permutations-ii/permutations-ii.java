@@ -3,10 +3,8 @@ class Solution {
     private List<List<Integer>> res;
     private List<Integer> arr;
     private int n;
-    
 
     public List<List<Integer>> permuteUnique(int[] nums) {
-
         res = new ArrayList<>();
         arr = new ArrayList<>();
         for (int num : nums) arr.add(num);

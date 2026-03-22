@@ -1,34 +1,18 @@
 class Solution {
+
     public int search(int[] nums, int target) {
-        return bisectLeft(nums, target);
+        return bs(nums, target);    
     }
 
-    private int bisectLeft(int[] nums, int target) {
-        int l = 0, r = nums.length;
+    private int bs(int[] arr, int target) {
+        int l = 0, r = arr.length;
 
         while (l < r) {
-            int mid = (l + r) >> 1;
-
-            if (nums[mid] == target) return mid;
-
-            if (nums[mid] < target) l = mid + 1;
-            else r = mid;
+            int m = (l + r) >> 1;
+            if (arr[m] < target) l = m + 1;
+            else r = m;
         }
 
-        return -1;
-    }
-
-    private int bs(int[] nums, int target) {
-        int l = 0, r = nums.length - 1;
-
-        while (l <= r) {
-            int mid = (l + r) >> 1;
-
-            if (nums[mid] == target) return mid;
-            else if (nums[mid] < target) l = mid + 1;
-            else r = mid - 1;
-        }
-
-        return -1;
+        return l >= arr.length || arr[l] != target ? -1 : l;
     }
 }

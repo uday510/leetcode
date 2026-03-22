@@ -1,41 +1,32 @@
 class Solution {
 
-    Set<Integer> dia, anti, col;
-    int cnt, n;
+    private Set<Integer> d, a, c;
 
     public int totalNQueens(int n) {
-        initialize(n);
+        d = new HashSet<>();
+        a = new HashSet<>();
+        c = new HashSet<>();
 
-        dfs(0);
+        return dfs(0, n);
+    }
+
+    private int dfs(int i, int n) {
+        if (i >= n) {
+            return 1;
+        }
+
+        int cnt = 0;
+        for (int j = 0; j < n; j++) {
+            int dIdx = i - j, aIdx = i + j;
+            if (d.contains(dIdx) || a.contains(aIdx) || c.contains(j)) {
+                continue;
+            }
+
+            d.add(dIdx); a.add(aIdx); c.add(j);
+            cnt += dfs(i + 1, n);
+            d.remove(dIdx); a.remove(aIdx); c.remove(j);
+        }
+
         return cnt;
     }
-
-    private void dfs(int i) {
-        if (i >= n) {
-            cnt++;
-            return;
-        }
-
-        for (int j = 0; j < n; j++) {
-            int d = i - j, a = i + j;
-
-            if (dia.contains(d) || anti.contains(a) || col.contains(j)) continue;
-
-            dia.add(d); anti.add(a); col.add(j);
-
-            dfs(i + 1);
-
-            dia.remove(d); anti.remove(a); col.remove(j);
-        }
-
-    }
-
-    private void initialize(int n) {
-        dia = new HashSet<>();
-        anti = new HashSet<>();
-        col = new HashSet<>();
-        cnt = 0;
-        this.n = n;
-    }
-
 }

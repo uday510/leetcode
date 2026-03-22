@@ -9,10 +9,13 @@ class Solution {
 
         while (l < r) {
             int m = (l + r) >> 1;
+
+            if (arr[m] == target) return m;
+
             if (arr[m] < target) l = m + 1;
             else r = m;
         }
 
-        return l >= arr.length || arr[l] != target ? -1 : l;
+        return -1;
     }
 }

@@ -28,11 +28,11 @@ class Solution {
         if (i == n - 1 && j == m - 1) {
             return dp[i][j] = new long[] {grid[i][j], grid[i][j]};
         }
-
-        vis[i][j] = true;
         
         long[] d = dfs(i + 1, j);
         long[] r = dfs(i, j + 1);
+
+        vis[i][j] = true;
 
         long cur = grid[i][j];
 

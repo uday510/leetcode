@@ -1,7 +1,7 @@
 class Solution {
     private static final int MOD = (int) 1e9 + 7;
-    private static final Long MIN = Long.MIN_VALUE;
-    private static final Long MAX = Long.MAX_VALUE;
+    private static final long MIN = Long.MIN_VALUE;
+    private static final long MAX = Long.MAX_VALUE;
 
     private int[][] grid;
     private int n, m, mx;

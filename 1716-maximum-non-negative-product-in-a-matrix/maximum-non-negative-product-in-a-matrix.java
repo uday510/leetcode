@@ -39,25 +39,33 @@ class Solution {
         long mn = MAX, mx = MIN;
 
         if (d[0] != MIN) {
-            mx = Math.max(mx, d[0] * cur);
-            mn = Math.min(mn, d[0] * cur);
+           mx = getMax(d, 0, mx, cur);
+           mn = getMin(d, 0, mn, cur);
         }
 
         if (d[1] != MAX) {
-            mx = Math.max(mx, d[1] * cur);
-            mn = Math.min(mn, d[1] * cur);
+           mx = getMax(d, 1, mx, cur);
+           mn = getMin(d, 1, mn, cur);
         }
 
         if (r[0] != MIN) {
-            mx = Math.max(mx, r[0] * cur);
-            mn = Math.min(mn, r[0] * cur);
+           mx = getMax(r, 0, mx, cur);
+           mn = getMin(r, 0, mn, cur);
         }
 
         if (r[1] != MAX) {
-            mx = Math.max(mx, r[1] * cur);
-            mn = Math.min(mn, r[1] * cur);
+           mx = getMax(r, 1, mx, cur);
+           mn = getMin(r, 1, mn, cur);
         }
 
         return dp[i][j] = new long[]{mx, mn};
+    }
+
+    private long getMax(long[] arr, int idx, long mx, long cur) {
+        return Math.max(mx, arr[idx] * cur);
+    }
+
+    private long getMin(long[] arr, int idx, long mx, long cur) {
+        return Math.min(mx, arr[idx] * cur);
     }
 }

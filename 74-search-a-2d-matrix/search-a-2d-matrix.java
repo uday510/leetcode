@@ -1,10 +1,10 @@
 class Solution {
-    public boolean searchMatrix(int[][] A, int t) {
-        int N = A.length, M = A[0].length;
-        int i = 0, j = M - 1;
+    public boolean searchMatrix(int[][] arr, int t) {
+        int n = arr.length, m = arr[0].length;
+        int i = 0, j = m - 1;
 
-        while (i < N && j < M && i > -1 && j > -1) {
-            int cur = A[i][j];
+        while (i < n && j < m && i > -1 && j > -1) {
+            int cur = arr[i][j];
 
             if (cur == t) return true;
 

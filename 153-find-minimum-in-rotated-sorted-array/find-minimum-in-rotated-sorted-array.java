@@ -3,13 +3,12 @@ class Solution {
         int l = 0, r = nums.length - 1;
 
         while (l < r) {
-            int m = (l + r) >> 1;
+            int m = l + (r - l) / 2;
 
             if (nums[m] > nums[r]) l = m + 1;
-            else if (nums[m] < nums[r]) r = m;
-            else r--;
+            else r = m;
         }
-        
+
         return nums[l];
     }
 }

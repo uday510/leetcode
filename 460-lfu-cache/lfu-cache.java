@@ -1,15 +1,18 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class LFUCache {
 
     private final int capacity;
     private int minFreq;
     private final Map<Integer, Node> lfu;
-    private final Map<Integer, DLL> freqMap;
+    private final Map<Integer, DLL> frqMap;
     
     public LFUCache(int capacity) {
         this.capacity = capacity;
-        this.minFreq = 0;
-        this.lfu = new HashMap<>();
-        this.freqMap = new HashMap<>();
+        minFreq = 0;
+        lfu = new HashMap<>();
+        frqMap = new HashMap<>();
     }
 
     public int get(int key) {
@@ -17,105 +20,100 @@ class LFUCache {
         if (node == null) return -1;
         
         updateFreq(node);
+        return node.v;
+    }
+
+    public void put(int key, int value) {
+        Node node = lfu.get(key);
         
-        return node.value;
+        if (node != null) {
+            node.v = value;
+            updateFreq(node);
+            return;
+        }
+        
+        if (lfu.size() == capacity) {
+            DLL minList = frqMap.get(minFreq);
+            Node evicted = minList.evictHeadNext();
+            if (evicted != null) lfu.remove(evicted.k);
+        }
+        
+        node = new Node(key, value);
+
+        minFreq = 1;
+
+        lfu.put(node.k, node);
+        frqMap.computeIfAbsent(minFreq, _ -> new DLL()).add(node);
+        
     }
     
     private void updateFreq(Node node) {
-        int oldFreq = node.freq;
-        DLL oldList = freqMap.get(oldFreq);
+        int oldFreq = node.frq;
+        DLL oldList = frqMap.get(oldFreq);
+        
         oldList.remove(node);
         
         if (oldList.isEmpty() && minFreq == oldFreq) {
             minFreq++;
         }
         
-        node.freq++;
-        freqMap.computeIfAbsent(node.freq , _ -> new DLL()).add(node);
+        frqMap.computeIfAbsent(++node.frq, _ -> new DLL()).add(node);
     }
-
-    public void put(int key, int value) {
-        if (capacity == 0) return;
-        
-        Node node = lfu.get(key);
-
-        if (node != null) {
-            node.value = value;
-            updateFreq(node);
-            return;
-        }
-        
-        if (lfu.size() == capacity) {
-            DLL minList = freqMap.get(minFreq);
-            Node evicted = minList.removeHead();
-            if (evicted != null) lfu.remove(evicted.key);
-        }
-        
-        node = new Node(key, value);
-
-        lfu.put(node.key, node);
-        freqMap.computeIfAbsent(1, _ -> new DLL()).add(node);
-        minFreq = 1;
-    }
-
 }
 
 class Node {
-    int key, value, freq;
-    Node prev, next;
-
-    Node (int key, int value) {
-        this.key = key;
-        this.value = value;
-        this.freq = 1;
+    Node prv, nxt;
+    int k, v, frq;
+    
+    Node (int k, int v) {
+        this.k = k;
+        this.v = v;
+        frq = 1;
     }
-
 }
 
 class DLL {
+    
     Node head, tail;
-    int size;
-
+    int sz;
+    
     DLL () {
         head = new Node(-1, -1);
         tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
-        size = 0;
-    }
-
-    void add (Node node) {
-        Node tailPrev = tail.prev;
         
-        node.prev = tailPrev;
-        tailPrev.next = node;
-
-        tail.prev = node;
-        node.next = tail;
-
-        size++;
+        head.nxt = tail;
+        tail.prv = head;
+        
+        sz = 0;
     }
-
-    Node remove(Node node) {
-
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-
-        size--;
-
-        return node;
+    
+    void add(Node node) {
+        Node tailPrev = tail.prv;
+        
+        tailPrev.nxt = node;
+        node.prv = tailPrev;
+        
+        node.nxt = tail;
+        tail.prv = node;
+        
+        sz++;
     }
-
-    Node removeHead() {
-        if (size == 0) return null;
-        Node node = head.next;
-        remove(node);
-        return node;
+    
+    Node evictHeadNext() {
+        if (sz == 0) return null;
+        Node nodeToBeEvicted = head.nxt;
+        remove(nodeToBeEvicted);
+        return nodeToBeEvicted;
+    }
+    
+    public void remove(Node node) {
+       node.prv.nxt = node.nxt;
+       node.nxt.prv = node.prv;
+       
+       sz--;
     }
 
     boolean isEmpty() {
-        return size == 0;
+        return sz == 0;
     }
-
-
 }

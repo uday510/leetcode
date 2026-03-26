@@ -11,6 +11,7 @@ class Solution {
         int l = 0, r = 1;
 
         while (rd.get(r) < t) {
+            l = r;
             r <<= 1;
         }
 

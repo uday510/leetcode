@@ -1,13 +1,24 @@
 class Solution {
 
-    int[][] jobs;
-    int[] dp;
-    int n;
+    private int[][] jobs;
+    private int[] dp;
+    private int n;
 
-    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-        intialize(startTime, endTime, profit);
+    public int jobScheduling(int[] st, int[] en, int[] pf) {
+        n = st.length;
+        jobs = new int[n][3];
+        dp = new int[n]; 
 
-        return dfs(0);    
+        for (int idx = 0; idx < n; idx++) {
+            dp[idx] = -1;
+            jobs[idx][0] = st[idx];
+            jobs[idx][1] = en[idx];
+            jobs[idx][2] = pf[idx];
+        }   
+
+        Arrays.sort(jobs, Comparator.comparingInt(k -> k[0]));
+
+        return dfs(0);
     }
 
     private int dfs(int i) {
@@ -15,50 +26,22 @@ class Solution {
 
         if (dp[i] != -1) return dp[i];
 
-        int skip = dfs(i + 1);
-        int take = jobs[i][2] + dfs(bs(i, jobs[i][1]));
+        int t1 = dfs(i + 1);
+        int t2 = jobs[i][2] + dfs(bs(i, jobs[i][1]));
 
-        return dp[i] = Math.max(skip, take);
+        return dp[i] = Math.max(t1, t2);
     }
 
-    private int bs(int l, int target) {
+    private int bs(int l, int t) {
         int r = n;
 
         while (l < r) {
             int m = l + ((r - l) >> 1);
 
-            if (target > jobs[m][0]) l = m + 1;
+            if (jobs[m][0] < t) l = m + 1;
             else r = m;
         }
+
         return l;
     }
-    
-    private void intialize(int[] startTime, int[] endTime, int[] profit) {
-        n = startTime.length;
-        jobs = new int[n][3];
-        dp = new int[n];
-
-        for (int i = 0; i < n; ++i) {
-            dp[i] = -1;
-            jobs[i] = new int[3];
-            jobs[i][0] = startTime[i];
-            jobs[i][1] = endTime[i];
-            jobs[i][2] = profit[i];
-        }
-
-        Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
-    }
-
-
-
-// 0 -> [1, 3] ->  20
-// 1 -> [2, 5] ->  20
-// 2 -> [3, 10] -> 100
-// 3 -> [4, 6] ->  70
-// 4 -> [6, 9] ->  60
-
-// [[1, 3, 20], [2, 5, 20], [3, 10, 100], [4, 6, 70], [6, 9, 60]]
-
-// end: 3
-
 }

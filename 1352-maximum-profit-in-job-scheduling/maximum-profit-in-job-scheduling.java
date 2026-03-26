@@ -7,10 +7,9 @@ class Solution {
     public int jobScheduling(int[] st, int[] en, int[] pf) {
         n = st.length;
         jobs = new int[n][3];
-        dp = new int[n]; 
+        dp = new int[n + 1]; 
 
         for (int idx = 0; idx < n; idx++) {
-            dp[idx] = -1;
             jobs[idx][0] = st[idx];
             jobs[idx][1] = en[idx];
             jobs[idx][2] = pf[idx];
@@ -18,7 +17,13 @@ class Solution {
 
         Arrays.sort(jobs, Comparator.comparingInt(k -> k[0]));
 
-        return dfs(0);
+        for (int i = n - 1; i > -1; i--) {
+            int nxt = bs(i + 1, jobs[i][1]);
+            dp[i] = Math.max(dp[i + 1], jobs[i][2] + dp[nxt]);
+        }
+
+        return dp[0];
+    
     }
 
     private int dfs(int i) {

@@ -1,22 +1,26 @@
-class Solution {
-    public int search(ArrayReader reader, int target) {
-        if (reader.get(0) == target) return 0;
+/**
+ * // This is ArrayReader's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface ArrayReader {
+ *     public int get(int index) {}
+ * }
+ */
 
+class Solution {
+    public int search(ArrayReader rd, int t) {
         int l = 0, r = 1;
 
-        while (reader.get(r) < target) {
-            l = r;
+        while (rd.get(r) < t) {
             r <<= 1;
         }
 
         while (l < r) {
-            int m = (l + r) >> 1;
-            int curr = reader.get(m);
-            if (curr == target) return m;
-            if (curr < target) l = m + 1;
+            int m = l + (r - l) / 2;
+
+            if (rd.get(m) < t) l = m + 1;
             else r = m;
         }
 
-        return reader.get(l) == target ? l : -1;
+        return rd.get(l) == t ? l : -1;
     }
 }

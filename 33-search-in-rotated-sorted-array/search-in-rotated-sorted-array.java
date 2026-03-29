@@ -1,30 +1,41 @@
 class Solution {
-    public int search(int[] nums, int t) {
-        int l = 0, r = nums.length - 1;
+    public int search(int[] arr, int t) {
+        int l = 0, r = arr.length - 1;
 
         while (l <= r) {
-            int m = l + (r - l) / 2;
 
-            if (nums[m] == t) return m;
+            int m = (l + r) >> 1;
 
-            if (nums[l] == nums[m] && nums[m] == nums[r]) {
-                l++;
-                r--;
-            } else if (nums[l] <= nums[m]) {
-                if (nums[l] <= t && t < nums[m]) r = m - 1;
-                else l = m + 1;
+            if (arr[m] == t) return m;
+
+            if (arr[l] <= arr[m]) {
+                if (arr[l] <= t && t < arr[m]) {
+                    r = m - 1;
+                } else {
+                    l = m + 1;
+                }
             } else {
-                if (nums[m] < t && t <= nums[r]) l = m + 1;
-                else r = m - 1;
+                if (arr[m] < t && t <= arr[r]) {
+                    l = m + 1;
+                } else {
+                    r = m - 1;
+                }
             }
+
+            System.out.println(l + " , " + r + " ," + arr[m]);
         }
-        
+
         return -1;
     }
 }
 
 /**
 
-1 1 0 1 1 1
+5 1 3
+
+l = 0
+r = 2
+
+m = 1
 
  */

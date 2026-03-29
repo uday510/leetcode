@@ -21,8 +21,6 @@ class Solution {
                     r = m - 1;
                 }
             }
-
-            System.out.println(l + " , " + r + " ," + arr[m]);
         }
 
         return -1;

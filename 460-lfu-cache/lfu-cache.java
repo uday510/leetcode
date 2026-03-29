@@ -55,7 +55,7 @@ class LFUCache {
             if (minList != null) {
                 Node evicted = minList.evictHeadNext();
                 if (evicted != null) lfu.remove(evicted.k);
-                if (minList.isEmpty()) freqMap.remove(evicted.f);
+                if (minList.isEmpty()) freqMap.remove(min);
             }
            
         }

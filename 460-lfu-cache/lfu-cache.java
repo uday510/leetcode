@@ -30,14 +30,16 @@ class LFUCache {
 
         oldDLL.remove(node);
 
-        if (oldDLL.isEmpty() && min == oldFreq) {
-            min++;
+        if (oldDLL.isEmpty()) {
+            freqMap.remove(oldFreq);
+            if (min == oldFreq) min++;
         }
 
         freqMap.computeIfAbsent(++node.f, _ -> new DLL()).add(node);
     }
     
     public void put(int key, int value) {
+        if (capacity == 0) return;
         
         Node curNode = lfu.get(key);
 
@@ -48,11 +50,13 @@ class LFUCache {
             return;
         }
 
-        // reaches capacity
         if (lfu.size() == capacity) {
             DLL minList = freqMap.get(min);
-            Node evicted = minList.evictHeadNext();
-            if (evicted != null) lfu.remove(evicted.k);
+            if (minList != null) {
+                 Node evicted = minList.evictHeadNext();
+                if (evicted != null) lfu.remove(evicted.k);
+            }
+           
         }
 
         curNode = new Node(key, value);

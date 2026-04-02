@@ -25,27 +25,15 @@ class Solution {
             return dp[i][j][k];
         }
 
-        int cur = Integer.MIN_VALUE;
+        int cur = Math.max(dfs(i + 1, j, k),dfs(i, j + 1, k)) + coins[i][j];
 
-        if (coins[i][j] >= 0) {
-            cur = Math.max(
-                dfs(i + 1, j, k),
-                dfs(i, j + 1, k)
-            ) + coins[i][j];
-        } else {
-            
-            int t1 = Math.max(dfs(i + 1, j, k), dfs(i, j + 1, k)) + coins[i][j];
-            cur = Math.max(cur, t1);
-
-            if (k > 0) {
-                cur = Math.max(
-                        cur,
+        if (k > 0) {
+            cur = Math.max(cur,
                         Math.max(
                             dfs(i + 1, j, k - 1),
                             dfs(i, j + 1, k - 1)
                         )
                     );
-            }
         }
 
 

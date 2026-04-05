@@ -12,6 +12,8 @@ class Solution {
             else r = m;
         }
 
+        // l return first missing number
+
         return l + k;
     }
 }

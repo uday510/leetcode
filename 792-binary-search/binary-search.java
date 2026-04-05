@@ -1,21 +1,18 @@
 class Solution {
-
-    public int search(int[] nums, int target) {
-        return bs(nums, target);    
+    public int search(int[] arr, int t) {
+        return bs(arr, t);
     }
 
-    private int bs(int[] arr, int target) {
+    private int bs(int[] arr, int t) {
         int l = 0, r = arr.length;
 
         while (l < r) {
-            int m = (l + r) >> 1;
+            int m = l + (r - l) / 2;
 
-            if (arr[m] == target) return m;
-
-            if (arr[m] < target) l = m + 1;
+            if (arr[m] < t) l = m + 1;
             else r = m;
         }
 
-        return -1;
+        return l == arr.length || arr[l] != t ? -1 : l;
     }
 }

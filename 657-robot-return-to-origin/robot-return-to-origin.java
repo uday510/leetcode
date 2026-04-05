@@ -1,24 +1,21 @@
 class Solution {
 
-    private static Set<Character> pos = new HashSet<>();
-    static { pos.add('R'); pos.add('L'); }
-
+    private static final Map<Character, int[]> map = Map.of(
+        'U', new int[] {1, 0},
+        'D', new int[] {-1, 0},
+        'R', new int[] {0, 1},
+        'L', new int[] {0, -1}
+    );
+    
     public boolean judgeCircle(String moves) {
         int x = 0, y = 0;
 
-        for (int i = 0; i < moves.length(); i++) {
-            char move = moves.charAt(i);
-
-            if (pos.contains(move)) 
-                x += getCnt(move);
-            else y += getCnt(move);
-
+        for (int idx = 0; idx < moves.length(); idx++) {
+            int[] m = map.get(moves.charAt(idx));
+            x += m[0];
+            y += m[1];
         }
 
         return x == 0 && y == 0;
-    }
-
-    private int getCnt(char dir) {
-        return dir == 'U' || dir == 'R' ? 1 : -1;
     }
 }

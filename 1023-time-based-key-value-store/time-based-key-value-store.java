@@ -1,13 +1,13 @@
 class TimeMap {
 
-    Map<String, List<Pair<String, Integer>>> hm;
-
+    Map<String, List<Node>> hm;
+    
     public TimeMap() {
-        hm = new HashMap<>();    
+        hm = new HashMap<>();
     }
     
     public void set(String key, String value, int timestamp) {
-        hm.computeIfAbsent(key, _ -> new ArrayList<>()).add(new Pair<>(value, timestamp));
+        hm.computeIfAbsent(key, _ -> new ArrayList<Node>()).add(new Node(value, timestamp));
     }
     
     public String get(String key, int timestamp) {
@@ -16,28 +16,29 @@ class TimeMap {
         if (cur == null) return "";
 
         int l = 0, r = cur.size();
+        String res = "";
 
         while (l < r) {
-            int m = (l + r) >> 1;
-            if (cur.get(m).v <= timestamp) l = m + 1;
+            int m = l + (r - l) / 2;
+
+            if (cur.get(m).timestamp <= timestamp) {
+                res = cur.get(m).value;
+                l = m + 1;
+            }
             else r = m;
         }
-        
-        timestamp++;
 
-        if (l - 1 < 0 || l - 1 >= cur.size()) return "";
-
-        return cur.get(l - 1).k;
+        return res;
     }
 }
 
+class Node {
+    String value;
+    int timestamp;
 
-class Pair<K, V> {
-    K k;
-    V v;
+    Node (String value, int timestamp) {
+        this.value = value;
+        this.timestamp = timestamp;
+    } 
 
-    Pair (K k, V v) {
-        this.k = k;
-        this.v = v;
-    }
 }

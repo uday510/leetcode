@@ -16,12 +16,12 @@ class Solution {
         }
 
         while (l < r) {
-            int m = l + (r - l) / 2;
+            int m = l + ( (r - l) >> 1);
 
             if (rd.get(m) < t) l = m + 1;
             else r = m;
         }
 
-        return rd.get(l) == t ? l : -1;
+        return rd.get(l) == t ? l : -1; 
     }
 }

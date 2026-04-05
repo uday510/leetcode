@@ -11,9 +11,7 @@ class Solution {
             if (missing < k) l = m + 1;
             else r = m;
         }
-
-        // l return first missing number
-
+        
         return l + k;
     }
 }

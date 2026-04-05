@@ -7,7 +7,7 @@ class Solution {
         while (l < r) {
             long m = l + ( (r - l) >> 1);
 
-            long coins = (long) ( m * (m + 1) / 2);
+            long coins = ( m * (m + 1) / 2);
 
             if (coins <= n) l = m + 1;
             else r = m;

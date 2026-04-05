@@ -5,9 +5,9 @@ class Solution {
         long l = 1, r = x >> 1;
 
         while (l <= r) {
-            long m = (l + r) >> 1;
-
+            long m = l + ((r - l) >> 1);
             long v = m * m;
+
             if (v == x) return (int) m;
 
             if (v < x) l = m + 1;

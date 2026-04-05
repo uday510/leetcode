@@ -1,6 +1,6 @@
 class Solution {
 
-    private static final Map<Character, int[]> map = Map.of(
+    private static final Map<Character, int[]> cnt = Map.of(
         'U', new int[] {1, 0},
         'D', new int[] {-1, 0},
         'R', new int[] {0, 1},
@@ -11,7 +11,7 @@ class Solution {
         int x = 0, y = 0;
 
         for (int idx = 0; idx < moves.length(); idx++) {
-            int[] m = map.get(moves.charAt(idx));
+            int[] m = cnt.get(moves.charAt(idx));
             x += m[0];
             y += m[1];
         }

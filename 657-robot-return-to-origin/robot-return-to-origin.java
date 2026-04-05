@@ -1,31 +1,24 @@
 class Solution {
 
-    private static Map<Character, Integer> xMap = new HashMap<>();
-    private static Map<Character, Integer> yMap = new HashMap<>();
+    private static Set<Character> pos = new HashSet<>();
+    static { pos.add('R'); pos.add('L'); }
 
-    static {
-        xMap.put('U', 1);
-        xMap.put('D', -1);
-
-        yMap.put('R', 1);
-        yMap.put('L', -1);
-    }
-
-    
     public boolean judgeCircle(String moves) {
         int x = 0, y = 0;
 
         for (int i = 0; i < moves.length(); i++) {
             char move = moves.charAt(i);
 
-            if (xMap.containsKey(move)) 
-                x += xMap.get(move);
-            else 
-                y += yMap.get(move);
+            if (pos.contains(move)) 
+                x += getCnt(move);
+            else y += getCnt(move);
 
         }
 
         return x == 0 && y == 0;
     }
 
+    private int getCnt(char dir) {
+        return dir == 'U' || dir == 'R' ? 1 : -1;
+    }
 }

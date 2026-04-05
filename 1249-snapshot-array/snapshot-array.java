@@ -1,62 +1,58 @@
 class SnapshotArray {
-    
-    List<Pair>[] records;
-    int snapId;
 
-    public SnapshotArray(int length) {
-        records = new ArrayList[length];
-        snapId = 0;
+    private List<Node>[] arr;
+    private int id;
 
-        for (int i = 0; i < length; i++) {
-            records[i] = new ArrayList<>();
-            records[i].add(new Pair(0, 0));
+    public SnapshotArray(int len) {
+        arr = new ArrayList[len];
+        id = 0;
+
+        for (int i = 0; i < len; i++) {
+            arr[i] = new ArrayList<>();
+            arr[i].add(new Node(0, 0) );
         }
     }
-
+    
     public void set(int index, int val) {
-        List<Pair> record = records[index];
+        var cur = arr[index];
 
-        if (record.getLast().snapId == snapId) {
-            record.getLast().val = val;
-        } else {
-            record.add(new Pair(snapId, val));
-        }
+        if (cur.getLast().id == id) cur.getLast().val = val;
+        else cur.add(new Node(id, val));
+        
     }
     
     public int snap() {
-        return snapId++;
+        return id++;
     }
     
     public int get(int index, int snap_id) {
-        List<Pair> record = records[index];
-        int l = 0, r = record.size();
+        var cur = arr[index];
+
+        int l = 0, r = cur.size();
         int res = -1;
 
         while (l < r) {
-            int m = (l + r) >> 1;
-            Pair pair = record.get(m);
+            int m = l + (r - l) / 2;
 
-            if (pair.snapId <= snap_id) { l = m + 1; res = pair.val; }
-            else r = m;
+            if (cur.get(m).id <= snap_id) {
+                res = cur.get(m).val;
+                l = m + 1;
+            } else {
+                r = m;
+            }
         }
 
         return res;
     }
+}
 
-    private class Pair {
-        int snapId, val;
+class Node {
+    int id;
+    int val;
 
-        Pair(int snapId, int val) {
-            this.snapId = snapId;
-            this.val = val;
-        }
+    Node (int id, int val) {
+        this.id = id;
+        this.val = val;
     }
 }
 
-/**
- * Your SnapshotArray object will be instantiated and called as such:
- * SnapshotArray obj = new SnapshotArray(length);
- * obj.set(index,val);
- * int param_2 = obj.snap();
- * int param_3 = obj.get(index,snap_id);
- */

@@ -1,28 +1,18 @@
 class Solution {
-    public int hIndex(int[] arr) {
-        int n = arr.length;
-        int[] cnt = new int[n + 1];
+    public int hIndex(int[] citations) {
+        int l = 0, r = citations.length;
+        int n = citations.length;
 
-        for (int a : arr) {
-            cnt[Math.min(a, n)]++;
+        Arrays.sort(citations);
+
+        while (l < r) {
+            int m = (l + r ) >> 1;
+
+            int h = n - m;
+            if (citations[m] < h) l = m + 1;
+            else r = m;
         }
 
-        int cur = 0;
-
-        for (int i = n; i > -1; i--) {
-            cur += cnt[i];
-
-            if (cur >= i) {
-                return i;
-            }
-
-        }
-        
-        return -1;
+        return n - l;
     }
 }
-
-//   0  1  2  3  5
-//  [1  1  0  1  2]
-
-// 3

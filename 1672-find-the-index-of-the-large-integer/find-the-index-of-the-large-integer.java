@@ -14,19 +14,17 @@
  */
 
 class Solution {
-    public int getIndex(ArrayReader reader) {
-        
-        int l = 0;
-        int r = reader.length() - 1;
+    public int getIndex(ArrayReader rd) {
+        int l = 0, r = rd.length() - 1;
 
         while (l < r) {
-            int len = (r - l + 1) >> 1;
-            int m = (l + len - 1);
+            int m1 = (l + r) >> 1;
+            int m2 = (l + r + 1) >> 1;
 
-            int com = reader.compareSub(l, m, m + 1, m + len);
+            int cur = rd.compareSub(l, m1, m2, r);
 
-            if (com == 1) r = m;
-            else l = m + 1;
+            if (cur < 0) l = m1 + 1;
+            else r = m1;
         }
 
         return l;

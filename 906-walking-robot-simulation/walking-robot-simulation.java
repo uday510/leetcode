@@ -3,11 +3,10 @@ class Solution {
     private static final int[][] DIRs = { {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
     public int robotSim(int[] cmds, int[][] obs) {
-        long offset = 60013;
 
         Set<Long> ob = new HashSet<>();
         for (int[] o : obs) {
-            ob.add((long) o[0] + offset * o[1]);
+            ob.add(getKey(o[0], o[1]));
         }
 
         int[] pos = {0, 0};
@@ -24,7 +23,7 @@ class Solution {
                     int x = pos[0] + dir[0];
                     int y = pos[1] + dir[1];
 
-                    if (ob.contains((long) x + offset * y )) {
+                    if (ob.contains(getKey(x, y))) {
                         break;
                     }
 
@@ -38,6 +37,10 @@ class Solution {
 
         return mx;
 
+    }
+
+    private long getKey(int x, int y) {
+        return (((long)x) << 32) | (y & 0xffffffffL);
     }
 }
 

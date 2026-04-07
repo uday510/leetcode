@@ -13,7 +13,7 @@ class Solution {
             else r = m;
         }
         
-        int left = l;
+        int left = l - 1;
         int right = l;
         
         while (right - left - 1 < k) {

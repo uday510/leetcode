@@ -9,11 +9,13 @@ class Solution {
         while (l < r) {
             int cur = arr[l] + arr[r];
 
-            if (cur < k) l++;
-            else r--;
-
-
-            if (cur < k) mx = Math.max(mx, cur);
+            if (cur < k) {
+                mx = Math.max(mx, cur);
+                l++;
+            }
+            else {
+                r--;
+            }
         }
 
         return mx;

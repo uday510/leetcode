@@ -1,16 +1,21 @@
 class Solution {
-    public int twoSumLessThanK(int[] nums, int k) {
-        Arrays.sort(nums);
-        int l = 0, r = nums.length - 1;
-        int max = -1;
+    public int twoSumLessThanK(int[] arr, int k) {
+        
+        Arrays.sort(arr);
+
+        int l = 0, r = arr.length - 1;
+        int mx = -1;
 
         while (l < r) {
-            int cur = nums[l] + nums[r];
+            int cur = arr[l] + arr[r];
+
             if (cur < k) l++;
             else r--;
-            if (cur < k) max = Math.max(max, cur);
+
+
+            if (cur < k) mx = Math.max(mx, cur);
         }
 
-        return max;
+        return mx;
     }
 }

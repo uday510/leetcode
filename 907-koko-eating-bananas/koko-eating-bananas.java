@@ -20,8 +20,7 @@ class Solution {
 
         for (int pile : piles) {
 
-            total += Math.ceil(( (double) pile / perHr));
-
+            total += (pile + perHr - 1) / perHr;
             if (total > hrs) return false;
         }
 

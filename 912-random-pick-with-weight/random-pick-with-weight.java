@@ -1,29 +1,33 @@
 class Solution {
 
-    int[] w;
-    int[] psum;
-    int n;
+    private int[] w;
+    private int[] psum;
+    private int n;
+    private Random rand = new Random();
 
     public Solution(int[] w) {
         this.w = w;
-        n = w.length;
+        this.n = w.length;
         psum = new int[n];
+
         int sum = 0;
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; i++) {
             sum += w[i];
             psum[i] = sum;
-        }
+        }    
+
     }
     
     public int pickIndex() {
-        int val = new Random().nextInt(psum[psum.length - 1]) + 1;
         
+        int t = rand.nextInt(psum[n - 1]) + 1;
+
         int l = 0, r = n;
-        // while (l < n && psum[l] < val) l++;
 
         while (l < r) {
-            int m = (l + r) >> 1;
-            if (psum[m] < val) l = m + 1;
+            int m = l + ( ( r - l) >> 1);
+
+            if (psum[m] < t) l = m + 1;
             else r = m;
         }
 

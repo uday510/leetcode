@@ -24,10 +24,11 @@ class Solution {
             if (cur + w > loadPerDay) {
                 d++;
                 cur = 0;
-            } 
+            }
 
             cur += w;
             if (d > days) return false;
+
         }
 
         return true;

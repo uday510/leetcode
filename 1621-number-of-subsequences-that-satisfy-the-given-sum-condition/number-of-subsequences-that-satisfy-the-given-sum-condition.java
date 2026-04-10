@@ -1,24 +1,28 @@
 class Solution {
-    public int numSubseq(int[] nums, int target) {
-        Arrays.sort(nums);
+    public int numSubseq(int[] arr, int t) {
+        Arrays.sort(arr);
 
-        int n = nums.length;
-        int[] p = new int[n];
-        int MOD = (int) 1e9 + 7;
+        int n = arr.length;
+        int[] pow = new int[n];
 
-        p[0] = 1;
-        for (int i = 1; i < n; ++i) {
-            p[i] = (p[i - 1] * 2) % MOD;
+        int mod = (int) 1e9 + 7;
+
+        pow[0] = 1;
+        for (int i = 1; i < n; i++) {
+            pow[i] = (pow[i - 1] * 2) % mod;
         }
 
         int cnt = 0;
         int l = 0, r = n - 1;
 
         while (l <= r) {
-            if (nums[l] + nums[r] <= target) {
-                cnt = (cnt + (p[r - l])) % MOD;
+
+            if (arr[l] + arr[r] <= t) {
+                cnt = (cnt + pow[r - l] % mod) % mod;
                 l++;
-            } else r--;
+            } else {
+                r--;
+            }
         }
 
         return cnt;

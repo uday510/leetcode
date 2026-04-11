@@ -1,8 +1,8 @@
 class Solution {
     public int minSpeedOnTime(int[] d, double hr) {
         
-        int l = 1, r = 1;
-        while (!canReach(d, r, hr)) r <<= 1;
+        int l = 1, r = 2;
+        while (r < Integer.MAX_VALUE / 2 && !canReach(d, r, hr)) r <<= 1;
 
         while (l < r) {
 

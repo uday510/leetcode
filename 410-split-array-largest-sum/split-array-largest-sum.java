@@ -1,40 +1,42 @@
 class Solution {
-
-    int k;
-    int[] nums;
-
-    public int splitArray(int[] nums, int k) {
-        if (Arrays.stream(nums).sum() == 0) return 0;
-        this.nums = nums;
-        this.k = k;
-
-        int l = 1;
-        int r = 1;
-        while (!canSplit(r)) r <<= 1;
+    public int splitArray(int[] arr, int k) {
         
+        int l = 0, r = 0;
+        for (int x : arr) {
+            l = Math.max(l, x);
+            r += x;
+        }
+
         while (l < r) {
-            int m = l + ((r - l) >> 1);
-            if (canSplit(m)) {
+
+            int m = l + ( ( r - l) >> 1);
+
+            if (canSplit(arr, m, k)) {
                 r = m;
+            } else {
+                l = m + 1;
             }
-            else l = m + 1;
         }
 
         return l;
     }
 
-    private boolean canSplit(int limit) {
-        int curr = 0;
-        int x = 1;
+    private boolean canSplit(int[] arr, int limit, int k) {
+        int sum = 0, splits = 1;
 
-        for (int num : nums) {
-            if (num > limit || x > k) return false;
-            if (num + curr > limit) {
-                curr = num;
-                x++;
-            } else curr += num;
+        for (int x : arr) {
+
+            if (sum + x > limit) {
+                sum = 0;
+                splits++;
+            }
+
+            sum += x;
+
+            if (splits > k) return false;
+
         }
 
-        return x <= k;
+        return true;
     }
 }

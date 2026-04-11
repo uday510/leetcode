@@ -14,12 +14,12 @@ class Solution {
         return l;
     }
 
-    private boolean isValid(int[] arr, int b, int limit) {
+    private boolean isValid(int[] arr, int y, int limit) {
         int cur = 0;
 
-        for (int a : arr) {
+        for (int x : arr) {
             if (cur > limit) break;
-            cur += (a + b - 1) / b;
+            cur += (x + y - 1) / y;
         }
 
         return cur <= limit;

@@ -1,35 +1,30 @@
 class Solution {
-
-    int[] dist;
-    double hr;
-    int n;
-
-    public int minSpeedOnTime(int[] dist, double hour) {
-        this.dist = dist;
-        hr = hour;
-        this.n = dist.length;
-
+    public int minSpeedOnTime(int[] d, double hr) {
+        
         int l = 1, r = 1;
-        while (!canReach(r)) r <<= 1;
+        while (!canReach(d, r, hr)) r <<= 1;
 
         while (l < r) {
-            int m = l + ((r - l) >> 1);
 
-            if (canReach(m)) r = m;
-            else l = m + 1;
+            int m = l + ( (r - l) >> 1);
+
+            if (!canReach(d, m, hr)) l = m + 1;
+            else r = m;
         }
 
-        return canReach(l) ? l : -1;
+        return canReach(d, l, hr) ? l : -1;
     }
 
-    private boolean canReach(int m) {
-        double h = 0.0;
+    private boolean canReach(int[] d, int m, double hr) {
+        double cur = 0;
 
-        for (int i = 0; i < n - 1; ++i) h += (dist[i] + m - 1) / m;
+        for (int i = 0; i < d.length - 1; i++) {
+            cur += (d[i] + m - 1) / m;
+            if (cur > hr) return false;
+        }
 
-        h += (double) dist[n - 1] / m;
+        cur += (double) d[d.length - 1] / m;
 
-        return h <= hr;
+        return cur <= hr;
     }
-
 }

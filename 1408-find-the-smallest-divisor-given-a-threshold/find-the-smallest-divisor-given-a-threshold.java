@@ -1,29 +1,27 @@
 class Solution {
-    public int smallestDivisor(int[] nums, int threshold) {
+    public int smallestDivisor(int[] arr, int t) {
         int l = 1, r = 1;
-        for (int num : nums) {
-            l = 1;
-            r = Math.max(num, r);
-        }
+        for (int x : arr) r = Math.max(r, x);
 
         while (l < r) {
-            int m = l + ((r - l) >> 1);
 
-            if (canDivide(nums, m, threshold)) r = m;
-            else l = m + 1;
+            int m = l + ( (r - l) >> 1 );
+
+            if (!isValid(arr, m, t)) l = m + 1; // increase m, so it will decrease threshold
+            else r = m;
         }
 
         return l;
     }
-    
-    private boolean canDivide(int[] nums, int m, int threshold) {
-        int curr = 0;
 
-        for (int num : nums) {
-            if (curr > threshold) break;
-            curr += ((num + m - 1) / m);
+    private boolean isValid(int[] arr, int b, int limit) {
+        int cur = 0;
+
+        for (int a : arr) {
+            if (cur > limit) break;
+            cur += (a + b - 1) / b;
         }
 
-        return curr <= threshold;
+        return cur <= limit;
     }
 }

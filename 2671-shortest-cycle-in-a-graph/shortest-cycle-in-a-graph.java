@@ -52,7 +52,7 @@ class Solution {
                } else if (v != parent[u]) {
                    min = Math.min(min, dist[u] + dist[v] + 1);
 
-                //    if (min == 3) return 3;
+                   if (min == 3) return 3;
                }
            }
         }

@@ -3,11 +3,14 @@ class Solution {
     private List<Integer>[] adj;
     private int n;
     private int[] dist, parent;
+    private Queue<Integer> queue;
+
 
     public int findShortestCycle(int n, int[][] edges) {
         adj = new ArrayList[n];
         dist = new int[n];
         parent = new int[n];
+        queue = new ArrayDeque<>();
 
         this.n = n;
 
@@ -31,9 +34,8 @@ class Solution {
         return d == Integer.MAX_VALUE ? -1 : d;
     }
 
-    private int bfs(int st) {
-        Queue<Integer> queue = new ArrayDeque<>();
-        
+    private int bfs(int st) { 
+        queue.clear();       
         for (int i = 0; i < n; i++) dist[i] = parent[i] = -1;
         
         dist[st] = 0;

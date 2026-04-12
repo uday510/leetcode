@@ -2,9 +2,13 @@ class Solution {
 
     private List<Integer>[] adj;
     private int n;
+    private int[] dist, parent;
 
     public int findShortestCycle(int n, int[][] edges) {
         adj = new ArrayList[n];
+        dist = new int[n];
+        parent = new int[n];
+
         this.n = n;
 
         for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
@@ -29,8 +33,6 @@ class Solution {
 
     private int bfs(int st) {
         Queue<Integer> queue = new ArrayDeque<>();
-        int[] dist = new int[n];
-        int[] parent = new int[n];
         
         for (int i = 0; i < n; i++) dist[i] = parent[i] = -1;
         

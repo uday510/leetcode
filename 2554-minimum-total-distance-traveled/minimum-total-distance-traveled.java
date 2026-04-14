@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
 
     private List<Integer> r;
@@ -27,11 +25,9 @@ class Solution {
     }
 
     private long dfs(int i, int j) {
-        if (i >= r.size()) {
-            return 0;
-        }
+        if (i >= r.size()) return 0;
         
-        if (j >= p.size()) return (long) 1e12;
+        if (j >= p.size()) return Long.MAX_VALUE/2;
         
         if (dp[i][j] != -1) return dp[i][j];
         

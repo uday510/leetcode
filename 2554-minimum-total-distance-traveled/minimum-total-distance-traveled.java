@@ -1,18 +1,20 @@
+import java.util.*;
+
 class Solution {
 
-    private List<Integer> robot;
+    private List<Integer> robots;
     private int[][] factory;
     private long[][] dp;
+    private int n, m;
 
-    public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
-        Collections.sort(robot);
-        Arrays.sort(factory, Comparator.comparingInt(a -> a[0]));
-
-        this.robot = robot;
+    public long minimumTotalDistance(List<Integer> robots, int[][] factory) {
+        this.robots = robots;
         this.factory = factory;
+        this.n = robots.size();
+        this.m = factory.length;
 
-        int n = robot.size();
-        int m = factory.length;
+        Collections.sort(robots);
+        Arrays.sort(factory, Comparator.comparingInt(k -> k[0]));
 
         dp = new long[n][m];
         for (long[] row : dp) Arrays.fill(row, -1);
@@ -21,28 +23,29 @@ class Solution {
     }
 
     private long dfs(int i, int j) {
-        // all robots assigned
-        if (i == robot.size()) return 0;
+        if (i >= n) return 0;
 
-        // no factories left
-        if (j == factory.length) return (long) 1e15;
+        if (j >= m) return Long.MAX_VALUE;
 
         if (dp[i][j] != -1) return dp[i][j];
 
-        long res = dfs(i, j + 1); // skip this factory
+        long res = dfs(i, j + 1);
 
-        long cost = 0;
-
-        // try assigning k robots to factory j
-        for (int k = 1; k <= factory[j][1] && i + k - 1 < robot.size(); k++) {
-            cost += Math.abs(robot.get(i + k - 1) - factory[j][0]);
-
-            long next = dfs(i + k, j + 1);
-            if (next != (long) 1e15) {
-                res = Math.min(res, cost + next);
+        long cur = 0;
+        int curFactoryLimit = factory[j][1];
+        for (int idx = 1; idx <= curFactoryLimit && i + idx - 1 < n; idx++) {
+            
+            cur += Math.abs(robots.get(i + idx - 1) - factory[j][0]);
+            
+            long t2 = dfs(i + idx, j + 1);
+            if (t2 != Long.MAX_VALUE) {
+                res = Math.min(res, cur + t2);
             }
+            
         }
 
+
         return dp[i][j] = res;
+
     }
 }

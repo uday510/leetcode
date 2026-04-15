@@ -21,17 +21,17 @@ class Solution {
         
         Queue<Integer> queue = new ArrayDeque<>();
         
+        vis[st] = true;
         queue.offer(st);
         
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            
-            vis[u] = true;
-            
+                        
             for (int v = 0; v < edges[u].length; v++) {
                 
                 if (u == v || vis[v] || edges[u][v] == 0) continue;
                 
+                vis[v] = true;
                 queue.offer(v);
             }
         }

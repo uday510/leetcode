@@ -1,40 +1,41 @@
 class Solution {
 
-    int[][] edges;
-    int n;
-    boolean[] vis;
-
     public int findCircleNum(int[][] edges) {
-        this.edges = edges;
-        this.n = edges.length;
-        vis = new boolean[n];
-        int provinces = 0;
 
+        int n = edges.length;
+        boolean[] vis = new boolean[n];
+        int total = 0;
+        
         for (int i = 0; i < n; i++) {
-            if (vis[i]) continue;
-
-            provinces++;
-            bfs(i);
+            
+            if (!vis[i]) {
+                total++;
+                bfs(i, edges, vis);
+            }
         }
-
-        return provinces;
+        
+        return total;
     }
-
-    private void bfs(int st) {
+    
+    private void bfs(int st, int[][] edges, boolean[] vis) {
+        
         Queue<Integer> queue = new ArrayDeque<>();
-        vis[st] = true;
+        
         queue.offer(st);
-
+        
         while (!queue.isEmpty()) {
             int u = queue.poll();
-
-            for (int v = 0; v < n; v++) {
-                if (edges[u][v] == 0 || vis[v]) continue;
-
-                vis[v] = true;
+            
+            vis[u] = true;
+            
+            for (int v = 0; v < edges[u].length; v++) {
+                
+                if (u == v || vis[v] || edges[u][v] == 0) continue;
+                
                 queue.offer(v);
             }
         }
-
     }
+
+
 }

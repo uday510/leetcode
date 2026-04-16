@@ -64,7 +64,7 @@ indices = [0, 2, 4]
 pos = 0
 prv = 4
 nxt = 2
-d1 = min(abs(0 - 4), 7 - abs(0 - 4)) = 4
+d1 = min(abs(0 - 4), 7 - abs(0 - 4)) = 3
 d2 = min(abs(0 - 2), 7 - abs(0 - 2)) = 2
 mn = 2
 

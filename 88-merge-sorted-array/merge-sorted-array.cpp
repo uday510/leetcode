@@ -6,13 +6,11 @@ public:
         int idx = 0;
 
         for (int i = 0; i < m; i++) {
-            arr[idx++] = nums1[i];
-
+            arr[i] = nums1[i];
         }
 
-        
         for (int i = 0; i < n; i++) {
-            arr[idx++] = nums2[i];
+            arr[m + i] = nums2[i];
         }
 
         sort(arr, arr + (m + n));

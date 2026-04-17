@@ -1,7 +1,7 @@
 class Solution {
     public int minMirrorPairDistance(int[] arr) {
         
-        Map<Integer, Integer> cnts = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
         int res = arr.length;
         for (int idx = 0; idx < arr.length; idx++) {
@@ -9,13 +9,13 @@ class Solution {
             int cur = arr[idx];
             int rev = reverse(cur);
 
-            Integer val = cnts.get(cur);
+            Integer val = map.get(cur);
 
             if (val != null) {
                 res = Math.min(res, idx - val);
             }
 
-            cnts.put(rev, idx);
+            map.put(rev, idx);
         }
 
         return res == arr.length ? -1 : res;

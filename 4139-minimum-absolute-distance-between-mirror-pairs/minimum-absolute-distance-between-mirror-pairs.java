@@ -27,7 +27,7 @@ class Solution {
         int cur = num;
 
         while (cur > 0) {
-            reversed = reversed * 10 + (cur % 10);
+            reversed = (reversed * 10) + (cur % 10);
             cur /= 10;
         }
 

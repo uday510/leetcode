@@ -4,7 +4,7 @@ class Solution {
         Map<Integer, Integer> map = new HashMap<>();
 
         int res = arr.length;
-        for (int idx = 0; idx < arr.length; idx++) {
+        for (int idx = 0; idx < arr.length;) {
 
             int cur = arr[idx];
             int rev = reverse(cur);
@@ -15,7 +15,7 @@ class Solution {
                 res = Math.min(res, idx - val);
             }
 
-            map.put(rev, idx);
+            map.put(rev, idx++);
         }
 
         return res == arr.length ? -1 : res;

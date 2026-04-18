@@ -10,19 +10,20 @@ public:
         unordered_map<char, int> cnt;
         int longest = 0;
 
-        for (int i = 0, j = 0; j < n; j++) {
+        int start = 0;
+        for (int end = 0; end < n; end++) {
 
-            cnt[s[j]]++;
+            cnt[s[end]]++; // increament
 
-            while (cnt[s[j]] > 1) {
+            while (start < end && cnt[s[end]] > 1) { // remove invalid elements from window
 
-                cnt[s[i]]--;
+                cnt[s[start]]--;
 
-                i++;
+                start++;
 
             }
 
-            longest = max(longest, j - i + 1);
+            longest = max(longest, end - start + 1);
 
         }
 

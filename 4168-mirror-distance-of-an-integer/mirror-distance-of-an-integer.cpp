@@ -1,8 +1,5 @@
 class Solution {
 public:
-    int mirrorDistance(int n) {
-        return abs(n - reverse(n));
-    }
 
     int reverse(int n) {
         int cur = n;
@@ -15,6 +12,11 @@ public:
 
         return ans;
     }
+
+    int mirrorDistance(int n) {
+        return abs(n - reverse(n));
+    }
+    
 };
 
 

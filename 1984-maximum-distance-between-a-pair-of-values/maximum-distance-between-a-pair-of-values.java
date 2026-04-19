@@ -1,19 +1,36 @@
 class Solution {
     public int maxDistance(int[] arr1, int[] arr2) {
-        int i = 0, j = 0;
-        int n = arr1.length, m = arr2.length;
+        
         int mx = 0;
+        int n = arr1.length;
 
-        while (i < n && j < m) {
+        for (int i = 0; i < n; i++) {
 
-            if (arr1[i] <= arr2[j]) {
-                mx = Math.max(mx, j - i);
-                j++;
-            } else {
-                i++;
-            }
+            int idx = bs(i, arr1, arr2);
+            mx = Math.max(mx, Math.abs(i -  idx));
         }
 
-        return mx;
+        return Math.max(0, mx - 1);
+    }
+
+    private int bs(int i, int[] arr1, int[] arr2) {
+
+        int l = i, r = arr2.length;
+
+
+        while (l < r) {
+
+            int m = l + ((r - l) >> 1);
+
+            if (i <= m && arr1[i] <= arr2[m]) l = m + 1;
+            else r = m;
+        }
+
+        return l;
     }
 }
+
+/**
+
+
+ */

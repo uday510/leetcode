@@ -1,12 +1,24 @@
 class Solution {
 public:
+    unordered_map<int, int> map;
+
     int fib(int n) {
-        
-        if (n == 1 || n == 0) {
+        map[0] = 0;
+        map[1] = 1;
+        return dfs(n);
+    }
+
+    int dfs(int n) {
+        if (n == 0 || n == 1) {
             return n;
         }
 
-        return fib(n - 1) + fib(n - 2);
+        if (map.count(n)) {
+            return map[n];
+        }
+
+        map[n] = dfs(n - 1) + dfs(n - 2);
+        return map[n];
     }
 };
 
@@ -27,6 +39,7 @@ n = 4
 --------------------
 
 map: 
+
 [
 
 1: 1

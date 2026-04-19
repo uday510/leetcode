@@ -1,4 +1,5 @@
 class Solution {
+    
     public int maxProfit(int k, int[] prices) {
         return maxProfitWithKTransactions(k, prices);
     }
@@ -22,4 +23,5 @@ class Solution {
 
         return profit[k];
     }
+
 }

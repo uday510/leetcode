@@ -22,15 +22,10 @@ class Solution {
 
             int m = l + ((r - l) >> 1);
 
-            if (i <= m && arr1[i] <= arr2[m]) l = m + 1;
+            if (arr1[i] <= arr2[m]) l = m + 1;
             else r = m;
         }
 
         return l;
     }
 }
-
-/**
-
-
- */

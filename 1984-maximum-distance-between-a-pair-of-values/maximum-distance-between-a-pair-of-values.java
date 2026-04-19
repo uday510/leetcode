@@ -7,10 +7,10 @@ class Solution {
         for (int i = 0; i < n; i++) {
 
             int idx = bs(i, arr1, arr2);
-            mx = Math.max(mx, Math.abs(i -  idx));
+            mx = Math.max(mx, Math.abs(i -  idx) - 1);
         }
 
-        return Math.max(0, mx - 1);
+        return mx;
     }
 
     private int bs(int i, int[] arr1, int[] arr2) {

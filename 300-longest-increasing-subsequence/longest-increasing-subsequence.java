@@ -1,35 +1,36 @@
 class Solution {
 
-    private int n;
+    private int[][] dp;
     private int[] arr;
-    private List<Integer> lis;
+    private int n;
 
-    public int lengthOfLIS(int[] arr) {
+    public int lengthOfLIS(int[] nums) {
+        this.arr = nums;
         n = arr.length;
-        this.arr = arr;
-        lis = new ArrayList<>();
+        this.dp = new int[n][n + 1];
+    
+        for (int[] row : dp) Arrays.fill(row, -1); 
 
-
-        for (int i = 0; i < n; i++) {
-            int index = bs(arr[i]);
-            if (index == lis.size()) lis.add(arr[i]);
-            lis.set(index, arr[i]);
-        }
-
-        return lis.size();
+        return dfs(0, -1);
     }
 
-    private int bs(int t) {
-        int l = 0, r = lis.size();
-
-        while (l < r) {
-
-            int m = l + ((r - l) >> 1);
-
-            if (lis.get(m) < t) l = m + 1;
-            else r = m;
+    private int dfs(int cur, int prev) {
+        if (cur >= n || prev >= n) {
+            return 0;
         }
 
-        return l;
+        if (dp[cur][prev + 1] != -1) {
+            return dp[cur][prev + 1];
+        }
+
+        int skip = 0 + dfs(cur + 1, prev);
+
+        int take = 0;
+
+        if (prev == -1 || arr[prev] < arr[cur]) {
+            take = 1 + dfs(cur + 1, cur);
+        }
+
+        return dp[cur][prev + 1] = Math.max(skip, take);
     }
 }

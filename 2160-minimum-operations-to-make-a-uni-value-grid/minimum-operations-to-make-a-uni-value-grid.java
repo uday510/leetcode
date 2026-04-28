@@ -3,25 +3,22 @@ class Solution {
         
         List<Integer> list = new ArrayList<>();
 
+        int mod = grid[0][0] % x;
         for (int[] row : grid) {
             for (int cur : row) {
+                if (cur % x != mod) return -1;
                 list.add(cur);
             }
         }
 
         Collections.sort(list);
 
-        int sweetSpot = list.get( list.size() >> 1);
+        int m = list.get( list.size() >> 1);
 
         int ops = 0;
 
         for (int cur : list) {
-
-            if (cur % x != sweetSpot % x) {
-                return -1;
-            }
-
-            ops += Math.abs(cur - sweetSpot) / x;
+            ops += Math.abs(cur - m) / x;
         }
 
         return ops;

@@ -1,4 +1,12 @@
 class Solution {
+
+    Set<Integer> invalid = Set.of(
+        3, 4, 7
+    );
+
+    Set<Integer> valid = Set.of(
+        2, 5, 6, 9
+    );
     public int rotatedDigits(int n) {
         
         int cnt = 0;
@@ -9,6 +17,7 @@ class Solution {
             if (ok) {
                 cnt++;
             }
+
         }
 
         return cnt;
@@ -21,9 +30,9 @@ class Solution {
         while (num > 0) {
             int cur = num % 10;
 
-            if (cur == 3 || cur == 4 || cur == 7) return false;
+            if (invalid.contains(cur)) return false;
 
-            if (cur == 2 || cur == 5 || cur == 6 || cur == 9) {
+            if (valid.contains(cur)) {
                 safe = true;
             }
 

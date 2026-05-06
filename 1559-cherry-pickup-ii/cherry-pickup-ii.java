@@ -2,21 +2,28 @@ class Solution {
 
     private int[][] grid;
     private int n, m;
-    private Integer[][][] dp;
+    private int[][][] dp;
 
     public int cherryPickup(int[][] grid) {
+
         this.grid = grid;
         this.n = grid.length;
         this.m = grid[0].length;
-        this.dp = new Integer[n][m][m];
+        this.dp = new int[n][m][m];
 
-        return dfs(0, 0, m - 1);
+        for (int[][] twoD : dp) 
+            for (int[] row : twoD)
+                Arrays.fill(row, -1);
+
+
+        return dfs(0, 0, m - 1);   
     }
 
     private int dfs(int x, int y1, int y2) {
+
         if (
-                y1 >= m || y2 >= m ||
-                y1 < 0 || y2 < 0
+            y1 >= m || y2 >= m ||
+            y1 < 0 || y2 < 0
         ) {
             return Integer.MIN_VALUE;
         }
@@ -26,14 +33,12 @@ class Solution {
             return grid[x][y1] + grid[x][y2];
         }
 
-        if (dp[x][y1][y2] != null) {
+        if (dp[x][y1][y2] != -1) {
             return dp[x][y1][y2];
         }
 
         int cur = grid[x][y1];
-        if (y1 != y2) {
-            cur += grid[x][y2];
-        }
+        if (y1 != y2) cur += grid[x][y2];
 
         int nxt = 0;
 
@@ -44,6 +49,5 @@ class Solution {
         }
 
         return dp[x][y1][y2] = cur + nxt;
-
     }
 }

@@ -1,29 +1,54 @@
 class Solution {
+
     public int[] separateDigits(int[] nums) {
         
-        List<Integer> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
 
         for (int num : nums) {
-            list.addAll(getDigits(num));
+            res.addAll(getDigits(num));
         }
 
-        int[] res = new int[list.size()];
-        for (int idx = 0; idx < res.length; idx++) {
-            res[idx] = list.get(idx);
-        } 
+        int[] arr = new int[res.size()];
 
-        return res;
+        for (int idx = 0; idx < arr.length; idx++) {
+            arr[idx] = res.get(idx);
+        }
+
+        return arr;
     }
 
     private List<Integer> getDigits(int num) {
-        List<Integer> list = new ArrayList<>();
+        
+        // num = 13
+        List<Integer> list = new ArrayList<>(); // 1, 3
 
         while (num > 0) {
-            list.add(num % 10);
+            list.add(num % 10); 
             num /= 10;
         }
 
         Collections.reverse(list);
+
         return list;
     }
+
 }
+
+/**
+
+[13,25,83,77]
+
+
+13 --> 
+
+[3, 1] -> reverse -> [1, 3] 
+13 % 10 = 3
+13 / 10 = 1
+
+---
+1 % 10 = 1
+1 / 10 = 0
+
+
+*/
+

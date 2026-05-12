@@ -7,7 +7,7 @@ class Solution {
 
         Arrays.sort(tasks, (a, b) -> (b[1] - b[0]) - (a[1] - a[0]));
 
-        int l = tasks[0][1], r = 1;
+        int l = tasks[0][1], r = 0;
 
         for (int[] t : tasks) r += t[1];
 
@@ -29,15 +29,11 @@ class Solution {
     private boolean isPossible(int limit) {
 
         for (int[] t : tasks) {
-
-            int actual = t[0];
-            int minimum = t[1];
-
-            if (limit < minimum) {
+            if (limit < t[1]) {
                 return false;
             }
-
-            limit -= actual;
+            
+            limit -= t[0];
         }
 
         return true;

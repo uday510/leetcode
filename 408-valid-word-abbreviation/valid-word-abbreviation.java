@@ -5,17 +5,15 @@ class Solution {
             if (word.charAt(i) == abbr.charAt(j)) {
                 i++;
                 j++;
-            } 
-            else if (Character.isAlphabetic(abbr.charAt(j)) || abbr.charAt(j) == '0') {
-                return false;
-            }
-             else {
+            } else if (abbr.charAt(j) - '0' > 0 && abbr.charAt(j) - '0' < 10){
                 int tmp = 0;
                 while (j < abbr.length() && Character.isDigit(abbr.charAt(j))) {
                     tmp = tmp * 10 + (abbr.charAt(j) - '0');
                     j++;
                 }
                 i += tmp;
+            } else {
+                return false;
             }
         }
 

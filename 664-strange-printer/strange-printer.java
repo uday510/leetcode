@@ -7,9 +7,9 @@ class Solution {
         this.s = removeDuplicates(s);
         int n = this.s.length();
 
-        this.dp = new int[n][n];
+        dp = new int[n][n];
 
-        for (int[] row : dp) Arrays.fill(row, -1);
+        for (int[] r : dp) Arrays.fill(r, -1);
 
         return dfs(0, n - 1);
     }
@@ -18,33 +18,33 @@ class Solution {
         if (st > en) return 0;
         if (st == en) return 1;
 
+
         if (dp[st][en] != -1) return dp[st][en];
 
         int cur = 1 + dfs(st + 1, en);
 
-        for (int i = st + 1; i <= en; i++) {
+        for (int j = st + 1; j <= en; j++) {
 
-            if (s.charAt(st) == s.charAt(i)) {
+            if (s.charAt(st) == s.charAt(j)) {
 
-                cur = Math.min(cur,
-                        dfs(st + 1, i - 1) + dfs(i, en)
-                );
+                cur = Math.min(cur, dfs(st + 1, j - 1) + dfs(j, en));
             }
+            
         }
 
         return dp[st][en] = cur;
     }
 
     private String removeDuplicates(String s) {
+        int n = s.length();
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < s.length();) {
+        for (int i = 0; i < n;) {
+            
             sb.append(s.charAt(i));
 
-            char ch = s.charAt(i);
-            while (i < s.length() && s.charAt(i) == ch) {
-                i++;
-            }
+            char c = s.charAt(i);
+            while (i < n && s.charAt(i) == c) i++;
         }
 
         return sb.toString();

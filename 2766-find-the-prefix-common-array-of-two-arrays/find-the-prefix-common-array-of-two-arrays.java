@@ -9,15 +9,14 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             cnt.put(A[i], cnt.getOrDefault(A[i], 0) + 1);
-            
-            
-            if (cnt.get(A[i]) == 2) common++;
-
             cnt.put(B[i], cnt.getOrDefault(B[i], 0) + 1);
-            if (cnt.get(B[i]) == 2) common++;
+
+            if (cnt.get(A[i]) == 2) common++;
+            if (A[i] != B[i] && cnt.get(B[i]) == 2) common++;
             
             res[i] = common;
         }
+
         return res;
     }
 

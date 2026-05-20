@@ -5,24 +5,20 @@ class Solution {
         int n = A.length;
         Map<Integer, Integer> cnt = new HashMap<>();
         int[] res = new int[n];
-        
+        int common = 0;
+
         for (int i = 0; i < n; i++) {
-            int a = A[i], b = B[i];
+            cnt.put(A[i], cnt.getOrDefault(A[i], 0) + 1);
             
-            cnt.put(a, cnt.getOrDefault(a, 0) + 1);
-            cnt.put(b, cnt.getOrDefault(b, 0) + 1);
             
-            int cur = 0;
-            for (int j = 0; j <= i; j++) {
-                if (cnt.get(A[j]) == 2) cur++;
-                if (cnt.get(B[j]) == 2) cur++;
-            }
+            if (cnt.get(A[i]) == 2) common++;
+
+            cnt.put(B[i], cnt.getOrDefault(B[i], 0) + 1);
+            if (cnt.get(B[i]) == 2) common++;
             
-            res[i] = cur / 2;
+            res[i] = common;
         }
-        
         return res;
     }
-
 
 }

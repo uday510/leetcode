@@ -17,8 +17,10 @@ class Solution {
 
     private void insert(Trie root, String s) {
         Trie cur = root;
-        System.out.println(cur);
 
+        if (cur == null) {
+            return;
+        }
 
         for (int i = 0; i < s.length(); i++) {
             int idx = s.charAt(i) - '0';
@@ -34,6 +36,10 @@ class Solution {
     private int getCommonPrefix(Trie root, String s) {
         int cnt = 0;
         Trie cur = root;
+
+        if (cur == null) {
+            return cnt;
+        }
 
         for (int i = 0; i < s.length(); i++) {
             int idx = s.charAt(i) - '0';

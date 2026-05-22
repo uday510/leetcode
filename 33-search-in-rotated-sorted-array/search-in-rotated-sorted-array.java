@@ -8,8 +8,6 @@ class Solution {
  
             if (arr[m] == t) return m;
 
-            System.out.println(arr[l] + " " + arr[m] + " " + arr[r]);
-
             if (arr[l] <= arr[m]) {
                 if (arr[l] <= t && t < arr[m]) r = m - 1;
                 else l = m + 1;

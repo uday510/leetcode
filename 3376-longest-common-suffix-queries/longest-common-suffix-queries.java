@@ -17,10 +17,7 @@ class Solution {
         for (int i = 0; i < n; i++) {
             res[i] = find(q[i].length() - 1, q[i], root);
             res[i] = res[i] == -1 ? shortest : res[i];
-
-            System.out.println(res[i]);
         }
-
 
         return res;
     }

@@ -11,13 +11,12 @@ class Solution {
         n = words.length;
 
         Collections.addAll(ws, words);
-
         int res = 1;
         for (String w : words) {
             res = Math.max(res, 1 + dfs(w));
         }
 
-        return res;
+        return res;    
     }
 
     private int dfs(String w) {
@@ -35,6 +34,7 @@ class Solution {
         }
 
         dp.put(w, cur);
+
         return cur;
     }
 }

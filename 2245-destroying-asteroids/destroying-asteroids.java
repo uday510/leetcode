@@ -4,17 +4,10 @@ class Solution {
 
        long cur = mass;
 
-       List<Integer> rem = new ArrayList<>(); 
        for(int a : ast) {
-            if (cur < a) rem.add(a);
+            if (cur < a) return false;
             else cur += a;
        }
-       
-       for (int a : rem) {
-            if (a > cur) return false;
-            cur += a;
-       } 
-
 
        return true;
     }

@@ -1,39 +1,35 @@
 class Solution {
-    public boolean canFinish(int n, int[][] preq) {
+    public boolean canFinish(int n, int[][] pre) {
         
-
         List<Integer>[] adj = new ArrayList[n];
-        int[] in = new int[n];
+        int[] inc = new int[n];
 
         for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
 
-        for (int[] e : preq) {
-            
-            int u = e[0], v = e[1];
-
+        for (int[] p : pre) {
+            int u = p[0], v = p[1];
             adj[v].add(u);
-            in[u]++;
+            inc[u]++;
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
-        int fi = 0;
+        int cnt = 0;
 
         for (int i = 0; i < n; i++) {
-            if (in[i] == 0) queue.offer(i);
+            if (inc[i] == 0) queue.offer(i);
         }
 
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            fi++;
+            cnt++;
+
+            if (cnt == n) return true;
 
             for (int v : adj[u]) {
-
-                if (--in[v] == 0) {
-                    queue.offer(v);
-                }
+                if (--inc[v] == 0) queue.offer(v);
             }
         }
 
-        return fi == n;
+        return cnt == n;
     }
 }

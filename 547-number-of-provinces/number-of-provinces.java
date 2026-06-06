@@ -6,33 +6,31 @@ class Solution {
         int total = 0;
 
         for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-                total++;
-                bfs(i, edges, vis);
-            }
+            if (vis[i]) continue;
+
+            total++;
+            bfs(i, edges, vis);
         }
 
         return total;
-
     }
 
     private void bfs(int st, int[][] edges, boolean[] vis) {
 
-        Queue<Integer> queue = new ArrayDeque<>();
-
         vis[st] = true;
+        Queue<Integer> queue = new ArrayDeque<>();
         queue.offer(st);
 
         while (!queue.isEmpty()) {
-            
             int u = queue.poll();
-            
-            for (int v = 0; v < edges[u].length; v++) {
 
-                if (u == v || vis[v] || edges[u][v] == 0) continue;
+            for (int i = 0; i < edges[u].length; i++) {
+                boolean ok = i != u && edges[u][i] == 1 && !vis[i];
 
-                vis[v] = true;
-                queue.offer(v);
+                if (!ok) continue;
+
+                vis[i] = true;
+                queue.offer(i);
             }
         }
     }

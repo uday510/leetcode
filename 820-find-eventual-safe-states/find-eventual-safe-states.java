@@ -1,58 +1,34 @@
 class Solution {
-    private final boolean SAFE = true;
 
-    public List<Integer> eventualSafeNodes(int[][] edges) {
-        int n = edges.length;
-        List<Integer>[] adjList = new ArrayList[n];
-        int[] out = new int[n];
+    private int[][] edges;
+    private int[] vis;
+    private int n;
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        n = graph.length;
+        edges = graph;
+        vis = new int[n];
 
-        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
-
-        for (int u = 0; u < n; u++) {
-            for (int v : edges[u]) {
-                adjList[v].add(u);
-            }
-            out[u] = edges[u].length;
-        }
-
-        Queue<Integer> queue = new ArrayDeque<>();
+        List<Integer> res = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (out[i] == 0) queue.offer(i);
-        }
-
-        boolean[] nodeStates = new boolean[n];
-        while (!queue.isEmpty()) {
-            int u = queue.poll();
-            nodeStates[u] = SAFE;
-
-            for (int v : adjList[u]) {
-                if (--out[v] == 0) {
-                    queue.offer(v);
-                }
+            if (dfs(i)) {
+                res.add(i);
             }
         }
 
-        List<Integer> list = new ArrayList<>();
+        return res;
+    }
 
-        for (int i = 0; i < n; i++) {
-            if (nodeStates[i] == SAFE) {
-                list.add(i);
+    private boolean dfs(int u) {
+        if (vis[u] != 0) return vis[u] == 2;
+
+        vis[u] = 1;
+        for (int v : edges[u]) {
+            if (!dfs(v)) {
+                return false;
             }
         }
 
-        return list;
+        vis[u] = 2;
+        return true;
     }
 }
-
-// 0: 3, 4
-// 1: 0
-// 2: 0, 1
-// 3: 1
-// 4:
-// 5: 2, 3, 4
-// 6:
-
-// out:
-
-// safe: 4, 5, 
-

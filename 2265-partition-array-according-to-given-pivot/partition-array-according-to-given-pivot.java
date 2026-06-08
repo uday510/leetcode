@@ -1,34 +1,23 @@
 class Solution {
-
     public int[] pivotArray(int[] arr, int p) {
-        
         int n = arr.length;
         int[] res = new int[n];
+        int l = 0, r = n - 1;
 
-        List<Integer> l = new ArrayList<>();
-        List<Integer> e = new ArrayList<>();
-        List<Integer> g = new ArrayList<>();
+        for (int i = 0, j = n - 1; i < n; i++, j--) {
+            if (arr[i] < p) {
+                res[l++] = arr[i];
+            }
 
-        for (int a : arr) {
-            if (a < p) l.add(a);
-            else if (a == p) e.add(a);
-            else g.add(a);
+            if (arr[j] > p) {
+                res[r--] = arr[j];
+            }
         }
 
-        int idx = 0;
-        for (int a : l) {
-            arr[idx++] = a;
+        while (l <= r) {
+            res[l++] = p;
         }
-
-        for (int a : e) {
-            arr[idx++] = a;
-        }
-
-        for (int a : g) {
-            arr[idx++] = a;
-        }
-
-        return arr;
+        
+        return res;
     }
-
 }

@@ -1,33 +1,29 @@
 class Solution {
-    public TreeNode createBinaryTree(int[][] descriptions) {
-        Map<Integer, TreeNode> nodeMap = new HashMap<>();
-        Set<Integer> children = new HashSet<>();
 
-        for (int[] desc : descriptions) {
-            int parentVal = desc[0];
-            int childVal = desc[1];
+    public TreeNode createBinaryTree(int[][] arr) {
 
-            boolean isLeftChild = desc[2] == 1;
-
-            TreeNode parentNode = nodeMap.computeIfAbsent(parentVal, k -> new TreeNode(parentVal));
-
-            TreeNode childNode = nodeMap.computeIfAbsent(childVal, k -> new TreeNode(childVal));
-
-            if (isLeftChild) {
-                parentNode.left = childNode;
-            } else {
-                parentNode.right = childNode;
-            }
-
-            children.add(childVal);
+        Map<Integer, TreeNode> nodes = new HashMap<>();
+        Set<Integer> childs = new HashSet<>();
+        
+        for (int[] desc : arr) {
+            int p = desc[0], c = desc[1];
+            boolean isLeft = desc[2] == 1;
+            
+            TreeNode pNode = nodes.computeIfAbsent(p, k -> new TreeNode(p));
+            TreeNode cNode = nodes.computeIfAbsent(c, t -> new TreeNode(c));
+            
+            if (isLeft) pNode.left = cNode;
+            else pNode.right = cNode;
+            
+            childs.add(c);
         }
-
-        for (var key : nodeMap.keySet()) {
-            if (!children.contains(key)) {
-                return nodeMap.get(key);
+        
+        for (Integer c : nodes.keySet()) {
+            if (!childs.contains(c)) {
+                return nodes.get(c);
             }
         }
-
+        
         return null;
     }
 }

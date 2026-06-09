@@ -1,20 +1,25 @@
 class Solution {
-    public int totalFruit(int[] fruits) {
-        int l = 0, r = 0, n = fruits.length;
-        int max = 0;
+    public int totalFruit(int[] arr) {
+        
+        Map<Integer, Integer> cnt = new HashMap<>();
+        int mx = 0, k = 2;
 
-        int[] basket = new int[(int)1e5];
-        int type = 0;
-        while (r < n) {
-            if (basket[fruits[r]]++ == 0) type++;
+        for (int i = 0, j = 0; j < arr.length; j++) {
+            cnt.put(arr[j], cnt.getOrDefault(arr[j], 0) + 1);
 
-            while (type > 2) {
-               if (--basket[fruits[l++]] == 0) type--;
+            while (cnt.size() > k) {
+                cnt.put(arr[i], cnt.get(arr[i]) - 1);
+
+                if (cnt.get(arr[i]) == 0) {
+                    cnt.remove(arr[i]);
+                }
+
+                i++;
             }
 
-            max = Math.max(max, r++ - l + 1);
+            mx = Math.max(mx, j - i + 1);
         }
 
-        return max;
+        return mx;
     }
 }

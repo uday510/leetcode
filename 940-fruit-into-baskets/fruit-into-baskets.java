@@ -1,19 +1,14 @@
 class Solution {
     public int totalFruit(int[] arr) {
         
-        Map<Integer, Integer> cnt = new HashMap<>();
-        int mx = 0, k = 2;
+        int[] cnt = new int[100000];
+        int mx = 0, k = 2, unique = 0;
 
         for (int i = 0, j = 0; j < arr.length; j++) {
-            cnt.put(arr[j], cnt.getOrDefault(arr[j], 0) + 1);
+            if (cnt[arr[j]]++ == 0) unique++;
 
-            while (cnt.size() > k) {
-                cnt.put(arr[i], cnt.get(arr[i]) - 1);
-
-                if (cnt.get(arr[i]) == 0) {
-                    cnt.remove(arr[i]);
-                }
-
+            while (unique > k) {
+                if (--cnt[arr[i]] == 0) unique--;
                 i++;
             }
 

@@ -25,26 +25,26 @@ class Solution {
         Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[1]));
         pq.offer(new int[]{0, 0});
         int total = 0, vis = 0;
-        
+
         while (!pq.isEmpty()) {
             int[] cur = pq.poll();
             int u = cur[0], w = cur[1];
-            
+
             if (inMST[u]) continue;
-            
+
             inMST[u] = true;
             vis++;
             total += w;
-            
+
             for (int[] nxt : adj[u]) {
                 int v = nxt[0], w1 = nxt[1];
-                
+
                 if (!inMST[v]) {
                     pq.offer(new int[]{v, w1});
                 }
             }
         }
-        
+
         return vis == n ? total : -1;
     }
 

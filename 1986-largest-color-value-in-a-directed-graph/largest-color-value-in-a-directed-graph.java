@@ -1,90 +1,46 @@
 class Solution {
 
     public int largestPathValue(String colors, int[][] edges) {
+        
         int n = colors.length();
-        List<Integer>[] adjList = new ArrayList[n];
-
-        for (int i = 0; i < n; i++) adjList[i] = new ArrayList<>();
-
-        int[] indegree = new int[n];
+        List<Integer>[] adj = new ArrayList[n];
+        
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+        
+        int[] in = new int[n];
         for (int[] e : edges) {
-            adjList[e[0]].add(e[1]);
-            indegree[e[1]]++;
+            adj[e[0]].add(e[1]);
+            in[e[1]]++;
         }
 
-        Queue<Integer> q = new ArrayDeque<>();
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            if (indegree[i] == 0) q.offer(i);
+            if (in[i] == 0) queue.offer(i);
         }
-
-        int visited = 0, max = 0;
+        
+        int vis = 0, mx = 0;
         int[][] dp = new int[n][26];
-
-        while (!q.isEmpty()) {
-            int u = q.poll();
-            ++visited;
-
+        
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            vis++;
+            
             int colorIdx = colors.charAt(u) - 'a';
-            ++dp[u][colorIdx];
-
-            max = Math.max(max, dp[u][colorIdx]);
-
-            for (int v : adjList[u]) {
+            dp[u][colorIdx]++;
+            
+            mx = Math.max(mx, dp[u][colorIdx]);
+            
+            for (int v : adj[u]) {
                 for (int c = 0; c < 26; c++) {
                     dp[v][c] = Math.max(dp[v][c], dp[u][c]);
                 }
-                if (--indegree[v] == 0) {
-                    q.offer(v);
+                
+                if (--in[v] == 0) {
+                    queue.offer(v);
                 }
             }
         }
-
-        return visited == n ? max : -1;
+        
+        return vis == n ? mx : -1;
     }
-
 }
-
-/**
-
-
-colors = "abaca"
-
-0 -> 1, 2
-1 -> 
-2 -> 3
-3 -> 4
-4 -> 
-
-dp[0]: a
-    [a] = 1
-    [b] = 0
-    [c] = 0
-
-dp[1]: b
-    [a] = 1
-    [b] = 1
-    [c] = 0
-
-dp[2]: a
-    [a] = 2
-    [b] = 0
-    [c] = 0
-
-dp[3]: c
-    [a] = 2
-    [b] = 0
-    [c] = 1
-
-dp[4]: a
-    [a] = 3
-    [b] = 0
-    [c] = 1
-
-vis = 0, 1, 2, 3
-
-queue: 
-
-poll: 
-
-
-*/

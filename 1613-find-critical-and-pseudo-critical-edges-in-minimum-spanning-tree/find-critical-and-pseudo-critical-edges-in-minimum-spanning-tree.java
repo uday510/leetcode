@@ -1,74 +1,68 @@
-import java.util.*;
-
 class Solution {
-
-    public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
-        int m = edges.length;
-        int[][] newEdges = new int[m][4];
+    public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] oe) {
+        int m = oe.length;
+        int[][] ne = new int[m][4];
 
         for (int i = 0; i < m; i++) {
-            newEdges[i][0] = edges[i][0];
-            newEdges[i][1] = edges[i][1];
-            newEdges[i][2] = edges[i][2];
-            newEdges[i][3] = i;
+            ne[i][0] = oe[i][0];
+            ne[i][1] = oe[i][1];
+            ne[i][2] = oe[i][2];
+            ne[i][3] = i;
         }
 
-        Arrays.sort(newEdges, Comparator.comparingInt(e -> e[2]));
+        Arrays.sort(ne, Comparator.comparingInt(e -> e[2]));
 
-        int mstWeight = kruskal(newEdges, n, m, -1, -1);
+        int mst = kruskal(ne, n, m, -1, -1);
 
-        List<Integer> criticalEdges = new ArrayList<>();
-        List<Integer> pseudoCriticalEdges = new ArrayList<>();
+        List<Integer> c = new ArrayList<>();
+        List<Integer> p = new ArrayList<>();
 
         for (int i = 0; i < m; i++) {
-            int excWeight = kruskal(newEdges, n, m, i, -1);
-            if (excWeight > mstWeight) {
-                criticalEdges.add(newEdges[i][3]);
+            int exc = kruskal(ne, n, m, i, -1);
+            if (exc > mst) {
+                c.add(ne[i][3]);
             } else {
-                int incWeight = kruskal(newEdges, n, m, -1, i);
-                if (incWeight == mstWeight) {
-                    pseudoCriticalEdges.add(newEdges[i][3]);
+                int inc = kruskal(ne, n, m, -1, i);
+                if (inc == mst) {
+                    p.add(ne[i][3]);
                 }
             }
         }
 
-        return Arrays.asList(criticalEdges, pseudoCriticalEdges); 
+        return Arrays.asList(c, p);
     }
 
     private int kruskal(int[][] edges, int n, int m, int exc, int inc) {
         UnionFind uf = new UnionFind(n);
-        int weight = 0;
-        int edgesCnt = 0;
+        int w = 0, cnt = 0;
 
         if (inc != -1) {
             int[] e = edges[inc];
             uf.union(e[0], e[1]);
-            weight += e[2];
-            edgesCnt++;
+            w += e[2];
+            cnt++;
         }
 
         for (int i = 0; i < m; i++) {
             if (i == exc) continue;
-            int[] edge = edges[i];
-            int u = edge[0], v = edge[1], w = edge[2];
+            int[] e = edges[i];
+            int u = e[0], v = e[1], w1 = e[2];
 
             if (!uf.connected(u, v)) {
                 uf.union(u, v);
-                weight += w;
-                edgesCnt++;
+                w += w1;
+                cnt++;
             }
         }
 
-        return edgesCnt == n - 1 ? weight : Integer.MAX_VALUE;
-
+        return cnt == n - 1 ? w : Integer.MAX_VALUE;
     }
 }
-
 
 class UnionFind {
     int[] root, rank;
 
-    UnionFind(int n) {
+    UnionFind (int n) {
         root = new int[n];
         rank = new int[n];
         for (int i = 0; i < n; i++) {
@@ -77,13 +71,13 @@ class UnionFind {
         }
     }
 
-    int find(int x) {
-        if (x != root[x])
-            root[x] = find(root[x]);
-        return root[x];
+    int find (int x) {
+        if (x == root[x]) 
+            return x;
+        return root[x] = find(root[x]);
     }
 
-    void union(int x, int y) {
+    void union (int x, int y) {
         int rootX = find(x), rootY = find(y);
         if (rootX == rootY) return;
 
@@ -92,8 +86,8 @@ class UnionFind {
         } else if (rank[rootY] > rank[rootX]) {
             root[rootX] = rootY;
         } else {
-            root[rootY] = rootX;
             rank[rootX]++;
+            root[rootY] = rootX;
         }
     }
 

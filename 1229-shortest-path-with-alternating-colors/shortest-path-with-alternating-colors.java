@@ -1,25 +1,20 @@
 class Solution {
-    public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
+    public int[] shortestAlternatingPaths(int n, int[][] r1, int[][] b1) {
+        
+
         List<int[]>[] adj = new ArrayList[n];
 
         for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
 
-        for (int[] e : redEdges) {
-            int u = e[0], v = e[1];
-            adj[u].add(new int[] {v, 0});
-        }
-
-        for (int[] e : blueEdges) {
-            int u = e[0], v = e[1];
-            adj[u].add(new int[] {v, 1});
-        }
-
-        int[][] dis = new int[n][2];
-        for (int[] row : dis) Arrays.fill(row, (int) 1e9);
+        add(n, 0, r1, adj);
+        add(n, 1, b1, adj);
 
         Queue<int[]> queue = new ArrayDeque<>();
+        int[][] dist = new int[n][2];
+        for (int[] r : dist) Arrays.fill(r, (int) 1e9);
+
+        dist[0][0] = dist[0][1] = 0;
         queue.offer(new int[] {0, 0, -1});
-        dis[0][0] = dis[0][1] = 0;
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
@@ -27,21 +22,41 @@ class Solution {
 
             for (int[] nxt : adj[u]) {
                 int v = nxt[0], c2 = nxt[1];
-                if (w + 1 < dis[v][c2] && c1 != c2) {
-                    dis[v][c2] = w + 1;
+                if (c1 != c2 && w + 1 < dist[v][c2]) {
+                    dist[v][c2] = w + 1;
                     queue.offer(new int[] {v, w + 1, c2});
                 }
             }
         }
 
         int[] res = new int[n];
-
-        for (int i = 0; i < dis.length; i++) {
-            int best = Math.min(dis[i][0], dis[i][1]);
-            res[i] = (best == (int) 1e9) ? -1 : best;
+        for (int i = 0; i < n; i++) {
+            res[i] = Math.min(dist[i][0], dist[i][1]);
+            res[i] = res[i] == (int) 1e9 ? -1 : res[i];
         }
 
         return res;
     }
 
+    private void add(int n, int k, int[][] edges, List<int[]>[] adj) {
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            adj[u].add(new int[] {v, k});
+        }
+    }
 }
+
+
+/**
+
+0 -> {1, 0}
+1 ->
+2 -> {1, 1}
+
+
+
+
+
+
+ */

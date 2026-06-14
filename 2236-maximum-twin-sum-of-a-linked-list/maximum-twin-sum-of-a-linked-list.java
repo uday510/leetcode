@@ -28,10 +28,6 @@ class Solution {
             i++;
         }
 
-        if (cur == null) {
-            return null;
-        }
-
         ListNode nxt = cur.next;
         cur.next = null;
 

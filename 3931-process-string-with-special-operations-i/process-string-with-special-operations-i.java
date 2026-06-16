@@ -14,7 +14,7 @@ class Solution {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c >= 'a' && c <= 'z') sb.append(c);
-            else OPS.get(c).accept(sb);
+            else OPS.getOrDefault(c, _ -> {}).accept(sb);
         }
         
         return sb.toString();

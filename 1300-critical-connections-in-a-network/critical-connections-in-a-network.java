@@ -1,80 +1,93 @@
 class Solution {
-    
-    private Map<Integer, List<Integer>> graph;
+
+    private Map<Integer, List<Integer>> adj;
     private Map<Integer, Integer> rank;
-    private Map<Pair<Integer, Integer>, Boolean> connDict;
-    
-    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
-       
-        this.formGraph(n, connections);
-        this.dfs(0, 0);
-        
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
-        for (Pair<Integer, Integer> criticalConnection : this.connDict.keySet()) {
-            result.add(new ArrayList<Integer>(Arrays.asList(criticalConnection.getKey(), criticalConnection.getValue())));
+    private Map<Pair, Boolean> conn;
+
+    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> conns) {
+
+        initialize(n, conns);
+        dfs(0, 0);
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (Pair cc : conn.keySet()) {
+            res.add(new ArrayList<Integer>(Arrays.asList(cc.u, cc.v)));
         }
-        
-        return result;
+
+        return res;
     }
     
-    private int dfs(int node, int discoveryRank) {
-        
-        // That means this node is already visited. We simply return the rank.
-        if (this.rank.get(node) != null) {
-            return this.rank.get(node);
+    private int dfs(int u, int r) {
+        if (this.rank.get(u) != null) {
+            return this.rank.get(u);
         }
         
-        // Update the rank of this node.
-        this.rank.put(node, discoveryRank);
+        this.rank.put(u, r);
         
-        // This is the max we have seen till now. So we start with this instead of INT_MAX or something.
-        int minRank = discoveryRank + 1;
+        int mn = r + 1;
         
-        for (Integer neighbor : this.graph.get(node)) {
+        for (int v : adj.get(u)) {
             
-            // Skip the parent.
-            Integer neighRank = this.rank.get(neighbor);
-            if (neighRank != null && neighRank == discoveryRank - 1) {
+            Integer nr = rank.get(v);
+            if (nr != null && nr == r - 1) {
                 continue;
             }
             
-            // Recurse on the neighbor.
-            int recursiveRank = this.dfs(neighbor, discoveryRank + 1);
+            int nxt = dfs(v, r + 1);
             
-            // Step 1, check if this edge needs to be discarded.
-            if (recursiveRank <= discoveryRank) {
-                int sortedU = Math.min(node, neighbor), sortedV = Math.max(node, neighbor);
-                this.connDict.remove(new Pair<Integer, Integer>(sortedU, sortedV));
+            if (nxt <= r) {
+                int sU = Math.min(u, v), sv = Math.max(u, v);
+                conn.remove(new Pair(sU, sv));
             }
             
-            // Step 2, update the minRank if needed.
-            minRank = Math.min(minRank, recursiveRank);
+            mn = Math.min(mn, nxt);
         }
         
-        return minRank;
+        return mn;
     }
     
-    private void formGraph(int n, List<List<Integer>> connections) {
-        
-        this.graph = new HashMap<Integer, List<Integer>>();
-        this.rank = new HashMap<Integer, Integer>();
-        this.connDict = new HashMap<Pair<Integer, Integer>, Boolean>();
-        
-        // Default rank for unvisited nodes is "null"
+    private void initialize(int n, List<List<Integer>> list) {
+
+        this.adj = new HashMap<>();
+        this.rank = new HashMap<>();
+        this.conn = new HashMap<>();
+
         for (int i = 0; i < n; i++) {
-            this.graph.put(i, new ArrayList<Integer>());
+            this.adj.put(i, new ArrayList<>());
             this.rank.put(i, null);
         }
-        
-        for (List<Integer> edge : connections) {
-            
-            // Bidirectional edges
+
+        for (List<Integer> edge : list) {
+
             int u = edge.get(0), v = edge.get(1);
-            this.graph.get(u).add(v);
-            this.graph.get(v).add(u);
-            
+            this.adj.get(u).add(v);
+            this.adj.get(v).add(u);
+
             int sortedU = Math.min(u, v), sortedV = Math.max(u, v);
-            connDict.put(new Pair<Integer, Integer>(sortedU, sortedV), true);
+            conn.put(new Pair(sortedU, sortedV), true);
         }
+
     }
+
+    private static class Pair {
+    int u, v;
+
+    Pair(int k, int v) {
+        this.u = k;
+        this.v = v;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Pair)) return false;
+        Pair p = (Pair) o;
+        return u == p.u && v == p.v;
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * u + v;
+    }
+    }
+
 }

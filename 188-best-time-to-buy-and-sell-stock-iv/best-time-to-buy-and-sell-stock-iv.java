@@ -1,6 +1,6 @@
 class Solution {
-    
     public int maxProfit(int k, int[] prices) {
+        
         return maxProfitWithKTransactions(k, prices);
     }
 
@@ -13,15 +13,12 @@ class Solution {
         for (int p : prices) {
 
             for (int i = 1; i <= k; i++) {
-
+                
                 mn[i] = Math.min(mn[i], p - profit[i - 1]);
-
                 profit[i] = Math.max(profit[i], p - mn[i]);
-
             }
         }
-
+        
         return profit[k];
     }
-
 }

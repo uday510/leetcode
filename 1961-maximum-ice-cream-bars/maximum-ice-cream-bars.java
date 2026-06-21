@@ -15,7 +15,7 @@ class Solution {
         long cur = coins;
         int i = 0, res = 0;
         while (i <= mx && cur > 0) {
-            long req = i * cnt[i];
+            long req = (long) i * cnt[i];
 
             if (cur - req < 0) {
                 res += (int) (cur / i);

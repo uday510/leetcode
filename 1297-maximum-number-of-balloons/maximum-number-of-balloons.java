@@ -15,7 +15,7 @@ class Solution {
         for (int i = 0; i < p.length(); i++) {
             int idx = p.charAt(i) - 'a';
 
-            if (sCnt[idx] == 0) return 0;
+            if (sCnt[idx] == 0 || pCnt[idx] == 0) return 0;
 
             if (pCnt[idx] > 0) {
                 mn = Math.min(mn, sCnt[idx] / pCnt[idx]);

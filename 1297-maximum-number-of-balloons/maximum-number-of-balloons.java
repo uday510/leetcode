@@ -17,9 +17,7 @@ class Solution {
 
             if (sCnt[idx] == 0 || pCnt[idx] == 0) return 0;
 
-            if (pCnt[idx] > 0) {
-                mn = Math.min(mn, sCnt[idx] / pCnt[idx]);
-            }
+            mn = Math.min(mn, sCnt[idx] / pCnt[idx]);
         }
 
         return mn;

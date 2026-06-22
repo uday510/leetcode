@@ -18,15 +18,16 @@ class Solution {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             int idx = c - 'a';
+            int cur = cnt[idx];
 
             if (cnt[idx] == 0) return 0;
 
-
+            
             if(d.contains(c)) {
-                mn = Math.min(mn, cnt[idx] / 2);
-            } else {
-                mn = Math.min(mn, cnt[idx]);
+                cur /= 2;
             }
+
+            mn = Math.min(mn, cur);
         }
 
         return mn;

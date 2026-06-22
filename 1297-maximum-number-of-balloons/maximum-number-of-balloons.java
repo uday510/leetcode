@@ -8,13 +8,8 @@ class Solution {
         int[] sCnt = new int[26];
         int[] pCnt = new int[26];
 
-        for (int i = 0; i < p.length(); i++) {
-            pCnt[p.charAt(i) - 'a']++;
-        }
-
-        for (int i = 0; i < s.length(); i++) {
-            sCnt[s.charAt(i) - 'a']++;
-        }
+        inc(pCnt, p);
+        inc(sCnt, s);
     
         int mn = s.length();
         for (int i = 0; i < p.length(); i++) {
@@ -30,5 +25,10 @@ class Solution {
         return mn;
     }
 
+    private void inc(int[] arr, String s) {
+        for (int i = 0; i < s.length(); i++) {
+            arr[s.charAt(i) - 'a']++;
+        }
+    }
 
 }

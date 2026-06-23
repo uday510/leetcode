@@ -1,16 +1,17 @@
 class Solution {
     public int minCostClimbingStairs(int[] cost) {
+        
         if (cost.length < 1) return 0;
 
-        int step1 = 0, step2 = 0;
+        int s0 = 0, s1 = 0;
 
         for (int c : cost) {
-            int curStep = c + Math.min(step1, step2);
+            int s2 = c + Math.min(s0, s1);
 
-            step1 = step2;
-            step2 = curStep;
+            s0 = s1;
+            s1 = s2;
         }
 
-        return Math.min(step1, step2);
+        return Math.min(s0,  s1);
     }
 }

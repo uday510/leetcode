@@ -1,5 +1,4 @@
 class Solution {
-
     public int longestPalindromeSubseq(String s) {
         
         int n = s.length();
@@ -14,19 +13,18 @@ class Solution {
         if (l > r) return 0;
         if (l == r) return 1;
 
-        if (dp[l][r] != -1) return dp[l][r];
-
-        int cur = 0;
-
-        if (s.charAt(l) == s.charAt(r)) {
-            cur = 2 + dfs(l + 1, r - 1, s, dp);
-        } else {
-            cur = Math.max(
-                dfs(l, r - 1, s, dp),
-                dfs(l + 1, r, s, dp)
-            );
+        if (dp[l][r] != -1) {
+            return dp[l][r];
         }
 
-        return dp[l][r] = cur;
+        if (s.charAt(l) == s.charAt(r)) {
+            return dp[l][r] = 2 + dfs(l + 1, r - 1, s, dp);
+        }
+
+        return dp[l][r] = Math.max(
+            dfs(l + 1, r, s, dp),
+            dfs(l, r - 1, s, dp)
+        );
+
     }
 }

@@ -1,37 +1,43 @@
 class Solution {
-    String s1;
-    String s2;
-    int m, n;
-    int[][] dp;
     public int minimumDeleteSum(String s1, String s2) {
-        this.s1 = s1;
-        this.s2 = s2;
-        m = s1.length();
-        n = s2.length();
-        dp = new int[m][n];
+        
+        int n = s1.length();
+        int m = s2.length();
 
-        for (int[] row : dp) Arrays.fill(row, -1);
+        int[][] dp = new int[n][m];
+        for (int[] r : dp) Arrays.fill(r, -1);
 
-        return dfs(0, 0);
+        return dfs(0, 0, n, m, s1, s2, dp);
     }
-    private int dfs(int i, int j) {
-        if (i >= m && j >= n) return 0;
-        if (i >= m) return asciiSum(s2, j);
-        if (j >= n) return asciiSum(s1, i);
+
+    private int dfs(int i, int j, int n, int m, String s1, String s2, int[][] dp) {
+        if (i >= n && j >= m) return 0;
+
+        if (i >= n) return ok(j, m, s2);
+        if (j >= m) return ok(i, n, s1);
 
         if (dp[i][j] != -1) return dp[i][j];
 
-        if (s1.charAt(i) == s2.charAt(j)) return dp[i][j] = dfs(i + 1, j + 1);
-    
-        return dp[i][j] = Math.min(
-            s1.charAt(i) + dfs(i + 1, j), 
-            s2.charAt(j) + dfs(i, j + 1)
+        int cur;
+        if (s1.charAt(i) == s2.charAt(j)) {
+            cur = dfs(i + 1, j + 1, n, m, s1, s2, dp);
+        } else {
+            cur = Math.min(
+                s1.charAt(i) + dfs(i + 1, j, n, m, s1, s2, dp),
+                s2.charAt(j) + dfs(i, j + 1, n, m, s1, s2, dp)
             );
+        }
+
+        return dp[i][j] = cur;
     }
 
-    private int asciiSum(String s, int idx) {
-        int sum = 0;
-        while (idx < s.length()) sum += s.charAt(idx++);
-        return sum;
+    private int ok(int idx, int n, String s) {
+
+        int cur = 0;
+        while (idx < n) {
+            cur += s.charAt(idx++);
+        }
+
+        return cur;
     }
 }

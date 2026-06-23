@@ -2,8 +2,8 @@ class Solution {
     public int numDistinct(String s, String t) {
         int n = s.length();
         int m = t.length();
-        int[][] dp = new int[n][m];
 
+        int[][] dp = new int[n][m];
         for (int[] r : dp) Arrays.fill(r, -1);
 
         return dfs(0, 0, n, m, s, t, dp);
@@ -15,7 +15,7 @@ class Solution {
 
         if (dp[i][j] != -1) return dp[i][j];
 
-        int cur = 0;
+        int cur;
         if (s.charAt(i) == t.charAt(j)) {
             cur = dfs(i + 1, j + 1, n, m, s, t, dp) + dfs(i + 1, j, n, m, s, t, dp);
         } else {
@@ -25,14 +25,3 @@ class Solution {
         return dp[i][j] = cur;
     }
 }
-
-/**
-
-
-
-aabc
-
-abc
-
-
- */

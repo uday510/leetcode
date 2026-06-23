@@ -1,37 +1,44 @@
 class Solution {
-
-    int m, n;
-    String s1, s2;
-    int[][] dp;
-
     public int minDistance(String w1, String w2) {
-        m = w1.length();
-        n = w2.length();
-        s1 = w1;
-        s2 = w2;
-        dp = new int[m][n];
+        int n = w1.length();
+        int m = w2.length();
+        int[][] dp = new int[n][m];
 
-        for (int[] row : dp) Arrays.fill(row, -1);
+        for (int[] r : dp) Arrays.fill(r, -1);
 
-        return dfs(0, 0);
+        return dfs(0, 0, n, m, w1, w2, dp);
     }
 
-    private int dfs(int i, int j) {
-        if (i >= m && j >= n) return 0;
-        if (i >= m) return n - j;
-        if (j >= n) return m - i;
+    private int dfs(int i, int j, int n, int m, String w1, String w2, int[][] dp) {
+        if (i >= n && j >= m) {
+            return 0;
+        }
 
-        if (dp[i][j] != -1) return dp[i][j];
+        if (i >= n) {
+            return m - j;
+        }
 
-        if (s1.charAt(i) == s2.charAt(j)) {
-            return dp[i][j] = dfs(i + 1, j + 1);
-        } 
+        if (j >= m) {
+            return n - i;
+        }
 
-        int ins = dfs(i, j + 1);
-        int del = dfs(i + 1, j);
-        int repl = dfs(i + 1, j + 1);
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
 
-        return dp[i][j] = 
-            Math.min(ins, Math.min(del, repl)) + 1;
+        int cur = n + m;
+        if (w1.charAt(i) == w2.charAt(j)) {
+            cur = dfs(i + 1, j + 1, n, m, w1, w2, dp);
+        } else {
+
+            int ins = dfs(i + 1, j, n, m, w1, w2, dp);
+            int del = dfs(i, j + 1, n, m, w1, w2, dp);
+            int repl = dfs(i + 1, j + 1, n, m, w1, w2, dp);
+            
+            int t = Math.min(ins, Math.min(del, repl)) + 1;
+            cur = Math.min(cur, t);
+        }
+
+        return dp[i][j] = cur;
     }
 }

@@ -1,36 +1,30 @@
 class Solution {
 
-    private int[][] dp;
-    private int[] arr;
-    private int n;
-
     public int lengthOfLIS(int[] nums) {
-        this.arr = nums;
-        n = arr.length;
-        this.dp = new int[n][n + 1];
-    
-        for (int[] row : dp) Arrays.fill(row, -1); 
+        
+        int n = nums.length;
+        int[][] dp = new int[n + 1][n];
 
-        return dfs(0, -1);
+        for (int[] r : dp) Arrays.fill(r, -1);
+
+        return dfs(-1, 0, n, nums, dp);
     }
 
-    private int dfs(int cur, int prev) {
-        if (cur >= n || prev >= n) {
-            return 0;
+    private int dfs(int prev, int cur, int n, int[] arr, int[][] dp) {
+
+        if (cur >= n || prev >= n) return 0;
+
+        if (dp[prev + 1][cur] != -1) {
+            return dp[prev + 1][cur];
         }
 
-        if (dp[cur][prev + 1] != -1) {
-            return dp[cur][prev + 1];
-        }
-
-        int skip = 0 + dfs(cur + 1, prev);
+        int skip = dfs(prev, cur + 1, n, arr, dp);
 
         int take = 0;
-
         if (prev == -1 || arr[prev] < arr[cur]) {
-            take = 1 + dfs(cur + 1, cur);
+            take = 1 + dfs(cur, cur + 1, n, arr, dp);
         }
 
-        return dp[cur][prev + 1] = Math.max(skip, take);
+        return dp[prev + 1][cur] = Math.max(skip, take);
     }
 }

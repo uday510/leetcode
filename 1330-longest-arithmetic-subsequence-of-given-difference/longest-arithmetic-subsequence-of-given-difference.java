@@ -1,17 +1,21 @@
 class Solution {
-    public int longestSubsequence(int[] arr, int difference) {
-        int offset = 20_000;
-        int[] dp = new int[40_001];
-        int longest = 0;
+    public int longestSubsequence(int[] arr, int diff) {
+        
+        Map<Integer, Integer> dp = new HashMap<>();
+        int longest = 1;
 
-        for (int x : arr) {
-           int prevIdx = x - difference + offset;
-           int currIdx = x + offset;
+        for (int a : arr) {
+            int prev = a - diff;
 
-           dp[currIdx] = dp[prevIdx] + 1;
-           longest = Math.max(longest, dp[currIdx]);
+            int cur = dp.getOrDefault(prev, 0) + 1;
+
+            longest = Math.max(longest, cur);
+
+            dp.put(a, cur);
         }
 
         return longest;
     }
 }
+
+

@@ -10,21 +10,20 @@ class Solution {
         return dfs(-1, 0, n, nums, dp);
     }
 
-    private int dfs(int prev, int cur, int n, int[] arr, int[][] dp) {
+    private int dfs(int p, int c, int n, int[] arr, int[][] dp) {
+        if (c >= n || p >= n) return 0;
 
-        if (cur >= n || prev >= n) return 0;
+        if (dp[p + 1][c] != -1) return dp[p + 1][c];
 
-        if (dp[prev + 1][cur] != -1) {
-            return dp[prev + 1][cur];
-        }
-
-        int skip = dfs(prev, cur + 1, n, arr, dp);
-
+        int skip = dfs(p, c + 1, n, arr, dp);
         int take = 0;
-        if (prev == -1 || arr[prev] < arr[cur]) {
-            take = 1 + dfs(cur, cur + 1, n, arr, dp);
+
+        if (p == -1 || arr[p] < arr[c]) {
+            take = 1 + dfs(c, c + 1, n, arr, dp);
         }
 
-        return dp[prev + 1][cur] = Math.max(skip, take);
+        return dp[p + 1][c] = Math.max(skip, take);
     }
+
+    
 }

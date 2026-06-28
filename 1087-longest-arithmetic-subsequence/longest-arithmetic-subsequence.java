@@ -4,16 +4,17 @@ class Solution {
         int n = arr.length, mx = 1;
         Map<Integer, Integer>[] dp = new HashMap[n];
 
-        for (int cur = 0; cur < n; cur++) {
-            dp[cur] = new HashMap<>();
+        for (int r = 0; r < n; r++) {
+            dp[r] = new HashMap<>();
 
-            for (int prev = 0; prev < cur; prev++) {
+            for (int l = 0; l < r; l++) {
 
-                int dif = arr[cur] - arr[prev];
-                int len = dp[prev].getOrDefault(dif, 1) + 1;
-                int curMax = Math.max(dp[cur].getOrDefault(dif, 1), len);
+                int dif = arr[r] - arr[l];
+                int len = dp[l].getOrDefault(dif, 1) + 1;
 
-                dp[cur].put(dif, curMax);
+                int curMax = Math.max(dp[r].getOrDefault(dif, 1), len);
+
+                dp[r].put(dif, curMax);
 
                 mx = Math.max(mx, curMax);
             }

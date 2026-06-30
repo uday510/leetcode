@@ -1,25 +1,41 @@
-import java.util.HashMap;
-
 class Solution {
     public int numberOfSubstrings(String s) {
-        Map<Character, Integer> frequencyMap = new HashMap<>();
-        int startIdx = 0, endIdx = 0, count = 0, len = s.length();
+        
+        int[] cnt = new int[3];
+        int total = 0, n = s.length();
+        int l = 0, r = 0;
 
-        while (endIdx < len) {
-            frequencyMap.merge(s.charAt(endIdx), 1, Integer::sum);
-            while (frequencyMap.size() == 3) {
-                char ch = s.charAt(startIdx);
-                frequencyMap.put(ch, frequencyMap.get(ch) - 1);
+        while(r < n) {
 
-                if (frequencyMap.get(ch) == 0) {
-                    frequencyMap.remove(ch);
-                }
+            cnt[s.charAt(r) - 'a']++;
 
-                count += (len - endIdx);
-                ++startIdx;
+            while (ok(cnt)) {
+                total += (n - r);
+
+                cnt[s.charAt(l) - 'a']--;
+                l++;
             }
-            ++endIdx;
+            r++;
         }
-        return count;
+
+        return total;
+
+    }
+
+    private boolean ok(int[] cnt) {
+        return cnt[0] > 0 && cnt[1] > 0 && cnt[2] > 0;
     }
 }
+
+
+/**
+
+
+
+
+0   
+a   b   c   a   b   c
+
+
+
+*/

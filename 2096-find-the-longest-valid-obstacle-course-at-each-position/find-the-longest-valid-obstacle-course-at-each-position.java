@@ -8,11 +8,11 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
 
-            int idx = bs(obs[i], lis);
+            int idx = bs(obs[i] + 1, lis);
             res[i] = idx + 1;
 
             if (idx == lis.size()) lis.add(obs[i]);
-            lis.set(idx, obs[i]);
+            else lis.set(idx, obs[i]);
         }
 
         return res;
@@ -26,7 +26,7 @@ class Solution {
 
             int m = l + ((r - l) >> 1);
 
-            if (list.get(m) <= t) l = m + 1;
+            if (list.get(m) < t) l = m + 1;
             else r = m;
         }
 

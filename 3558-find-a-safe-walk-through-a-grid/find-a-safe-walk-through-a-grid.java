@@ -1,57 +1,48 @@
-import java.util.*;
-
 class Solution {
-
+    
     private static final int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 
-    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
-
-        if (health <= grid.getFirst().getFirst()) 
+    public boolean findSafeWalk(List<List<Integer>> grid, int h) {
+        if (h - grid.getFirst().getFirst() < 1) 
             return false;
 
         int m = grid.size();
         int n = grid.getFirst().size();
-        int unk = Integer.MAX_VALUE;
 
         int[][] dist = new int[m][n];
+        Queue<int[]> queue = new ArrayDeque<>();
 
-        for (int[] r : dist)
-            Arrays.fill(r, unk);
+        dist[0][0] = h - grid.getFirst().getFirst();
 
-        Deque<int[]> queue = new ArrayDeque<>();
-
-        dist[0][0] = grid.getFirst().getFirst();
-        queue.offer(new int[] { 0, 0 });
+        queue.offer(new int[] {0, 0, dist[0][0]});
 
         while (!queue.isEmpty()) {
-            int[] cur = queue.pollFirst();
-            int x = cur[0], y = cur[1], w1 = dist[x][y];
+            int[] cur = queue.poll();
+            int x = cur[0], y = cur[1], w = cur[2];
 
-            if (x == m - 1 && y == n - 1) return true;
-
+            if (x == m - 1 && y == n - 1) 
+                return true;
+            
             for (int[] nxt : DIRs) {
                 int nx = nxt[0] + x;
                 int ny = nxt[1] + y;
-
-                if (!(nx > -1 && nx < m && ny > -1 && ny < n))
+                
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n)
                     continue;
 
-                int w2 = w1 + grid.get(nx).get(ny);
-                
-                if ( w2 >= health || w2 >= dist[nx][ny])
+                int w1 = w - grid.get(nx).get(ny);
+
+                if (w1 < 1 || w1 <= dist[nx][ny]) 
                     continue;
-                
-                dist[nx][ny] = w2;
-                if (grid.get(nx).get(ny) == 0) {
-                    queue.offerFirst(new int[] {nx, ny});
-                } else {
-                    queue.offerLast(new int[] {nx, ny});
-                }
+
+                dist[nx][ny] = w1;
+                queue.offer(new int[] {nx, ny, w1});
 
             }
         }
 
+
         return false;
     }
-}
 
+}

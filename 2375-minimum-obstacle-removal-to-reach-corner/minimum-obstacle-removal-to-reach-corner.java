@@ -1,71 +1,54 @@
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
 class Solution {
-    int[][] DIRs = {
-        {0, 1},
-        {1, 0},
-        {0, -1},
-        {-1, 0}
-    };
 
     public int minimumObstacles(int[][] grid) {
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>((o1, o2) -> o1.obstacles - o2.obstacles);
-        Set<String> vis = new HashSet<>();
 
-        int endRow = grid.length - 1;
-        int endCol = grid[0].length - 1;
-        int OBSTACLE = 1;
-        Node startNode = new Node(0, 0, 0);
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dist = new int[m][n];
+        int unk = Integer.MAX_VALUE;
 
-        if (grid[0][0] == OBSTACLE) {
-            startNode.obstacles = 1;
-        }
-        
-        priorityQueue.offer(new Node(0, 0, 0));
+        for (int[] r : dist)
+            Arrays.fill(r, unk);
 
-        vis.add(0 + ":" + 0);
+        Deque<int[]> queue = new ArrayDeque<>();
 
-        while (!priorityQueue.isEmpty()) {
-            Node node = priorityQueue.poll();
-            int currentRow = node.row;
-            int currentCol = node.col;
-            int currentObstacles = node.obstacles;
+        dist[0][0] = grid[0][0] == 0 ? 0 : 1;
+        queue.offerFirst(new int[] {0, 0, dist[0][0]});
 
-            if (currentRow == endRow && currentCol == endCol) {
-                return currentObstacles;
-            }
+        int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 
-            for (int[] direction : DIRs) {
-                int nextRow = direction[0] + currentRow;
-                int nextCol = direction[1] + currentCol;
-                int obstacles = currentObstacles;
-                String key = nextRow + ":" + nextCol;
+        while (!queue.isEmpty()) {
+            int[] cur = queue.pollFirst();
+            int dx = cur[0], dy = cur[1], w = cur[2];
+            
+            if (dx == m - 1 && dy == n - 1)
+                return w;
 
-               if (nextRow < 0 || nextRow >= grid.length || 
-                   nextCol < 0 || nextCol >= grid[0].length ||
-                    vis.contains(key)) {
+            for (int[] nxt : DIRs) {
+                int nx = nxt[0] + dx, ny = nxt[1] + dy;
+
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n)
                     continue;
-               }
 
-               if (grid[nextRow][nextCol] == OBSTACLE) {
-                    ++obstacles;
-               }
+                int w1 = w + grid[nx][ny];
                 
-                vis.add(key);
-                priorityQueue.offer(new Node(nextRow, nextCol, obstacles));
+                if (w1 < dist[nx][ny]) {
+                    
+                    dist[nx][ny] = w1;
+                    if (grid[nx][ny] == 0) {
+                        queue.offerFirst(new int[] {nx, ny, w1});
+                    } else {
+                        queue.offerLast(new int[] {nx, ny, w1});
+                    }
+                }
             }
         }
 
-        return 0;
+        return -1;
     }
 
-    class Node {
-        int row;
-        int col;
-        int obstacles;
-
-        Node(int row, int col, int obstacles) {
-            this.row = row;
-            this.col = col;
-            this.obstacles = obstacles;
-        }
-    }
 }

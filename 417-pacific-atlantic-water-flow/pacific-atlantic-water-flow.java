@@ -1,60 +1,60 @@
 class Solution {
-    
-    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    int m, n;
-    int[][] grid;
 
-    public List<List<Integer>> pacificAtlantic(int[][] heights) {
-        this.grid = heights;
-        this.m = grid.length;
-        this.n = grid[0].length;
+    private static final int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+
+    public List<List<Integer>> pacificAtlantic(int[][] h) {
+        
+        int m = h.length;
+        int n = h[0].length;
         List<List<Integer>> res = new ArrayList<>();
 
-        Queue<int[]> pacificQueue = new ArrayDeque<>();
-        Queue<int[]> atlanticQueue = new ArrayDeque<>();
-        
-        boolean[][] pacific = new boolean[m][n];
-        boolean[][] atlantic = new boolean[m][n];
-        
+        Queue<int[]> pq = new ArrayDeque<>();
+        Queue<int[]> aq = new ArrayDeque<>();
+
+        boolean[][] pv = new boolean[m][n];
+        boolean[][] av = new boolean[m][n];
+
         for (int i = 0; i < m; i++) {
-            pacificQueue.offer(new int[] {i, 0});
-            atlanticQueue.offer(new int[] {i, n - 1});
-            pacific[i][0] = atlantic[i][n - 1] = true;
+            pq.offer(new int[] {i, 0});
+            aq.offer(new int[] {i, n - 1});
+            pv[i][0] = av[i][n - 1] = true;
         }
-        
+
         for (int j = 0; j < n; j++) {
-            pacificQueue.offer(new int[] {0, j});
-            atlanticQueue.offer(new int[] {m - 1, j});
-            pacific[0][j] = atlantic[m - 1][j] = true;
+            pq.offer(new int[] {0, j});
+            aq.offer(new int[] {m - 1, j});
+            pv[0][j] = av[m - 1][j] = true;
         }
-        
-        bfs(pacificQueue, pacific);
-        bfs(atlanticQueue, atlantic);
-        
+
+        bfs(m, n, h, pq, pv);
+        bfs(m, n, h, aq, av);
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (pacific[i][j] && atlantic[i][j]) {
+                if (pv[i][j] && av[i][j]) {
                     res.add(List.of(i, j));
                 }
             }
         }
-        
+
         return res;
+
     }
-    
-    private void bfs(Queue<int[]> queue, boolean[][] vis) {
-        while (!queue.isEmpty()) {
-            int[] cur = queue.poll();
+
+    private void bfs(int m, int n, int[][] h, Queue<int[]> q, boolean[][] vis) {
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
             int dx = cur[0], dy = cur[1];
-            
+
             for (int[] dir : DIRs) {
                 int nx = dx + dir[0], ny = dy + dir[1];
-                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || vis[nx][ny] || h[dx][dy] > h[nx][ny]) 
+                    continue;
 
-                if (vis[nx][ny] || grid[dx][dy] > grid[nx][ny]) continue;
-                
                 vis[nx][ny] = true;
-                queue.offer(new int[] {nx, ny});
+                q.offer(new int[] {nx, ny});
+
+
             }
         }
     }

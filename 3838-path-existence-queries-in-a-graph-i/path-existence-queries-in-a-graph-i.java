@@ -61,6 +61,6 @@ class DSU {
     }
 
     boolean connected(int x, int y) {
-        return find(root[x]) == find(root[y]);
+        return find(x) == find(y);
     }
 }

@@ -5,7 +5,7 @@ class TreeAncestor {
 
     public TreeAncestor(int n, int[] parent) {
 
-        LOG = 20;
+        LOG = 17;
         up = new int[LOG][n];
 
         for (int v = 0; v < n; v++)

@@ -29,8 +29,7 @@ class Solution {
 class DSU {
     private int[] root;
     private int[] rank;
-    private int[] size;
-    private Map<Integer, Integer> map;
+    int[] size;
 
     DSU (int n) {
         root = new int[n];

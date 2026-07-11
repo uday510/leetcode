@@ -1,55 +1,78 @@
 class Solution {
-    List<Integer>[] adjList;
-    boolean[] visited;
-    int numComponents;
     public int countCompleteComponents(int n, int[][] edges) {
-        if (n == 0) return 0;
-        initialize(n, edges);
-
-        for (int idx = 0; idx < n; ++idx) {
-            if (!visited[idx]) {
-                Set<Integer> list = dfs(idx, new HashSet<>());
-
-                boolean isComplete = true;
-                for (var node : list) {
-                    if (adjList[node].size() != list.size() - 1) {
-                        isComplete = false;
-                        break;
-                    }
-                }
-
-                numComponents += isComplete ? 1 : 0;
-            }
+        
+        DSU dsu = new DSU(n);
+        
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            dsu.union(u, v);
         }
 
-        return numComponents;
+        Map<Integer, Integer> cnt = new HashMap<>();
+        for (int[] e : edges) {
+            int r = dsu.find(e[0]);
+            cnt.merge(r, 1, Integer::sum);
+        }
+
+        int total = 0;
+        for (int i = 0; i < n; i++) {
+            if (dsu.find(i) != i) continue;
+            int k = dsu.getSize(i);
+            int m = cnt.getOrDefault(i, 0);
+            total += (m == k * (k - 1) / 2) ? 1 : 0;
+        }
+
+        return total;
+    }
+}
+
+class DSU {
+    private int[] root;
+    private int[] rank;
+    private int[] size;
+    private Map<Integer, Integer> map;
+
+    DSU (int n) {
+        root = new int[n];
+        rank = new int[n];
+        size = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            root[i] = i;
+            rank[i] = 1;
+            size[i] = 1;
+        }
     }
 
-    private Set<Integer> dfs(int node, Set<Integer> list) {
-        list.add(node);
-        visited[node] = true;
+    void union(int x, int y) {
+        int rx = find(x);
+        int ry = find(y);
 
-        for (Integer neighbor : adjList[node]) {
-            if (!visited[neighbor]) {
-                list.add(neighbor);
-                dfs(neighbor, list);
-            }
+        if (rx == ry)
+            return;
+        
+        if (rank[rx] > rank[ry]) {
+            size[rx] += size[ry];
+            root[ry] = rx;
+        } else if (rank[rx] < rank[ry]) {
+            size[ry] += size[rx];
+            root[rx] = ry;
+        } else {
+            size[rx] += size[ry];
+            root[ry] = rx;
+            rank[rx]++;
         }
-        return list;
+
     }
 
-    private void initialize(int n, int[][] edges) {
-        adjList = new ArrayList[n];
-        visited = new boolean[n];
-        numComponents = 0;
+    int find(int x) {
+        if (x == root[x])
+            return x;
+        
+        return root[x] = find(root[x]);
+    }
 
-        for (int idx = 0; idx < n; ++idx) {
-            adjList[idx] = new ArrayList<>();
-        }
-
-        for (int[] edge : edges) {
-            adjList[edge[0]].add(edge[1]);
-            adjList[edge[1]].add(edge[0]);
-        }
+    int getSize(int x) {
+        return size[find(x)];
     }
 }

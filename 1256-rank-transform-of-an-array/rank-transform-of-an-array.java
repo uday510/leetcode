@@ -17,11 +17,7 @@ class Solution {
         for (int i = 0; i < n; i++) {
             res[i] = map.get(or[i]);
         }
-
-        System.out.println(Arrays.toString(or));
-        System.out.println(Arrays.toString(arr));
-        System.out.println(map);
-
+        
         return res;
     }
 }

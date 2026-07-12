@@ -4,7 +4,7 @@ class Solution {
         int[] arr = or.clone();
 
         Arrays.sort(arr);
-        Map<Integer, Integer> map = new HashMap<>();
+        var map = new HashMap<Integer, Integer>();
 
         for (int x : arr) {
             map.putIfAbsent(x, map.size() + 1);

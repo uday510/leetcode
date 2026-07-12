@@ -6,18 +6,15 @@ class Solution {
         Arrays.sort(arr);
         Map<Integer, Integer> map = new HashMap<>();
 
-        int idx = 1;
-        for (int i = 0; i < n; i++) {
-            if (!map.containsKey(arr[i])) {
-                map.put(arr[i], idx++);
-            }
+        for (int x : arr) {
+            map.putIfAbsent(x, map.size() + 1);
         }
 
         int[] res = new int[n];
         for (int i = 0; i < n; i++) {
             res[i] = map.get(or[i]);
         }
-        
+
         return res;
     }
 }

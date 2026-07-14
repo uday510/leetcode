@@ -1,5 +1,6 @@
 class Solution {
 
+    static Map<Long, Integer> cache = new HashMap<>();
 
     public int subsequencePairCount(int[] arr) {
         int n = arr.length;

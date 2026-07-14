@@ -36,7 +36,16 @@ class Solution {
         if (j == 0) return i;
         if (i == 0) return j;
 
-        return gcd(j, i % j);
+        long k = ((long) i << 32) | j;
+
+        // if (cache.containsKey(k)) {
+        //     return cache.get(k);
+        // }
+
+        int gcd = gcd(j, i % j);
+
+        // cache.put(k, gcd);
+        return gcd;
     }
 
 } 

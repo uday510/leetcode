@@ -1,38 +1,34 @@
 class Solution {
 
-    List<List<Integer>> res;
-    List<Integer>[] adjList;
-    int n;
-
+    private List<List<Integer>> res;
     public List<List<Integer>> allPathsSourceTarget(int[][] edges) {
-        res = new ArrayList<>();   
-        n = edges.length;
-        adjList = new ArrayList[n];
+        
+        res = new ArrayList<>();
+        int n = edges.length;
+        List<Integer>[] adj = new ArrayList[n];
 
-
-        for (int i = 0; i < n; i++) {
-            adjList[i] = new ArrayList<>();
-            for (int v : edges[i]) {
-                adjList[i].add(v);
+        for (int u = 0; u < n; u++) {
+            adj[u] = new ArrayList<>();
+            for (int v : edges[u]) {
+                adj[u].add(v);
             }
         }
 
-        dfs(0, new ArrayList<>(List.of(0)));
-        
+        dfs(0, n, new ArrayList<>(List.of(0)), adj);
         return res;
     }
 
-    private void dfs(int i, List<Integer> path) {
-        if (i == n - 1) {
-            res.add(new ArrayList<>(path));
+    private void dfs(int u, int n, List<Integer> cur, List<Integer>[] adj) {
+        if (u == n - 1) {
+            res.add(new ArrayList<>(cur));
             return;
         }
 
-        for (int v : adjList[i]) {
-            path.add(v);
-            dfs(v, path);
-
-            path.removeLast();
+        for (int v : adj[u]) {
+            cur.add(v);
+            dfs(v, n, cur, adj);
+            cur.removeLast();
         }
+
     }
 }

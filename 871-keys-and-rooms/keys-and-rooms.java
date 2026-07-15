@@ -1,39 +1,27 @@
 class Solution {
-    public boolean canVisitAllRooms(List<List<Integer>> adj) {
-        int n = adj.size();
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        int n = rooms.size();
         boolean[] vis = new boolean[n];
-        int visited = 0;
-    
+
+
         Queue<Integer> queue = new ArrayDeque<>();
         vis[0] = true;
         queue.offer(0);
+        int cnt = 0;
 
-        while (!queue.isEmpty() && visited != n) {
+        while (!queue.isEmpty()) {
             int u = queue.poll();
-            visited++;
+            cnt++;
 
-            for (int v : adj.get(u)) {
+            for (int v : rooms.get(u)) {
                 if (vis[v]) continue;
-                
+
                 vis[v] = true;
                 queue.offer(v);
             }
         }
-        
-        return visited == n;
-        
+
+
+        return cnt == n;
     }
 }
-
-/**
-
-
-0 -> 1, 3
-1 -> 0, 1, 3
-2 -> 2
-3 -> 0
-
-
-
-
- */

@@ -1,55 +1,51 @@
 class Solution {
-   
-    private static final int[][] dirs = {
-            {0, 1},
-            {1, 0},
-            {-1, 0},
-            {0, -1}
-    };
-    int n, m;
-    char[][] maze;
-    
-    public int nearestExit(char[][] maze, int[] entrance) {
-        n = maze.length;
-        m = maze[0].length;
-        this.maze = maze;
+
+    private static int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+
+    public int nearestExit(char[][] maze, int[] en) {
+        
+        int n = maze.length;
+        int m = maze[0].length;
+        boolean[][] vis = new boolean[n][m];
 
         Queue<int[]> queue = new ArrayDeque<>();
-        boolean[][] vis = new boolean[n][m];
-        queue.offer(new int[] {entrance[0], entrance[1], 0});
-        vis[entrance[0]][entrance[1]] = true;
-        
+        vis[en[0]][en[1]] = true;
+        queue.offer(new int[] {en[0], en[1], 0});
+
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int dx = cur[0], dy = cur[1], d = cur[2];
+            int x = cur[0], y = cur[1], w = cur[2];
             
-            for (int[] dir : dirs) {
-                int nx = dir[0] + dx, ny = dir[1] + dy;
+            for (int[] nxt : DIRs) {
+                int nx = nxt[0] + x, ny = nxt[1] + y;
+
+                if (!isValid(nx, ny, n, m) || vis[nx][ny] || maze[nx][ny] != '.')
+                    continue;
+
+                if (isExit(nx, ny, n, m))
+                    return w + 1;
                 
-                if (isValid(nx, ny) && !vis[nx][ny] && maze[nx][ny] == '.') {
-                    if (isExit(nx, ny)) return d + 1;
-                    queue.offer(new int[] {nx, ny, d + 1});
-                    vis[nx][ny] = true;
-                }
+                vis[nx][ny] = true;
+                queue.offer(new int[] {nx, ny, w + 1});
             }
         }
-        
+
         return -1;
     }
-    
-    private boolean isExit(int x, int y) {
-        return isValid(x, y) && isBoundary(x, y);
+
+    private boolean isExit(int x, int y, int n, int m) {
+        return isValid(x, y, n, m) && isBoundary(x, y, n, m);
     }
-    
-    private boolean isValid(int x, int y) {
-        return (x >= 0 && x < n && y >= 0 && y < m);
+
+    private boolean isValid(int x, int y, int n, int m) {
+        return x > -1 && x < n && y > -1 && y < m;
     }
-    
-    private boolean isBoundary(int x, int y) {
-      if (x == 0 || x == n - 1) {
-          return true;
-      }
-      
-      return y == 0 || y == m - 1;
+
+    private boolean isBoundary(int x, int y, int n, int m) {
+        
+        if (x == 0 || x == n - 1)
+            return true;
+        
+        return (y == 0 || y == m - 1);
     }
 }

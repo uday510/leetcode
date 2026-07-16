@@ -23,18 +23,16 @@ class Solution {
             int sz = queue.size();
             for (int i = 0; i < sz; i++) {
                 String s = queue.poll();
-                assert s != null;
                 char[] ch = s.toCharArray();
                 
-                
-                for (int j = 0; j < Objects.requireNonNull(s).length(); j++) {
+                for (int j = 0; j < ch.length; j++) {
                    char old = s.charAt(j);
-                    for (char c : chars) {
 
+                    for (char c : chars) {
                         ch[j] = c;
                         String gene = new String(ch);
 
-                        if (!valid.contains(gene))
+                        if (c == old || !valid.contains(gene))
                             continue;
 
                         if (gene.equals(en))
@@ -43,6 +41,7 @@ class Solution {
                         valid.remove(gene);
                         queue.offer(gene);
                     }
+
                     ch[j] = old;                
                 }
             }

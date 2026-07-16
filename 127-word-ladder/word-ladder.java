@@ -1,67 +1,47 @@
 class Solution {
 
-    public int ladderLength(String st, String en, List<String> words) {
-        Set<String> wList = new HashSet<>(words);
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
-        if (!wList.contains(en)) return 0;
+        if (beginWord.equals(endWord))
+            return 0;
 
-        wList.remove(st);
+        Set<String> validWords = new HashSet<>(wordList);
+
+        if (!validWords.contains(endWord))
+            return 0;
 
         Queue<String> queue = new ArrayDeque<>();
-        queue.offer(st);
+        validWords.remove(beginWord);
+        queue.offer(beginWord);
 
-        int level = 1, sz;
-
+        int ladderLength = 0;
         while (!queue.isEmpty()) {
-            level++;
+            ladderLength++;
 
-            sz = queue.size();
-
+            int sz = queue.size();
+            
             for (int i = 0; i < sz; i++) {
-                String cur = queue.poll();
+                char[] chars = Objects.requireNonNull(queue.poll()).toCharArray();
+                for (int idx = 0; idx < chars.length; idx++) {
 
-                List<String> neighbors = getNeighbors(cur, wList);
+                    char old = chars[idx];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[idx] = c;
+                        String s = new String(chars);
+                        
+                        if (!validWords.contains(s))
+                            continue;
+                        
+                        if (s.equals(endWord))
+                            return ladderLength + 1;
 
-                for (String nei : neighbors) {
-
-                    if (nei.equals(en)) {
-                        return level;
+                        validWords.remove(s);
+                        queue.offer(s);
                     }
-
-                    queue.offer(nei);
+                    chars[idx] = old;
                 }
             }
-
         }
-
         return 0;
     }
-
-    private List<String> getNeighbors(String s, Set<String> validWords) {
-
-        char[] chars = s.toCharArray();
-        List<String> neighbors = new ArrayList<>();
-
-        for (int i = 0; i < chars.length; i++) {
-            char or = chars[i];
-
-            for (char c = 'a'; c <= 'z'; c++) {
-                if (c == or) continue;  
-
-                chars[i] = c;
-
-                String cur = new String(chars);
-
-                if (!validWords.contains(cur)) continue;
-
-                validWords.remove(cur);
-                neighbors.add(cur); 
-            }
-
-            chars[i] = or;
-        }
-
-        return neighbors;
-    }
-
 }

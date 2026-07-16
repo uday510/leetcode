@@ -1,88 +1,79 @@
 class Solution {
 
-    public List<List<String>> findLadders(String st, String en, List<String> list) {
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         
         List<List<String>> res = new ArrayList<>();
-        Set<String> dic = new HashSet<>(list);
-        if (!dic.contains(en)) return res;
-        dic.add(st);
+        
+        if (beginWord.equals(endWord))
+            return res;
 
-        Map<String, List<String>> adjList = new HashMap<>();
+        Set<String> validWords = new HashSet<>(wordList);
+
+        if (!validWords.contains(endWord))
+            return res;
+
+        Map<String, List<String>> adj = new HashMap<>();
+
         Queue<String> queue = new ArrayDeque<>();
-        queue.offer(st);
+        validWords.remove(beginWord);
+        queue.offer(beginWord);
 
         boolean found = false;
-        dic.remove(st);
-
         while (!queue.isEmpty() && !found) {
             int sz = queue.size();
-            Set<String> visitedThisLevel = new HashSet<>();
 
+            Set<String> tmp = new HashSet<>();
             for (int i = 0; i < sz; i++) {
-                String cur = queue.poll();
-                assert cur != null;
-                char[] curArr = cur.toCharArray();
+                String s = Objects.requireNonNull(queue.poll());
+                char[] chars = s.toCharArray();
 
-                for (int pos = 0; pos < cur.length(); pos++) {
-                    char original = curArr[pos];
+                for (int j = 0; j < chars.length; j++) {
+                    char old = chars[j];
+
                     for (char c = 'a'; c <= 'z'; c++) {
-                        if (c == original) continue;
-                        curArr[pos] = c;
-                        String nxt = new String(curArr);
-                        if (!dic.contains(nxt)) continue;
-
-                        adjList.computeIfAbsent(nxt, k -> new ArrayList<>()).add(cur);
-
-                        if (visitedThisLevel.contains(nxt))
+                        if (old == c)
                             continue;
 
-                        visitedThisLevel.add(nxt);
-                        queue.offer(nxt);
+                        chars[j] = c;
+                        String str = new String(chars);
+                        if (!validWords.contains(str))
+                            continue;
 
-                        if (nxt.equals(en)) {
-                            found = true;
-                        }
-                        
+                        adj.computeIfAbsent(str, _ -> new ArrayList<>()).add(s);
+
+                        if (tmp.contains(str)) continue;
+                        tmp.add(str);
+                        queue.offer(str);
+                        if (str.equals(endWord)) found = true;
+
                     }
-
-                    curArr[pos] = original;
-
+                    chars[j] = old;
                 }
             }
 
-            dic.removeAll(visitedThisLevel);
+            validWords.removeAll(tmp);
         }
 
-        if (!found) return res;
-
-        System.out.println(adjList);
-
-        List<String> path = new ArrayList<>();
-        path.add(en);
-        dfs(en, st, adjList, path, res);
+        if (!found)
+            return res;
+        
+        dfs(endWord, beginWord, adj, new ArrayList<>(List.of(endWord)), res);
+        
         return res;
+    }
+    
+    private void dfs(String u, String end, Map<String, List<String>> adj, List<String> path, List<List<String>> res) {
+        
+        if (u.equals(end)) {
+            res.add(new ArrayList<>(path).reversed());
+            return;
+        }
+        
+        for (String v : adj.get(u)) {
+            path.add(v);
+            dfs(v, end, adj, path, res);
+            path.removeLast();
+        }
 
     }
-
-    private void dfs(String u, String st, 
-            Map<String, List<String>> adjList, 
-            List<String> path, 
-            List<List<String>> res
-        ) {
-
-            if (u.equals(st)) {
-                List<String> newPath = new ArrayList<>(path);
-                Collections.reverse(newPath);
-                res.add(newPath);
-                return;
-            }
-
-            for (String v : adjList.get(u)) {
-                path.addLast(v);
-                dfs(v, st, adjList, path, res);
-                path.removeLast();
-            }
-
-    }
-
 }

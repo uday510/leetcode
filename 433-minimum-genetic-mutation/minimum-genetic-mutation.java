@@ -1,53 +1,54 @@
 class Solution {
-    
-    public int minMutation(String stGene, String enGene, String[] bank) {
-        if (stGene.equals(enGene)) return 0;
+
+    public int minMutation(String st, String en, String[] bank) {
+
+        if (st.equals(en))
+            return 0;
 
         Queue<String> queue = new ArrayDeque<>();
-        Set<String> validGenes = new HashSet<>();
-        Collections.addAll(validGenes, bank);
+        Set<String> valid = new HashSet<>(List.of(bank));
 
-        if (!validGenes.contains(enGene)) return -1;
-        validGenes.remove(stGene);
+        if (!valid.contains(en))
+            return -1;
 
-        queue.offer(stGene);
 
-        char[] validChars = new char[] {'A', 'C', 'G', 'T'};
+        char[] chars = new char[] {'A', 'C', 'G', 'T'};
         int mts = 0;
-
+        
+        valid.remove(st);
+        queue.offer(st);
         while (!queue.isEmpty()) {
-            mts++;
-            int n = queue.size();
 
-            for (int i = 0; i < n; i++) {
+            mts++;
+            int sz = queue.size();
+            for (int i = 0; i < sz; i++) {
                 String s = queue.poll();
                 assert s != null;
+                char[] ch = s.toCharArray();
                 
-                for (int j = 0; j < s.length(); j++) {
-                    char[] chars = s.toCharArray();
-                    char originalChar = chars[j];
+                
+                for (int j = 0; j < Objects.requireNonNull(s).length(); j++) {
+                   char old = s.charAt(j);
+                    for (char c : chars) {
 
-                    for (char ch : validChars) {
-                        chars[j] = ch;
+                        ch[j] = c;
+                        String gene = new String(ch);
 
-                        String gene = new String(chars);
-                        if (!validGenes.contains(gene)) continue;
+                        if (!valid.contains(gene))
+                            continue;
 
-                        if (gene.equals(enGene)) return mts;
+                        if (gene.equals(en))
+                            return mts;
 
-                        validGenes.remove(gene);
+                        valid.remove(gene);
                         queue.offer(gene);
                     }
-
-                    chars[j] = originalChar;
+                    ch[j] = old;                
                 }
             }
-
         }
-
-
+        
         return -1;
     }
-
 
 }

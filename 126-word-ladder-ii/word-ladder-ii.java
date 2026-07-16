@@ -14,7 +14,7 @@ class Solution {
         boolean found = false;
         dic.remove(st);
 
-        while (!queue.isEmpty() && !found) {
+        while (!queue.isEmpty()) {
             int sz = queue.size();
             Set<String> visitedThisLevel = new HashSet<>();
 
@@ -41,6 +41,7 @@ class Solution {
                         if (nxt.equals(en)) {
                             found = true;
                         }
+                        
                     }
 
                     curArr[pos] = original;
@@ -52,6 +53,8 @@ class Solution {
         }
 
         if (!found) return res;
+
+        System.out.println(adjList);
 
         List<String> path = new ArrayList<>();
         path.add(en);

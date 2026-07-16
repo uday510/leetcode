@@ -1,22 +1,17 @@
 class Solution {
-    
-    int[][] grid;
-    boolean[][] vis;
-    int n;
-    Queue<int[]> queue;
-    int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
+    private static int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
     public int shortestBridge(int[][] grid) {
-        n = grid.length;
-        vis = new boolean[n][n];
-        queue = new ArrayDeque<>();
-        this.grid = grid;
+
+        int n = grid.length, m = grid[0].length;
+        boolean[][] vis = new boolean[n][m];
+        Queue<int[]> queue = new ArrayDeque<>();
 
         boolean found = false;
         for (int i = 0; i < n && !found; i++) {
-            for (int j = 0; j < n && !found; j++) {
+            for (int j = 0; j < m && !found; j++) {
                 if (grid[i][j] == 1) {
-                    dfs(i, j);
+                    dfs(i, j, n, m, grid, vis, queue);
                     found = true;
                 }
             }
@@ -24,53 +19,41 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int dx = cur[0], dy = cur[1], w = cur[2];
+            int x = cur[0], y = cur[1], w = cur[2];
 
-            for (int[] dir : dirs) {
-                int nx = dir[0] + dx, ny = dir[1] + dy;
-                if (!isValid(nx, ny)) continue;
+            for (int[] dir : DIRs) {
+                int nx = dir[0] + x, ny = dir[1] + y;
 
-                if (grid[nx][ny] == 1) return w;
-                queue.offer(new int[]{nx, ny, w + 1});
+                if (isOutOfBounds(nx, ny, n, m) || vis[nx][ny])
+                    continue;
+
+                if (grid[nx][ny] == 1)
+                    return w;
+
                 vis[nx][ny] = true;
+                queue.offer(new int[] {nx, ny, w + 1});
             }
         }
 
         return -1;
     }
 
-    private void dfs(int i, int j) {
-        if (!isValid(i, j) || grid[i][j] == 0) return;
+    private void dfs(int x, int y, int n, int m, int[][] grid, boolean[][] vis, Queue<int[]> queue) {
 
-        queue.offer(new int[] {i, j, 0});
-        vis[i][j] = true;
+        queue.offer(new int[] {x, y, 0});
 
-        for (int[] dir : dirs) {
-            int nx = dir[0] + i, ny = dir[1] + j;
-            dfs(nx, ny);
+        vis[x][y] = true;
+        for (int[] dir : DIRs) {
+            int nx = dir[0] + x, ny = dir[1] + y;
+
+            if (isOutOfBounds(nx, ny, n, m) || vis[nx][ny] || grid[nx][ny] == 0)
+                continue;
+
+            dfs(nx, ny, n, m, grid, vis, queue);
         }
     }
 
-    private boolean isValid(int i, int j) {
-        return i >= 0 && i < n && j >= 0 && j < n && !vis[i][j];
+    private boolean isOutOfBounds(int x, int y, int n, int m) {
+        return x < 0 || x >= n || y < 0 || y >= m;
     }
 }
-
-/**
-
-0 1
-1 0 
-
-0 1 0
-0 0 0
-0 0 1
-
-------------
-1,1,1,1,1
-1,0,0,0,1
-1,0,1,0,1
-1,0,0,0,1
-1,1,1,1,1
------------
-
-*/

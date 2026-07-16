@@ -14,7 +14,7 @@ class Solution {
         boolean found = false;
         dic.remove(st);
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && !found) {
             int sz = queue.size();
             Set<String> visitedThisLevel = new HashSet<>();
 
@@ -33,10 +33,11 @@ class Solution {
 
                         adjList.computeIfAbsent(nxt, k -> new ArrayList<>()).add(cur);
 
-                        if (!visitedThisLevel.contains(nxt)) {
-                            visitedThisLevel.add(nxt);
-                            queue.offer(nxt);
-                        }
+                        if (visitedThisLevel.contains(nxt))
+                            continue;
+
+                        visitedThisLevel.add(nxt);
+                        queue.offer(nxt);
 
                         if (nxt.equals(en)) {
                             found = true;

@@ -1,53 +1,58 @@
 class Solution {
+    
+    public int minMutation(String startGene, String endGene, String[] bank) {
 
-    public int minMutation(String st, String en, String[] bank) {
-
-        if (st.equals(en))
+        if (startGene.equals(endGene))
             return 0;
-
-        Queue<String> queue = new ArrayDeque<>();
-        Set<String> valid = new HashSet<>(List.of(bank));
-
-        if (!valid.contains(en))
-            return -1;
-
-
-        char[] chars = new char[] {'A', 'C', 'G', 'T'};
-        int mts = 0;
         
-        valid.remove(st);
-        queue.offer(st);
+        Set<String> validGenes = new HashSet<>(List.of(bank));
+        char[] validChars = new char[] {'A', 'C', 'G', 'T'};
+        
+        if (!validGenes.contains(endGene))
+            return -1;
+        
+        Queue<String> queue = new ArrayDeque<>();
+        
+        validGenes.remove(startGene);
+        queue.offer(startGene);
+        
+        int mutations = 0;
         while (!queue.isEmpty()) {
-
-            mts++;
+            mutations++;
+            
             int sz = queue.size();
-            for (int i = 0; i < sz; i++) {
-                String s = queue.poll();
-                char[] ch = s.toCharArray();
+            
+            for (int idx = 0; idx < sz; idx++) {
+                char[] chars = Objects.requireNonNull(queue.poll()).toCharArray();
+                System.out.println(Arrays.toString(chars));
                 
-                for (int j = 0; j < ch.length; j++) {
-                   char old = s.charAt(j);
+               
+                for (int j = 0; j < chars.length; j++) {
 
-                    for (char c : chars) {
-                        ch[j] = c;
-                        String gene = new String(ch);
+                    char old = chars[j];
 
-                        if (c == old || !valid.contains(gene))
+                    for (char c : validChars) {
+                        if (old == c) continue;
+                        
+                        chars[j] = c;
+                        String gene = new String(chars);
+                        
+                        if (!validGenes.contains(gene))
                             continue;
-
-                        if (gene.equals(en))
-                            return mts;
-
-                        valid.remove(gene);
+                        
+                        if (gene.equals(endGene))
+                            return mutations;
+                        
+                        validGenes.remove(gene);
                         queue.offer(gene);
                     }
-
-                    ch[j] = old;                
+                    
+                    chars[j] = old;
                 }
+                
             }
         }
         
         return -1;
     }
-
 }

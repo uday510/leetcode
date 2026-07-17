@@ -1,18 +1,17 @@
 class Solution {
-    public int[][] updateMatrix(int[][] mat) {
-        return highestPeak(mat);
-    }
 
-    private final static int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-    
-    public int[][] highestPeak(int[][] arr) {
-        int m = arr.length, n = arr[0].length;
-        int[][] res = new int[m][n];
+    private static int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+
+    public int[][] updateMatrix(int[][] arr) {
+        
+        int n = arr.length, m = arr[0].length;
+        int[][] res = new int[n][m];
 
         Queue<int[]> queue = new ArrayDeque<>();
-        
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
                 if (arr[i][j] == 0) {
                     queue.offer(new int[] {i, j, 0});
                 } else {
@@ -20,31 +19,25 @@ class Solution {
                 }
             }
         }
-        
-        if (queue.size() == m * n) return res;
-        
+
+        if (queue.size() == n * m) return res;
+
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int dx = cur[0], dy = cur[1], w = cur[2];
-            
-            for (int[] dir : dirs) {
-                int nx = dx + dir[0], ny = dy + dir[1];
-                if (nx < 0 || nx >= m || ny < 0 || ny >= n || res[nx][ny] >= 0) continue;
-                queue.offer(new int[] {nx, ny, w + 1});
+            int x = cur[0], y = cur[1], w = cur[2];
+
+            for (int[] nxt : DIRs) {
+                int nx = nxt[0] + x;
+                int ny = nxt[1] + y;
+
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || res[nx][ny] >= 0)
+                    continue;
+
                 res[nx][ny] = w + 1;
-                
+                queue.offer(new int[] {nx, ny, w + 1});
             }
         }
-        
-        
+
         return res;
     }
 }
-
-/**
-
-0 1 2
-1 2 3
-2 3 4
-
- */

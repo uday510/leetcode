@@ -1,33 +1,26 @@
 class Solution {
     public boolean canReach(int[] arr, int st) {
-        int n = arr.length;
+        int en = 0, n = arr.length;
         Queue<Integer> queue = new ArrayDeque<>();
         boolean[] vis = new boolean[n];
-        int dst = 0;
 
         vis[st] = true;
         queue.offer(st);
 
         while (!queue.isEmpty()) {
-            int u = queue.poll();
-            if (arr[u] == dst) return true;
+            int cur = queue.poll();
 
-            for (int v : getPaths(u, arr[u])) {
-                if (!isValid(v, vis)) continue;
+            if (arr[cur] == en) return true;
 
-                vis[v] = true;
-                queue.offer(v);
+            for (int nxt : new int[] {cur + arr[cur], cur - arr[cur]}) {
+                if (nxt < 0 || nxt >= n || vis[nxt]) continue;
+
+                vis[nxt] = true;
+                queue.offer(nxt);
             }
         }
 
+
         return false;
-    }
-
-    private int[] getPaths(int u, int val) {
-        return new int[] {u + val, u - val};
-    }
-
-    private boolean isValid(int v, boolean[] vis) {
-        return v >= 0 && v < vis.length && !vis[v];
     }
 }

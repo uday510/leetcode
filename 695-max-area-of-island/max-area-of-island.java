@@ -37,7 +37,7 @@ class Solution {
                 
                 if (nx < 0 || nx >= m || ny < 0 || ny >= n || grid[nx][ny] == 0 || grid[nx][ny] == -1) continue;
                 
-                grid[nx][ny] = -1;
+                grid[nx][ny] = 0;
                 queue.offer(new int[] {nx, ny});
                 cnt++;
             }

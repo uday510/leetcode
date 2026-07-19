@@ -1,52 +1,46 @@
 class Solution {
 
-    private final static int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
-    private final static char W = '0';
-    private final static char L = '1';
-
-    private boolean[][] vis;
-    private int n, m;
-    char[][] grid;
+    private static final char I = '1';
+    private static final char W = '0';
+    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
     public int numIslands(char[][] grid) {
-        n = grid.length;
-        m = grid[0].length;
-        vis = new boolean[n][m];
-        int islands = 0;
-        this.grid = grid;
-
+        
+        int cnt = 0;
+        int n = grid.length;
+        int m = grid[0].length;
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (vis[i][j] || grid[i][j] == W) continue;
-
-                islands++;
-                bfs(i, j);
+                if (grid[i][j] == I) {
+                    cnt++;
+                    bfs(grid, i, j, n, m);
+                }
             }
         }
 
-        return islands;
+        return cnt;
     }
 
-    private void bfs(int i, int j) {
-
+    private void bfs(char[][] arr, int i, int j, int n, int m) {
+        arr[i][j] = W;
         Queue<int[]> queue = new ArrayDeque<>();
 
-        vis[i][j] = true;
         queue.offer(new int[] {i, j});
-
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
+            int x = cur[0], y = cur[1];
 
-            for (int[] dir : dirs) {
-                int nx = dir[0] + cur[0], ny = dir[1] + cur[1];
+            for (int[] nxt : DIRs) {
+                int nx = x + nxt[0];
+                int ny = y + nxt[1];
 
-                if (nx < 0 || nx >= n || ny < 0
-                 || ny >= m || vis[nx][ny] || grid[nx][ny] == W) continue;
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || arr[nx][ny] != I) 
+                        continue;
 
-                vis[nx][ny] = true;
+                arr[nx][ny] = W;
                 queue.offer(new int[] {nx, ny});
             }
         }
-    }   
+    }
 }

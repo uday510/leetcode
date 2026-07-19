@@ -25,8 +25,6 @@ class Solution {
             st.push(c);
         } 
 
-        System.out.println(st);
-
         StringBuilder sb = new StringBuilder();
 
         for (Iterator<Character> it = st.descendingIterator(); it.hasNext();) {
@@ -36,16 +34,3 @@ class Solution {
         return sb.toString();
     }
 }
-
-/**
-
-
-
-a: 2
-b: 3
-c: 4
-
-
-
-
- */

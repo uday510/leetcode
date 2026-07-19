@@ -27,7 +27,7 @@ class Solution {
              st.push(c);
         }
 
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
         for (var it = st.descendingIterator(); it.hasNext();) {
             sb.append(it.next());

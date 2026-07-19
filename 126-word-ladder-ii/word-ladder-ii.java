@@ -1,83 +1,75 @@
 class Solution {
-
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-
+    public List<List<String>> findLadders(String st, String en, List<String> wordList) {
+        
         List<List<String>> res = new ArrayList<>();
-
-        if (beginWord.equals(endWord))
-            return res;
-
         Set<String> validWords = new HashSet<>(wordList);
-
-        if (!validWords.contains(endWord))
+        
+        if (!validWords.contains(en) || st.equals(en))
             return res;
 
         Map<String, List<String>> adj = new HashMap<>();
-
         Queue<String> queue = new ArrayDeque<>();
+        
+        boolean hasFound = false;
+        validWords.remove(st);
+        queue.offer(st);
 
-        validWords.remove(beginWord);
-        queue.offer(beginWord);
-
-        boolean isFound = false;
         Set<String> tmp = new HashSet<>();
-        while (!queue.isEmpty() && !isFound) {
+        while (!queue.isEmpty() && !hasFound) {
             int sz = queue.size();
 
-            for (int curIdx = 0; curIdx < sz; curIdx++) {
-                String str = Objects.requireNonNull(queue.poll());
-                char[] chars = str.toCharArray();
+            for (int i = 0; i < sz; i++) {
+
+                String cur = queue.poll();
+                char[] chars = cur.toCharArray();
 
                 for (int j = 0; j < chars.length; j++) {
-                    char oldChar = chars[j];
+                    char old = chars[j];
 
-                    for (char newChar = 'a'; newChar <= 'z'; newChar++) {
-                        if (oldChar == newChar) continue;
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (old == c) continue;
 
-                        chars[j] = newChar;
-                        String newStr = new String(chars);
+                        chars[j] = c;
+                        String str = new String(chars);
 
-                        if (!validWords.contains(newStr)) continue;
+                        if (!validWords.contains(str)) continue;
+                        adj.computeIfAbsent(str, k -> new ArrayList<>()).add(cur);
 
-                        adj.computeIfAbsent(newStr, k -> new ArrayList<>()).add(str);
+                        if (tmp.contains(str)) continue;
 
-                        if (tmp.contains(newStr)) continue;
+                        tmp.add(str);
+                        queue.offer(str);
 
-                        tmp.add(newStr);
-                        queue.offer(newStr);
-
-                        if (newStr.equals(endWord)) isFound = true;
-
+                        if (str.equals(en)) {
+                            hasFound = true;
+                        }
                     }
 
-                    chars[j] = oldChar;
+                    chars[j] = old;
                 }
             }
-            
-             validWords.removeAll(tmp);
+
+            validWords.removeAll(tmp);
         }
 
-        if (!isFound) 
-            return res;
         
-        
-        dfs(endWord, beginWord, new ArrayList<>(List.of(endWord)), adj, res);
-        
+        dfs(en, st, adj, new ArrayList<>(List.of(en)), res);
         return res;
     }
-    
-    private void dfs(String u, String end, List<String> curPath, Map<String, List<String>> adj, List<List<String>> res) {
-        
-        if (u.equals(end)) {
-            res.add(new ArrayList<>(curPath).reversed());
+
+    private void dfs(String u, String en, Map<String, List<String>> adj, List<String> cur, List<List<String>> res) {
+
+        if (u.equals(en)) {
+            res.add(new ArrayList<>(cur).reversed());
             return;
         }
-        
+
         for (String v : adj.getOrDefault(u, new ArrayList<>())) {
-            curPath.add(v);
-            dfs(v, end, curPath, adj, res);
-            curPath.removeLast();
+            cur.add(v);
+            dfs(v, en, adj, cur, res);
+            cur.removeLast();
         }
-        
+
+
     }
 }

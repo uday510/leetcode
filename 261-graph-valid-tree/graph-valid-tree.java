@@ -1,25 +1,27 @@
 class Solution {
     public boolean validTree(int n, int[][] edges) {
         if (edges.length != n - 1) return false;
-        UnionFind uf = new UnionFind(n);
+        
+        DSU dsu = new DSU(n);
 
         for (int[] e : edges) {
             int u = e[0], v = e[1];
 
-            if (uf.connected(u, v)) return false;
-
-            uf.union(u, v);
+            if (dsu.isConnected(u, v)) 
+                return false;
+            
+            dsu.union(u, v);
         }
 
         return true;
     }
 }
 
-class UnionFind {
-    private int[] root;
-    private int[] rank;
+class DSU {
+    int[] root;
+    int[] rank;
 
-    UnionFind (int n) {
+    DSU (int n) {
         root = new int[n];
         rank = new int[n];
 
@@ -28,29 +30,30 @@ class UnionFind {
             rank[i] = 1;
         }
     }
-        
+
     int find(int x) {
-        if (x == root[x]) return x;
+        if (x == root[x])
+            return x;
         return root[x] = find(root[x]);
     }
 
     void union(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
+        int rx = find(x);
+        int ry = find(y);
 
-        if (rootX == rootY) return;
+        if (rx == ry) return;
 
-        if (rank[rootX] > rank[rootY]) {
-            root[rootY] = rootX;
-        } else if (rank[rootY] > rank[rootX]) {
-            root[rootX] = rootY;
+        if (rank[rx] > rank[ry]) {
+            root[ry] = rx;
+        } else if (rank[ry] > rank[rx]) {
+            root[rx] = ry;
         } else {
-            root[rootY] = rootX;
-            rank[rootX]++;
+            rank[rx]++;
+            root[ry] = rx;
         }
     }
 
-    boolean connected(int x, int y) {
+    boolean isConnected(int x, int y) {
         return find(x) == find(y);
     }
 }

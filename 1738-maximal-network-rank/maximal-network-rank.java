@@ -1,26 +1,23 @@
 class Solution {
     public int maximalNetworkRank(int n, int[][] edges) {
         
-        Set<Integer>[] adj = new HashSet[n];
-
-        for (int i = 0; i < n; i++) adj[i] = new HashSet<>();
+        boolean[][] conns = new boolean[n][n];
+        int[] deg = new int[n];
 
         for (int[] e : edges) {
-            adj[e[1]].add(e[0]);
-            adj[e[0]].add(e[1]);
+            int u = e[0], v = e[1];
+            conns[u][v] = true;
+            conns[v][u] = true;
+            deg[v]++;
+            deg[u]++;
         }
 
         int mx = 0;
-
         for (int u = 0; u < n; u++) {
             for (int v = u + 1; v < n; v++) {
-                int cur = adj[u].size() + adj[v].size();
+                int cur = deg[u] + deg[v] - (conns[u][v] ? 1 : 0);
 
-                if (adj[u].contains(v)) {
-                    cur--;
-                }
-
-                mx = Math.max(mx, cur);
+                mx = Math.max(cur, mx);
             }
         }
 

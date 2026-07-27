@@ -1,33 +1,27 @@
 class Solution {
-
-    int n;
-    int[] color;
-    int[][] adj;
-
     public boolean isBipartite(int[][] graph) {
-        this.n = graph.length;
-        this.color = new int[n];
-        this.adj = graph;
-
-        Arrays.fill(color, -1);
+        
+        int n = graph.length;
+        int[] color = new int[n];
 
         for (int i = 0; i < n; i++) {
-            if (color[i] == -1) {
-                color[i] = 0;
-                if (!dfs(i)) return false;
-            }
-        }
+            if (color[i] != 0) continue;
 
-        return true;
-    }
+            color[i] = 1;
+            Queue<Integer> queue = new ArrayDeque<>();
+            queue.offer(i);
 
-    private boolean dfs(int u) {
-        for (int v : adj[u]) {
-            if (color[v] == -1) {
-                color[v] = 1 - color[u];
-                if (!dfs(v)) return false;
-            } else if (color[u] == color[v]) {
-                return false;
+            while (!queue.isEmpty()) {
+                int u = queue.poll();
+
+                for (int v : graph[u]) {
+                    if (color[v] == color[u]) return false;
+
+                    if (color[v] != 0) continue;
+
+                    color[v] = -color[u];
+                    queue.offer(v);
+                }
             }
         }
 

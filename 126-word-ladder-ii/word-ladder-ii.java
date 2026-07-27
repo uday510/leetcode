@@ -1,75 +1,79 @@
 class Solution {
-    public List<List<String>> findLadders(String st, String en, List<String> wordList) {
+    public List<List<String>> findLadders(String st, String en, List<String> wList) {
         
         List<List<String>> res = new ArrayList<>();
-        Set<String> validWords = new HashSet<>(wordList);
-        
-        if (!validWords.contains(en) || st.equals(en))
+
+        if (st.equals(en))
             return res;
 
+        Set<String> validWords = new HashSet<>(wList);
+
+        if (!validWords.contains(en))
+            return res;
+        
         Map<String, List<String>> adj = new HashMap<>();
         Queue<String> queue = new ArrayDeque<>();
-        
-        boolean hasFound = false;
+
         validWords.remove(st);
         queue.offer(st);
-
-        Set<String> tmp = new HashSet<>();
-        while (!queue.isEmpty() && !hasFound) {
+        boolean isFound = false;
+        while (!queue.isEmpty() && !isFound) {
             int sz = queue.size();
+            Set<String> tmp = new HashSet<>();
 
             for (int i = 0; i < sz; i++) {
-
-                String cur = queue.poll();
-                char[] chars = cur.toCharArray();
+                String curStr = queue.poll();
+                char[] chars = Objects.requireNonNull(curStr).toCharArray();
 
                 for (int j = 0; j < chars.length; j++) {
-                    char old = chars[j];
+                    char prev = chars[j];
 
-                    for (char c = 'a'; c <= 'z'; c++) {
-                        if (old == c) continue;
+                    for (char cur = 'a'; cur <= 'z'; cur++) {
+                        if (prev == cur) continue;
 
-                        chars[j] = c;
-                        String str = new String(chars);
+                        chars[j] = cur;
+                        String newStr = new String(chars);
 
-                        if (!validWords.contains(str)) continue;
-                        adj.computeIfAbsent(str, k -> new ArrayList<>()).add(cur);
+                        if (!validWords.contains(newStr)) continue;
+                        adj.computeIfAbsent(newStr, k -> new ArrayList<>()).add(curStr);
 
-                        if (tmp.contains(str)) continue;
+                        if (tmp.contains(newStr)) continue;
 
-                        tmp.add(str);
-                        queue.offer(str);
-
-                        if (str.equals(en)) {
-                            hasFound = true;
-                        }
+                        queue.offer(newStr);
+                        tmp.add(newStr);
+                        if (newStr.equals(en)) 
+                            isFound = true;
                     }
 
-                    chars[j] = old;
+                    chars[j] = prev;
                 }
             }
 
             validWords.removeAll(tmp);
         }
 
-        
-        dfs(en, st, adj, new ArrayList<>(List.of(en)), res);
+        if (!isFound) return res;
+
+        dfs(en, st, new ArrayList<>(List.of(en)), adj, res);
+
         return res;
     }
 
-    private void dfs(String u, String en, Map<String, List<String>> adj, List<String> cur, List<List<String>> res) {
+    private void dfs(String str, String en, 
+                    List<String> curList,
+                    Map<String, List<String>> adj,
+                    List<List<String>> res
+                    ) {
 
-        if (u.equals(en)) {
-            res.add(new ArrayList<>(cur).reversed());
-            return;
-        }
+                        if (str.equals(en)) {
+                            res.add(new ArrayList<>(curList).reversed());
+                            return;
+                        }
 
-        for (String v : adj.getOrDefault(u, new ArrayList<>())) {
-            cur.add(v);
-            dfs(v, en, adj, cur, res);
-            cur.removeLast();
-        }
-
-
-    }
+                        for (String nxt : adj.get(str)) {
+                            curList.add(nxt);
+                            dfs(nxt, en, curList, adj, res);
+                            curList.removeLast();
+                        }
+                    }
 }

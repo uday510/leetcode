@@ -12,7 +12,17 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         boolean[] vis = new boolean[n];
 
-        dfs(k, adj, vis);
+        Deque<Integer> st = new ArrayDeque<>();
+        vis[k] = true;
+        st.push(k); 
+        while (!st.isEmpty()) {
+            int u = st.pop();
+            for (int v : adj[u]) {
+                if (vis[v]) continue;
+                vis[v] = true;
+                st.push(v);
+            }
+        }
 
         for (int[] e : edges) {
             if (!vis[e[0]] && vis[e[1]]) {
@@ -25,14 +35,6 @@ class Solution {
         }
 
         return res;
-    }
-
-    private void dfs(int st, List<Integer>[] adj, boolean[] vis) {
-        vis[st] = true;
-        for (int v : adj[st]) {
-            if (vis[v]) continue;
-            dfs(v, adj, vis);
-        }
     }
 
 }

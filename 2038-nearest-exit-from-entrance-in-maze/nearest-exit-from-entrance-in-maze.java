@@ -10,20 +10,17 @@ class Solution {
         vis[entrance[0]][entrance[1]] = true;
         queue.offer(new int[] {entrance[0], entrance[1], 0});
         
-        int dx, dy, nx, ny, w;
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            dx = cur[0]; dy = cur[1]; w = cur[2];
-            
-            if (w != 0 && isBoundary(dx, dy, n, m)) 
-                return w;
+            int x = cur[0], y = cur[1], w = cur[2];
             
             for (int[] dir : dirs) {
-                nx = dx + dir[0];
-                ny = dy + dir[1];
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+
+                if (!isValid(nx, ny, n, m, vis, maze)) continue;
+                if (isBoundary(nx, ny, n, m)) return w + 1;
                 
-                if (!isValid(nx, ny, n, m, vis, maze)) 
-                    continue;
                 vis[nx][ny] = true;
                 queue.offer(new int[] {nx, ny, w + 1});
             }

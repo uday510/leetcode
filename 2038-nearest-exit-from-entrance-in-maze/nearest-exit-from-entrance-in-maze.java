@@ -1,51 +1,44 @@
 class Solution {
-
-    private static int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
-
-    public int nearestExit(char[][] maze, int[] en) {
+    
+    public int nearestExit(char[][] maze, int[] entrance) {
+        int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
         
-        int n = maze.length;
-        int m = maze[0].length;
+        int n = maze.length, m = maze[0].length;
         boolean[][] vis = new boolean[n][m];
 
         Queue<int[]> queue = new ArrayDeque<>();
-        vis[en[0]][en[1]] = true;
-        queue.offer(new int[] {en[0], en[1], 0});
-
+        vis[entrance[0]][entrance[1]] = true;
+        queue.offer(new int[] {entrance[0], entrance[1], 0});
+        
+        int dx, dy, nx, ny, w;
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int x = cur[0], y = cur[1], w = cur[2];
+            dx = cur[0]; dy = cur[1]; w = cur[2];
             
-            for (int[] nxt : DIRs) {
-                int nx = nxt[0] + x, ny = nxt[1] + y;
-
-                if (!isValid(nx, ny, n, m) || vis[nx][ny] || maze[nx][ny] != '.')
-                    continue;
-
-                if (isExit(nx, ny, n, m))
-                    return w + 1;
+            if (w != 0 && isBoundary(dx, dy, n, m)) 
+                return w;
+            
+            for (int[] dir : dirs) {
+                nx = dx + dir[0];
+                ny = dy + dir[1];
                 
+                if (!isValid(nx, ny, n, m, vis, maze)) 
+                    continue;
                 vis[nx][ny] = true;
                 queue.offer(new int[] {nx, ny, w + 1});
             }
+            
         }
-
+        
         return -1;
     }
-
-    private boolean isExit(int x, int y, int n, int m) {
-        return isValid(x, y, n, m) && isBoundary(x, y, n, m);
-    }
-
-    private boolean isValid(int x, int y, int n, int m) {
-        return x > -1 && x < n && y > -1 && y < m;
-    }
-
+    
     private boolean isBoundary(int x, int y, int n, int m) {
-        
-        if (x == 0 || x == n - 1)
-            return true;
-        
-        return (y == 0 || y == m - 1);
+        return (x == n - 1 || y == m - 1 || x == 0 || y == 0);
     }
+
+    private boolean isValid(int x, int y, int n, int m, boolean[][] vis, char[][] maze) {
+        return (x >= 0 && x < n && y >= 0 && y < m && !vis[x][y] && maze[x][y] == '.');
+    }
+
 }

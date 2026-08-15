@@ -1,13 +1,12 @@
 class Solution {
 
-    private static int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+    private static int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
     public int[][] updateMatrix(int[][] arr) {
-        
-        int n = arr.length, m = arr[0].length;
-        int[][] res = new int[n][m];
 
         Queue<int[]> queue = new ArrayDeque<>();
+        int n = arr.length, m = arr[0].length;
+        int[][] res = new int[n][m];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -24,17 +23,16 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int x = cur[0], y = cur[1], w = cur[2];
 
             for (int[] nxt : DIRs) {
-                int nx = nxt[0] + x;
-                int ny = nxt[1] + y;
+                int nx = nxt[0] + cur[0];
+                int ny = nxt[1] + cur[1];
 
                 if (nx < 0 || nx >= n || ny < 0 || ny >= m || res[nx][ny] >= 0)
                     continue;
-
-                res[nx][ny] = w + 1;
-                queue.offer(new int[] {nx, ny, w + 1});
+                
+                res[nx][ny] = cur[2] + 1;
+                queue.offer(new int[] {nx, ny, cur[2] + 1});
             }
         }
 

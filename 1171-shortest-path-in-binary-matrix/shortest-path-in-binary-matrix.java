@@ -1,33 +1,42 @@
 class Solution {
 
-    public int shortestPathBinaryMatrix(int[][] grid) {
-        if (grid[0][0] == 1) return -1;
-        int n = grid.length;
+    private final static int[][] DIRs = {
+        {0, 1}, {1, 0}, {-1, 0}, {0, -1},
+        {-1, -1}, {1, -1}, {-1, 1}, {1, 1}
+    };
 
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int n = grid.length, m = grid[0].length;
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.offer(new int[] {0, 0, 1});
+
+        if (grid[0][0] == 1) 
+            return -1;
+        
         grid[0][0] = 2;
+        queue.offer(new int[] {0, 0, 1});
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int dx = cur[0], dy = cur[1], w = cur[2];
-            
-            if (dx == n - 1 && dy == n - 1) return w;
+            int x = cur[0], y = cur[1], w = cur[2];
 
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    if (Math.abs(i) + Math.abs(j) == 0) continue;
+            if (x == n - 1 && y == m - 1) {
+                return w;
+            }
 
-                    int nx = dx + i, ny = dy + j;
+            for (int[] nxt : DIRs) {
+                int nx = nxt[0] + x;
+                int ny = nxt[1] + y;
 
-                    if (nx < 0 || nx >= n || ny < 0 || ny >= n || grid[nx][ny] != 0) continue;
-
-                    queue.offer(new int[] {nx, ny, w + 1});
-                    grid[nx][ny] = 2;
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] > 0) {
+                    continue;
                 }
+
+                grid[nx][ny] = 2;
+                queue.offer(new int[] {nx, ny, w + 1});
             }
         }
 
         return -1;
     }
+
 }

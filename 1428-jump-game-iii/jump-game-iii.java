@@ -1,5 +1,6 @@
 class Solution {
     public boolean canReach(int[] arr, int st) {
+        
         int en = 0, n = arr.length;
         Queue<Integer> queue = new ArrayDeque<>();
         boolean[] vis = new boolean[n];
@@ -10,16 +11,18 @@ class Solution {
         while (!queue.isEmpty()) {
             int cur = queue.poll();
 
-            if (arr[cur] == en) return true;
-
+            if (arr[cur] == en)
+                return true;
+            
             for (int nxt : new int[] {cur + arr[cur], cur - arr[cur]}) {
-                if (nxt < 0 || nxt >= n || vis[nxt]) continue;
+
+                if (nxt < 0 || nxt >= n || vis[nxt])
+                    continue;
 
                 vis[nxt] = true;
                 queue.offer(nxt);
             }
         }
-
 
         return false;
     }

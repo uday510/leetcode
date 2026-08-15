@@ -1,51 +1,51 @@
 class Solution {
-    public List<List<String>> findLadders(String st, String en, List<String> wList) {
-        
+    public List<List<String>> findLadders(String st, String en, List<String> words) {
         List<List<String>> res = new ArrayList<>();
 
-        if (st.equals(en))
-            return res;
-
-        Set<String> validWords = new HashSet<>(wList);
-
-        if (!validWords.contains(en))
+        if(st.equals(en))
             return res;
         
+        Set<String> validWords = new HashSet<>(words);
         Map<String, List<String>> adj = new HashMap<>();
         Queue<String> queue = new ArrayDeque<>();
 
         validWords.remove(st);
         queue.offer(st);
+
         boolean isFound = false;
         while (!queue.isEmpty() && !isFound) {
-            int sz = queue.size();
             Set<String> tmp = new HashSet<>();
+            int sz = queue.size();
 
             for (int i = 0; i < sz; i++) {
-                String curStr = queue.poll();
-                char[] chars = Objects.requireNonNull(curStr).toCharArray();
+                String s = queue.poll();
+                char[] ch = s.toCharArray();
 
-                for (int j = 0; j < chars.length; j++) {
-                    char prev = chars[j];
+                for (int j = 0; j < ch.length; j++) {
+                    char o = ch[j];
 
-                    for (char cur = 'a'; cur <= 'z'; cur++) {
-                        if (prev == cur) continue;
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        if (c == o) continue;
 
-                        chars[j] = cur;
-                        String newStr = new String(chars);
+                        ch[j] = c;
+                        String cur = new String(ch);
 
-                        if (!validWords.contains(newStr)) continue;
-                        adj.computeIfAbsent(newStr, k -> new ArrayList<>()).add(curStr);
+                        if (!validWords.contains(cur)) 
+                            continue;
+                        
+                        adj.computeIfAbsent(cur, k -> new ArrayList<>()).add(s);
 
-                        if (tmp.contains(newStr)) continue;
-
-                        queue.offer(newStr);
-                        tmp.add(newStr);
-                        if (newStr.equals(en)) 
+                        if (tmp.contains(cur))
+                            continue;
+                        
+                        if (cur.equals(en)) 
                             isFound = true;
+
+                        tmp.add(cur);
+                        queue.offer(cur);
                     }
 
-                    chars[j] = prev;
+                    ch[j] = o;
                 }
             }
 
@@ -53,27 +53,25 @@ class Solution {
         }
 
         if (!isFound) return res;
-
+        
         dfs(en, st, new ArrayList<>(List.of(en)), adj, res);
 
         return res;
     }
 
-    private void dfs(String str, String en, 
-                    List<String> curList,
-                    Map<String, List<String>> adj,
-                    List<List<String>> res
-                    ) {
+    private void dfs(String s, String e, List<String> cur, Map<String, List<String>> adj, List<List<String>> res) {
 
-                        if (str.equals(en)) {
-                            res.add(new ArrayList<>(curList).reversed());
-                            return;
-                        }
+        if (s.equals(e)) {
+            res.add(new ArrayList<>(cur).reversed());
+            return;
+        }
 
-                        for (String nxt : adj.get(str)) {
-                            curList.add(nxt);
-                            dfs(nxt, en, curList, adj, res);
-                            curList.removeLast();
-                        }
-                    }
+        for (String nxt : adj.get(s)) {
+            cur.add(nxt);
+            dfs(nxt, e, cur, adj, res);
+            cur.removeLast();
+        }
+    }
+
+
 }

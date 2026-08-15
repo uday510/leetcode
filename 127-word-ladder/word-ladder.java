@@ -1,47 +1,51 @@
 class Solution {
+    public int ladderLength(String st, String en, List<String> words) {
+        
+        if (st.equals(en)) 
+            return 0;
+        
+        Set<String> validWords = new HashSet<>(words);
 
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-
-        if (beginWord.equals(endWord))
+        if (!validWords.contains(en))
             return 0;
 
-        Set<String> validWords = new HashSet<>(wordList);
-
-        if (!validWords.contains(endWord))
-            return 0;
-
+        int len = 1;
         Queue<String> queue = new ArrayDeque<>();
-        validWords.remove(beginWord);
-        queue.offer(beginWord);
+        queue.offer(st);
+        validWords.remove(st);
 
-        int ladderLength = 0;
         while (!queue.isEmpty()) {
-            ladderLength++;
+            len++;
 
             int sz = queue.size();
-            
             for (int i = 0; i < sz; i++) {
-                char[] chars = Objects.requireNonNull(queue.poll()).toCharArray();
-                for (int idx = 0; idx < chars.length; idx++) {
+                String cur = queue.poll();
+                char[] chars = cur.toCharArray();
 
-                    char old = chars[idx];
+                for (int j = 0; j < chars.length; j++) {
+                    char old = chars[j];
+
                     for (char c = 'a'; c <= 'z'; c++) {
-                        chars[idx] = c;
-                        String s = new String(chars);
+                        if (c == old) continue;
                         
-                        if (!validWords.contains(s))
-                            continue;
-                        
-                        if (s.equals(endWord))
-                            return ladderLength + 1;
+                        chars[j] = c;
+                        String str = new String(chars);
 
-                        validWords.remove(s);
-                        queue.offer(s);
+                        if (!validWords.contains(str))
+                            continue;
+
+                        if (str.equals(en))
+                            return len;
+                        
+                        validWords.remove(str);
+                        queue.offer(str);
                     }
-                    chars[idx] = old;
+
+                    chars[j] = old;
                 }
             }
         }
+
         return 0;
     }
 }

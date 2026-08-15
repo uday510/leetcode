@@ -9,7 +9,7 @@ class Solution {
         if (!validWords.contains(en))
             return 0;
 
-        int len = 1;
+        int len = 0;
         Queue<String> queue = new ArrayDeque<>();
         queue.offer(st);
         validWords.remove(st);
@@ -35,7 +35,7 @@ class Solution {
                             continue;
 
                         if (str.equals(en))
-                            return len;
+                            return len + 1;
                         
                         validWords.remove(str);
                         queue.offer(str);

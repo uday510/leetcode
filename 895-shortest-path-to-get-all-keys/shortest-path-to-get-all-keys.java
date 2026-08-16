@@ -7,27 +7,27 @@ class Solution {
         boolean[][][] vis = new boolean[n][m][64];
         Queue<int[]> queue = new ArrayDeque<>();
 
-        int mask = 0;
+        int keyMask = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 char c = grid[i].charAt(j);
+
                 if (c == '@') {
-                    queue.offer(new int[] {i, j, 0, 0});
                     vis[i][j][0] = true;
+                    queue.offer(new int[] {i, j, 0, 0});
                 }
 
                 if (isKey(c)) {
-                    mask |= (1 << (c - 'a'));
+                    keyMask |= (1 << (c - 'a'));
                 }
             }
         }
-
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
             int x = cur[0], y = cur[1], curMask = cur[2], w = cur[3];
 
-            if (curMask == mask)
+            if (curMask == keyMask)
                 return w;
 
             for (int[] dir : DIRs) {
@@ -35,23 +35,23 @@ class Solution {
 
                 if (nx < 0 || nx >= n || ny < 0 || ny >= m)
                     continue;
-                    
+                
                 char c = grid[nx].charAt(ny);
-
-                if (isWall(c))
+                if (isWall(c))  
                     continue;
+
                 
                 if (isLock(c) && (curMask & (1 << (c - 'A'))) == 0)
                     continue;
-
-                int newMask = isKey(c) ? (curMask | (1 << (c - 'a'))) : curMask;
-
-                if (vis[nx][ny][newMask])
+                
+                int mask = isKey(c) ? (curMask | (1 << (c - 'a'))) : curMask;
+                if (vis[nx][ny][mask])  
                     continue;
+                
+                vis[nx][ny][mask] = true;
+                queue.offer(new int[] {nx, ny, mask, w + 1});
 
-                vis[nx][ny][newMask] = true;
-                queue.offer(new int[] {nx, ny, newMask, w + 1});
-            } 
+            }
         }
 
         return -1;
@@ -67,3 +67,11 @@ class Solution {
         return c == '#';
     }
 }
+
+/**
+
+ 0 1 0 1 0 1
+
+
+
+ */

@@ -17,7 +17,7 @@ class Solution {
                     vis[x][y][0] = true;
                     queue.offer(new int[] {x, y, 0, 0});
                 }
-                if (isLock(c))
+                if (isKey(c))
                     reqMask |= (1 << (c - 'a'));
             }
         }

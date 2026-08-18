@@ -10,13 +10,12 @@ class Solution {
             }
         }
 
-        if (k == n)
-            return map
+        return k == n ? 
+             map
             .keySet()
             .stream()
-            .max(Comparator.naturalOrder()).orElse(-1);
-
-        return map.entrySet().stream()
+            .max(Comparator.naturalOrder()).orElse(-1)
+            : map.entrySet().stream()
         .filter(e -> e.getValue() == 1)
         .map(Map.Entry::getKey)
         .max(Comparator.naturalOrder())

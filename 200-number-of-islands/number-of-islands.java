@@ -1,44 +1,37 @@
 class Solution {
-
-    private static final char I = '1';
-    private static final char W = '0';
-    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-
     public int numIslands(char[][] grid) {
-        
-        int cnt = 0;
-        int n = grid.length;
-        int m = grid[0].length;
+        int n = grid.length, m = grid[0].length;
+        int total = 0;
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (grid[i][j] == I) {
-                    cnt++;
-                    bfs(grid, i, j, n, m);
+                if (grid[i][j] == '1') {
+                    total++;
+                    bfs(i, j, n, m, grid);
                 }
             }
         }
 
-        return cnt;
+        return total;
     }
 
-    private void bfs(char[][] arr, int i, int j, int n, int m) {
-        arr[i][j] = W;
+    private void bfs(int i, int j, int n, int m, char[][] grid) {
         Queue<int[]> queue = new ArrayDeque<>();
 
+        grid[i][j] = '0';
         queue.offer(new int[] {i, j});
+
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
             int x = cur[0], y = cur[1];
 
-            for (int[] nxt : DIRs) {
-                int nx = x + nxt[0];
-                int ny = y + nxt[1];
+            for (int[] dir : new int[][] {{0, 1}, {1, 0}, {-1, 0}, {0, -1}}) {
+                int nx = dir[0] + x, ny = dir[1] + y;
 
-                if (nx < 0 || nx >= n || ny < 0 || ny >= m || arr[nx][ny] != I) 
-                        continue;
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] == '0') 
+                    continue;
 
-                arr[nx][ny] = W;
+                grid[nx][ny] = '0';
                 queue.offer(new int[] {nx, ny});
             }
         }

@@ -1,10 +1,6 @@
-
 class Solution {
-
-    private static final int[][] DIRs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-
     public int maxAreaOfIsland(int[][] grid) {
-
+        
         int n = grid.length, m = grid[0].length;
         int mx = 0;
 
@@ -29,14 +25,13 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int[] cur = queue.poll();
-            int dx = cur[0], dy = cur[1];
+            
+            for (int[] dir : new int[][] { {0, 1}, {1, 0}, {-1, 0}, {0, -1}}) {
+                int nx = dir[0] + cur[0];
+                int ny = dir[1] + cur[1];
 
-            for (int[] nxt : DIRs) {
-                int nx = dx + nxt[0], ny = dy + nxt[1];
-
-                if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] != 1) {
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || grid[nx][ny] == 0)
                     continue;
-                }
                 
                 grid[nx][ny] = 0;
                 cnt++;
@@ -46,5 +41,4 @@ class Solution {
 
         return cnt;
     }
-
 }

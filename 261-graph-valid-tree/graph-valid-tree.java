@@ -6,11 +6,9 @@ class Solution {
         for (int[] e : edges) {
             int u = e[0], v = e[1];
 
-            if (dsu.isConnected(u, v)) {
+            if (!dsu.union(u, v)) {
                 return false;
             }
-
-            dsu.union(u, v);
         }
         
         return true;
@@ -30,12 +28,12 @@ class DSU {
         }
     }
 
-    void union(int x, int y) {
+    boolean union(int x, int y) {
         int rootX = find(x);
         int rootY = find(y);
 
         if (rootX == rootY)
-            return;
+            return false;
         
         if (rank[rootX] > rank[rootY]) {
             root[rootY] = rootX;
@@ -46,14 +44,11 @@ class DSU {
             root[rootY] = rootX;
         }
 
+        return true;
     }
     int find(int x) {
         if (x == root[x])
             return x;
         return root[x] = find(root[x]);
-    }
-
-    boolean isConnected(int x, int y) {
-        return find(x) == find(y);
     }
 }

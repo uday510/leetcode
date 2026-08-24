@@ -15,9 +15,11 @@ class Solution {
                 int u = queue.poll();
 
                 for (int v : graph[u]) {
-                    if (color[v] == color[u]) return false;
-
-                    if (color[v] != 0) continue;
+                    if (color[v] == color[u]) 
+                        return false;
+                    
+                    if (color[v] != 0)
+                        continue;
 
                     color[v] = -color[u];
                     queue.offer(v);

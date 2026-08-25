@@ -16,7 +16,7 @@ class Solution {
                     d += s1.charAt(k) == s2.charAt(k) ? 0 : 1;
                 }
 
-                if (d == 0 || d == 2) {
+                if (d <= 2) {
                     dsu.union(i, j);
                 }
             }

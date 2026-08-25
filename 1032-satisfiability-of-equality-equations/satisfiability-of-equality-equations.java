@@ -2,21 +2,17 @@ class Solution {
     public boolean equationsPossible(String[] eqs) {
         DSU dsu = new DSU(26);
 
-        for (String eq : eqs) {
-            if (eq.charAt(1) == eq.charAt(2)) {
-                dsu.union(
-                    eq.charAt(0) - 'a', 
-                    eq.charAt(3) - 'a');
+        for (String e : eqs) {
+
+            if (e.charAt(1) == e.charAt(2)) {
+                dsu.union(e.charAt(0) - 'a', e.charAt(3) - 'a');
             }
         }
 
-        for (String eq : eqs) {
-            if (eq.charAt(1) != eq.charAt(2) && 
-                dsu.isConnected(
-                    eq.charAt(0) - 'a', 
-                    eq.charAt(3) - 'a'
-                    )) {
-
+        for (String e : eqs) {
+            if (e.charAt(1) != e.charAt(2) && (
+                dsu.find(e.charAt(0) - 'a') == dsu.find(e.charAt(3) - 'a'))
+                ) {
                 return false;
             }
         }
@@ -43,8 +39,9 @@ class DSU {
         int rx = find(x);
         int ry = find(y);
 
-        if (rx == ry) return;
-
+        if (rx == ry)
+            return;
+        
         if (rank[rx] > rank[ry]) {
             root[ry] = rx;
         } else if (rank[ry] > rank[rx]) {
@@ -56,12 +53,8 @@ class DSU {
     }
 
     int find(int x) {
-        if (x == root[x])
+        if (x == root[x]) 
             return x;
         return root[x] = find(root[x]);
-    }
-
-    boolean isConnected(int x, int y) {
-        return find(x) == find(y);
     }
 }

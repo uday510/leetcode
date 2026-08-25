@@ -76,7 +76,7 @@ class DSU {
         } else if (rank[ry] > rank[rx]) {
             root[rx] = ry;
         } else {
-            rank[x]++;
+            rank[rx]++;
             root[ry] = rx;
         }
     }

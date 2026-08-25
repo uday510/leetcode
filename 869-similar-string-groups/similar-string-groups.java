@@ -1,74 +1,75 @@
 class Solution {
     public int numSimilarGroups(String[] strs) {
+        
         int n = strs.length;
-        UnionFind uf = new UnionFind(n);
+        DSU dsu = new DSU(n);
 
         for (int i = 0; i < n; i++) {
             String s1 = strs[i];
+
             for (int j = i + 1; j < n; j++) {
                 String s2 = strs[j];
+
                 int d = 0;
 
-                for (int k = 0; k < s1.length() && d < 3; k++) {
-                    d += s1.charAt(k) != s2.charAt(k) ? 1 : 0;
+                for (int k = 0; k < Math.min(s1.length(), s2.length()) && d < 3; k++) {
+                    d += s1.charAt(k) == s2.charAt(k) ? 0 : 1;
                 }
 
                 if (d == 0 || d == 2) {
-                    uf.union(i, j);
+                    dsu.union(i, j);
                 }
             }
         }
 
-        return uf.getComponents();
+        return dsu.getComponents();
     }
+
 }
 
-class UnionFind {
-    private final int[] root;
-    private final int[] rank;
+class DSU {
+    int[] root;
+    int[] rank;
+    int components;
 
-    private int components;
-
-    public UnionFind(int size) {
-        root = new int[size];
-        rank = new int[size];
-        components = size;
-
-        for (int i = 0; i < size; i++) {
+    DSU (int n) {
+        root = new int[n];
+        rank = new int[n];
+        components = n;
+        for (int i = 0; i < n; i++) {
             root[i] = i;
             rank[i] = 1;
         }
     }
 
-    public int find(int x) {
-        if (x == root[x]) return x;
-
-        return root[x] = find(root[x]);
-    }
-
-    public void union(int x, int y) {
+    boolean union(int x, int y) {
         int rootX = find(x);
         int rootY = find(y);
 
-        if (rootX == rootY) return;
-
-        if (rank[rootX] > rank[rootY]) {
-            root[rootY] = rootX;
-        } else if (rank[rootX] < rank[rootY]) {
-            root[rootX] = rootY;
-        } else {
-            root[rootY] = rootX;
-            rank[rootX] += 1;
-        }
+        if (rootX == rootY)
+            return false;
 
         components--;
+        if (rank[rootX] > rank[rootY]) {
+            root[rootY] = rootX;
+        } else if (rank[rootY] > rank[rootX]) {
+            root[rootX] = rootY;
+        } else {
+            rank[rootX]++;
+            root[rootY] = rootX;
+        }
+
+        return true;
     }
 
-    public boolean connected(int x, int y) {
-        return find(x) == find(y);
-    }
-
-    public int getComponents() {
+    int getComponents() {
         return components;
     }
+    
+    int find(int x) {
+        if (x == root[x])
+            return x;
+        return root[x] = find(root[x]);
+    }
+    
 }

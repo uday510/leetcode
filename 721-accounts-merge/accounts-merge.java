@@ -1,34 +1,35 @@
 class Solution {
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
         
+        Map<String, Integer> owner = new HashMap<>();
         int n = accounts.size();
         DSU dsu = new DSU(n);
-        Map<String, Integer> owner = new HashMap<>();
 
         for (int i = 0; i < n; i++) {
-            List<String> acc = accounts.get(i);
-            for (int j = 1; j < acc.size(); j++) {
-                Integer id = owner.putIfAbsent(acc.get(j), i);
-                if (id != null) dsu.union(id, i);
+            List<String> ac = accounts.get(i);
+            for (int j = 1; j < ac.size(); j++) {
+                Integer id = owner.putIfAbsent(ac.get(j), i);
+                if (id != null) {
+                    dsu.union(id, i);
+                }
             }
         }
 
-        Map<Integer, List<String>> groups = new HashMap<>();
+        Map<Integer, List<String>> grps = new HashMap<>();
         for (Map.Entry<String, Integer> es : owner.entrySet()) {
             String email = es.getKey();
-            Integer group = dsu.find(es.getValue());
+            Integer grp = dsu.find(es.getValue());
 
-            groups.computeIfAbsent(group, k -> new ArrayList<>()).add(email);
+            grps.computeIfAbsent(grp, k -> new ArrayList<>()).add(email);
         }
 
         List<List<String>> res = new ArrayList<>();
-
-        for (Map.Entry<Integer, List<String>> group : groups.entrySet()) {
-            Integer root = group.getKey();
-            List<String> emails = group.getValue();
+        for (Map.Entry<Integer, List<String>> grp : grps.entrySet()) {
+            Integer r = grp.getKey();
+            List<String> emails = grp.getValue();
 
             Collections.sort(emails);
-            emails.add(0, accounts.get(root).getFirst());
+            emails.add(0, accounts.get(r).getFirst());
             res.add(emails);
         }
 
@@ -36,27 +37,25 @@ class Solution {
     }
 }
 
-
 class DSU {
-    private int[] rank;
-    private int[] root;
+    int[] rank;
+    int[] root;
 
-    public DSU (int n) {
+    DSU (int n) {
         rank = new int[n];
         root = new int[n];
-
+        
         for (int i = 0; i < n; i++) {
             rank[i] = 1;
             root[i] = i;
         }
     }
 
-
     void union(int x, int y) {
         int rx = find(x);
         int ry = find(y);
 
-        if (rx == ry)   
+        if (rx == ry)
             return;
         
         if (rank[rx] > rank[ry]) {
@@ -65,10 +64,9 @@ class DSU {
             root[rx] = ry;
         } else {
             rank[rx]++;
-            root[ry] = rx;
+            root[rx] = ry;
         }
     }
-
 
     int find(int x) {
         if (x == root[x])
@@ -76,26 +74,16 @@ class DSU {
         return root[x] = find(root[x]);
     }
 
-    boolean isConnected(int x, int y) {
-        return find(x) == find(y);
-    }
 }
 
 /**
 
 
-johnsmith@mail.com -> 0
-john_newyork@mail.com -> 0
-john00@mail.com -> 1
-mary@mail.com -> 2
-johnnybravo@mail.com -> 3
+["John","johnsmith@mail.com","john_newyork@mail.com"],
+["John","johnsmith@mail.com","john00@mail.com"],
+["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]
 
-0 -> [johnsmith@mail.com, john_newyork@mail.com]
-1 -> [john00@mail.com]
-2 -> [mary@mail.com]
-3 -> [johnnybravo@mail.com]
-
-
-
+"johnsmith@mail.com"        ->      0
+"john_newyork@mail.com"     -> 
 
 */

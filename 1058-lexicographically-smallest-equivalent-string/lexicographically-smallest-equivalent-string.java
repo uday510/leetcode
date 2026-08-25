@@ -1,92 +1,121 @@
 class Solution {
-        public String smallestEquivalentString(String s1, String s2, String baseStr) {
+    public String smallestEquivalentString(String s1, String s2, String base) {
         int n = s1.length();
-        UnionFind uf = new UnionFind(26);
+        DSU dsu = new DSU(26);
 
         for (int i = 0; i < n; i++) {
-            int x = s1.charAt(i) - 'a', y = s2.charAt(i) - 'a';
-            uf.union(x, y);
+            dsu.union(s1.charAt(i) - 'a', s2.charAt(i) - 'a');
         }
 
         Map<Integer, Integer> map = new HashMap<>();
-        
+
         for (int i = 0; i < n; i++) {
-            int x = s1.charAt(i) - 'a', y = s2.charAt(i) - 'a';
-            int rootX = uf.find(x), rootY = uf.find(y);
+            int c1 = s1.charAt(i) - 'a', c2 = s2.charAt(i) - 'a';
+            int r1 = dsu.find(c1), r2 = dsu.find(c2);
 
-            if (!map.containsKey(rootX)) map.put(rootX, x);
-            else map.put(rootX, Math.min(map.get(rootX), x));
+            if (map.containsKey(r1)) {
+                map.put(r1, Math.min(map.get(r1), Math.min(c1, c2)));
+            } else {
+                map.put(r1, Math.min(c1, c2));
+            }
 
-            if (!map.containsKey(rootY)) map.put(rootY, y);
-            else map.put(rootY, Math.min(map.get(rootY), y));
+            if (map.containsKey(r2)) {
+                map.put(r2, Math.min(map.get(r2), Math.min(c1, c2)));
+            } else {
+                map.put(r2, Math.min(c1, c2));
+            }
         }
-        
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < baseStr.length(); i++) {
-            int root = uf.find(baseStr.charAt(i) - 'a');
 
-            if (map.containsKey(root)) {
-                sb.append((char)(map.get(root) + 'a'));
-            } else sb.append(baseStr.charAt(i));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < base.length(); i++) {
+            char c = base.charAt(i);
+            int r = dsu.find(c - 'a');
+
+            if (map.containsKey(r)) {
+                sb.append((char) (map.get(r) + 'a'));
+            } else {
+                sb.append(c);
+            }
         }
 
         return sb.toString();
     }
-
 }
 
-class UnionFind {
-    private final int[] root;
-    // Use a rank array to record the height of each vertex, i.e., the "rank" of each vertex.
-    private final int[] rank;
 
-    private int components;
+class DSU {
+    int[] rank;
+    int[] root;
 
-    public UnionFind(int size) {
-        root = new int[size];
-        rank = new int[size];
-        components = size;
 
-        for (int i = 0; i < size; i++) {
+    DSU (int n) {
+        rank = new int[n];
+        root = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            rank[i] = 1;
             root[i] = i;
-            rank[i] = 1;  // The initial "rank" of each vertex is 1, because each of them is
-            // a standalone vertex with no connection to other vertices.
         }
     }
 
-    // The find function here is the same as that in the disjoint set with path compression.
-    public int find(int x) {
-        if (x == root[x]) return x;
-
-        // Some ranks may become obsolete so they are not updated
+    int find(int x) {
+        if (x == root[x]) 
+            return x;
         return root[x] = find(root[x]);
     }
 
-    // The union function with union by rank
-    public void union(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
+    void union(int x, int y) {
+        int rx = find(x);
+        int ry = find(y);
 
-        if (rootX == rootY) return;
-
-        if (rank[rootX] > rank[rootY]) {
-            root[rootY] = rootX;
-        } else if (rank[rootX] < rank[rootY]) {
-            root[rootX] = rootY;
+        if (rx == ry)
+            return;
+        
+        if (rank[rx] > rank[ry]) {
+            root[ry] = rx;
+        } else if (rank[ry] > rank[rx]) {
+            root[rx] = ry;
         } else {
-            root[rootY] = rootX;
-            rank[rootX] += 1;
+            rank[x]++;
+            root[ry] = rx;
         }
-
-        components--;
-    }
-
-    public boolean connected(int x, int y) {
-        return find(x) == find(y);
-    }
-
-    public int getComponents() {
-        return components;
     }
 }
 
+/**
+
+
+p: p m
+a: a o
+r: r k s
+i: e i
+
+----
+
+
+p: p
+a: a
+r: r
+k: r
+e: i
+r: r
+
+m: p
+o: a
+r: r
+r: r
+i: i
+s: r
+
+Input: s1 = "parker", s2 = "morris", baseStr = "parser"
+
+Output: "makkek"
+
+Explanation: Based on the equivalency information in s1 and s2, we can group their characters as [m,p], [a,o], [k,r,s], [e,i].
+The characters in each group are equivalent and sorted in lexicographical order.
+So the answer is "makkek".
+
+
+
+
+ */

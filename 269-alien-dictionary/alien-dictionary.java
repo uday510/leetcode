@@ -1,5 +1,4 @@
 class Solution {
-
     public String alienOrder(String[] words) {
         
         Map<Character, Set<Character>> adj = new HashMap<>();
@@ -17,7 +16,7 @@ class Solution {
             String w1 = words[i], w2 = words[i + 1];
 
             if (w1.length() > w2.length() && w1.startsWith(w2)) {
-                return "";
+                return new String();
             }
 
             int m = Math.min(w1.length(), w2.length());
@@ -36,13 +35,12 @@ class Solution {
         }
 
         Queue<Character> queue = new ArrayDeque<>();
-
         for (Map.Entry<Character, Integer> e : in.entrySet()) {
-            if (e.getValue() == 0) queue.offer(e.getKey());
+            if (e.getValue() == 0) 
+                queue.offer(e.getKey());
         }
 
         StringBuilder sb = new StringBuilder();
-
         while (!queue.isEmpty()) {
             char u = queue.poll();
             sb.append(u);
@@ -56,9 +54,10 @@ class Solution {
             }
         }
 
-        if (sb.length() != in.size()) return "";
+        if (sb.length() != in.size()) 
+            return new String();
 
         return sb.toString();
-
     }
+
 }

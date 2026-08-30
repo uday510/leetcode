@@ -22,17 +22,15 @@ class Solution {
 
      }
 
-
      
      int res = -1;
 
      if (maxIdx < minIdx) {
-        int op1 = n - minIdx + maxIdx + 1;
-        int op2 = minIdx + 1;
-        int op3 = n - maxIdx;
+        int op1 = n - minIdx + maxIdx + 1; // 6
+        int op2 = minIdx + 1; // 6
+        int op3 = n - maxIdx; // 2
         res = Math.min(op1, Math.min(op2, op3));
      } else {
-        System.out.println("vfg");
         int op1 = n - maxIdx + minIdx + 1; // 3 - 2 + 1 + 1 // 3
         int op2 = maxIdx + 1; // 3
         int op3 = n - minIdx; // 3 - 1 // 2

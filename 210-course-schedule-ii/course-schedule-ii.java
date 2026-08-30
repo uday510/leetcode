@@ -1,32 +1,32 @@
 class Solution {
-    public int[] findOrder(int n, int[][] preq) {
-
+    public int[] findOrder(int n, int[][] pre) {
         List<Integer>[] adj = new ArrayList[n];
-
-        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
-
+        Queue<Integer> queue = new ArrayDeque<>();
         int[] in = new int[n];
 
-        for (int[] p : preq) {
-            int u = p[0], v = p[1];
-            adj[v].add(u);
-            in[u]++;
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
         }
 
-        Queue<Integer> queue = new ArrayDeque<>();
+        for (int[] p : pre) {
+            int u = p[1], v = p[0];
+            adj[u].add(v);
+            in[v]++;
+        }
 
         for (int i = 0; i < n; i++) {
-            if (in[i] == 0) queue.offer(i);
+            if (in[i] == 0) {
+                queue.offer(i);
+            }
         }
 
+        int total = 0, idx = 0;
         int[] res = new int[n];
-        int fi = 0, idx = 0;
-
+        
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            fi++;
+            total++;
             res[idx++] = u;
-
             for (int v : adj[u]) {
                 if (--in[v] == 0) {
                     queue.offer(v);
@@ -34,7 +34,6 @@ class Solution {
             }
         }
 
-        return fi == n ? res : new int[] {};
-        
+        return total == n ? res : new int[] {};
     }
 }

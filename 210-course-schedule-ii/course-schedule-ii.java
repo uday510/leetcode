@@ -25,8 +25,7 @@ class Solution {
         
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            total++;
-            res[idx++] = u;
+            total++; res[idx++] = u;
             for (int v : adj[u]) {
                 if (--in[v] == 0) {
                     queue.offer(v);

@@ -1,7 +1,7 @@
 class Solution {
     public boolean canFinish(int n, int[][] pre) {
         List<Integer>[] adj = new ArrayList[n];
-        int[] in = new int[n];
+        int[] inorder = new int[n];
 
         for (int i = 0; i < n; i++) 
             adj[i] = new ArrayList<>();
@@ -9,28 +9,27 @@ class Solution {
         for (int[] p : pre) {
             int u = p[1], v = p[0];
             adj[u].add(v);
-            in[v]++;
+            inorder[v]++;
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            if (in[i] == 0) {
+            if (inorder[i] == 0) {
                 queue.offer(i);
             }
         }
 
         int total = 0;
         while (!queue.isEmpty()) {
-            if(++total == n)
-                return true;
-
+            total++;
             int u = queue.poll();
             for (int v : adj[u]) {
-                if (--in[v] == 0)   
+                if (--inorder[v] == 0) {
                     queue.offer(v);
+                }
             }
         }
 
-        return false;
+        return total == n;
     }
 }

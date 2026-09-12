@@ -1,36 +1,40 @@
 class Solution {
-    
-    public int swimInWater(int[][] grid) {
-        int n = grid.length;
+    public int swimInWater(int[][] arr) {
+        
+        int n = arr.length;
         int[][] dists = new int[n][n];
-        int INF = (int) 1e9;
+        int unk = Integer.MAX_VALUE;
 
-        for (int[] row : dists) Arrays.fill(row, INF);
+        for (int[] r : dists) {
+            Arrays.fill(r, unk);
+        }
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
-        pq.offer(new int[] {0, 0, grid[0][0]});
-        dists[0][0] = grid[0][0];
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[2]));
+        dists[0][0] = arr[0][0];
+        pq.offer(new int[] {0, 0, arr[0][0]});
 
         int[][] dirs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
 
         while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int r = curr[0], c = curr[1], d = curr[2];
+            int[] cur = pq.poll();
+            int x1 = cur[0], y1 = cur[1], w = cur[2];
 
-            if (r == n - 1 && c == n - 1) return d;
-            if (dists[r][c] < d) continue;
+            if (dists[x1][y1] < w) {
+                continue;
+            }
 
             for (int[] dir : dirs) {
-                int R = dir[0] + r;
-                int C = dir[1] + c;
+                int x2 = dir[0] + x1, y2 = dir[1] + y1;
 
-                if (R < 0 || R >= n || C < 0 || C >= n) continue;
+                if (x2 < 0 || x2 >= n || y2 < 0 || y2 >= n) {
+                    continue;
+                }
 
-                int D = Math.max(d, grid[R][C]);
+                int w2 = Math.max(w, arr[x2][y2]);
 
-                if (D < dists[R][C]) {
-                    dists[R][C] = D;
-                    pq.offer(new int[] {R, C, D} );
+                if (w2 < dists[x2][y2]) {
+                    dists[x2][y2] = w2;
+                    pq.offer(new int[] {x2, y2, w2});
                 }
             }
         }

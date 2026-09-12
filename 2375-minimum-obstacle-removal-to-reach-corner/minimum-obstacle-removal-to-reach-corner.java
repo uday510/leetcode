@@ -10,7 +10,7 @@ class Solution {
 
         int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
-        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[2]));
+        Deque<int[]> pq = new ArrayDeque<>();
 
         dists[0][0] = arr[0][0];
         pq.offer(new int[] { 0, 0, arr[0][0] });

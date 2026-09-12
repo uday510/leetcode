@@ -1,35 +1,43 @@
 class Solution {
-    public int minimumEffortPath(int[][] heights) {
-        int m = heights.length, n = heights[0].length, INF = 0x7fffffff;
-        final int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}},
-        dist = new int[m][n];
+    public int minimumEffortPath(int[][] h) {
+        int n = h.length, m = h[0].length;
+        int[][] dists = new int[n][m];
+        Queue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[2] - o2[2]);
+
+        int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+        int unk = Integer.MAX_VALUE;
+        for (int[] r : dists) {
+            Arrays.fill(r, unk);
+        }
+
+        dists[0][0] = 0;
+        pq.offer(new int[] {0, 0, 0});
         
-        for (int[] row : dist) Arrays.fill(row, INF);
-        dist[0][0] = 0;
-
-        var pq = new PriorityQueue<int[]>((o1, o2) -> o1[2] - o2[2]);
-
-        pq.offer(new int[]{0, 0, 0});
         while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int x1 = curr[0], y1 = curr[1], d1 = curr[2];
+            int[] cur = pq.poll();
+            int x1 = cur[0], y1 = cur[1], w = cur[2];
 
-            if (dist[x1][y1] < d1) continue;
-            for (int[] dir : dirs) {
-                int x2 = dir[0] + x1, y2 = dir[1] + y1;
+            if (dists[x1][y1] < w) {
+                continue;
+            }
 
-                if (x2 < 0 || x2 >= m || y2 < 0 || y2 >= n) continue;
+            for (int[] nxt : dirs) {
+                int x2 = nxt[0] + x1, y2 = nxt[1] + y1;
 
-                int diff = Math.abs(heights[x1][y1] - heights[x2][y2]);
-                int d2 = Math.max(d1, diff);
+                if (x2 < 0 || x2 >= n || y2 < 0 || y2 >= m) {
+                    continue;
+                }
 
-                if (d2 < dist[x2][y2]) {
-                    dist[x2][y2] = d2;
-                    pq.offer(new int[]{x2, y2, d2});
+                int w1 = Math.max(w, Math.abs(h[x1][y1] - h[x2][y2]));
+
+                if (w1 < dists[x2][y2]) {
+                    dists[x2][y2] = w1;
+                    pq.offer(new int[] {x2, y2, w1});
                 }
             }
         }
 
-        return dist[m - 1][n - 1];
+        return dists[n - 1][m - 1];
     }
 }

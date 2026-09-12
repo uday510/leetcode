@@ -1,4 +1,5 @@
 class Solution {
+    
     public int minimumEffortPath(int[][] h) {
         int n = h.length, m = h[0].length;
         int[][] dists = new int[n][m];
@@ -40,4 +41,5 @@ class Solution {
 
         return dists[n - 1][m - 1];
     }
+
 }

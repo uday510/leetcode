@@ -1,54 +1,44 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-
 class Solution {
-
-    public int minimumObstacles(int[][] grid) {
-
-        int m = grid.length;
-        int n = grid[0].length;
-        int[][] dist = new int[m][n];
+    public int minimumObstacles(int[][] arr) {
+        int n = arr.length, m = arr[0].length;
+        int[][] dists = new int[n][m];
         int unk = Integer.MAX_VALUE;
 
-        for (int[] r : dist)
+        for (int[] r : dists) {
             Arrays.fill(r, unk);
+        }
 
-        Deque<int[]> queue = new ArrayDeque<>();
+        int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
 
-        dist[0][0] = grid[0][0] == 0 ? 0 : 1;
-        queue.offerFirst(new int[] {0, 0, dist[0][0]});
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(k -> k[2]));
 
-        int[][] DIRs = { {0, 1}, {1, 0}, {-1, 0}, {0, -1} };
+        dists[0][0] = arr[0][0];
+        pq.offer(new int[] { 0, 0, arr[0][0] });
 
-        while (!queue.isEmpty()) {
-            int[] cur = queue.pollFirst();
-            int dx = cur[0], dy = cur[1], w = cur[2];
-            
-            if (dx == m - 1 && dy == n - 1)
-                return w;
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int x1 = cur[0], y1 = cur[1], w = cur[2];
 
-            for (int[] nxt : DIRs) {
-                int nx = nxt[0] + dx, ny = nxt[1] + dy;
+            if (dists[x1][y1] < w) {
+                continue;
+            }
 
-                if (nx < 0 || nx >= m || ny < 0 || ny >= n)
+            for (int[] dir : dirs) {
+                int x2 = x1 + dir[0], y2 = y1 + dir[1];
+
+                if (x2 < 0 || x2 >= n || y2 < 0 || y2 >= m) {
                     continue;
+                }
 
-                int w1 = w + grid[nx][ny];
-                
-                if (w1 < dist[nx][ny]) {
-                    
-                    dist[nx][ny] = w1;
-                    if (grid[nx][ny] == 0) {
-                        queue.offerFirst(new int[] {nx, ny, w1});
-                    } else {
-                        queue.offerLast(new int[] {nx, ny, w1});
-                    }
+                int w1 = w + arr[x2][y2];
+
+                if (w1 < dists[x2][y2]) {
+                    dists[x2][y2] = w1;
+                    pq.offer(new int[] {x2, y2, w1});
                 }
             }
         }
 
-        return -1;
+        return dists[n - 1][m - 1];
     }
-
 }

@@ -1,43 +1,52 @@
 class Solution {
-    public int minCost(int[][] grid) {
-        final int m = grid.length, n = grid[0].length;
-        final int[][] costs = new int[m][n];
-        final int INF = (int) 1e9;
+    public int minCost(int[][] arr) {
         
-        for (int[] costRow : costs) Arrays.fill(costRow, INF);
-        
-        final PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
-            return a[2] - b[2];
-        });
-        
-        pq.offer(new int[] {0, 0, 0});
-        costs[0][0] = 0;
-        
-        // Directions: right(1), left(2), down(3), up(4)
-        final int[][] dirs = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
-        
-        while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int row = curr[0], col = curr[1], cost = curr[2];
-            
-            if (costs[row][col] < cost) continue;
-            
-            for (int dir = 0; dir < 4; ++dir) {
-                int newRow = dirs[dir][0] + row;
-                int newCol = dirs[dir][1] + col;
-                
-                if (newRow < 0 || newRow >= m || newCol < 0 || newCol >= n) continue;
-                
-                int newCost = cost + ( ( dir + 1 != grid[row][col] ) ? 1 : 0 );
-                
-                if (newCost < costs[newRow][newCol]) {
-                    costs[newRow][newCol] = newCost;
-                    pq.offer(new int[] { newRow, newCol, newCost });
+        int n = arr.length, m = arr[0].length;
+        int unk = Integer.MAX_VALUE;
+        int[][] dists = new int[n][m];
+
+        for (int[] r : dists) {
+            Arrays.fill(r, unk);
+        }
+
+        int[][] DIRs = { {}, {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+        Deque<int[]> queue = new ArrayDeque<>();
+
+        dists[0][0] = 0;
+        queue.offer(new int[] {0, 0, 0});
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.pollFirst();
+            int x = cur[0], y = cur[1], w = cur[2];
+
+            if (x == n - 1 && y == m - 1) {
+                return w;
+            }
+
+            for (int idx = 1; idx < DIRs.length; idx++) {
+                int[] nxt = DIRs[idx];
+                int nx = nxt[0] + x, ny = nxt[1] + y;
+
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    continue;
                 }
+
+                int w1 = w + (idx == arr[x][y] ? 0 : 1);
+
+                if (w1 >= dists[nx][ny]) {
+                    continue;
+                }
+
+                dists[nx][ny] = w1;
+                if (idx == arr[x][y]) {
+                    queue.offerFirst(new int[] {nx, ny, w1});
+                } else {
+                    queue.offerLast(new int[] {nx, ny, w1});
+                }
+
             }
         }
-        
-        
-        return costs[m - 1][n - 1];
+
+        return -1;
     }
 }

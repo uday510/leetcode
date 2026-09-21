@@ -1,7 +1,7 @@
 class Solution {
     public int search(int[] arr, int t) {
         int l = 0, r = arr.length;
-
+        
         while (l < r) {
             int m = l + ((r - l) >> 1);
 

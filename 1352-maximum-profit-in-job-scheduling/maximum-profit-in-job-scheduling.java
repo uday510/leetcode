@@ -1,45 +1,27 @@
 class Solution {
-
-    private int[][] jobs;
-    private int[] dp;
-    private int n;
-
     public int jobScheduling(int[] st, int[] en, int[] pf) {
-        n = st.length;
-        jobs = new int[n][3];
-        dp = new int[n + 1]; 
+        int n = st.length;
+        int[][] jobs = new int[n][3];
+        int[] dp = new int[n + 1];
 
-        for (int idx = 0; idx < n; idx++) {
-            jobs[idx][0] = st[idx];
-            jobs[idx][1] = en[idx];
-            jobs[idx][2] = pf[idx];
-        }   
+        for (int i = 0; i < n; i++) {
+            jobs[i][0] = st[i];
+            jobs[i][1] = en[i];
+            jobs[i][2] = pf[i];
+        }
 
         Arrays.sort(jobs, Comparator.comparingInt(k -> k[0]));
 
         for (int i = n - 1; i > -1; i--) {
-            int nxt = bs(i + 1, jobs[i][1]);
+            int nxt = bs(jobs, i + 1, n, jobs[i][1]);
             dp[i] = Math.max(dp[i + 1], jobs[i][2] + dp[nxt]);
         }
 
         return dp[0];
-    
     }
 
-    private int dfs(int i) {
-        if (i >= n) return 0;
-
-        if (dp[i] != -1) return dp[i];
-
-        int t1 = dfs(i + 1);
-        int t2 = jobs[i][2] + dfs(bs(i, jobs[i][1]));
-
-        return dp[i] = Math.max(t1, t2);
-    }
-
-    private int bs(int l, int t) {
-        int r = n;
-
+    private int bs(int[][] jobs, int l, int r, int t) {
+        
         while (l < r) {
             int m = l + ((r - l) >> 1);
 

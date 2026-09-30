@@ -1,6 +1,5 @@
 class Solution {
     public char nextGreatestLetter(char[] arr, char t) {
-        
         int l = 0, r = arr.length;
 
         while (l < r) {
@@ -10,6 +9,6 @@ class Solution {
             else r = m;
         }
 
-        return l < arr.length ? arr[l] : arr[0];
+        return l == arr.length ? arr[0] : arr[l];
     }
 }

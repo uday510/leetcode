@@ -9,13 +9,16 @@
 
 public class Solution extends GuessGame {
     public int guessNumber(int n) {
-        int l = 0, r = n;
+        int l = 1, r = n;
 
         while (l < r) {
-            int m = ( l + ((r - l) >> 1));
+            int m = l + ((r - l) >> 1);
 
-            if (guess(m) == 1) l = m + 1;
-            else r = m;
+            int val = guess(m);
+
+            if (val == 1) l = m + 1;
+            else if (val == -1) r = m;
+            else return m;
         }
 
         return l;

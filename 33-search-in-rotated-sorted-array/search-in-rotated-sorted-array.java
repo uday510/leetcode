@@ -9,7 +9,7 @@ class Solution {
             if (arr[m] == t) return m;
 
             if (arr[l] <= arr[m]) {
-                if (arr[l] <= t && t < arr[m]) {
+                if (arr[l] <= t && arr[m] > t) {
                     r = m - 1;
                 } else {
                     l = m + 1;

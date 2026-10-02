@@ -1,40 +1,38 @@
 class SnapshotArray {
-
     private List<Node>[] arr;
-    private int id;
+    private int snapId;
 
-    public SnapshotArray(int len) {
-        arr = new ArrayList[len];
-        id = 0;
+    public SnapshotArray(int n) {
+        arr = new ArrayList[n];
+        snapId = 0;
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < n; i++) {
             arr[i] = new ArrayList<>();
-            arr[i].add(new Node(0, 0) );
         }
     }
+
     
     public void set(int index, int val) {
         var cur = arr[index];
 
-        if (cur.getLast().id == id) cur.getLast().val = val;
-        else cur.add(new Node(id, val));
-        
+        if (cur.isEmpty() || cur.getLast().snapId != snapId) cur.add(new Node(snapId, val));
+        else cur.getLast().val = val;
     }
     
     public int snap() {
-        return id++;
+        return snapId++;
     }
     
     public int get(int index, int snap_id) {
         var cur = arr[index];
 
         int l = 0, r = cur.size();
-        int res = -1;
+        int res = 0;
 
         while (l < r) {
-            int m = l + (r - l) / 2;
+            int m = l + ((r - l) >> 1);
 
-            if (cur.get(m).id <= snap_id) {
+            if (cur.get(m).snapId <= snap_id) {
                 res = cur.get(m).val;
                 l = m + 1;
             } else {
@@ -47,12 +45,9 @@ class SnapshotArray {
 }
 
 class Node {
-    int id;
-    int val;
-
-    Node (int id, int val) {
-        this.id = id;
+    int snapId, val;
+    Node (int snapId, int val) {
+        this.snapId = snapId;
         this.val = val;
     }
 }
-

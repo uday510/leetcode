@@ -10,7 +10,7 @@ class TimeMap {
     }
     
     public String get(String key, int timestamp) {
-        var cur = hm.get(key);
+        List<Node<String, Integer>> cur = hm.get(key);
         if (cur == null) return "";
 
         int l = 0, r = cur.size();

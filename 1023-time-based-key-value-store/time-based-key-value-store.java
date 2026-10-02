@@ -1,6 +1,6 @@
 class TimeMap {
 
-    Map<String, List<Node<String, Integer>>> hm;
+    Map<String, List<Node>> hm;
     public TimeMap() {
         hm = new HashMap<>();
     }
@@ -10,7 +10,7 @@ class TimeMap {
     }
     
     public String get(String key, int timestamp) {
-        List<Node<String, Integer>> cur = hm.get(key);
+        List<Node> cur = hm.get(key);
         if (cur == null) return "";
 
         int l = 0, r = cur.size();
@@ -31,10 +31,10 @@ class TimeMap {
     }    
 }
 
-class Node<K, V> {
-    K v;
-    V t;
-    Node(K v, V t) {
+class Node {
+    String v;
+    int t;
+    Node(String v, int t) {
         this.v = v;
         this.t = t;
     }

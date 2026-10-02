@@ -17,7 +17,6 @@ class Solution {
                     l = m + 1;
                 else r = m - 1;
             }
-            System.out.println(l + " " + r);
         }
 
         return -1;

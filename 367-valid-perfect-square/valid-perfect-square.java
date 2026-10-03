@@ -1,15 +1,16 @@
 class Solution {
-    public boolean isPerfectSquare(int num) {
-        long l = 1, r = num;
+    public boolean isPerfectSquare(int n) {
+        long l = 1, r = n;
 
         while (l < r) {
             long m = l + ((r - l) >> 1);
+
             long cur = (long) (m * m);
 
-            if (cur < num) l = m + 1;
+            if (cur < n) l = m + 1;
             else r = m;
         }
 
-        return l * l == num;
+        return l * l == n;
     }
 }

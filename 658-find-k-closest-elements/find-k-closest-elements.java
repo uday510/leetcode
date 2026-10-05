@@ -21,11 +21,11 @@ class Solution {
             }
         }
 
-        List<Integer> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i = l + 1; i < r; i++) {
-            res.add(arr[i]);
+            list.add(arr[i]);
         }
 
-        return res;
+        return list;
     }
 }

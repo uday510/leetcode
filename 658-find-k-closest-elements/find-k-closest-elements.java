@@ -4,7 +4,7 @@ class Solution {
         int l = 0, r = n;
 
         while (l < r) {
-            int m = l + ( (r - l) >> 1);
+            int m = l + ((r - l) >> 1);
 
             if (arr[m] < x) l = m + 1;
             else r = m;

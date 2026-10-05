@@ -1,8 +1,6 @@
 class Solution {
     public int twoSumLessThanK(int[] arr, int k) {
-        
         Arrays.sort(arr);
-
         int l = 0, r = arr.length - 1;
         int mx = -1;
 
@@ -12,8 +10,7 @@ class Solution {
             if (cur < k) {
                 mx = Math.max(mx, cur);
                 l++;
-            }
-            else {
+            } else {
                 r--;
             }
         }
@@ -21,3 +18,13 @@ class Solution {
         return mx;
     }
 }
+
+/**
+
+
+k = 60
+
+l                   r
+1 8 23 24 33 34 54 75
+
+ */

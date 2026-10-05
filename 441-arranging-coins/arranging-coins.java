@@ -1,18 +1,17 @@
 class Solution {
     public int arrangeCoins(int n) {
-        if (n <= 1) return n;
+        long l = 1, r = n;
 
-        long l = 1, r = (long) n + 1;
+        while (l <= r) {
+            long m = l + ((r - l) >> 1);
 
-        while (l < r) {
-            long m = l + ( (r - l) >> 1);
+            long coins = (m * (m + 1)) / 2;
 
-            long coins = ( m * (m + 1) / 2);
-
-            if (coins <= n) l = m + 1;
-            else r = m;
+            if (coins == n) return (int) m;
+            if (coins < n) l = m + 1;
+            else r = m - 1;
         }
 
-        return (int) l - 1;
+        return (int) r;
     }
 }

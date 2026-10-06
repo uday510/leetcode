@@ -1,28 +1,30 @@
 class Solution {
     public int triangleNumber(int[] arr) {
-        int n = arr.length;
-        int total = 0;
-
         Arrays.sort(arr);
-
-
+        int n = arr.length;
+        int res = 0;
+        
         for (int k = 0; k < n; k++) {
-
             int i = 0, j = k - 1;
 
             while (i < j) {
 
                 if (arr[i] + arr[j] > arr[k]) {
-                    total += (j - i);
+                    res += (j - i);
                     j--;
                 } else {
                     i++;
                 }
             }
-
         }
 
-        return total;
-
+        return res;
     }
 }
+
+/**
+
+2  2  2  4  5
+
+
+ */

@@ -6,7 +6,7 @@ class Solution {
         Arrays.sort(arr);
 
 
-        for (int k = n - 1; k > 1; k--) {
+        for (int k = 0; k < n; k++) {
 
             int i = 0, j = k - 1;
 

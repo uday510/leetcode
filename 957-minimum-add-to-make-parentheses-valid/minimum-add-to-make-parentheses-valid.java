@@ -8,8 +8,10 @@ class Solution {
                 ++stack;
                 continue;
             }
-            int temp = stack == 0 ? ++mismatch : --stack;
+
+            int tmp = stack == 0 ? ++mismatch : --stack;
         }
+
         return mismatch + stack;
     }
 }

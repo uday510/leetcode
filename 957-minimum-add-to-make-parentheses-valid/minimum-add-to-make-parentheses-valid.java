@@ -1,17 +1,16 @@
 class Solution {
     public int minAddToMakeValid(String s) {
-        int stack = 0;
-        int mismatch = 0;
+        int open = 0, mismatch = 0;
 
         for (char c : s.toCharArray()) {
             if (c == '(') {
-                ++stack;
+                ++open;
                 continue;
             }
 
-            int tmp = stack == 0 ? ++mismatch : --stack;
+            int tmp = open == 0 ? ++mismatch : --open;
         }
 
-        return mismatch + stack;
+        return mismatch + open;
     }
 }

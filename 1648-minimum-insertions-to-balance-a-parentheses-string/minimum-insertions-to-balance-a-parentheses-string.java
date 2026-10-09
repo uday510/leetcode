@@ -1,15 +1,15 @@
 class Solution {
     public int minInsertions(String s) {
-        int open = 0, mn = 0, n = s.length();
-        char c;
+        int ops = 0, mn = 0, n = s.length();
+
         for (int i = 0; i < n; i++) {
-            c = s.charAt(i);
+            char c = s.charAt(i);
 
             if (c == '(') {
-                open++;
+                ops++;
             } else {
-               if (open > 0) {
-                    open--;
+               if (ops > 0) {
+                    ops--;
                } else {
                     mn++;
                }
@@ -19,11 +19,10 @@ class Solution {
                 } else {
                     mn++;
                 }
+
             }
         }
 
-        System.out.println(open);
-
-        return mn + (open * 2);
+        return mn + (ops * 2);
     }
 }

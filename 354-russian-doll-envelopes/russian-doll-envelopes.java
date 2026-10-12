@@ -1,7 +1,5 @@
 class Solution {
-
     public int maxEnvelopes(int[][] envs) {
-
         List<Integer> lis = new ArrayList<>();
 
         Arrays.sort(envs, (o1, o2) -> {
@@ -9,15 +7,14 @@ class Solution {
             return o1[0] - o2[0];
         });
 
-
         for (int[] e : envs) {
-
             int val = e[1];
-            int index = bs(val, lis);
+            int idx = bs(val, lis);
 
-            if (index == lis.size()) lis.add(val);
-            lis.set(index, val);
-
+            if (idx == lis.size()) 
+                lis.add(val);
+            
+            lis.set(idx, val);
         }
 
         return lis.size();
@@ -28,7 +25,8 @@ class Solution {
         int l = 0, r = list.size();
 
         while (l < r) {
-            int m = l + ((r - l) >> 1);
+
+            int m = l + ( (r - l) >> 1);
 
             if (list.get(m) < t) l = m + 1;
             else r = m;
@@ -36,13 +34,4 @@ class Solution {
 
         return l;
     }
-
 }
-
-/**
-
-[1, 1] [2, 3] [4, 6] [4, 5] [5, 7]
-
-1, 3, 5, 7
-
- */

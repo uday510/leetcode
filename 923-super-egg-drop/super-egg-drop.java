@@ -1,42 +1,31 @@
 class Solution {
-    public int superEggDrop(int eggs, int floors) {
-        int[][] dp = new int[eggs + 1][floors + 1];
+    public int superEggDrop(int k, int n) {
+        int[][] dp = new int[k + 1][n + 1];
 
-        for (int egg = 1; egg <= eggs; egg++) {
-            for (int floor = 1; floor <= floors; floor++) {
+        for (int i = 1; i <= k; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (i == 1) {
+                    dp[i][j] = j;
+                } else if (j == 1) {
+                    dp[i][j] = 1;
+                } else {
+                    int cur = Integer.MAX_VALUE;
 
-                if (egg == 1) {
-                    dp[egg][floor] = floor;
-                } else if (floor == 1)  {
-                    dp[egg][floor] = 1;
-                }  else {
-                    int best = 0x7fffffff;
-                    // int currMin = Integer.MAX_VALUE;
-                    // for (int f = floor - 1, prevF = 0; f > -1; f--, prevF++) {
-                    //     int v1 = dp[egg][f]; // egg survives
-                    //     int v2 = dp[egg - 1][prevF]; // egg breaks
-                    //     int v = Math.max(v1, v2);
-                    //     currMin = Math.min(currMin, v);
-                    // }
-
-                    int l = 1, r = floor;
-
+                    int l = 1, r = j;
                     while (l <= r) {
-                        int x = l + (( r - l) >> 1);
-                        int broken = dp[egg - 1][x - 1];
-                        int notBroken = dp[egg][floor - x];
-                        int worst = Math.max(broken, notBroken);
-                        best = Math.min(best, worst);
+                        int m = l + ((r - l) >> 1);
+                        int t1 = dp[i - 1][m - 1];
+                        int t2 = dp[i][j - m];
+                        int t3 = Math.max(t1, t2);
+                        cur = Math.min(cur, t3);
 
-                        if (broken < notBroken) l = x + 1;
-                        else r = x - 1;
+                        if (t1 < t2) l = m + 1;
+                        else r = m - 1;
                     }
-
-                    dp[egg][floor] = best + 1;
+                    dp[i][j] = cur + 1;
                 }
             }
         }
-
-        return dp[eggs][floors];
+        return dp[k][n];
     }
 }

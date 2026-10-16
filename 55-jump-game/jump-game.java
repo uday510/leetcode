@@ -5,7 +5,16 @@ class Solution {
         int[] dp = new int[n];
         Arrays.fill(dp, -1);
 
-        return dfs(0, n, arr, dp);
+        // return dfs(0, n, arr, dp);
+
+        int maxReach = n - 1;
+        for (int i = n - 1; i > -1; i--) {
+            if (i + arr[i] >= maxReach) {
+                maxReach = i;
+            }
+        }
+
+        return maxReach == 0;
     }
 
     private boolean dfs(int i, int n, int[] arr, int[] dp) {

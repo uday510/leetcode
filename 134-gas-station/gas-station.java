@@ -1,42 +1,20 @@
 class Solution {
-
-    private int[] gas, cost;
-    private int n;
-
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        this.gas = gas;
-        this.cost = cost;
-        this.n = gas.length;
+        int n = gas.length;
+        int st = 0, left = 0, total = 0;
 
-        int total = 0, tank = 0, st = 0, cur = 0;
-        
         for (int i = 0; i < n; i++) {
-//            if (canComplete(i)) {
-//                return i;
-//            }
-            cur = gas[i] - cost[i];
-            total += cur;
-            tank += cur;
+            int cur = gas[i] - cost[i];
 
-            if (tank < 0) {
-                tank = 0;
+            left += cur;
+            total += cur;
+
+            if (left < 0) {
                 st = i + 1;
+                left = 0;
             }
         }
-        
+
         return total < 0 ? -1 : st;
-    }
-
-    private boolean canComplete(int st) {
-
-        int cur = 0;
-        for (int i = 0; i < n; i++) {
-            int idx = (i + st) % n;
-            cur += gas[idx] - cost[idx];
-
-            if (cur < 0) return false;
-        }
-
-        return true;
     }
 }

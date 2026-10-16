@@ -1,14 +1,14 @@
 class Solution {
     public int jump(int[] arr) {
         
-        int steps = 0, lastJumpPos = 0, maxJump = 0;
+        int steps = 0, lastPos = 0, farthest = 0;
 
         for (int i = 0; i < arr.length - 1; i++) {
-            maxJump = Math.max(i + arr[i], maxJump);
+            farthest = Math.max(farthest, i + arr[i]);
 
-            if (lastJumpPos == i) {
+            if (i == lastPos) {
+                lastPos = farthest;
                 steps++;
-                lastJumpPos = maxJump;
             }
         }
 

@@ -1,6 +1,6 @@
 class Solution {
     public String reverseWords(String s) {
-        StringBuilder sb =  trim(s);
+        StringBuilder sb = trim(s);
 
         reverse(sb, 0, sb.length() - 1);
         reverseEachWord(sb);
@@ -16,7 +16,6 @@ class Solution {
             j = i;
 
             while (j < n && sb.charAt(j) != ' ') j++;
-
             reverse(sb, i, j - 1);
 
             i = j + 1;
@@ -24,13 +23,14 @@ class Solution {
     }
 
     private void reverse(StringBuilder sb, int i, int j) {
-
+        
         while (i < j) {
             char tmp = sb.charAt(i);
             sb.setCharAt(i, sb.charAt(j));
             sb.setCharAt(j, tmp);
             i++; j--;
         }
+        
     }
 
     private StringBuilder trim(String s) {

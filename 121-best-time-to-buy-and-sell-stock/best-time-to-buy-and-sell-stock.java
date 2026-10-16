@@ -14,8 +14,8 @@ class Solution {
             for (int i = 1; i <= k; i++) {
 
                 int profitFromPreviousTransaction = profit[i - 1];
-                int curPrice = p - profitFromPreviousTransaction;
-                buy[i] = Math.min(buy[i], curPrice);
+                int effectiveCost = p - profitFromPreviousTransaction;
+                buy[i] = Math.min(buy[i], effectiveCost);
                 profit[i] = Math.max(profit[i], p - buy[i]);
             }
         }

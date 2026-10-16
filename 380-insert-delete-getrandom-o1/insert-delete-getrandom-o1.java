@@ -6,19 +6,19 @@ class RandomizedSet {
 
     public RandomizedSet() {
         map = new HashMap<>();
-        list = new ArrayList<>();
+        list = new ArrayList<>();    
     }
     
     public boolean insert(int val) {
-        if (map.containsKey(val)) return false;
-
+        if (map.containsKey(val)) 
+            return false;
+        
         map.put(val, list.size());
         list.add(val);
 
         return true;
     }
-
-
+    
     public boolean remove(int val) {
         if (!map.containsKey(val)) return false;
 

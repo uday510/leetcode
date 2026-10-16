@@ -1,8 +1,10 @@
 class Solution {
     public int hIndex(int[] citations) {
-        Arrays.sort(citations);
         int n = citations.length;
         int l = 0, r = n;
+
+        Arrays.sort(citations);
+
         while (l < r) {
             int m = l + ((r - l) >> 1);
 

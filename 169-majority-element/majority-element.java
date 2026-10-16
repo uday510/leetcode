@@ -1,13 +1,13 @@
 class Solution {
-    public int majorityElement(int[] nums) {
-        int major = nums[0], cnt = 0;
+    public int majorityElement(int[] arr) {
+        int major = arr[0], cnt = 0;
 
-        for (int num : nums) {
-            if (num == major) cnt++;
+        for (int a : arr) {
+            if (a == major) cnt++;
             else cnt--;
 
             if (cnt == 0) {
-                major = num;
+                major = a;
                 cnt = 1;
             }
         }

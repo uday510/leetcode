@@ -1,22 +1,27 @@
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode curNode = head, newHead = null, tail = null;
+        ListNode newHead = null;
+        ListNode curNode = head;
+        ListNode tail = null;
 
         while (curNode != null) {
             ListNode tmp = curNode;
-            int i;
+            int i = 0;
 
-            for (i = 0; i < k && tmp != null; i++) tmp = tmp.next;
+            while (i < k && tmp != null) {
+                i++; tmp = tmp.next;
+            }
 
-            if (i < k) {
-                tail.next = curNode;
+            if (i == k) {
+                 ListNode reversed = reverse(curNode, k);
+                 if (newHead == null) newHead = reversed;
+                 if (tail != null) tail.next = reversed;
+                 tail = curNode;
+            } else {
+                if (tail != null) tail.next = curNode;
                 break;
             }
 
-            ListNode rev = reverse(curNode, k);
-            if (newHead == null) newHead = rev;
-            if (tail != null) tail.next= rev;
-            tail = curNode;
             curNode = tmp;
         }
 
@@ -24,16 +29,16 @@ class Solution {
     }
 
     private ListNode reverse(ListNode node, int k) {
-        ListNode curNode = node, prevNode = null;
+        ListNode cur = node, prev = null;
 
-        while (k-- > 0 && curNode != null) {
-            ListNode nextNode = curNode.next;
-            curNode.next = prevNode;
-            prevNode = curNode;
+        while (cur != null && k-- > 0) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
 
-            curNode = nextNode;
+            cur = next;
         }
 
-        return prevNode;
+        return prev;
     }
 }

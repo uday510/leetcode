@@ -3,13 +3,11 @@ class Solution {
         int l = 0, r = arr.length - 1;
 
         while (l < r) {
-
-            if ((arr[l] & 1) == 1) {
-                swap(l, r, arr);
-            }
-
             if ((arr[r] & 1) == 1) r--;
-            if ((arr[l] & 1) != 1) l++;
+            else if ((arr[l] & 1) != 1) l++;
+            else {
+                swap(l++, r--, arr);
+            }
         }
 
         return arr;

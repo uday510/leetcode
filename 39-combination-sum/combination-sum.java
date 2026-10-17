@@ -1,32 +1,24 @@
 class Solution {
+    public List<List<Integer>> combinationSum(int[] arr, int t) {
+        List<List<Integer>> res = new ArrayList<>();
 
-    private List<List<Integer>> res;
-    private int[] c;
-    private int n, t;
-
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        res = new ArrayList<>();
-        c = candidates;
-        n = candidates.length;
-        t = target;
-
-        dfs(0, 0, new ArrayList<>());
-        return res;    
+        dfs(0, 0, t, arr.length, arr, new ArrayList<>(), res);
+        return res;
     }
-
-    private void dfs(int idx, int sum, List<Integer> curList) {
-        if (sum == t) {
-            res.add(new ArrayList<>(curList));
+    private void dfs(int i, int sm, int t, int n, int[] arr, List<Integer> cur, List<List<Integer>> res) {
+        if (sm == t) {
+            res.add(new ArrayList<>(cur));
             return;
         }
 
-        if (idx >= n || sum > t) return;
 
-        for (int curIdx = idx; curIdx < n; curIdx++) {
-            curList.add(c[curIdx]);
-            dfs(curIdx, sum + c[curIdx], curList);
-            curList.removeLast();
+        if (i >= n || sm > t)   
+            return;
+        
+        for (int j = i; j < n; j++) {
+            cur.add(arr[j]);
+            dfs(j, sm + arr[j], t, n, arr, cur, res);
+            cur.removeLast();
         }
-
     }
 }

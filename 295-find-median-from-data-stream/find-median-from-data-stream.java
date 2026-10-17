@@ -1,11 +1,10 @@
 class MedianFinder {
 
-    Queue<Integer> mxHeap;
-    Queue<Integer> mnHeap;
-
+    private Queue<Integer> mxHeap;
+    private Queue<Integer> mnHeap;
     public MedianFinder() {
         mxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        mnHeap = new PriorityQueue<>();    
+        mnHeap = new PriorityQueue<>();
     }
     
     public void addNum(int num) {
@@ -15,14 +14,27 @@ class MedianFinder {
         if (mxHeap.size() < mnHeap.size()) {
             mxHeap.offer(mnHeap.poll());
         }
-
     }
     
     public double findMedian() {
-        int m = mnHeap.size() + mxHeap.size();
+        int sz = mnHeap.size() + mxHeap.size();
+        if ( (sz & 1) == 1) return mxHeap.peek();
 
-        if ( (m & 1) == 1) return mxHeap.peek();
-
-        return ( mxHeap.peek() + mnHeap.peek() ) / 2.0;
+        return (mxHeap.peek() + mnHeap.peek()) / 2.0;
     }
 }
+
+/**
+
+1 2 3 4 5 6 
+
+
+1
+mxHeap: 1, 2
+mnHeap: 3, 4
+
+
+
+
+
+ */

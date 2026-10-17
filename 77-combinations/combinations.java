@@ -18,7 +18,7 @@ class Solution {
             return;
         }
 
-        for (int curIdx = idx; curIdx <= n - (k - curList.size() - 1); curIdx++) {
+        for (int curIdx = idx; curIdx <= n; curIdx++) {
             curList.add(curIdx);
             dfs(curIdx + 1, curList);
             curList.removeLast();

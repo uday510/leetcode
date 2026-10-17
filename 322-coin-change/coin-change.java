@@ -1,27 +1,21 @@
 class Solution {
-
-    private int[] coins, dp;
-
-    public int coinChange(int[] coins, int amount) {
-        this.coins = coins;
-        this.dp = new int[amount + 1];
+    public int coinChange(int[] coins, int amt) {
+        int[] dp = new int[amt + 1];
         Arrays.fill(dp, -1);
         dp[0] = 0;
-
-        dfs(amount);  
-
-        return dp[amount] == (int) 1e9 ? -1 : dp[amount];
+        dfs(amt, coins, dp);
+        return dp[amt] == (int) 1e9 ? -1 : dp[amt];
     }
-
-    private int dfs(int amt) {
-        if (amt < 0) return (int) 1e9;
-        if (dp[amt] != -1) return dp[amt];
+    private int dfs(int rem, int[] coins, int[] dp) {
+        if (rem < 0) return (int) 1e9;
+        if (dp[rem] != -1) return dp[rem];
+        if (rem == 0) return 0;
 
         int cur = (int) 1e9;
         for (int c : coins) {
-            cur = Math.min(cur, 1 + dfs(amt - c));
+            cur = Math.min(cur, 1 + dfs(rem - c, coins, dp));
         }
 
-        return dp[amt] = cur;
+        return dp[rem] = cur;
     }
 }

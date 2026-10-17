@@ -14,15 +14,9 @@ class Solution {
         }
 
         for (int j = i; j < n; j++) {
-            swap(i, j, cur);
+            Collections.swap(cur, i, j);
             dfs(i + 1, n, cur, res);
-            swap(i, j, cur);
+            Collections.swap(cur, i, j);
         }
-    }
-
-    private void swap(int i, int j, List<Integer> list) {
-        Integer tmp = list.get(j);
-        list.set(j, list.get(i));
-        list.set(i, tmp);
     }
 }

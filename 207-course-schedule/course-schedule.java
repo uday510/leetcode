@@ -3,9 +3,10 @@ class Solution {
         List<Integer>[] adj = new ArrayList[n];
         int[] inorder = new int[n];
 
-        for (int i = 0; i < n; i++) 
+        for (int i = 0; i < n; i++) {
             adj[i] = new ArrayList<>();
-        
+        }
+
         for (int[] p : pre) {
             int u = p[1], v = p[0];
             adj[u].add(v);
@@ -21,8 +22,8 @@ class Solution {
 
         int total = 0;
         while (!queue.isEmpty()) {
-            total++;
             int u = queue.poll();
+            total++;
             for (int v : adj[u]) {
                 if (--inorder[v] == 0) {
                     queue.offer(v);

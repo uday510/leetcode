@@ -1,11 +1,11 @@
 class Solution {
     public int[] searchRange(int[] arr, int t) {
-        int p1 = bs(arr, t);
-        if (p1 == arr.length || arr[p1] != t) return new int[] {-1, -1};
-
-        int p2 = bs(arr, t + 1) - 1;
-
-        return new int[] {p1, p2};
+        int l = bs(arr, t);
+        if (l >= arr.length || arr[l] != t) 
+            return new int[] {-1, -1};
+        
+        int r = bs(arr, t + 1) - 1;
+        return new int[] {l, r};
     }
 
     private int bs(int[] arr, int t) {

@@ -1,7 +1,6 @@
 class Solution {
     public int[] findOrder(int n, int[][] pre) {
         List<Integer>[] adj = new ArrayList[n];
-        Queue<Integer> queue = new ArrayDeque<>();
         int[] in = new int[n];
 
         for (int i = 0; i < n; i++) {
@@ -14,18 +13,17 @@ class Solution {
             in[v]++;
         }
 
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            if (in[i] == 0) {
+            if (in[i] == 0) 
                 queue.offer(i);
-            }
         }
 
-        int total = 0, idx = 0;
+        int idx = 0;
         int[] res = new int[n];
-        
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            total++; res[idx++] = u;
+            res[idx++] = u;
             for (int v : adj[u]) {
                 if (--in[v] == 0) {
                     queue.offer(v);
@@ -33,6 +31,6 @@ class Solution {
             }
         }
 
-        return total == n ? res : new int[] {};
+        return idx == n ? res : new int[] {};
     }
 }

@@ -10,7 +10,6 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        
         return dfs(0, lists.length - 1, lists);
     }
 
@@ -18,18 +17,18 @@ class Solution {
         if (l > r) return null;
         if (l == r) return lists[l];
 
-        int m = (l + r) >> 1;
+        int m = l + ((r - l) >> 1);
+
         ListNode left = dfs(l, m, lists);
         ListNode right = dfs(m + 1, r, lists);
 
         return merge(left, right);
     }
 
-    private ListNode merge(ListNode left, ListNode right) {
+    private ListNode merge(ListNode l, ListNode r) {
         ListNode head = new ListNode(-1);
         ListNode cur = head;
-        ListNode l = left, r = right;
-
+        
         while (l != null && r != null) {
             if (l.val <= r.val) {
                 cur.next = l;
@@ -44,6 +43,6 @@ class Solution {
 
         cur.next = l == null ? r : l;
 
-        return head.next; 
+        return head.next;
     }
 }

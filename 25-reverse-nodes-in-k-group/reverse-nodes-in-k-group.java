@@ -6,31 +6,17 @@ class Solution {
             ListNode tmp = curNode;
             int i;
 
-            for (i = 0; i < k && tmp != null; i++) {
-                tmp = tmp.next;
-            }
+            for (i = 0; i < k && tmp != null; i++) tmp = tmp.next;
 
-
-        /**
-
-            2 -> 1 ->
-            4 -> 3 -> 
-
-            head 
-            2 -> 1 -> 4 -> 3 -> tail
-
-         */
-
-            if (i == k) {
-                ListNode reversed = reverse(curNode, k);
-                if (newHead == null) newHead = reversed;
-                if (tail != null) tail.next = reversed;
-                tail = curNode;
-            } else {
-                if (tail != null) tail.next = curNode;
+            if (i < k) {
+                tail.next = curNode;
                 break;
             }
 
+            ListNode rev = reverse(curNode, k);
+            if (newHead == null) newHead = rev;
+            if (tail != null) tail.next= rev;
+            tail = curNode;
             curNode = tmp;
         }
 

@@ -1,27 +1,23 @@
 class Solution {
     public int lengthOfLIS(int[] arr) {
         int n = arr.length;
-
-        List<Integer> list = new ArrayList<>();
+        List<Integer> lis = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            int cur = arr[i];
-
-            int idx = bs(cur, list);
-            if (idx == list.size()) list.add(cur);
-            list.set(idx, cur);
+            int idx = bs(arr[i], lis);
+            if (idx == lis.size()) lis.add(arr[i]);
+            lis.set(idx, arr[i]);
         }
 
-        return list.size();
+        return lis.size();
     }
-
-    private int bs (int t, List<Integer> list) {
+    private int bs(int val, List<Integer> list) {
         int l = 0, r = list.size();
 
         while (l < r) {
-            int m = l + ( (r - l) >> 1);
-
-            if (list.get(m) < t) l = m + 1;
+            int m = l + ((r - l) >> 1);
+            
+            if (list.get(m) < val) l = m + 1;
             else r = m;
         }
 

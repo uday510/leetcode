@@ -1,27 +1,24 @@
 class Solution {
-    
-    private List<List<Integer>> res;
-    private int n, k;
 
     public List<List<Integer>> combine(int n, int k) {
-        res = new ArrayList<>();
-        this.n = n;
-        this.k = k;
 
-        dfs(1, new ArrayList<>());
-        return res;
+        List<List<Integer>> res = new ArrayList<>();
+
+        dfs(1, n, k, new ArrayList<>(), res);
+        return res;        
     }
-    
-    private void dfs(int idx, List<Integer> curList) {
-        if (curList.size() == k) {
-            res.add(new ArrayList<>(curList));
+
+    private void dfs(int i, int n, int k, List<Integer> cur, List<List<Integer>> res) {
+        if (cur.size() == k) {
+            res.add(new ArrayList<>(cur));
             return;
         }
 
-        for (int curIdx = idx; curIdx <= n; curIdx++) {
-            curList.add(curIdx);
-            dfs(curIdx + 1, curList);
-            curList.removeLast();
+
+        for (int j = i; j <= n  && cur.size() < k; j++) {
+            cur.add(j);
+            dfs(j + 1, n, k, cur, res);
+            cur.removeLast();
         }
     }
 }

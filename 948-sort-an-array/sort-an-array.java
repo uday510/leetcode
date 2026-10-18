@@ -1,36 +1,41 @@
 class Solution {
-    public int[] sortArray(int[] nums) {
-        mergesort(0, nums.length - 1, nums);
-        return nums;
+    public int[] sortArray(int[] arr) {
+        mergesort(0, arr.length - 1, arr);
+        return arr;
     }
-
-        private void mergesort(int l, int r, int[] nums) {
+    private void mergesort(int l, int r, int[] arr) {
         if (l >= r) return;
 
-        int m = (l + r) >>> 1;
+        int m = l + ((r - l) >> 1);
 
-        mergesort(l, m, nums);
-        mergesort(m + 1, r, nums);
-        merge(l, m, m + 1, r, nums);
+        mergesort(l, m, arr);
+        mergesort(m + 1, r, arr);
+        merge(l, m, m + 1, r, arr);
     }
 
-    private void merge(int ls, int le, int rs, int re, int[] nums) {
-        int[] left = new int[le - ls + 1];
-        int[] right = new int[re - rs + 1];
+    private void merge(int l1, int l2, int r1, int r2, int[] arr) {
+        int[] l = new int[l2 - l1 + 1];
+        int[] r = new int[r2 - r1 + 1];
 
-        for (int i = 0; i < left.length; i++) left[i] = nums[i + ls];
+        for (int i = 0; i < l.length; i++) 
+            l[i] = arr[l1 + i];
+        
+        for (int i = 0; i < r.length; i++) 
+            r[i] = arr[r1 + i];
+        
 
-        for (int i = 0; i < right.length; i++) right[i] = nums[i + rs];
+        int i = 0, j = 0, k = l1;
 
-        int i = 0, j = 0, k = ls;
-
-        while (i < left.length && j < right.length) {
-            if (left[i] < right[j]) nums[k] = left[i++];
-            else nums[k] = right[j++];
+        while (i < l.length && j < r.length) {
+            if (l[i] < r[j]) {
+                arr[k] = l[i++];
+            } else {
+                arr[k] = r[j++];
+            }
             k++;
         }
 
-        while (i < left.length) nums[k++] = left[i++];
-        while (j < right.length) nums[k++] = right[j++];
+        while (i < l.length) arr[k++] = l[i++];
+        while (j < r.length) arr[k++] = r[j++];
     }
 }

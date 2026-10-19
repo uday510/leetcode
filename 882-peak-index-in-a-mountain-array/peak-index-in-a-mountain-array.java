@@ -3,7 +3,7 @@ class Solution {
         int l = 0, r = arr.length - 1;
 
         while (l < r) {
-            int m = l + ((r - l) >> 1);
+            int m = l + ((r - l) >> 1); 
 
             if (arr[m] < arr[m + 1]) l = m + 1;
             else r = m;
@@ -12,12 +12,3 @@ class Solution {
         return l;
     }
 }
-
-
-/**
-
-
- 1 2 1 4 
-
- 
- */

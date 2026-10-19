@@ -15,11 +15,10 @@ class Solution {
         while (cur != null) {
             ListNode nxt = cur.next;
             
-            while (nxt != null && nxt.val == cur.val) 
-                nxt = nxt.next;
-            
+            while (nxt != null && cur.val == nxt.val) nxt = nxt.next;
+
             cur.next = nxt;
-            cur = nxt;
+            cur = cur.next;
         }
 
         return head;

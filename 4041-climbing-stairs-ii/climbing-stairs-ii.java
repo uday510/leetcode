@@ -13,8 +13,9 @@ class Solution {
 
         int cur = Integer.MAX_VALUE;
         for (int j = i; j < Math.min(n, i + 3); j++) {
-            int jump = j - i + 1;
-            cur = Math.min(cur, costs[j] + jump * jump + dfs(j + 1, n, costs, dp));
+            int k = j - i + 1;
+            int t1 = k * k + dfs(j + 1, n, costs, dp);
+            cur = Math.min(cur, costs[j] + t1);
         }
     
         return dp[i] = cur;

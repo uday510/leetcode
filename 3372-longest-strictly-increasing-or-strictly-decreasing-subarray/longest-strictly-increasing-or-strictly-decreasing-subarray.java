@@ -8,14 +8,14 @@ class Solution {
             int cur = 1, j = i + 1;
             for (; j < n && arr[j] < arr[j - 1]; j++);
 
-            longest = Math.max(longest, j - i + 1);
+            longest = Math.max(longest, j - i);
 
             j = i + 1;
             for (; j < n && arr[j] > arr[j - 1]; j++);
-            longest = Math.max(longest, j - i + 1);
+            longest = Math.max(longest, j - i);
         }
 
-        return longest - 1;
+        return longest;
     }
 }
 

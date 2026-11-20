@@ -11,6 +11,7 @@ public:
 
         return mx;
     }
+    
 };
 
 
@@ -33,7 +34,7 @@ cur = max(5, 0 + 5) = 5
 
 cur = max(reset_subarray, extend_subarray)
 
-reset_subarray = start from current index
+reset_subarray = start from current index (take current element nums[i])
 extend_subarray = take current index into previous subarray
 
 

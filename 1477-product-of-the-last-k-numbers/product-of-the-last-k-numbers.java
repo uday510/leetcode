@@ -1,31 +1,25 @@
 class ProductOfNumbers {
-        List<Integer> list;
-        List<Integer> pf;
+
+    List<Integer> l;
+    List<Integer> p;
     public ProductOfNumbers() {
-        list = new ArrayList<>();
-        pf = new ArrayList<>();
+        l = new ArrayList<>();
+        p = new ArrayList<>(List.of(1));
     }
     
-    public void add(int num) {
-        list.add(num);
-        if (pf.size() == 0)
-            pf.add(num);
-        else 
-            pf.add(pf.getLast() * num);
-        if (num == 0)
-            pf = new ArrayList<>();
+    public void add(int a) {
+        if (a == 0) {
+            p = new ArrayList<>();
+            p.add(1);
+            return;
+        }
+
+        p.add(p.getLast() * a);
     }
     
     public int getProduct(int k) {
-        if (pf.size() < k) {
-            return 0;
-        }
-            
-        if (k == pf.size()) 
-            return pf.getLast();
-
-        int product = pf.getLast() / pf.get(pf.size() - k - 1);
-
-        return product;
+        int n = p.size();
+        if (k >= n) return 0;
+        return p.getLast() / p.get(n - 1 - k);
     }
 }

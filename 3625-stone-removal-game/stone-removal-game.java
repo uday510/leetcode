@@ -4,7 +4,7 @@ class Solution {
     }
 
     private boolean ok(int n, int tmp) {
-        if (n < tmp) return tmp % 2 == 1;
+        if (n < tmp) return (tmp & 1) == 1;
 
         return ok(n - tmp, tmp - 1);
     }

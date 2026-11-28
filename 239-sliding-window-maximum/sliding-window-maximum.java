@@ -11,8 +11,9 @@ class Solution {
 
             while (
                 !queue.isEmpty() && 
-                arr[queue.peekLast()] <= arr[i]) {
-                    queue.pollLast();
+                arr[queue.peekLast()] <= arr[i]
+            ) {
+                queue.pollLast();
             }
 
             queue.offerLast(i);
